@@ -1,0 +1,27 @@
+package com.easyEats.ezeats.di
+
+import com.easyEats.ezeats.data.local.auth.repository.AuthRepositoryImpl
+import com.easyEats.ezeats.data.local.data_store.DataStorePreference
+import com.easyEats.ezeats.data.remote.ApiService
+import com.easyEats.ezeats.data.remote.AuthWithParsing
+import com.easyEats.ezeats.domain.auth.repository.AuthRepository
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
+
+@InstallIn(SingletonComponent::class)
+@Module
+object RepositoryModule {
+
+    @Provides
+    @Singleton
+    fun provideUserRepository(
+        dataStorePreference: DataStorePreference,
+        authWithParsing: AuthWithParsing,
+        apiService: ApiService
+    ): AuthRepository {
+        return AuthRepositoryImpl(dataStorePreference, authWithParsing, apiService)
+    }
+}

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--    Intro Screen-->
+    <string name="easy_eats_logo">شعار إيزي إيتس</string>
+    <string name="signup">تسجيل</string>
+    <string name="login">تسجيل الدخول</string>
+    <string name="continue_as_a_guest"><u>متابعة كضيف</u></string>
+
+    <!--    Sign In Screen-->
+    <string name="welcome_back">مرحباً بعودتك</string>
+    <string name="login_and_start_saving">تسجيل الدخول وابدأ في التوفير</string>
+    <string name="google_logo">شعار جوجل</string>
+    <string name="facebook_logo">شعار فيسبوك</string>
+    <string name="enter_your_phone_number">أدخل رقم هاتفك</string>
+
+    <!--    Sign Up Screen-->
+    <string name="sign_in">تسجيل الدخول</string>
+    <string name="don_t_have_an_account">لا تملك حساباً؟</string>
+    <string name="sign_up">إنشاء حساب</string>
+    <string name="hey_there">مرحباً!</string>
+    <string name="sign_up_and_join_the_ezeats_community_and_start_saving">سجل الآن وانضم إلى مجتمع إيزي إيتس، وابدأ في التوفير</string>
+    <string name="already_have_an_account">هل لديك حساب بالفعل؟</string>
+
+    <!--    Verification Code-->
+    <string name="otp_verification">تأكيد OTP</string>
+    <string name="enter_the_verification_code_we_just_sent_on_your_email_address">أدخل رمز التحقق الذي أرسلناه إلى بريدك الإلكتروني</string>
+    <string name="didn_t_receive_code">لم تستلم الرمز؟</string>
+    <string name="resend"><u>إعادة إرسال</u></string>
+    <string name="verify_code">تحقق من الرمز</string>
+
+    <!-- OnBoarding Screen -->
+    <string name="skip"><u>تخطي</u></string>
+    <string name="next">التالي</string>
+    <string name="description">الوصف</string>
+    <string name="welcome_to_ezeats">مرحباً بك في إيزي إيتس</string>
+    <string name="ezeats_is_your_destination_to_saving_on_your_favorite_restaurants">إيزي إيتس هو وجهتك للتوفير على مطاعمك المفضلة</string>
+    <string name="save_money_earn_rewards">وفّر المال، واكسب المكافآت</string>
+    <string name="with_ezeats_you_can_save_money_get_special_offers_get_points_that_you_can_redeem_and_much_more">مع إيزي إيتس، يمكنك توفير المال، والحصول على عروض خاصة، وكسب نقاط يمكنك استبدالها، وأكثر من ذلك بكثير!</string>
+    <string name="location_access">الوصول إلى الموقع</string>
+    <string name="we_would_like_to_get_access_to_your_location_so_we_can_always_notify_you_about_the_best_near_deals">نود الحصول على إذن للوصول إلى موقعك، حتى نتمكن دائماً من إبلاغك بأفضل العروض القريبة</string>
+    <string name="allow_finish"><![CDATA[السماح & إنهاء]]></string>
+    <string name="location_permission_required">إذن الموقع مطلوب</string>
+    <string name="location_permission_is_required_to_use_this_feature_please_grant_the_permission_in_the_app_settings">يُطلب إذن الموقع لاستخدام هذه الميزة. يرجى منح الإذن في إعدادات التطبيق.</string>
+    <string name="ok">موافق</string>
+    <string name="cancel">إلغاء</string>
+
+    <!--    No Internet Connection Screen-->
+    <string name="no_internet_connection">لا يوجد اتصال بالإنترنت</string>
+    <string name="oops">عفوًا!</string>
+    <string name="please_make_sure_you_are_connected_to_the_internet_and_try_again">يرجى التأكد من أنك متصل بالإنترنت وحاول مرة أخرى</string>
+    <string name="try_again">حاول مرة أخرى</string>
+
+
+</resources>

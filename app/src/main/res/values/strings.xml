@@ -1,0 +1,56 @@
+<resources>
+    <string name="app_name" translatable="false">Easy Eats</string>
+
+    <!--    Intro Screen-->
+    <string name="easy_eats_logo">easy eats logo</string>
+    <string name="signup">Signup</string>
+    <string name="login">Login</string>
+    <string name="continue_as_a_guest"><u>Continue as a guest</u></string>
+
+    <!--    Sign In Screen-->
+    <string name="welcome_back">Welcome Back</string>
+    <string name="login_and_start_saving">Login and start saving</string>
+    <string name="google_logo">Google logo</string>
+    <string name="facebook_logo">facebook logo</string>
+    <string name="enter_your_phone_number">Enter your phone number</string>
+
+    <!--    Sign Up Screen-->
+    <string name="sign_in">Sign In</string>
+    <string name="don_t_have_an_account">Don’t have an account?</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="hey_there">Hey There!</string>
+    <string name="sign_up_and_join_the_ezeats_community_and_start_saving">Sign up and join the EZeats community, and start saving</string>
+    <string name="already_have_an_account">already have an account?</string>
+    <string name="enter_your_name">Enter Your Name</string>
+
+    <!--    Verification Code-->
+    <string name="otp_verification">OTP Verification</string>
+    <string name="enter_the_verification_code_we_just_sent_on_your_email_address">Enter the verification code we just sent on your email address</string>
+    <string name="didn_t_receive_code">Didn’t receive code?</string>
+    <string name="resend"><u>Resend</u></string>
+    <string name="verify_code">Verify Code</string>
+
+    <!-- OnBoarding Screen -->
+    <string name="skip"><u>Skip</u></string>
+    <string name="next">Next</string>
+    <string name="description">Description</string>
+    <string name="welcome_to_ezeats">Welcome to EZeats</string>
+    <string name="ezeats_is_your_destination_to_saving_on_your_favorite_restaurants">EZeats is your destination to saving on your\nfavorite restaurants</string>
+    <string name="save_money_earn_rewards">Save Money, Earn rewards</string>
+    <string name="with_ezeats_you_can_save_money_get_special_offers_get_points_that_you_can_redeem_and_much_more">With EZeats, you can save money, get special \noffers, get points that you can redeem, and\nmuch more !</string>
+    <string name="location_access">Location Access</string>
+    <string name="we_would_like_to_get_access_to_your_location_so_we_can_always_notify_you_about_the_best_near_deals">We would like to get access to your location,\nso we can always notify you about the best\nnear deals</string>
+    <string name="allow_finish"><![CDATA[Allow & Finish]]></string>
+    <string name="location_permission_required">Location Permission Required</string>
+    <string name="location_permission_is_required_to_use_this_feature_please_grant_the_permission_in_the_app_settings">Location permission is required to use this feature. Please grant the permission in the app settings.</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">cancel</string>
+
+    <!--    No Internet Connection Screen-->
+    <string name="no_internet_connection">No Internet Connection</string>
+    <string name="oops">Oops!</string>
+    <string name="please_make_sure_you_are_connected_to_the_internet_and_try_again">Please make sure you are connected to the internet and try again</string>
+    <string name="try_again">Try Again</string>
+
+
+</resources>
