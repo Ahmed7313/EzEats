@@ -15,22 +15,33 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * VerificationViewModel is a ViewModel responsible for handling OTP verification and sending OTP requests.
+ * It extends the AuthViewModel and uses the AuthUseCase for authentication-related operations.
+ *
+ * @property authUseCase The use case for authentication operations.
+ */
 @HiltViewModel
-class VerificationViewModel @Inject constructor(private val authUseCase: AuthUseCase) :
-    AuthViewModel() {
+class VerificationViewModel @Inject constructor(private val authUseCase: AuthUseCase) : AuthViewModel() {
 
+    // LiveData to expose OTP verification result
     private val _verifyOtpMutableLiveData = MutableLiveData<Resource<BaseResponse<Boolean>>>()
     val verifyOtpLiveData: LiveData<Resource<BaseResponse<Boolean>>> get() = _verifyOtpMutableLiveData
 
+    // LiveData to expose OTP sending result
     private val _sendOtpMutableLiveData = MutableLiveData<Resource<BaseResponse<Int>>>()
     val sendOtpLiveData: LiveData<Resource<BaseResponse<Int>>> get() = _sendOtpMutableLiveData
 
-
+    /**
+     * Verifies the OTP by making a request to the backend service.
+     *
+     * @param phoneNumber The phone number to verify
+     * @param otp The OTP to verify
+     */
     fun verifyOtp(phoneNumber: String, otp: String) {
         viewModelScope.launch {
             _verifyOtpMutableLiveData.value = Resource.Loading()
-            val sendOtp =
-                authUseCase.verifyUseCase.verifyOtp(VerifyOtpRequest("+2$phoneNumber", otp))
+            val sendOtp = authUseCase.verifyUseCase.verifyOtp(VerifyOtpRequest("+2$phoneNumber", otp))
             if (sendOtp.isSuccessful) {
                 _verifyOtpMutableLiveData.value = Resource.Success(sendOtp.body())
             } else {
@@ -39,6 +50,11 @@ class VerificationViewModel @Inject constructor(private val authUseCase: AuthUse
         }
     }
 
+    /**
+     * Sends an OTP to the specified phone number by making a request to the backend service.
+     *
+     * @param phoneNumber The phone number to send the OTP to
+     */
     fun sendOtp(phoneNumber: String) {
         viewModelScope.launch {
             _sendOtpMutableLiveData.value = Resource.Loading()
@@ -50,5 +66,4 @@ class VerificationViewModel @Inject constructor(private val authUseCase: AuthUse
             }
         }
     }
-
 }

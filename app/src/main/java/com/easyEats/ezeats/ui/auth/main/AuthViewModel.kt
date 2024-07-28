@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.easyEats.ezeats.MyApplication.Companion.baseApplication
 import com.easyEats.ezeats.utils.NetworkChangeReceiver
+
 /**
  * AuthViewModel is a ViewModel that handles authentication-related logic, including phone number validation and
  * observing network connectivity status.

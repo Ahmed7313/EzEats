@@ -2,15 +2,18 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.EzEats" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-
+        <item name="android:statusBarColor">@color/main_color</item>
+        <item name="colorAccent">@color/main_color</item>
+        <item name="colorPrimary">@color/main_color</item>
+        <item name="textAllCaps">false</item>
     </style>
 
     <style name="Theme.EzEats" parent="Base.Theme.EzEats" />
 
     <style name="HintTextAppearance" parent="TextAppearance.MaterialComponents.Caption">
         <item name="android:textSize">14sp</item> <!-- Set your desired hint size -->
-        <item name="android:textColor">@color/light_gray</item> <!-- Optional: Set your desired hint color -->
+        <item name="android:textColor">@color/light_gray
+        </item> <!-- Optional: Set your desired hint color -->
     </style>
 
     <style name="defaultInputText" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -25,4 +28,15 @@
         <item name="boxCornerRadiusTopEnd">@dimen/_75sdp</item>
         <item name="boxCornerRadiusTopStart">@dimen/_75sdp</item>
     </style>
+
+    <style name="ProgressBar.ButtonStyle" parent="android:Widget.ProgressBar.Horizontal">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@drawable/progress_bar_button</item>
+    </style>
+
+    <style name="BottomNavigationStyle" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="itemBackground">@null</item>
+    </style>
+
+
 </resources>

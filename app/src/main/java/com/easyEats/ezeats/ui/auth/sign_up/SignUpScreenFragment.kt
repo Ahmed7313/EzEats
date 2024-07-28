@@ -1,6 +1,5 @@
 package com.easyEats.ezeats.ui.auth.sign_up
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
@@ -12,6 +11,12 @@ import com.easyEats.ezeats.utils.Resource
 import com.easyEats.ezeats.utils.ValidateFields
 import dagger.hilt.android.AndroidEntryPoint
 
+/**
+ * SignUpScreenFragment handles the sign-up screen functionality of the application.
+ * It validates the form inputs, manages user interactions, and observes the registration process.
+ *
+ * This fragment uses the `@AndroidEntryPoint` annotation to enable dependency injection with Hilt.
+ */
 @AndroidEntryPoint
 class SignUpScreenFragment : BaseFragment<FragmentSignUpScreenBinding>() {
 
@@ -28,7 +33,7 @@ class SignUpScreenFragment : BaseFragment<FragmentSignUpScreenBinding>() {
     override fun inflateBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ) = FragmentSignUpScreenBinding.inflate(inflater, container, false)
+    ): FragmentSignUpScreenBinding = FragmentSignUpScreenBinding.inflate(inflater, container, false)
 
     /**
      * Sets up the views and initializes necessary listeners.
@@ -39,6 +44,10 @@ class SignUpScreenFragment : BaseFragment<FragmentSignUpScreenBinding>() {
         setUpObservers()
     }
 
+    /**
+     * Validates the form fields for the sign-up process.
+     * Observes changes in the input fields and updates the form validity.
+     */
     private fun validateFields() {
         ValidateFields.observeFormValidity(
             signUpViewModel,
@@ -56,6 +65,10 @@ class SignUpScreenFragment : BaseFragment<FragmentSignUpScreenBinding>() {
         )
     }
 
+    /**
+     * Sets up observers to listen for changes in the ViewModel's LiveData.
+     * Observes the registration result and handles different states.
+     */
     private fun setUpObservers() {
         signUpViewModel.registrationResult.observe(viewLifecycleOwner) { resource ->
             when (resource) {
@@ -67,21 +80,20 @@ class SignUpScreenFragment : BaseFragment<FragmentSignUpScreenBinding>() {
                     hideLoading()
                     val user = resource.data
                     signUpViewModel.saveToken(user ?: return@observe)
-                    Log.d("TAG", "Ahmed Saad Kenawy: $user ")
                     goToVerificationScreen()
-
                 }
 
                 is Resource.Error -> {
                     hideLoading()
-                    val errorMessage = resource.message
-                    Log.d("TAG", "Ahmed Saad Kenawy: $errorMessage ")
+                    // Handle error
                 }
             }
         }
-
     }
 
+    /**
+     * Navigates to the verification screen with the phone number input.
+     */
     private fun goToVerificationScreen() {
         val action =
             SignUpScreenFragmentDirections.actionSignUpScreenFragmentToVerificationScreenFragment(
@@ -90,6 +102,10 @@ class SignUpScreenFragment : BaseFragment<FragmentSignUpScreenBinding>() {
         findNavController().navigate(action)
     }
 
+    /**
+     * Sets up click listeners for user interactions.
+     * Handles the Sign Up and Sign In button clicks.
+     */
     private fun setUpClickListeners() {
         // Navigate to verification screen when Sign Up button is clicked
         binding.btnSignUp.setOnClickListener {

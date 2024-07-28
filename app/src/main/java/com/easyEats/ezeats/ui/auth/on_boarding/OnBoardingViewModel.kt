@@ -60,6 +60,9 @@ class OnBoardingViewModel @Inject constructor(
         )
     }
 
+    /**
+     * change the status of the on boarding screen if the user watched it or not
+     */
     fun userWatchOnBoarding(isWatched: Boolean) {
         viewModelScope.launch {
             authUseCase.onBoardingUseCase.userWatchOnBoardingScreen(isWatched)

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav"
+    app:startDestination="@id/homeScreenFragment">
+
+    <fragment
+        android:id="@+id/homeScreenFragment"
+        android:name="com.easyEats.ezeats.ui.main.home.HomeScreenFragment"
+        android:label="HomeScreenFragment"
+        tools:layout="@layout/fragment_home_screen" />
+    <fragment
+        android:id="@+id/qrScreenFragment"
+        android:name="com.easyEats.ezeats.ui.main.qr.QRScreenFragment"
+        android:label="fragment_q_r_screen"
+        tools:layout="@layout/fragment_q_r_screen" />
+    <fragment
+        android:id="@+id/pointScreenFragment"
+        android:name="com.easyEats.ezeats.ui.main.points.PointScreenFragment"
+        android:label="fragment_point_screen"
+        tools:layout="@layout/fragment_point_screen" />
+    <fragment
+        android:id="@+id/percentScreenFragment"
+        android:name="com.easyEats.ezeats.ui.main.percent.PercentScreenFragment"
+        android:label="fragment_percent_screen"
+        tools:layout="@layout/fragment_percent_screen" />
+    <fragment
+        android:id="@+id/profileScreenFragment"
+        android:name="com.easyEats.ezeats.ui.main.profile.ProfileScreenFragment"
+        android:label="fragment_profile_screen"
+        tools:layout="@layout/fragment_profile_screen" />
+</navigation>

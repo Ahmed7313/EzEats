@@ -13,6 +13,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+
+/**
+ * SignUpViewModel handles the sign-up logic and form validation for the sign-up screen.
+ *
+ * This ViewModel uses Hilt for dependency injection and extends the AuthViewModel for shared authentication logic.
+ */
 @HiltViewModel
 class SignUpViewModel @Inject constructor(private val authUseCase: AuthUseCase) : AuthViewModel() {
 
@@ -20,6 +26,7 @@ class SignUpViewModel @Inject constructor(private val authUseCase: AuthUseCase) 
     private val _isNameValid = MutableLiveData(false)
     val isNameValid: LiveData<Boolean> get() = _isNameValid
 
+    // LiveData to expose registration result
     private val _registrationResult = MutableLiveData<Resource<ParseUser>>()
     val registrationResult: LiveData<Resource<ParseUser>> get() = _registrationResult
 
@@ -29,7 +36,12 @@ class SignUpViewModel @Inject constructor(private val authUseCase: AuthUseCase) 
         addSource(_isNameValid) { value = isFormValid() }
     }
 
-
+    /**
+     * Registers a new user with the given phone number and name.
+     *
+     * @param phoneNumber The phone number of the user
+     * @param name The name of the user
+     */
     fun register(phoneNumber: String, name: String) {
         // Call the register function from the UseCase
         val registrationLiveData = authUseCase.signUpUseCase.register(phoneNumber, name)
@@ -40,13 +52,17 @@ class SignUpViewModel @Inject constructor(private val authUseCase: AuthUseCase) 
         }
     }
 
+    /**
+     * Saves the session token of the user.
+     *
+     * @param user The user whose session token is to be saved
+     */
     fun saveToken(user: ParseUser) {
         viewModelScope.launch {
             authUseCase.signUpUseCase.saveToken(user.sessionToken)
-            Log.d("TAG", "Ahmed Saad Kenawy: ${user.sessionToken} ")
+            Log.d("TAG", "Session token saved: ${user.sessionToken}")
         }
     }
-
 
     /**
      * Validates the name field to ensure it's not empty.
@@ -57,5 +73,10 @@ class SignUpViewModel @Inject constructor(private val authUseCase: AuthUseCase) 
         _isNameValid.value = name.isNotBlank()
     }
 
+    /**
+     * Checks if the form is valid by ensuring both the phone number and name are valid.
+     *
+     * @return Boolean indicating the overall form validity
+     */
     private fun isFormValid() = isPhoneNumberValid.value == true && _isNameValid.value == true
 }

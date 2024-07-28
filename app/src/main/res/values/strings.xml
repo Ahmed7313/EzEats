@@ -52,5 +52,24 @@
     <string name="please_make_sure_you_are_connected_to_the_internet_and_try_again">Please make sure you are connected to the internet and try again</string>
     <string name="try_again">Try Again</string>
 
+    <!--    Home Screen-->
+    <string name="notification_icon">Notification Icon</string>
+    <string name="where_every_meal_comes_with_a_discount">Where Every Meal Comes with a discount</string>
+    <string name="search_for_restaurants_dishes_and_more">Search for restaurants, dishes, and more...</string>
+    <string name="featured">Featured</string>
+    <string name="view_all">View All</string>
+    <string name="check_out_today_s_featured_deals_and_offers_near_you">Check out today’s featured deals and offers Near you</string>
+    <string name="challenges_for_you">Challenges for you</string>
+    <string name="hot_deals_near_you">Hot Deals Near You</string>
+    <string name="participate_in_challenges_and_earn_points_and_rewards">Participate in challenges, and earn points and rewards</string>
+    <string name="redeem">Redeem</string>
+    <string name="restaurant_logo">Restaurant Logo</string>
+]    <string name="home">Home</string>
+    <string name="percent">Percent</string>
+    <string name="qr">QR</string>
+    <string name="points">Points</string>
+    <string name="profile">profile</string>
+    <string name="press_back_again_to_exit">Press back again to exit</string>
+
 
 </resources>

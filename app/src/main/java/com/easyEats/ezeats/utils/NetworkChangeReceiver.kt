@@ -5,11 +5,19 @@ import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
 
+/**
+ * NetworkChangeReceiver is a BroadcastReceiver that listens for network connectivity changes.
+ * It triggers a callback with the current network connectivity status.
+ *
+ * @param callback A function that will be called with the connectivity status: true if connected, false otherwise.
+ */
 class NetworkChangeReceiver(private val callback: (Boolean) -> Unit) : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
-        val connectivityManager = context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val networkInfo = connectivityManager.activeNetworkInfo
-        val isConnected = networkInfo != null && networkInfo.isConnected
-        callback(isConnected)
+        context?.let {
+            val connectivityManager = it.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val networkInfo = connectivityManager.activeNetworkInfo
+            val isConnected = networkInfo?.isConnected == true
+            callback(isConnected)
+        }
     }
 }
