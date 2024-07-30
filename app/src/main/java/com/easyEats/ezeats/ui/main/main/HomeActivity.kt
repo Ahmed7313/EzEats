@@ -1,67 +1,52 @@
 package com.easyEats.ezeats.ui.main.main
 
 import android.os.Bundle
-import android.os.Handler
-import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.databinding.ActivityHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-
 @AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
 
+    // View binding for activity_home.xml
     private lateinit var binding: ActivityHomeBinding
+
+    // NavController for managing fragment navigation
     private lateinit var navController: NavController
-    private var backPressedOnce = false
-    private var backPressJob: Job? = null
+
+    // ViewModel for the activity, provided by Hilt
+    private val mainViewModel: MainViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Initialize the view binding
         binding = ActivityHomeBinding.inflate(layoutInflater)
+        // Set the root view from the binding as the content view
         setContentView(binding.root)
+        // Set the ViewModel for data binding and provide the lifecycle owner
+        binding.mainViewModel = mainViewModel
+        binding.lifecycleOwner = this // Ensure LiveData updates the UI automatically
+        // Set up the Bottom Navigation and NavHostFragment
+        setUpBottomNavigationWithNavHostFragment()
+    }
 
-        // Get the NavHostFragment
+    /**
+     * Initializes and configures the Bottom Navigation View and the Navigation Host Fragment.
+     */
+    private fun setUpBottomNavigationWithNavHostFragment() {
+        // Retrieve the NavHostFragment from the fragment manager
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        // Get the NavController from the NavHostFragment
+
+        // Initialize the NavController from the NavHostFragment
         navController = navHostFragment.navController
 
-        // Setup BottomNavigationView with NavController
+        // Set up the Bottom Navigation View with the NavController
         binding.navView.setupWithNavController(navController)
     }
-
-    override fun onBackPressed() {
-        if (navController.currentBackStackEntry?.destination?.id == R.id.homeScreenFragment ||
-            navController.currentBackStackEntry?.destination?.id == R.id.percentScreenFragment ||
-            navController.currentBackStackEntry?.destination?.id == R.id.profileScreenFragment ||
-            navController.currentBackStackEntry?.destination?.id == R.id.pointScreenFragment
-        ) {
-            if (backPressedOnce) {
-                // If back was pressed once before, exit the activity
-                super.onBackPressed()
-                return
-            }
-
-            this.backPressedOnce = true
-            Toast.makeText(this, getString(R.string.press_back_again_to_exit), Toast.LENGTH_SHORT).show()
-
-            // Reset the flag after 2 seconds using coroutine
-            backPressJob?.cancel() // Cancel any previous job
-            backPressJob = MainScope().launch(Dispatchers.Main) {
-                delay(2000) // 2 seconds delay
-                backPressedOnce = false
-            }
-        } else {
-            super.onBackPressed()
-        }
-    }
 }
+

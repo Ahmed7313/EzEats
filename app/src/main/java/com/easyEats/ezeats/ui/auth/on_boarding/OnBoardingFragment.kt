@@ -3,6 +3,7 @@ package com.easyEats.ezeats.ui.auth.on_boarding
 import android.content.pm.PackageManager
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -10,6 +11,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.base.BaseFragment
 import com.easyEats.ezeats.databinding.FragmentOnBoardingBinding
+import com.easyEats.ezeats.ui.auth.on_boarding.pager.IntroSliderAdapter
 import com.easyEats.ezeats.utils.Constants.LOCATION_PERMISSION_REQUEST_CODE
 import com.easyEats.ezeats.utils.LocationUtil
 import dagger.hilt.android.AndroidEntryPoint
@@ -133,6 +135,29 @@ class OnBoardingFragment : BaseFragment<FragmentOnBoardingBinding>() {
      * Navigates to the intro screen when location permission is granted.
      */
     private fun onLocationPermissionGranted() {
+        getLocationAndAddress()
+
+    }
+
+    private fun getLocationAndAddress() {
+        locationUtil.getCurrentLocation(
+            onLocationReceived = { latitude, longitude ->
+                locationUtil.reverseGeocode(latitude, longitude,
+                    onAddressReceived = { address ->
+                        viewModel.saveAddress(address)
+
+                    },
+                    onError = { errorMessage ->
+                        // Handle the error
+                        Toast.makeText(requireContext(), "Error: $errorMessage", Toast.LENGTH_LONG).show()
+                    }
+                )
+            },
+            onError = { errorMessage ->
+                // Handle the error
+                Toast.makeText(requireContext(), "Error: $errorMessage", Toast.LENGTH_LONG).show()
+            }
+        )
         viewModel.userWatchOnBoarding(isWatched = true)
         navigateToIntroScreen()
     }

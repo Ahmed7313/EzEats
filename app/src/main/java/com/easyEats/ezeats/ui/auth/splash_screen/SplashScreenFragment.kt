@@ -1,25 +1,23 @@
 package com.easyEats.ezeats.ui.auth.splash_screen
 
 import android.annotation.SuppressLint
-import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.base.BaseFragment
 import com.easyEats.ezeats.databinding.FragmentSplashScreenBinding
+import com.easyEats.ezeats.ui.auth.splash_screen.navigation.DefaultNavigationHandler
+import com.easyEats.ezeats.ui.auth.splash_screen.navigation.NavigationState
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 /**
  * SplashScreenFragment displays a splash screen when the application is launched.
@@ -70,12 +68,17 @@ class SplashScreenFragment : BaseFragment<FragmentSplashScreenBinding>() {
         Handler(Looper.getMainLooper()).postDelayed({
             lifecycleScope.launch {
                 splashViewModel.isUserWatchOnBoardingScreen.collect { hasWatchedOnboarding ->
-                    // Avoid multiple navigation actions
-                    val currentDestination = findNavController().currentDestination?.id
-                    if (hasWatchedOnboarding && currentDestination == R.id.splashScreenFragment) {
-                        findNavController().navigate(R.id.action_splashScreenFragment_to_introScreenFragment)
-                    } else if (!hasWatchedOnboarding && currentDestination == R.id.splashScreenFragment) {
-                        findNavController().navigate(R.id.action_splashScreenFragment_to_onBoardingFragment)
+                    splashViewModel.isUserVerified.collect { isUserVerified ->
+                        Log.d(TAG, "onResume: $isUserVerified")
+                        val navigationHandler = DefaultNavigationHandler(this@SplashScreenFragment)
+                        val currentDestination = findNavController().currentDestination?.id
+                        val state = when {
+                            isUserVerified -> NavigationState.IS_USER_VERIFIED
+                            hasWatchedOnboarding && currentDestination == R.id.splashScreenFragment -> NavigationState.ONBOARDING_WATCHED
+                            !hasWatchedOnboarding && currentDestination == R.id.splashScreenFragment -> NavigationState.ONBOARDING_NOT_WATCHED
+                            else -> NavigationState.NO_ACTION
+                        }
+                        navigationHandler.handleNavigation(state)
                     }
                 }
             }

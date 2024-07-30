@@ -8,14 +8,14 @@
 
     </data>
 
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="@dimen/_160sdp"
+    <androidx.cardview.widget.CardView
+        android:layout_width="@dimen/_150sdp"
         android:layout_height="245dp"
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="15dp"
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="@dimen/_10sdp"
-        app:cardElevation="@dimen/_1sdp"
+        app:cardElevation="@dimen/_2sdp"
         app:strokeWidth="0dp">
 
         <LinearLayout
@@ -132,9 +132,9 @@
                     android:layout_marginHorizontal="10dp"
                     android:layout_marginVertical="5dp"
                     android:ellipsize="end"
-                    android:fontFamily="@font/gilroy_400"
+                    android:fontFamily="@font/gilroy_500"
                     android:gravity="start"
-                    android:lineSpacingExtra="3dp"
+                    android:lineSpacingExtra="5dp"
                     android:maxLines="3"
                     android:textColor="#3A3D42"
                     android:textSize="@dimen/_9ssp"
@@ -143,5 +143,5 @@
 
         </LinearLayout>
 
-    </com.google.android.material.card.MaterialCardView>
+    </androidx.cardview.widget.CardView>
 </layout>

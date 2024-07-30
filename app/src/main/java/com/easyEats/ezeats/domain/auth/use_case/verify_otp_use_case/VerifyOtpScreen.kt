@@ -10,6 +10,8 @@ class VerifyOtpScreen @Inject constructor(private val repository: AuthRepository
     suspend fun verifyOtp(request: VerifyOtpRequest) =
         repository.verifyOtp(request)
 
-    suspend fun sendOTP(request: SendOtpRequest) =repository.sendOTP(request)
+    suspend fun setUserVerification(isUserVerified: Boolean) {
+        repository.setUserVerification(isUserVerified)
+    }
 
 }

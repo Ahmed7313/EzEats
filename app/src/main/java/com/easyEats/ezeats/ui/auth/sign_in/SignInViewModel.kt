@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.base.BaseResponse
 import com.easyEats.ezeats.domain.auth.model.request.SendOtpRequest
 import com.easyEats.ezeats.domain.auth.use_case.AuthUseCase
@@ -31,7 +32,6 @@ class SignInViewModel @Inject constructor(private val authUseCase: AuthUseCase) 
 
         // Observe LiveData changes and update the ViewModel's LiveData
         loginLiveData.observeForever { resource ->
-            sendOtp(phoneNumber)
             _loginResult.value = resource
         }
     }
@@ -42,17 +42,25 @@ class SignInViewModel @Inject constructor(private val authUseCase: AuthUseCase) 
         }
     }
 
-    private fun sendOtp(phoneNumber: String) {
+    fun saveMobileNumber(mobileNumber: String) {
+        viewModelScope.launch {
+            authUseCase.signInUseCase.saveMobileNumber(mobileNumber)
+        }
+    }
+
+    fun sendOtp(phoneNumber: String) {
         viewModelScope.launch {
             _sendOtpMutableLiveData.value = Resource.Loading()
             val sendOtp = authUseCase.signInUseCase.sendOTP(SendOtpRequest("+2$phoneNumber"))
             if (sendOtp.isSuccessful) {
                 _sendOtpMutableLiveData.value = Resource.Success(sendOtp.body())
+                Log.d(TAG, "sendOtp:  sendOtp.isSuccessful")
             } else {
                 _sendOtpMutableLiveData.value = Resource.Error(sendOtp.message())
+                Log.d(TAG, "sendOtp:  sendOtp.isNotSuccessful")
             }
+            Log.d(TAG, "sendOtp:  otp sent")
         }
     }
-
 
 }

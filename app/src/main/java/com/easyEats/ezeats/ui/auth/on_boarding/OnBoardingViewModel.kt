@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.easyEats.ezeats.MyApplication.Companion.baseApplication
 import com.easyEats.ezeats.R
-import com.easyEats.ezeats.data.local.data_store.DataStorePreference
 import com.easyEats.ezeats.domain.auth.use_case.AuthUseCase
+import com.easyEats.ezeats.ui.auth.on_boarding.pager.IntroSlide
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -67,8 +67,12 @@ class OnBoardingViewModel @Inject constructor(
         viewModelScope.launch {
             authUseCase.onBoardingUseCase.userWatchOnBoardingScreen(isWatched)
         }
+    }
 
-
+    fun saveAddress(address: String) {
+        viewModelScope.launch {
+            authUseCase.onBoardingUseCase.saveAddress(address)
+        }
     }
 }
 

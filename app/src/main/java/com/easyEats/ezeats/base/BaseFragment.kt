@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import com.easyEats.ezeats.ui.auth.main.MainActivity
+import com.easyEats.ezeats.ui.auth.main.AuthActivity
 
 /**
  * BaseFragment is an abstract class that provides a base implementation for fragments using ViewDataBinding.
@@ -76,14 +76,14 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
      * Shows a loading indicator if the activity is of type MainActivity.
      */
     protected fun showLoading() {
-        (activity as? MainActivity)?.binding?.loader?.visibility = View.VISIBLE
+        (activity as? AuthActivity)?.binding?.loader?.visibility = View.VISIBLE
     }
 
     /**
      * Hides the loading indicator if the activity is of type MainActivity.
      */
     protected fun hideLoading() {
-        (activity as? MainActivity)?.binding?.loader?.visibility = View.GONE
+        (activity as? AuthActivity)?.binding?.loader?.visibility = View.GONE
     }
 }
 

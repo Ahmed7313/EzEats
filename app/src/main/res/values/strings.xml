@@ -64,12 +64,36 @@
     <string name="participate_in_challenges_and_earn_points_and_rewards">Participate in challenges, and earn points and rewards</string>
     <string name="redeem">Redeem</string>
     <string name="restaurant_logo">Restaurant Logo</string>
-]    <string name="home">Home</string>
+    ]
+    <string name="home">Home</string>
     <string name="percent">Percent</string>
     <string name="qr">QR</string>
     <string name="points">Points</string>
-    <string name="profile">profile</string>
+    <string name="profile">Profile</string>
     <string name="press_back_again_to_exit">Press back again to exit</string>
+
+    <!--    Location Bottom Sheet-->
+    <string name="refresh">Refresh</string>
+    <string name="select_location">Select Location</string>
+
+    <!--    Profile Screen -->
+    <string name="account">Account</string>
+    <string name="notifications">Notifications</string>
+    <string name="cards">Cards</string>
+    <string name="order_history">Order History</string>
+    <string name="about_us">About Us</string>
+    <string name="help_faq"><![CDATA[Help & FAQ]]></string>
+    <string name="rate_us">Rate Us</string>
+    <string name="follow_us_on_instagram">Follow us on Instagram</string>
+    <string name="contact_us">Contact Us</string>
+
+    <!--    QR Screen-->
+    <string name="scan_your_table">Scan your table</string>
+    <string name="to_create_your_order">to create your order</string>
+    <string name="close_icon">close icon</string>
+    <string name="loyalty_points">Loyalty Points</string>
+    <string name="you_can_use_your_ezpoints_to_redeem_any_offers_regardless_of_the_restaurant">You can use your EZpoints to redeem any offers, regardless of the restaurant</string>
+    <string name="restuarnats_points">Restuarnats Points</string>
 
 
 </resources>

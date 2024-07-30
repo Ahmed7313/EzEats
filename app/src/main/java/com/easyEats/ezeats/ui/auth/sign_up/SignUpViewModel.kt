@@ -5,6 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.easyEats.ezeats.base.BaseResponse
+import com.easyEats.ezeats.domain.auth.model.request.SendOtpRequest
 import com.easyEats.ezeats.domain.auth.use_case.AuthUseCase
 import com.easyEats.ezeats.ui.auth.main.AuthViewModel
 import com.easyEats.ezeats.utils.Resource
@@ -36,6 +38,10 @@ class SignUpViewModel @Inject constructor(private val authUseCase: AuthUseCase) 
         addSource(_isNameValid) { value = isFormValid() }
     }
 
+    private val _sendOtpMutableLiveData = MutableLiveData<Resource<BaseResponse<Int>>>()
+    val sendOtpLiveData: LiveData<Resource<BaseResponse<Int>>> get() = _sendOtpMutableLiveData
+
+
     /**
      * Registers a new user with the given phone number and name.
      *
@@ -52,15 +58,38 @@ class SignUpViewModel @Inject constructor(private val authUseCase: AuthUseCase) 
         }
     }
 
+    fun sendOtp(phoneNumber: String) {
+        viewModelScope.launch {
+            _sendOtpMutableLiveData.value = Resource.Loading()
+            val sendOtp = authUseCase.signInUseCase.sendOTP(SendOtpRequest("+2$phoneNumber"))
+            if (sendOtp.isSuccessful) {
+                _sendOtpMutableLiveData.value = Resource.Success(sendOtp.body())
+            } else {
+                _sendOtpMutableLiveData.value = Resource.Error(sendOtp.message())
+            }
+        }
+    }
+
     /**
      * Saves the session token of the user.
      *
      * @param user The user whose session token is to be saved
      */
-    fun saveToken(user: ParseUser) {
+    fun saveToken(user: ParseUser?) {
         viewModelScope.launch {
-            authUseCase.signUpUseCase.saveToken(user.sessionToken)
-            Log.d("TAG", "Session token saved: ${user.sessionToken}")
+            authUseCase.signUpUseCase.saveToken(user?.sessionToken.toString())
+        }
+    }
+
+    fun saveMobileNumber(mobileNumber: String) {
+        viewModelScope.launch {
+            authUseCase.signUpUseCase.saveMobileNumber(mobileNumber)
+        }
+    }
+
+    fun saveName(name: String) {
+        viewModelScope.launch {
+            authUseCase.signUpUseCase.saveName(name)
         }
     }
 

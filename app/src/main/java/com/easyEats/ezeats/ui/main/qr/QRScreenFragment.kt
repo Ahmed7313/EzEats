@@ -1,60 +1,91 @@
 package com.easyEats.ezeats.ui.main.qr
 
+import android.Manifest
+import android.app.Activity
+import android.app.Dialog
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.DisplayMetrics
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.R
+import com.easyEats.ezeats.base.BaseBottomSheetFragment
+import com.easyEats.ezeats.databinding.FragmentQRScreenBinding
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.journeyapps.barcodescanner.BarcodeCallback
+import com.journeyapps.barcodescanner.BarcodeResult
+import com.journeyapps.barcodescanner.DecoratedBarcodeView
+import dagger.hilt.android.AndroidEntryPoint
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [QRScreenFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class QRScreenFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+@AndroidEntryPoint
+class QRScreenFragment : BaseBottomSheetFragment<FragmentQRScreenBinding>() {
+    private lateinit var barcodeView: DecoratedBarcodeView
+    override fun inflateBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ) = FragmentQRScreenBinding.inflate(layoutInflater  )
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        barcodeView = view.findViewById(R.id.barcode_scanner)
+
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.CAMERA
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            setupScanner()
+        } else {
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                arrayOf(Manifest.permission.CAMERA),
+                REQUEST_CAMERA_PERMISSION
+            )
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_q_r_screen, container, false)
+    private fun setupScanner() {
+        barcodeView.decodeContinuous(object : BarcodeCallback {
+            override fun barcodeResult(result: BarcodeResult?) {
+                if (result != null) {
+                    barcodeView.pause()
+                    Toast.makeText(requireContext(), result.result.toString(), Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+
+            override fun possibleResultPoints(resultPoints: List<com.google.zxing.ResultPoint>?) {}
+        })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        barcodeView.resume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        barcodeView.pause()
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment QRScreenFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            QRScreenFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        private const val REQUEST_CAMERA_PERMISSION = 1
     }
+
+
 }

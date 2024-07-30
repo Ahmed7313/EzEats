@@ -10,5 +10,6 @@
     <color name="light_gray">#D9D9D9</color>
     <color name="onBoarding_title">#3A3D42</color>
     <color name="onboarding_background">#FBEAEB</color>
+    <color name="main_screen_color">#F7F7F7</color>
 
 </resources>

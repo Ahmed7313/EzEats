@@ -1,9 +1,11 @@
 package com.easyEats.ezeats.ui.auth.sign_up
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.base.BaseFragment
 import com.easyEats.ezeats.databinding.FragmentSignUpScreenBinding
@@ -78,14 +80,36 @@ class SignUpScreenFragment : BaseFragment<FragmentSignUpScreenBinding>() {
 
                 is Resource.Success -> {
                     hideLoading()
-                    val user = resource.data
-                    signUpViewModel.saveToken(user ?: return@observe)
+                    signUpViewModel.saveMobileNumber(binding.etPhoneInput.text.toString())
+                    signUpViewModel.saveToken(resource.data)
+                    signUpViewModel.saveName(binding.etNameInput.text.toString())
+                    signUpViewModel.sendOtp(binding.etPhoneInput.text.toString())
+
+                }
+
+                is Resource.Error -> {
+                    hideLoading()
+                }
+
+                else -> {
+
+                }
+            }
+        }
+
+        signUpViewModel.sendOtpLiveData.observe(viewLifecycleOwner) { resource ->
+            when (resource) {
+                is Resource.Loading -> {
+                    showLoading()
+                }
+
+                is Resource.Success -> {
+                    hideLoading()
                     goToVerificationScreen()
                 }
 
                 is Resource.Error -> {
                     hideLoading()
-                    // Handle error
                 }
             }
         }

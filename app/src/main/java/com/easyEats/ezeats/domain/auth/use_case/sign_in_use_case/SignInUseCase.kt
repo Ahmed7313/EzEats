@@ -13,8 +13,10 @@ class SignInUseCase @Inject constructor(private val repository: AuthRepository) 
         repository.login(phoneNumber)
 
 
-    suspend fun saveToken(token: String) = repository.savToken(token)
 
-    suspend fun sendOTP(request: SendOtpRequest) =repository.sendOTP(request)
+    suspend fun saveToken(token: String) = repository.savToken(token)
+    suspend fun saveMobileNumber(mobileNumber: String) = repository.saveMobileNumber(mobileNumber)
+
+    suspend fun sendOTP(request: SendOtpRequest) = repository.sendOTP(request)
 
 }

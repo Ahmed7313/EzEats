@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:backgroundTint="#F7F7F7"
+        android:fillViewport="true"
+        tools:context=".ui.main.home.HomeScreenFragment">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#F7F7F7"
+            android:backgroundTint="#F7F7F7">
+
+
+            <RelativeLayout
+                android:id="@+id/reTop"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/home_top_background"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/ivNotification"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginHorizontal="@dimen/_16sdp"
+                    android:layout_marginVertical="@dimen/_17sdp"
+                    android:contentDescription="@string/notification_icon"
+                    app:srcCompat="@drawable/notification_icon" />
+
+                <ImageView
+                    android:id="@+id/ivLogo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginHorizontal="@dimen/_17sdp"
+                    android:layout_marginVertical="@dimen/_16sdp"
+                    android:contentDescription="@string/app_name"
+                    app:srcCompat="@drawable/logo_icon_home">
+
+                </ImageView>
+
+
+                <TextView
+                    android:id="@+id/tvLocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/ivLogo"
+                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="@dimen/_16sdp"
+                    android:layout_marginTop="@dimen/_26sdp"
+                    android:background="?android:selectableItemBackground"
+                    android:clickable="true"
+                    android:drawablePadding="5dp"
+                    android:focusable="true"
+                    android:fontFamily="@font/gilroy_600"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12ssp"
+                    app:drawableEndCompat="@drawable/arrow_down_icon"
+                    app:drawableStartCompat="@drawable/marker_pin_icon"
+                    tools:text="You're at Maadi" />
+
+                <TextView
+                    android:id="@+id/tvTitle"
+                    android:layout_width="@dimen/_180sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvLocation"
+                    android:layout_marginHorizontal="@dimen/_16sdp"
+                    android:layout_marginVertical="@dimen/_10sdp"
+                    android:fontFamily="@font/gilroy_700"
+                    android:lineSpacingExtra="@dimen/_8sdp"
+                    android:text="@string/where_every_meal_comes_with_a_discount"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_15ssp" />
+
+
+                <LinearLayout
+                    android:id="@+id/linearContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/tvTitle"
+                    android:layout_marginTop="40dp"
+                    android:background="@drawable/home_rounded_layout"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="@dimen/_17sdp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="60dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tvFeatured"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/gilroy_700"
+                            android:text="@string/featured"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_15ssp" />
+
+                        <TextView
+                            android:id="@+id/tvViewAllFeatured"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawablePadding="5dp"
+                            android:fontFamily="@font/gilroy_500"
+                            android:text="@string/view_all"
+                            android:textAlignment="viewEnd"
+                            android:textColor="@color/main_color"
+                            android:textSize="@dimen/_12ssp"
+                            android:textStyle="normal"
+                            app:drawableEndCompat="@drawable/arrow_right" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvTitleListFeatured"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:maxLines="2"
+                        android:text="@string/check_out_today_s_featured_deals_and_offers_near_you"
+                        android:textColor="#898883"
+                        android:textSize="@dimen/_11ssp"
+                        android:textStyle="normal" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvFeatured"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:itemCount="2"
+                        tools:listitem="@layout/featured_item">
+
+                    </androidx.recyclerview.widget.RecyclerView>
+
+                    <me.relex.circleindicator.CircleIndicator3
+                        android:id="@+id/indicator"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="@dimen/_16sdp"
+                        app:ci_drawable="@drawable/indicator_active"
+                        app:ci_drawable_unselected="@drawable/indicator_inactive"
+                        app:ci_gravity="center"
+                        app:ci_height="9dp"
+                        app:ci_margin="15dp"
+                        app:ci_orientation="horizontal"
+                        app:ci_width="35dp" />
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tvHotDeals"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/gilroy_700"
+                            android:text="@string/hot_deals_near_you"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_15ssp" />
+
+                        <TextView
+                            android:id="@+id/tvViewAllHotDeals"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawablePadding="5dp"
+                            android:fontFamily="@font/gilroy_500"
+                            android:text="@string/view_all"
+                            android:textAlignment="viewEnd"
+                            android:textColor="@color/main_color"
+                            android:textSize="@dimen/_12ssp"
+                            app:drawableEndCompat="@drawable/arrow_right" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvTitleListHotDeals"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:fontFamily="@font/gilroy_500"
+                        android:text="@string/check_out_today_s_featured_deals_and_offers_near_you"
+                        android:textColor="#898883"
+                        android:textSize="@dimen/_12ssp" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvHotDeals"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:itemCount="3"
+                        tools:listitem="@layout/hot_deals_item" />
+
+                    <!--                    <com.cooltechworks.views.shimmer.ShimmerRecyclerView xmlns:app="http://schemas.android.com/apk/res-auto"-->
+                    <!--                        android:id="@+id/shimmer_recycler_view"-->
+                    <!--                        android:layout_width="match_parent"-->
+                    <!--                        android:layout_height="match_parent"-->
+                    <!--                        app:shimmer_demo_angle="20"-->
+                    <!--                        app:shimmer_demo_child_count="10"-->
+                    <!--                        app:shimmer_demo_grid_child_count="2"-->
+                    <!--                        app:shimmer_demo_layout="@layout/layout_demo_grid"-->
+                    <!--                        app:shimmer_demo_layout_manager_type="grid" />-->
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/tvChallenges"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/gilroy_700"
+                            android:text="@string/challenges_for_you"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_15ssp" />
+
+                        <TextView
+                            android:id="@+id/tvViewAllChallenges"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawablePadding="5dp"
+                            android:fontFamily="@font/gilroy_500"
+                            android:text="@string/view_all"
+                            android:textAlignment="viewEnd"
+                            android:textColor="@color/main_color"
+                            android:textSize="@dimen/_12ssp"
+                            app:drawableEndCompat="@drawable/arrow_right" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvDetailsChallenges"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:fontFamily="@font/gilroy_500"
+                        android:text="@string/participate_in_challenges_and_earn_points_and_rewards"
+                        android:textColor="#898883"
+                        android:textSize="@dimen/_12ssp"
+                        android:visibility="gone" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvChallenges"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
+                        android:orientation="vertical"
+                        android:visibility="gone"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:itemCount="3"
+                        tools:listitem="@layout/challenge_item" />
+
+                </LinearLayout>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvTitle"
+                    android:layout_alignStart="@+id/tvTitle"
+                    android:layout_alignEnd="@+id/ivNotification"
+                    android:layout_marginTop="10dp"
+                    android:backgroundTint="@color/white"
+                    app:cardCornerRadius="@dimen/_100sdp"
+                    app:cardElevation="@dimen/_5sdp"
+                    app:strokeWidth="0dp">
+
+                    <TextView
+                        android:id="@+id/etSearch"
+                        style="@style/defaultInputText"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginHorizontal="@dimen/_17sdp"
+                        android:background="@drawable/rounded_search_background"
+                        android:drawablePadding="10dp"
+                        android:ellipsize="end"
+                        android:gravity="center_vertical"
+                        android:hint="@string/search_for_restaurants_dishes_and_more"
+                        android:maxLines="1"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_11ssp"
+                        app:drawableStartCompat="@drawable/search_icon"
+                        app:hintTextColor="@color/white" />
+                </com.google.android.material.card.MaterialCardView>
+
+            </RelativeLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+</layout>

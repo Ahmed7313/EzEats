@@ -1,12 +1,14 @@
 package com.easyEats.ezeats.ui.auth.otp_verification
 
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.easyEats.ezeats.base.BaseFragment
 import com.easyEats.ezeats.databinding.FragmentVerificationScreenBinding
+import com.easyEats.ezeats.ui.main.main.HomeActivity
 import com.easyEats.ezeats.utils.Resource
 import com.easyEats.ezeats.utils.ValidateFields
 import dagger.hilt.android.AndroidEntryPoint
@@ -75,9 +77,13 @@ class VerificationScreenFragment : BaseFragment<FragmentVerificationScreenBindin
                 is Resource.Loading -> {
                     showLoading()
                 }
+
                 is Resource.Success -> {
                     hideLoading()
+                    verificationViewModel.saveUserVerification(true)
+                    goToHomeScreen()
                 }
+
                 is Resource.Error -> {
                     hideLoading()
                 }
@@ -89,13 +95,20 @@ class VerificationScreenFragment : BaseFragment<FragmentVerificationScreenBindin
                 is Resource.Loading -> {
                     showLoading()
                 }
+
                 is Resource.Success -> {
                     hideLoading()
                 }
+
                 is Resource.Error -> {
                     hideLoading()
                 }
             }
         }
+    }
+
+    private fun goToHomeScreen() {
+        startActivity(Intent(requireContext(), HomeActivity::class.java))
+        requireActivity().finish()
     }
 }

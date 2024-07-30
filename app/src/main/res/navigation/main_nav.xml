@@ -9,8 +9,12 @@
         android:id="@+id/homeScreenFragment"
         android:name="com.easyEats.ezeats.ui.main.home.HomeScreenFragment"
         android:label="HomeScreenFragment"
-        tools:layout="@layout/fragment_home_screen" />
-    <fragment
+        tools:layout="@layout/fragment_home_screen" >
+        <action
+            android:id="@+id/action_homeScreenFragment_to_locationBottomSheetDialogFragment"
+            app:destination="@id/locationBottomSheetDialogFragment" />
+    </fragment>
+    <dialog
         android:id="@+id/qrScreenFragment"
         android:name="com.easyEats.ezeats.ui.main.qr.QRScreenFragment"
         android:label="fragment_q_r_screen"
@@ -30,4 +34,10 @@
         android:name="com.easyEats.ezeats.ui.main.profile.ProfileScreenFragment"
         android:label="fragment_profile_screen"
         tools:layout="@layout/fragment_profile_screen" />
+    <dialog
+        android:id="@+id/locationBottomSheetDialogFragment"
+        android:name="com.easyEats.ezeats.ui.main.location.LocationBottomSheetDialogFragment"
+        android:label="LocationBottomSheetDialogFragment"
+        tools:layout="@layout/fragment_location_bottom_sheet_dialog"
+        />
 </navigation>

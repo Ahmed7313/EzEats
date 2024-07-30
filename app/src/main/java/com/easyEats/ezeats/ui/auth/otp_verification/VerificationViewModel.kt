@@ -1,10 +1,12 @@
 package com.easyEats.ezeats.ui.auth.otp_verification
 
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.base.BaseResponse
 import com.easyEats.ezeats.domain.auth.model.request.SendOtpRequest
 import com.easyEats.ezeats.domain.auth.model.request.VerifyOtpRequest
@@ -22,7 +24,8 @@ import javax.inject.Inject
  * @property authUseCase The use case for authentication operations.
  */
 @HiltViewModel
-class VerificationViewModel @Inject constructor(private val authUseCase: AuthUseCase) : AuthViewModel() {
+class VerificationViewModel @Inject constructor(private val authUseCase: AuthUseCase) :
+    AuthViewModel() {
 
     // LiveData to expose OTP verification result
     private val _verifyOtpMutableLiveData = MutableLiveData<Resource<BaseResponse<Boolean>>>()
@@ -41,7 +44,8 @@ class VerificationViewModel @Inject constructor(private val authUseCase: AuthUse
     fun verifyOtp(phoneNumber: String, otp: String) {
         viewModelScope.launch {
             _verifyOtpMutableLiveData.value = Resource.Loading()
-            val sendOtp = authUseCase.verifyUseCase.verifyOtp(VerifyOtpRequest("+2$phoneNumber", otp))
+            val sendOtp =
+                authUseCase.verifyUseCase.verifyOtp(VerifyOtpRequest("+2$phoneNumber", otp))
             if (sendOtp.isSuccessful) {
                 _verifyOtpMutableLiveData.value = Resource.Success(sendOtp.body())
             } else {
@@ -64,6 +68,13 @@ class VerificationViewModel @Inject constructor(private val authUseCase: AuthUse
             } else {
                 _sendOtpMutableLiveData.value = Resource.Error(sendOtp.message())
             }
+        }
+    }
+
+    fun saveUserVerification(isUserVerified: Boolean) {
+        viewModelScope.launch {
+            authUseCase.verifyUseCase.setUserVerification(isUserVerified)
+            Log.d(TAG, "saveUserVerification: $isUserVerified")
         }
     }
 }

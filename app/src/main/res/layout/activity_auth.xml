@@ -5,6 +5,12 @@
 
     <data>
 
+        <variable
+            name="authViewModel"
+            type="com.easyEats.ezeats.ui.auth.main.AuthViewModel" />
+
+        <import type="android.view.View" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -12,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/main_color"
-        tools:context=".ui.auth.main.MainActivity">
+        tools:context=".ui.auth.main.AuthActivity">
 
 
         <androidx.fragment.app.FragmentContainerView
@@ -32,7 +38,7 @@
         <include
             android:id="@+id/clInternetConnectionError"
             layout="@layout/no_internet_connection"
-            android:visibility="gone" />
+            android:visibility="@{authViewModel.isConnected ? View.GONE : View.VISIBLE}" />
 
         <include
             android:id="@+id/loader"

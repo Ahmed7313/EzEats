@@ -1,5 +1,6 @@
 package com.easyEats.ezeats.data.local.auth.repository
 
+import android.location.Address
 import androidx.lifecycle.LiveData
 import com.easyEats.ezeats.base.BaseResponse
 import com.easyEats.ezeats.data.local.data_store.DataStorePreference
@@ -10,6 +11,7 @@ import com.easyEats.ezeats.domain.auth.model.request.VerifyOtpRequest
 import com.easyEats.ezeats.domain.auth.repository.AuthRepository
 import com.easyEats.ezeats.utils.Resource
 import com.parse.ParseUser
+import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -25,6 +27,10 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override fun isUserWatchOnBoardingScreen() = dataStorePreference.isUserWatchOnBoardingScreen()
+    override fun userHasToken() = dataStorePreference.fetchToken()
+    override fun isUserVerified(): Flow<Boolean> {
+        return dataStorePreference.isUserVerified() as Flow<Boolean>
+    }
 
     override fun register(phoneNumber: String, name: String): LiveData<Resource<ParseUser>> =
         authWithParsing.register(phoneNumber, name)
@@ -35,6 +41,22 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun savToken(token: String) {
         dataStorePreference.saveToken(token)
+    }
+
+    override suspend fun setUserVerification(isUserVerified: Boolean) {
+        dataStorePreference.setUserVerification(isUserVerified)
+    }
+
+    override suspend fun saveAddress(address: String) {
+        dataStorePreference.saveAddress(address)
+    }
+
+    override suspend fun saveMobileNumber(mobileNumber: String) {
+        dataStorePreference.saveMobileNumber(mobileNumber)
+    }
+
+    override suspend fun saveName(name: String) {
+        dataStorePreference.saveName(name)
     }
 
     override suspend fun sendOTP(request: SendOtpRequest) =

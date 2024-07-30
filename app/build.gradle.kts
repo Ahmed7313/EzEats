@@ -123,6 +123,19 @@ dependencies {
     implementation(libs.retrofit2.converter.scalars)
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)
+    // locations
+    implementation(libs.play.services.location)
+    //qr code
+    implementation(libs.core)
+    implementation(libs.zxing.android.embedded)
+    //rounded image view
+    implementation(libs.roundedimageview)
+    // ViewModel
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    // Fragment KTX
+    implementation(libs.androidx.fragment.ktx)
+    // Activity KTX
+    implementation (libs.androidx.activity.ktx)
 
 
 

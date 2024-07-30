@@ -19,4 +19,13 @@ object Constants {
     // log tag
     const val EASY_EATS_LOGS = "EASY EATS LOGS"
 
+    // Data Store Key
+    const val ONBOARD_KEY = "onBoard"
+    const val MOBILE_NUMBER_KEY = "mobile"
+    const val ADDRESS_KEY = "address"
+    const val TOKEN_KEY = "token"
+    const val NAME_KEY = "name"
+    const val IS_VERIFIED = "isVerified"
+
+
 }

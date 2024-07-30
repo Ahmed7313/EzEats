@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.base.BaseFragment
 import com.easyEats.ezeats.databinding.FragmentSignInScreenBinding
@@ -68,17 +69,19 @@ class SignInScreenFragment : BaseFragment<FragmentSignInScreenBinding>() {
         signInViewModel.loginResult.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Loading -> {
+                    showLoading()
                 }
 
                 is Resource.Success -> {
+                    hideLoading()
                     val user = resource.data
-                    Log.d("TAG", "Ahmed Saad Kenawy: ${user?.sessionToken}")
+                    signInViewModel.sendOtp(binding.etPhoneInput.text.toString())
                     signInViewModel.saveToken(user ?: return@observe)
+                    signInViewModel.saveMobileNumber(binding.etPhoneInput.text.toString())
                 }
 
                 is Resource.Error -> {
-                    val errorMessage = resource.message
-                    Log.d("TAG", "Ahmed Saad Kenawy: $errorMessage ")
+                    hideLoading()
                 }
             }
         }

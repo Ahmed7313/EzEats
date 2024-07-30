@@ -7,4 +7,6 @@ class SplashUseCase @Inject constructor(private val repository: AuthRepository) 
 
     fun isUserWatchOnBoardingScreen() = repository.isUserWatchOnBoardingScreen()
 
+    fun isUserVerified() = repository.isUserVerified()
+
 }

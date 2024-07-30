@@ -1,4 +1,4 @@
-package com.easyEats.ezeats.ui.auth.on_boarding
+package com.easyEats.ezeats.ui.auth.on_boarding.pager
 
 
 data class IntroSlide (

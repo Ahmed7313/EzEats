@@ -51,5 +51,44 @@
     <string name="please_make_sure_you_are_connected_to_the_internet_and_try_again">يرجى التأكد من أنك متصل بالإنترنت وحاول مرة أخرى</string>
     <string name="try_again">حاول مرة أخرى</string>
 
+    <!-- Home Screen -->
+    <string name="notification_icon">رمز الإشعار</string>
+    <string name="where_every_meal_comes_with_a_discount">حيث تأتي كل وجبة بخصم</string>
+    <string name="search_for_restaurants_dishes_and_more">ابحث عن المطاعم والأطباق والمزيد...</string>
+    <string name="featured">المميز</string>
+    <string name="view_all">عرض الكل</string>
+    <string name="check_out_today_s_featured_deals_and_offers_near_you">اطلع على صفقات وعروض اليوم المميزة بالقرب منك</string>
+    <string name="challenges_for_you">تحديات لك</string>
+    <string name="hot_deals_near_you">عروض ساخنة بالقرب منك</string>
+    <string name="participate_in_challenges_and_earn_points_and_rewards">شارك في التحديات، واربح النقاط والمكافآت</string>
+    <string name="redeem">استرداد</string>
+    <string name="restaurant_logo">شعار المطعم</string>
+    <string name="home">الرئيسية</string>
+    <string name="percent">نسبة مئوية</string>
+    <string name="qr">رمز الاستجابة السريعة</string>
+    <string name="points">نقاط</string>
+    <string name="profile">الملف الشخصي</string>
+    <string name="press_back_again_to_exit">اضغط العودة مرة أخرى للخروج</string>
+
+    <!-- Location Bottom Sheet -->
+    <string name="refresh">تحديث</string>
+    <string name="select_location">اختر الموقع</string>
+
+    <!-- Profile Screen -->
+    <string name="account">الحساب</string>
+    <string name="notifications">الإشعارات</string>
+    <string name="cards">البطاقات</string>
+    <string name="order_history">تاريخ الطلبات</string>
+    <string name="about_us">معلومات عنا</string>
+    <string name="help_faq"><![CDATA[مساعدة و الأسئلة الشائعة]]></string>
+    <string name="rate_us">قيّمنا</string>
+    <string name="follow_us_on_instagram">تابعنا على إنستغرام</string>
+    <string name="contact_us">اتصل بنا</string>
+
+    <!-- QR Screen -->
+    <string name="scan_your_table">امسح QR Code</string>
+    <string name="to_create_your_order">لإنشاء طلبك</string>
+    <string name="close_icon">رمز الإغلاق</string>
+
 
 </resources>

@@ -18,4 +18,5 @@ class SplashViewModel @Inject constructor(authUseCase: AuthUseCase) : ViewModel(
 
     // LiveData to indicate if the user has watched the onboarding screen
     val isUserWatchOnBoardingScreen = authUseCase.splashUseCase.isUserWatchOnBoardingScreen()
+    val isUserVerified = authUseCase.splashUseCase.isUserVerified()
 }
