@@ -1,4 +1,4 @@
-package com.easyEats.ezeats.utils
+package com.easyEats.ezeats.utils.reciveirs
 
 import android.content.BroadcastReceiver
 import android.content.Context

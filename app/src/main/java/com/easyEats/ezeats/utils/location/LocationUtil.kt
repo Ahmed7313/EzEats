@@ -1,4 +1,4 @@
-package com.easyEats.ezeats.utils
+package com.easyEats.ezeats.utils.location
 
 import com.easyEats.ezeats.utils.Constants.LOCATION_PERMISSION_REQUEST_CODE
 import android.Manifest

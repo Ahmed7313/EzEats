@@ -5,13 +5,20 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.easyEats.ezeats.MyApplication
+import com.easyEats.ezeats.R
 import com.easyEats.ezeats.base.BaseResponse
 import com.easyEats.ezeats.domain.auth.model.request.SendOtpRequest
 import com.easyEats.ezeats.domain.auth.use_case.AuthUseCase
 import com.easyEats.ezeats.ui.auth.main.AuthViewModel
 import com.easyEats.ezeats.utils.Resource
+import com.easyEats.ezeats.utils.events.SingleLiveEvent
 import com.parse.ParseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,32 +32,33 @@ import javax.inject.Inject
 class SignUpViewModel @Inject constructor(private val authUseCase: AuthUseCase) : AuthViewModel() {
 
     // LiveData to expose name validity
-    private val _isNameValid = MutableLiveData(false)
-    val isNameValid: LiveData<Boolean> get() = _isNameValid
+    private val isNameValid = MutableLiveData(false)
 
     // LiveData to expose registration result
     private val _registrationResult = MutableLiveData<Resource<ParseUser>>()
-    val registrationResult: LiveData<Resource<ParseUser>> get() = _registrationResult
+    val registrationResult: MutableLiveData<Resource<ParseUser>> get() = _registrationResult
+
+    private val _sendOtpMutableLiveData = SingleLiveEvent<Resource<BaseResponse<Int>>?>()
+    val sendOtpLiveData: SingleLiveEvent<Resource<BaseResponse<Int>>?> get() = _sendOtpMutableLiveData
+
+    val phoneNumber = MutableLiveData<String>()
+
+    val name = MutableLiveData<String>()
+
+
+
 
     // Combined LiveData for overall form validity
     val isFormValid = MediatorLiveData<Boolean>().apply {
         addSource(isPhoneNumberValid) { value = isFormValid() }
-        addSource(_isNameValid) { value = isFormValid() }
+        addSource(isNameValid) { value = isFormValid() }
     }
 
-    private val _sendOtpMutableLiveData = MutableLiveData<Resource<BaseResponse<Int>>>()
-    val sendOtpLiveData: LiveData<Resource<BaseResponse<Int>>> get() = _sendOtpMutableLiveData
 
-
-    /**
-     * Registers a new user with the given phone number and name.
-     *
-     * @param phoneNumber The phone number of the user
-     * @param name The name of the user
-     */
-    fun register(phoneNumber: String, name: String) {
+    fun register() {
         // Call the register function from the UseCase
-        val registrationLiveData = authUseCase.signUpUseCase.register(phoneNumber, name)
+        val registrationLiveData =
+            authUseCase.signUpUseCase.register(phoneNumber.value.toString(), name.value.toString())
 
         // Observe LiveData changes and update the ViewModel's LiveData
         registrationLiveData.observeForever { resource ->
@@ -58,16 +66,30 @@ class SignUpViewModel @Inject constructor(private val authUseCase: AuthUseCase) 
         }
     }
 
-    fun sendOtp(phoneNumber: String) {
-        viewModelScope.launch {
-            _sendOtpMutableLiveData.value = Resource.Loading()
-            val sendOtp = authUseCase.signInUseCase.sendOTP(SendOtpRequest("+2$phoneNumber"))
-            if (sendOtp.isSuccessful) {
-                _sendOtpMutableLiveData.value = Resource.Success(sendOtp.body())
-            } else {
-                _sendOtpMutableLiveData.value = Resource.Error(sendOtp.message())
+    fun sendOtp() {
+        val flow = createSendOtpFlow()
+        apply(
+            flow = flow,
+            maxRetries = 2,
+            onError = { error ->
+                _sendOtpMutableLiveData.value =
+                    Resource.Error(error.localizedMessage ?: "Unknown error")
+            },
+            onSuccess = { resource ->
+                _sendOtpMutableLiveData.value = resource
             }
+        )
+    }
+
+    private fun createSendOtpFlow(): Flow<Resource<BaseResponse<Int>>> = channelFlow {
+        trySend(Resource.Loading())
+        val sendOtp = authUseCase.signInUseCase.sendOTP(SendOtpRequest("+2${phoneNumber.value}"))
+        if (sendOtp.isSuccessful) {
+            trySend(Resource.Success(sendOtp.body()))
+        } else {
+            trySend(Resource.Error(sendOtp.message()))
         }
+        close() // Close the channel after sending all data
     }
 
     /**
@@ -99,7 +121,7 @@ class SignUpViewModel @Inject constructor(private val authUseCase: AuthUseCase) 
      * @param name The name to validate
      */
     fun validateName(name: String) {
-        _isNameValid.value = name.isNotBlank()
+        isNameValid.value = name.isNotBlank()
     }
 
     /**
@@ -107,5 +129,5 @@ class SignUpViewModel @Inject constructor(private val authUseCase: AuthUseCase) 
      *
      * @return Boolean indicating the overall form validity
      */
-    private fun isFormValid() = isPhoneNumberValid.value == true && _isNameValid.value == true
+    private fun isFormValid() = isPhoneNumberValid.value == true && isNameValid.value == true
 }

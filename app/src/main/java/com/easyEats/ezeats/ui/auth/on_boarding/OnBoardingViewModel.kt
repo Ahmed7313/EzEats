@@ -18,7 +18,7 @@ import javax.inject.Inject
  *
  * This ViewModel uses the `@HiltViewModel` annotation to enable dependency injection with Hilt.
  *
- * @property context The application context used for accessing resources.
+ * @property authUseCase The use case that handles authentication and onboarding operations.
  */
 @HiltViewModel
 class OnBoardingViewModel @Inject constructor(
@@ -31,6 +31,7 @@ class OnBoardingViewModel @Inject constructor(
 
     /**
      * Initializes the ViewModel and loads the introductory slides.
+     * This is called when the ViewModel is created and sets up the initial state.
      */
     init {
         loadIntroSlides()
@@ -60,8 +61,12 @@ class OnBoardingViewModel @Inject constructor(
         )
     }
 
+
     /**
-     * change the status of the on boarding screen if the user watched it or not
+     * Updates the status of whether the user has watched the onboarding screens.
+     * This status is used to determine if the onboarding process needs to be shown again.
+     *
+     * @param isWatched A boolean indicating if the user has watched the onboarding screens.
      */
     fun userWatchOnBoarding(isWatched: Boolean) {
         viewModelScope.launch {
@@ -69,10 +74,18 @@ class OnBoardingViewModel @Inject constructor(
         }
     }
 
+
+    /**
+     * Saves the user's address.
+     * This function is called to persist the address entered by the user during the onboarding process.
+     *
+     * @param address The address string to be saved.
+     */
     fun saveAddress(address: String) {
         viewModelScope.launch {
             authUseCase.onBoardingUseCase.saveAddress(address)
         }
     }
 }
+
 

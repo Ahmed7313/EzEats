@@ -4,14 +4,15 @@ package com.easyEats.ezeats.ui.auth.otp_verification
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.navArgs
 import com.easyEats.ezeats.base.BaseFragment
 import com.easyEats.ezeats.databinding.FragmentVerificationScreenBinding
 import com.easyEats.ezeats.ui.main.main.HomeActivity
 import com.easyEats.ezeats.utils.Resource
-import com.easyEats.ezeats.utils.ValidateFields
+import com.easyEats.ezeats.utils.validation.ValidateFields
 import dagger.hilt.android.AndroidEntryPoint
+import es.dmoral.toasty.Toasty
 
 
 /**
@@ -22,7 +23,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class VerificationScreenFragment : BaseFragment<FragmentVerificationScreenBinding>() {
 
     private val verificationViewModel: VerificationViewModel by viewModels()
-    private val args: VerificationScreenFragmentArgs by navArgs()
 
     /**
      * Inflates the view binding for this fragment.
@@ -41,22 +41,10 @@ class VerificationScreenFragment : BaseFragment<FragmentVerificationScreenBindin
      * Sets up the observers and click listeners.
      */
     override fun setUpViews() {
+        binding.verificationViewModel = verificationViewModel
         setUpObservers()
-        setUpClickListeners()
     }
 
-    /**
-     * Sets up click listeners for the verify button and resend OTP text view.
-     */
-    private fun setUpClickListeners() {
-        binding.btnVerify.setOnClickListener {
-            verificationViewModel.verifyOtp(args.phonrNumber, binding.etOTP.text.toString())
-        }
-
-        binding.tvResendOtp.setOnClickListener {
-            verificationViewModel.sendOtp(args.phonrNumber)
-        }
-    }
 
     /**
      * Sets up observers for the ViewModel's LiveData objects.
@@ -80,12 +68,12 @@ class VerificationScreenFragment : BaseFragment<FragmentVerificationScreenBindin
 
                 is Resource.Success -> {
                     hideLoading()
-                    verificationViewModel.saveUserVerification(true)
                     goToHomeScreen()
                 }
 
                 is Resource.Error -> {
                     hideLoading()
+                    Toasty.error(requireContext(), resource.message, Toast.LENGTH_LONG).show()
                 }
             }
         }
@@ -102,9 +90,11 @@ class VerificationScreenFragment : BaseFragment<FragmentVerificationScreenBindin
 
                 is Resource.Error -> {
                     hideLoading()
+                    Toasty.error(requireContext(), resource.message, Toast.LENGTH_LONG).show()
                 }
             }
         }
+
     }
 
     private fun goToHomeScreen() {

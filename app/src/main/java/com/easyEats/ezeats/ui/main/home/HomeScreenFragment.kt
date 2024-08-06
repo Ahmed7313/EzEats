@@ -24,6 +24,10 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         binding.tvLocation.setOnClickListener {
             findNavController().navigate(R.id.action_homeScreenFragment_to_locationBottomSheetDialogFragment)
         }
+
+        binding.etSearch.setOnClickListener {
+            findNavController().navigate(R.id.action_homeScreenFragment_to_searchFragment)
+        }
     }
 
 }

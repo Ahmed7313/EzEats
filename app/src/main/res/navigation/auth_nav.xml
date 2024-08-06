@@ -94,7 +94,7 @@
         android:label="VerificationScreenFragment"
         tools:layout="@layout/fragment_verification_screen" >
         <argument
-            android:name="phonrNumber"
+            android:name="phoneNumber"
             app:argType="string" />
     </fragment>
     <fragment

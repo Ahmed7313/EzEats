@@ -14,7 +14,7 @@
 
     <item
         android:id="@+id/qrScreenFragment"
-        android:icon="@drawable/qr_icon"
+        android:icon="@drawable/qr_code"
         android:title="@string/qr" />
 
     <item

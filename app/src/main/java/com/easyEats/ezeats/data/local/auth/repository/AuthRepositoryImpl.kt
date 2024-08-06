@@ -12,6 +12,7 @@ import com.easyEats.ezeats.domain.auth.repository.AuthRepository
 import com.easyEats.ezeats.utils.Resource
 import com.parse.ParseUser
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -29,7 +30,7 @@ class AuthRepositoryImpl @Inject constructor(
     override fun isUserWatchOnBoardingScreen() = dataStorePreference.isUserWatchOnBoardingScreen()
     override fun userHasToken() = dataStorePreference.fetchToken()
     override fun isUserVerified(): Flow<Boolean> {
-        return dataStorePreference.isUserVerified() as Flow<Boolean>
+        return dataStorePreference.isUserVerified()
     }
 
     override fun register(phoneNumber: String, name: String): LiveData<Resource<ParseUser>> =

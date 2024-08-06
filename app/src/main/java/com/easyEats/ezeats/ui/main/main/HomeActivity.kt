@@ -1,14 +1,21 @@
 package com.easyEats.ezeats.ui.main.main
 
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.view.forEach
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.databinding.ActivityHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
+
 @AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
 
@@ -31,6 +38,8 @@ class HomeActivity : AppCompatActivity() {
         binding.mainViewModel = mainViewModel
         binding.lifecycleOwner = this // Ensure LiveData updates the UI automatically
         // Set up the Bottom Navigation and NavHostFragment
+        binding.navView.itemIconTintList = null
+
         setUpBottomNavigationWithNavHostFragment()
     }
 
@@ -44,6 +53,7 @@ class HomeActivity : AppCompatActivity() {
 
         // Initialize the NavController from the NavHostFragment
         navController = navHostFragment.navController
+
 
         // Set up the Bottom Navigation View with the NavController
         binding.navView.setupWithNavController(navController)

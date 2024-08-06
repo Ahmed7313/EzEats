@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_7sdp"
+            app:cardCornerRadius="@dimen/_100sdp">
+
+            <TextView
+                android:id="@+id/tvChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_search_background"
+                android:drawablePadding="@dimen/_5sdp"
+                android:fontFamily="@font/gilroy_600"
+                android:textColor="#212B3D"
+                android:padding="@dimen/_10sdp"
+                android:textSize="@dimen/_11sdp"
+                app:drawableStartCompat="@drawable/hourglass_icon"
+                tools:text="Burger king" />
+        </androidx.cardview.widget.CardView>
+
+
+    </LinearLayout>
+</layout>

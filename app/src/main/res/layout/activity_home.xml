@@ -26,7 +26,7 @@
             android:layout_margin="@dimen/_15sdp"
             android:background="@drawable/nav_background_curved"
             android:visibility="@{mainViewModel.isConnected ? View.VISIBLE : View.GONE}"
-            app:itemIconSize="@dimen/_25sdp"
+            app:itemIconSize="@dimen/_26sdp"
             app:labelVisibilityMode="unlabeled"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"

@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_homeScreenFragment_to_locationBottomSheetDialogFragment"
             app:destination="@id/locationBottomSheetDialogFragment" />
+        <action
+            android:id="@+id/action_homeScreenFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
     </fragment>
     <dialog
         android:id="@+id/qrScreenFragment"
@@ -40,4 +43,8 @@
         android:label="LocationBottomSheetDialogFragment"
         tools:layout="@layout/fragment_location_bottom_sheet_dialog"
         />
+    <dialog
+        android:id="@+id/searchFragment"
+        android:name="com.easyEats.ezeats.ui.main.search.SearchFragment"
+        android:label="SearchFragment" />
 </navigation>

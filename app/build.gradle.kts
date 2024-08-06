@@ -137,6 +137,9 @@ dependencies {
     // Activity KTX
     implementation (libs.androidx.activity.ktx)
 
+    //Toasty
+    implementation (libs.toasty)
+
 
 
 }

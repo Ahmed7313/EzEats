@@ -5,6 +5,10 @@
 
     <data>
 
+        <variable
+            name="signUpViewModel"
+            type="com.easyEats.ezeats.ui.auth.sign_up.SignUpViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -53,10 +57,10 @@
                 android:id="@+id/ll_social_media_icons"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_marginTop="@dimen/_25sdp"
-                app:layout_constraintTop_toBottomOf="@id/tv_start_saving"
-                app:layout_constraintStart_toStartOf="@id/tv_start_saving">
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="@id/tv_start_saving"
+                app:layout_constraintTop_toBottomOf="@id/tv_start_saving">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -72,14 +76,13 @@
                     android:src="@drawable/facebook_logo" />
             </LinearLayout>
 
-
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/mobileInputLayout"
+                android:id="@+id/nameInputLayout"
                 style="@style/defaultInputText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_25sdp"
-                android:hint="@string/enter_your_phone_number"
+                android:hint="@string/enter_your_name"
                 android:selectAllOnFocus="true"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_13ssp"
@@ -88,47 +91,51 @@
                 app:layout_constraintTop_toBottomOf="@id/ll_social_media_icons">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etPhoneInput"
+                    android:id="@+id/etNameInput"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_42sdp"
-                    android:drawableStart="@drawable/phone_icon"
+                    android:drawableStart="@drawable/user_name_icon"
                     android:drawablePadding="10dp"
-                    android:inputType="phone" />
+                    android:inputType="text"
+                    android:text="@={signUpViewModel.name}" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/nameInputLayout"
+                android:id="@+id/mobileInputLayout"
                 style="@style/defaultInputText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:hint="@string/enter_your_name"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:hint="@string/enter_your_phone_number"
                 android:selectAllOnFocus="true"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_13ssp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/mobileInputLayout">
+                app:layout_constraintTop_toBottomOf="@+id/nameInputLayout">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etNameInput"
+                    android:id="@+id/etPhoneInput"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_42sdp"
+                    android:drawableStart="@drawable/phone_icon"
                     android:drawablePadding="10dp"
-                    android:inputType="text" />
+                    android:inputType="phone"
+                    android:text="@={signUpViewModel.phoneNumber}" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_sign_up"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_50sdp"
+                android:layout_marginBottom="@dimen/_15sdp"
                 android:backgroundTint="@color/light_gray"
                 android:enabled="false"
                 android:fontFamily="@font/gilroy_600"
+                android:onClick="@{()->signUpViewModel.register()}"
                 android:text="@string/sign_up"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_15ssp"
-                android:layout_marginBottom="@dimen/_15sdp"
                 app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -138,8 +145,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:orientation="horizontal"
                 android:layout_marginBottom="@dimen/_15sdp"
+                android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/btn_sign_up"
                 app:layout_constraintStart_toStartOf="@+id/btn_sign_up">

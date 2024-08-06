@@ -5,8 +5,8 @@ import android.net.ConnectivityManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.easyEats.ezeats.MyApplication
-import com.easyEats.ezeats.utils.NetworkChangeReceiver
+import com.easyEats.ezeats.MyApplication.Companion.baseApplication
+import com.easyEats.ezeats.utils.reciveirs.NetworkChangeReceiver
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -28,8 +28,7 @@ class MainViewModel @Inject constructor() : ViewModel() {
      * Registers the NetworkChangeReceiver to listen for connectivity changes.
      */
     init {
-        val context = MyApplication.baseApplication.applicationContext
-        context.registerReceiver(networkChangeReceiver, intentFilter)
+        baseApplication.registerReceiver(networkChangeReceiver, intentFilter)
     }
 
     /**
@@ -38,7 +37,6 @@ class MainViewModel @Inject constructor() : ViewModel() {
      */
     override fun onCleared() {
         super.onCleared()
-        val context = MyApplication.baseApplication.applicationContext
-        context.unregisterReceiver(networkChangeReceiver)
+        baseApplication.unregisterReceiver(networkChangeReceiver)
     }
 }

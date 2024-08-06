@@ -1,17 +1,18 @@
 package com.easyEats.ezeats.ui.auth.sign_up
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.base.BaseFragment
 import com.easyEats.ezeats.databinding.FragmentSignUpScreenBinding
 import com.easyEats.ezeats.utils.Resource
-import com.easyEats.ezeats.utils.ValidateFields
+import com.easyEats.ezeats.utils.validation.ValidateFields
+import com.parse.ParseUser
 import dagger.hilt.android.AndroidEntryPoint
+import es.dmoral.toasty.Toasty
 
 /**
  * SignUpScreenFragment handles the sign-up screen functionality of the application.
@@ -41,6 +42,7 @@ class SignUpScreenFragment : BaseFragment<FragmentSignUpScreenBinding>() {
      * Sets up the views and initializes necessary listeners.
      */
     override fun setUpViews() {
+        binding.signUpViewModel = signUpViewModel
         validateFields()
         setUpClickListeners()
         setUpObservers()
@@ -80,19 +82,16 @@ class SignUpScreenFragment : BaseFragment<FragmentSignUpScreenBinding>() {
 
                 is Resource.Success -> {
                     hideLoading()
-                    signUpViewModel.saveMobileNumber(binding.etPhoneInput.text.toString())
-                    signUpViewModel.saveToken(resource.data)
-                    signUpViewModel.saveName(binding.etNameInput.text.toString())
-                    signUpViewModel.sendOtp(binding.etPhoneInput.text.toString())
-
+                    saveNecessaryData(resource)
                 }
 
                 is Resource.Error -> {
                     hideLoading()
+                    Toasty.error(requireContext(), resource.message, Toast.LENGTH_LONG).show()
                 }
 
                 else -> {
-
+                    hideLoading()
                 }
             }
         }
@@ -110,9 +109,21 @@ class SignUpScreenFragment : BaseFragment<FragmentSignUpScreenBinding>() {
 
                 is Resource.Error -> {
                     hideLoading()
+                    Toasty.error(requireContext(), resource.message, Toast.LENGTH_LONG).show()
+                }
+
+                else -> {
+                    hideLoading()
                 }
             }
         }
+    }
+
+    private fun saveNecessaryData(resource: Resource.Success<ParseUser>) {
+        signUpViewModel.saveMobileNumber(signUpViewModel.phoneNumber.value.toString())
+        signUpViewModel.saveToken(resource.data)
+        signUpViewModel.saveName(signUpViewModel.name.value.toString())
+        signUpViewModel.sendOtp()
     }
 
     /**
@@ -131,17 +142,15 @@ class SignUpScreenFragment : BaseFragment<FragmentSignUpScreenBinding>() {
      * Handles the Sign Up and Sign In button clicks.
      */
     private fun setUpClickListeners() {
-        // Navigate to verification screen when Sign Up button is clicked
-        binding.btnSignUp.setOnClickListener {
-            signUpViewModel.register(
-                binding.etPhoneInput.text.toString(),
-                binding.etNameInput.text.toString()
-            )
-        }
-
         // Navigate to Sign In screen when "Sign In" text view is clicked
         binding.tvSignIn.setOnClickListener {
             findNavController().navigate(R.id.action_signUpScreenFragment_to_signInScreenFragment)
         }
+    }
+
+    override fun onDestroyView() {
+        signUpViewModel.registrationResult.value = null
+        signUpViewModel.sendOtpLiveData.value=null
+        super.onDestroyView()
     }
 }

@@ -13,8 +13,9 @@ import com.easyEats.ezeats.base.BaseFragment
 import com.easyEats.ezeats.databinding.FragmentOnBoardingBinding
 import com.easyEats.ezeats.ui.auth.on_boarding.pager.IntroSliderAdapter
 import com.easyEats.ezeats.utils.Constants.LOCATION_PERMISSION_REQUEST_CODE
-import com.easyEats.ezeats.utils.LocationUtil
+import com.easyEats.ezeats.utils.location.LocationUtil
 import dagger.hilt.android.AndroidEntryPoint
+import es.dmoral.toasty.Toasty
 
 /**
  * Fragment that handles the onboarding process of the application.
@@ -88,7 +89,10 @@ class OnBoardingFragment : BaseFragment<FragmentOnBoardingBinding>() {
      */
     private fun setupSkipButton() {
         binding.tvSkip.setOnClickListener {
-            navigateToIntroScreen()
+            locationUtil.askUserForLocationPermission(
+                onPermissionGranted = { onLocationPermissionGranted() },
+                onPermissionDenied = { onLocationPermissionDenied() }
+            )
         }
     }
 
@@ -136,7 +140,6 @@ class OnBoardingFragment : BaseFragment<FragmentOnBoardingBinding>() {
      */
     private fun onLocationPermissionGranted() {
         getLocationAndAddress()
-
     }
 
     private fun getLocationAndAddress() {
@@ -145,17 +148,16 @@ class OnBoardingFragment : BaseFragment<FragmentOnBoardingBinding>() {
                 locationUtil.reverseGeocode(latitude, longitude,
                     onAddressReceived = { address ->
                         viewModel.saveAddress(address)
-
                     },
                     onError = { errorMessage ->
                         // Handle the error
-                        Toast.makeText(requireContext(), "Error: $errorMessage", Toast.LENGTH_LONG).show()
+                        Toasty.error(requireContext(), "Error: $errorMessage", Toast.LENGTH_LONG).show()
                     }
                 )
             },
             onError = { errorMessage ->
                 // Handle the error
-                Toast.makeText(requireContext(), "Error: $errorMessage", Toast.LENGTH_LONG).show()
+                Toasty.error(requireContext(), "Error: $errorMessage", Toast.LENGTH_LONG).show()
             }
         )
         viewModel.userWatchOnBoarding(isWatched = true)
@@ -166,7 +168,10 @@ class OnBoardingFragment : BaseFragment<FragmentOnBoardingBinding>() {
      * Navigates to the intro screen when location permission is denied.
      */
     private fun onLocationPermissionDenied() {
-        navigateToIntroScreen()
+        locationUtil.askUserForLocationPermission(
+            onPermissionGranted = { onLocationPermissionGranted() },
+            onPermissionDenied = { onLocationPermissionDenied() }
+        )
     }
 
     /**

@@ -47,7 +47,7 @@
     <string name="cancel">cancel</string>
 
     <!--    No Internet Connection Screen-->
-    <string name="no_internet_connection">No Internet Connection</string>
+    <string name="no_internet_connection">No Internet Connection, Please Check Your Internet Connection And <u><b>Try Again</b></u></string>
     <string name="oops">Oops!</string>
     <string name="please_make_sure_you_are_connected_to_the_internet_and_try_again">Please make sure you are connected to the internet and try again</string>
     <string name="try_again">Try Again</string>
@@ -93,7 +93,15 @@
     <string name="close_icon">close icon</string>
     <string name="loyalty_points">Loyalty Points</string>
     <string name="you_can_use_your_ezpoints_to_redeem_any_offers_regardless_of_the_restaurant">You can use your EZpoints to redeem any offers, regardless of the restaurant</string>
-    <string name="restuarnats_points">Restuarnats Points</string>
+    <string name="restuarnats_points">Restaurants Points</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="close">Close Icon</string>
+    <string name="what_do_you_want_to_eat">What do you want to eat?</string>
+    <string name="recent_searches">Recent Searches</string>
+    <string name="popular_searches">Popular Searches</string>
+    <string name="clear">Clear</string>
+    <string name="offer">image of offer</string>
 
 
 </resources>

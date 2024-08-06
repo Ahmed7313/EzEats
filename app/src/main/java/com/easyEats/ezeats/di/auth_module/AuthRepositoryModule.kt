@@ -1,4 +1,4 @@
-package com.easyEats.ezeats.di
+package com.easyEats.ezeats.di.auth_module
 
 import com.easyEats.ezeats.data.local.auth.repository.AuthRepositoryImpl
 import com.easyEats.ezeats.data.local.data_store.DataStorePreference

@@ -77,6 +77,7 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
      */
     protected fun showLoading() {
         (activity as? AuthActivity)?.binding?.loader?.visibility = View.VISIBLE
+        (activity as? AuthActivity)?.binding?.loader?.isEnabled=false
     }
 
     /**

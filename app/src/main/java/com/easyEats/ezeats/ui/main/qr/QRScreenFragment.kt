@@ -21,6 +21,9 @@ import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.base.BaseBottomSheetFragment
 import com.easyEats.ezeats.databinding.FragmentQRScreenBinding
+import com.easyEats.ezeats.ui.main.qr.permession.DefaultPermissionHandler
+import com.easyEats.ezeats.ui.main.qr.permession.PermissionState
+import com.easyEats.ezeats.utils.Constants.REQUEST_CAMERA_PERMISSION
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -28,42 +31,45 @@ import com.journeyapps.barcodescanner.BarcodeCallback
 import com.journeyapps.barcodescanner.BarcodeResult
 import com.journeyapps.barcodescanner.DecoratedBarcodeView
 import dagger.hilt.android.AndroidEntryPoint
-
-
+import javax.inject.Inject
 @AndroidEntryPoint
 class QRScreenFragment : BaseBottomSheetFragment<FragmentQRScreenBinding>() {
-    private lateinit var barcodeView: DecoratedBarcodeView
+    private val permissionHandler: DefaultPermissionHandler by lazy {
+        DefaultPermissionHandler(this@QRScreenFragment)
+    }
     override fun inflateBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ) = FragmentQRScreenBinding.inflate(layoutInflater  )
-
-
+    ) = FragmentQRScreenBinding.inflate(layoutInflater)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        barcodeView = view.findViewById(R.id.barcode_scanner)
-
-        if (ContextCompat.checkSelfPermission(
+        val state = when {
+            ContextCompat.checkSelfPermission(
                 requireContext(),
                 Manifest.permission.CAMERA
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            setupScanner()
-        } else {
-            ActivityCompat.requestPermissions(
-                requireActivity(),
-                arrayOf(Manifest.permission.CAMERA),
-                REQUEST_CAMERA_PERMISSION
-            )
-        }
-    }
+            ) == PackageManager.PERMISSION_GRANTED -> {
+                PermissionState.PERMISSION_GRANTED
+            }
+            else -> {
+                PermissionState.PERMISSION_NOT_GRANTED
+            }
 
-    private fun setupScanner() {
-        barcodeView.decodeContinuous(object : BarcodeCallback {
+        }
+        permissionHandler.handlePermission(state)
+    }
+    fun requestCameraPermission() {
+        ActivityCompat.requestPermissions(
+            requireActivity(),
+            arrayOf(Manifest.permission.CAMERA),
+            REQUEST_CAMERA_PERMISSION
+        )
+    }
+    fun setupScanner() {
+        binding.barcodeScanner.decodeContinuous(object : BarcodeCallback {
             override fun barcodeResult(result: BarcodeResult?) {
-                if (result != null) {
-                    barcodeView.pause()
+                result?.let {
+                    binding.barcodeScanner.pause()
                     Toast.makeText(requireContext(), result.result.toString(), Toast.LENGTH_SHORT)
                         .show()
                 }
@@ -72,20 +78,12 @@ class QRScreenFragment : BaseBottomSheetFragment<FragmentQRScreenBinding>() {
             override fun possibleResultPoints(resultPoints: List<com.google.zxing.ResultPoint>?) {}
         })
     }
-
     override fun onResume() {
         super.onResume()
-        barcodeView.resume()
+        binding.barcodeScanner.resume()
     }
-
     override fun onPause() {
         super.onPause()
-        barcodeView.pause()
+        binding.barcodeScanner.pause()
     }
-
-    companion object {
-        private const val REQUEST_CAMERA_PERMISSION = 1
-    }
-
-
 }

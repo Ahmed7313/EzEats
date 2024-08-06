@@ -1,6 +1,6 @@
 package com.easyEats.ezeats.di
 
-import com.easyEats.ezeats.utils.HeaderInterceptor
+import com.easyEats.ezeats.utils.headers.HeaderInterceptor
 import com.easyEats.ezeats.BuildConfig
 import com.easyEats.ezeats.data.remote.ApiService
 import com.google.gson.Gson
@@ -49,7 +49,7 @@ object NetworkModule {
     }
 
     /**
-     * Provides a custom com.easyEats.ezeats.utils.HeaderInterceptor for adding headers to requests.
+     * Provides a custom com.easyEats.ezeats.utils.headers.HeaderInterceptor for adding headers to requests.
      */
     @Provides
     @Singleton

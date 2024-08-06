@@ -1,4 +1,4 @@
-package com.easyEats.ezeats.di
+package com.easyEats.ezeats.di.auth_module
 
 import com.easyEats.ezeats.domain.auth.model.request.VerifyOtpRequest
 import com.easyEats.ezeats.domain.auth.repository.AuthRepository

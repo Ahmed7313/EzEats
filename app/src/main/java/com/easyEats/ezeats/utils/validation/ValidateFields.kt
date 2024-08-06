@@ -1,4 +1,4 @@
-package com.easyEats.ezeats.utils
+package com.easyEats.ezeats.utils.validation
 
 import android.content.Context
 import android.content.res.ColorStateList
