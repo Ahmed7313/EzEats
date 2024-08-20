@@ -1,0 +1,17 @@
+package com.easyEats.ezeats.domain.main.use_case
+
+import com.easyEats.ezeats.domain.main.use_case.home_use_case.HomeUseCase
+import com.easyEats.ezeats.domain.main.use_case.location_use_case.LocationUseCase
+import com.easyEats.ezeats.domain.main.use_case.main_use_case.MainActivityUseCase
+import com.easyEats.ezeats.domain.main.use_case.search_history.SearchHistoryUseCase
+import com.easyEats.ezeats.domain.main.use_case.search_suggestions.SearchSuggestionsUseCase
+import com.easyEats.ezeats.domain.main.use_case.search_use_case.SearchUseCase
+
+data class MainUseCase(
+    val mainUseCase: MainActivityUseCase,
+    val homeUseCase: HomeUseCase,
+    val searchSuggestionsUseCase: SearchSuggestionsUseCase,
+    val searchHistoryUseCase: SearchHistoryUseCase,
+    val locationUseCase: LocationUseCase,
+    val searchUseCase: SearchUseCase
+)

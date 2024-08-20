@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="@dimen/_260sdp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_5sdp"
+        app:cardCornerRadius="@dimen/_25sdp"
+        app:cardElevation="0dp"
+        app:strokeWidth="0dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/relativeContainer"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_160sdp"
+            android:background="@drawable/home_top_background">
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnRedeem"
+                android:layout_width="@dimen/_92sdp"
+                android:layout_height="@dimen/_38sdp"
+                android:layout_alignBaseline="@+id/ivBrand"
+                android:layout_marginHorizontal="@dimen/_9sdp"
+                android:layout_marginBottom="@dimen/_12sdp"
+                android:text="@string/redeem"
+                android:textColor="#80F6DCDF"
+                app:backgroundTint="#80F3919B"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view3" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>

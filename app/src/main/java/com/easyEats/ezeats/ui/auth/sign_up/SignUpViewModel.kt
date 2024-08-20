@@ -38,14 +38,17 @@ class SignUpViewModel @Inject constructor(private val authUseCase: AuthUseCase) 
     private val _registrationResult = MutableLiveData<Resource<ParseUser>>()
     val registrationResult: MutableLiveData<Resource<ParseUser>> get() = _registrationResult
 
-    private val _sendOtpMutableLiveData = SingleLiveEvent<Resource<BaseResponse<Int>>?>()
-    val sendOtpLiveData: SingleLiveEvent<Resource<BaseResponse<Int>>?> get() = _sendOtpMutableLiveData
+    private val _sendOtpMutableLiveData = SingleLiveEvent<Resource<BaseResponse<Boolean>>?>()
+    val sendOtpLiveData: SingleLiveEvent<Resource<BaseResponse<Boolean>>?> get() = _sendOtpMutableLiveData
 
     val phoneNumber = MutableLiveData<String>()
 
     val name = MutableLiveData<String>()
 
-
+    private val sendOtpExceptionHandler = CoroutineExceptionHandler { _, exception ->
+        _sendOtpMutableLiveData.value =
+            Resource.Error(MyApplication.baseApplication.getString(R.string.no_internet_connection))
+    }
 
 
     // Combined LiveData for overall form validity
@@ -70,7 +73,7 @@ class SignUpViewModel @Inject constructor(private val authUseCase: AuthUseCase) 
         val flow = createSendOtpFlow()
         apply(
             flow = flow,
-            maxRetries = 2,
+            maxRetries = 1,
             onError = { error ->
                 _sendOtpMutableLiveData.value =
                     Resource.Error(error.localizedMessage ?: "Unknown error")
@@ -81,15 +84,20 @@ class SignUpViewModel @Inject constructor(private val authUseCase: AuthUseCase) 
         )
     }
 
-    private fun createSendOtpFlow(): Flow<Resource<BaseResponse<Int>>> = channelFlow {
-        trySend(Resource.Loading())
-        val sendOtp = authUseCase.signInUseCase.sendOTP(SendOtpRequest("+2${phoneNumber.value}"))
-        if (sendOtp.isSuccessful) {
-            trySend(Resource.Success(sendOtp.body()))
-        } else {
-            trySend(Resource.Error(sendOtp.message()))
-        }
-        close() // Close the channel after sending all data
+    private fun createSendOtpFlow(): Flow<Resource<BaseResponse<Boolean>>> = channelFlow {
+        send(Resource.Loading())
+        val sendOtp = authUseCase.signInUseCase.sendOTP(SendOtpRequest("+2${phoneNumber.value.toString()}"))
+        sendOtp.handleResponse(
+            onSuccess = {
+                saveMobileNumber()
+                send(Resource.Success(sendOtp))
+            },
+            onError = { message, error ->
+                send(Resource.Error(message, error))
+            }, onUnauthenticated = {
+                send(Resource.UnAuthenticated())
+            }
+        )
     }
 
     /**
@@ -103,9 +111,9 @@ class SignUpViewModel @Inject constructor(private val authUseCase: AuthUseCase) 
         }
     }
 
-    fun saveMobileNumber(mobileNumber: String) {
+    fun saveMobileNumber() {
         viewModelScope.launch {
-            authUseCase.signUpUseCase.saveMobileNumber(mobileNumber)
+            authUseCase.signUpUseCase.saveMobileNumber(phoneNumber.value.toString())
         }
     }
 

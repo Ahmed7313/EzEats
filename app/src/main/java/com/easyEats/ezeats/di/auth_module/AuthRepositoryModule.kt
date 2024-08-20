@@ -1,9 +1,9 @@
 package com.easyEats.ezeats.di.auth_module
 
-import com.easyEats.ezeats.data.local.auth.repository.AuthRepositoryImpl
+import com.easyEats.ezeats.data.repository.auth.repository.AuthRepositoryImpl
 import com.easyEats.ezeats.data.local.data_store.DataStorePreference
-import com.easyEats.ezeats.data.remote.ApiService
-import com.easyEats.ezeats.data.remote.AuthWithParsing
+import com.easyEats.ezeats.data.remote.auth.AuthApiService
+import com.easyEats.ezeats.data.remote.auth.AuthWithParsing
 import com.easyEats.ezeats.domain.auth.repository.AuthRepository
 import dagger.Module
 import dagger.Provides
@@ -20,8 +20,8 @@ object RepositoryModule {
     fun provideUserRepository(
         dataStorePreference: DataStorePreference,
         authWithParsing: AuthWithParsing,
-        apiService: ApiService
+        authApiService: AuthApiService
     ): AuthRepository {
-        return AuthRepositoryImpl(dataStorePreference, authWithParsing, apiService)
+        return AuthRepositoryImpl(dataStorePreference, authWithParsing, authApiService)
     }
 }

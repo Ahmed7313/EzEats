@@ -5,43 +5,53 @@
 
     <data>
 
+        <variable
+            name="searchViewModel"
+            type="com.easyEats.ezeats.ui.main.search_suggestion.SearchViewModel" />
     </data>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/main_screen_color"
+        android:background="#F7F7F7"
         android:fillViewport="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="#F7F7F7">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/SearchContainer"
+            <RelativeLayout
+                android:id="@+id/reTop"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="@+id/reTop"
+                android:background="#F7F7F7"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
 
-                <androidx.appcompat.widget.SearchView
+                <EditText
                     android:id="@+id/etRealSearch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/_17sdp"
-                    android:layout_marginTop="@dimen/_80sdp"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
                     android:background="@drawable/rounded_search_background"
+                    android:clickable="true"
+                    android:drawableLeft="@drawable/search_icon"
+                    android:drawablePadding="@dimen/_7sdp"
+                    android:focusable="true"
                     android:focusableInTouchMode="true"
+                    android:lines="1"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:paddingVertical="@dimen/_10ssp"
+                    android:text="@={searchViewModel.searchKey}"
                     android:textColor="@color/black"
                     app:hintTextColor="@color/black"
                     app:iconifiedByDefault="false"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/SearchContainer"
                     app:queryBackground="@drawable/rounded_search_background"
                     app:searchIcon="@drawable/search_icon" />
 
@@ -49,198 +59,15 @@
                     android:id="@+id/rvSuggestionResult"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="10dp"
-                    android:layout_marginTop="@dimen/_7sdp"
+                    android:layout_below="@id/etRealSearch"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:orientation="vertical"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/etRealSearch"
-                    tools:itemCount="3" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-            <RelativeLayout
-                android:id="@+id/reTop"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/home_top_background"
-                android:visibility="visible"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <TextView
-                    android:id="@+id/tvLocation"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginHorizontal="@dimen/_17sdp"
-                    android:layout_marginVertical="@dimen/_28sdp"
-                    android:background="?android:selectableItemBackground"
-                    android:clickable="true"
-                    android:drawablePadding="@dimen/_5sdp"
-                    android:focusable="true"
-                    android:fontFamily="@font/gilroy_600"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_12ssp"
-                    app:drawableEndCompat="@drawable/arrow_down_icon"
-                    app:drawableStartCompat="@drawable/marker_pin_icon"
-                    tools:ignore="RelativeOverlap"
-                    tools:text="You're at Maadi" />
-
-
-                <ImageView
-                    android:id="@+id/ivClose"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginHorizontal="@dimen/_17sdp"
-                    android:layout_marginVertical="@dimen/_25sdp"
-                    android:contentDescription="@string/close"
-                    app:srcCompat="@drawable/x_circle_icon" />
-
-                <LinearLayout
-                    android:id="@+id/linearContainer"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_below="@+id/ivClose"
-                    android:layout_marginTop="@dimen/_40sdp"
-                    android:background="@drawable/home_rounded_layout"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/_17sdp"
-                        android:layout_marginTop="@dimen/_40sdp"
-                        android:fontFamily="@font/gilroy_700"
-                        android:text="@string/what_do_you_want_to_eat"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_12ssp" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rvFood"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/_17sdp"
-                        android:layout_marginTop="@dimen/_7sdp"
-                        android:orientation="horizontal"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:itemCount="3"
-                        tools:listitem="@layout/item_food_offers">
-
-                    </androidx.recyclerview.widget.RecyclerView>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/_17sdp"
-                        android:layout_marginTop="@dimen/_23sdp"
-                        android:layout_gravity="center"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/gilroy_700"
-                            android:text="@string/recent_searches"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_12ssp" />
-
-                        <TextView
-                            android:id="@+id/tvClear"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="end"
-                            android:fontFamily="@font/gilroy_500"
-                            android:text="@string/clear"
-                            android:textAlignment="viewEnd"
-                            android:textColor="@color/main_color"
-                            android:textSize="@dimen/_10ssp" />
-
-                    </LinearLayout>
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rvRecentSearch"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/_17sdp"
-                        android:layout_marginTop="@dimen/_17sdp"
-                        android:clipToPadding="false"
-                        android:orientation="horizontal"
-                        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                        app:spanCount="2"
-                        tools:itemCount="5"
-                        tools:listitem="@layout/item_chip_search">
-
-                    </androidx.recyclerview.widget.RecyclerView>
-
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/_17sdp"
-                        android:layout_marginTop="@dimen/_16sdp"
-                        android:fontFamily="@font/gilroy_700"
-                        android:text="@string/popular_searches"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_12ssp" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rvPopularSearch"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/_17sdp"
-                        android:layout_marginTop="@dimen/_16sdp"
-                        android:layout_marginBottom="@dimen/_16sdp"
-                        android:clipToPadding="false"
-                        android:orientation="horizontal"
-                        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                        app:spanCount="2"
-                        tools:itemCount="5"
-                        tools:listitem="@layout/item_popular_chip_search">
-
-                    </androidx.recyclerview.widget.RecyclerView>
-
-                </LinearLayout>
-
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/mcvSearch"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tvLocation"
-                    android:layout_alignStart="@+id/tvLocation"
-                    android:layout_alignEnd="@+id/ivClose"
-                    android:layout_marginTop="@dimen/_18sdp"
-                    android:backgroundTint="@color/white"
-                    android:focusable="true"
-                    android:clickable="true"
-                    app:cardCornerRadius="@dimen/_100sdp"
-                    app:cardElevation="@dimen/_5sdp"
-                    app:strokeWidth="0dp">
-
-                    <TextView
-                        android:id="@+id/etSearch"
-                        style="@style/defaultInputText"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_40sdp"
-                        android:layout_marginHorizontal="@dimen/_17sdp"
-                        android:background="@drawable/rounded_search_background"
-                        android:drawablePadding="10dp"
-                        android:ellipsize="end"
-                        android:focusable="true"
-                        android:gravity="center_vertical"
-                        android:hint="@string/search_for_restaurants_dishes_and_more"
-                        android:maxLines="1"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_11ssp"
-                        app:drawableStartCompat="@drawable/search_icon"
-                        app:hintTextColor="@color/white" />
-                </com.google.android.material.card.MaterialCardView>
-
-
+                    tools:itemCount="30"
+                    tools:listitem="@layout/item_suggestion" />
             </RelativeLayout>
 
 

@@ -19,10 +19,11 @@
             android:id="@+id/tvLocation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawablePadding="@dimen/_3sdp"
+            android:drawablePadding="@dimen/_5sdp"
             android:fontFamily="@font/gilroy_700"
             android:textColor="@color/black"
-            android:textSize="@dimen/_15ssp"
+            android:textSize="@dimen/_18ssp"
+            android:text="@string/current_location"
             app:drawableEndCompat="@drawable/arrow_down"
             app:drawableStartCompat="@drawable/icon_location" />
 
@@ -83,7 +84,6 @@
             android:layout_marginTop="@dimen/_8sdp"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:itemCount="3"
             tools:listitem="@layout/item_location" />
 
 

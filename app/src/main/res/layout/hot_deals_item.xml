@@ -5,13 +5,19 @@
 
     <data>
 
+        <import type="android.view.View" />
+
+        <variable
+            name="hotDeal"
+            type="com.easyEats.ezeats.domain.main.model.response.home_response.HotDeal" />
+
 
     </data>
 
     <androidx.cardview.widget.CardView
-        android:layout_width="@dimen/_150sdp"
-        android:layout_height="245dp"
-        android:layout_marginEnd="15dp"
+        android:layout_width="@dimen/_135sdp"
+        android:layout_height="@dimen/_190sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
         android:layout_marginBottom="15dp"
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="@dimen/_10sdp"
@@ -31,6 +37,7 @@
 
                 <ImageView
                     android:id="@+id/ivLogo"
+                    loadImage="@{hotDeal.offerLogo}"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:contentDescription="@string/restaurant_logo"
@@ -48,8 +55,9 @@
                     android:gravity="center"
                     android:textAlignment="center"
                     android:textColor="@color/white"
+                    android:visibility="@{hotDeal.isNew()?View.VISIBLE:View.GONE}"
                     tools:ignore="RelativeOverlap"
-                    tools:text="New">
+                    android:text="New">
 
                 </TextView>
 
@@ -60,8 +68,11 @@
                     android:layout_alignParentBottom="true"
                     android:layout_marginStart="10dp"
                     android:layout_marginBottom="10dp"
+                    android:ellipsize="end"
                     android:fontFamily="@font/gilroy_700"
                     android:gravity="center"
+                    android:maxLines="2"
+                    android:text="@{hotDeal.restaurantName}"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_15ssp"
@@ -87,6 +98,7 @@
                     android:gravity="start"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_11ssp"
+                    android:text="@{hotDeal.name}"
                     app:drawableEndCompat="@drawable/arrow_right"
                     app:drawableTint="@color/black"
                     tools:text="Buy one, get one free" />
@@ -105,8 +117,9 @@
                         android:drawablePadding="5dp"
                         android:gravity="start"
                         android:textColor="@color/main_color"
-                        android:textSize="11sp"
-                        android:textStyle="normal"
+                        android:textSize="@dimen/_10ssp"
+                        android:text="@{hotDeal.distance}"
+                        android:fontFamily="@font/gilroy_600"
                         app:drawableStartCompat="@drawable/marker_pin_icon"
                         app:drawableTint="@color/main_color" />
 
@@ -118,6 +131,7 @@
                         android:layout_weight="1"
                         android:drawablePadding="5dp"
                         android:gravity="start"
+                        android:visibility="gone"
                         android:textColor="@color/main_color"
                         android:textSize="11sp"
                         android:textStyle="normal"
@@ -136,8 +150,9 @@
                     android:gravity="start"
                     android:lineSpacingExtra="5dp"
                     android:maxLines="3"
+                    android:text="@{hotDeal.description}"
                     android:textColor="#3A3D42"
-                    android:textSize="@dimen/_9ssp"
+                    android:textSize="@dimen/_10ssp"
                     tools:text="Craving some pizza?, then you must use domino’s pizza’s awesome offer" />
             </LinearLayout>
 

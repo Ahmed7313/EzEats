@@ -5,8 +5,29 @@
 
     <data>
 
-    </data>
+        <import type="android.view.View" />
 
+        <variable
+            name="featuredAdapter"
+            type="com.easyEats.ezeats.ui.main.home.adapter.featured.FeaturedOfferAdapter" />
+
+        <variable
+            name="hotDealsAdapter"
+            type="com.easyEats.ezeats.ui.main.home.adapter.hot_deals.HotDealsAdapter" />
+
+        <variable
+            name="mainViewModel"
+            type="com.easyEats.ezeats.ui.main.main.MainViewModel" />
+
+        <variable
+            name="homeViewModel"
+            type="com.easyEats.ezeats.ui.main.home.HomeViewModel" />
+
+    </data>
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeToRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -64,13 +85,16 @@
                     android:background="?android:selectableItemBackground"
                     android:clickable="true"
                     android:drawablePadding="5dp"
+                    android:ellipsize="end"
                     android:focusable="true"
                     android:fontFamily="@font/gilroy_600"
+                    android:maxLength="25"
+                    android:maxLines="1"
+                    android:text="@{homeViewModel.addressLiveData}"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12ssp"
                     app:drawableEndCompat="@drawable/arrow_down_icon"
-                    app:drawableStartCompat="@drawable/marker_pin_icon"
-                    tools:text="You're at Maadi" />
+                    app:drawableStartCompat="@drawable/marker_pin_icon" />
 
                 <TextView
                     android:id="@+id/tvTitle"
@@ -99,7 +123,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="60dp"
+                        android:layout_marginTop="@dimen/_50sdp"
                         android:orientation="horizontal">
 
                         <TextView
@@ -143,10 +167,20 @@
                         android:layout_marginTop="10dp"
                         android:orientation="horizontal"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:featuredAdapter="@{featuredAdapter}"
+                        app:data="@{homeViewModel.featuredOffers}"
                         tools:itemCount="2"
-                        tools:listitem="@layout/featured_item">
+                        tools:listitem="@layout/featured_item" />
 
-                    </androidx.recyclerview.widget.RecyclerView>
+                    <com.todkars.shimmer.ShimmerRecyclerView
+                        android:id="@+id/featured_shimmer_recycler_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        showShimmer="@{homeViewModel.showShimmer}"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:shimmer_recycler_layout="@layout/featured_shimmer" />
+
 
                     <me.relex.circleindicator.CircleIndicator3
                         android:id="@+id/indicator"
@@ -159,7 +193,9 @@
                         app:ci_height="9dp"
                         app:ci_margin="15dp"
                         app:ci_orientation="horizontal"
-                        app:ci_width="35dp" />
+                        app:ci_width="35dp"
+                        app:indicatorRecyclerView="@{rvFeatured}"
+                        app:data="@{homeViewModel.featuredOffers}" />
 
 
                     <LinearLayout
@@ -199,26 +235,81 @@
                         android:textColor="#898883"
                         android:textSize="@dimen/_12ssp" />
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rvHotDeals"
+                    <com.todkars.shimmer.ShimmerRecyclerView
+                        android:id="@+id/hot_deals_shimmer_recycler_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
                         android:orientation="horizontal"
+                        showShimmer="@{homeViewModel.showShimmer}"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:shimmer_recycler_layout="@layout/shimmer_hot_deals" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvHotDeals"
+                        data="@{homeViewModel.hotDealsOffers}"
+                        hotDealsAdapter="@{hotDealsAdapter}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:layout_marginBottom="@dimen/_90sdp"
+                        android:orientation="horizontal"
+                        android:visibility="@{homeViewModel.isLocationGranted ? View.VISIBLE :View.GONE}"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:itemCount="3"
                         tools:listitem="@layout/hot_deals_item" />
 
-                    <!--                    <com.cooltechworks.views.shimmer.ShimmerRecyclerView xmlns:app="http://schemas.android.com/apk/res-auto"-->
-                    <!--                        android:id="@+id/shimmer_recycler_view"-->
-                    <!--                        android:layout_width="match_parent"-->
-                    <!--                        android:layout_height="match_parent"-->
-                    <!--                        app:shimmer_demo_angle="20"-->
-                    <!--                        app:shimmer_demo_child_count="10"-->
-                    <!--                        app:shimmer_demo_grid_child_count="2"-->
-                    <!--                        app:shimmer_demo_layout="@layout/layout_demo_grid"-->
-                    <!--                        app:shimmer_demo_layout_manager_type="grid" />-->
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cv_allow_access"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:layout_marginBottom="@dimen/_90sdp"
+                        android:visibility="@{homeViewModel.isLocationGranted ? View.GONE :View.VISIBLE}"
+                        app:cardCornerRadius="@dimen/_10sdp">
 
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:padding="@dimen/_7sdp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/gilroy_700"
+                                android:text="@string/location_access"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_18ssp" />
+
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_7sdp"
+                                android:fontFamily="@font/gilroy_600"
+                                android:text="@string/for_a_better_user_experience_please_enable_location_access"
+                                android:textAlignment="textStart"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_12ssp" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnEnableAccess"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginVertical="@dimen/_7sdp"
+                                android:drawableLeft="@drawable/marker_pin_icon"
+                                android:fontFamily="@font/gilroy_600"
+                                android:gravity="center"
+                                android:paddingHorizontal="@dimen/_70sdp"
+                                android:paddingVertical="@dimen/_10sdp"
+                                android:text="@string/enable_access"
+                                android:textSize="@dimen/_12ssp"
+                                app:cornerRadius="@dimen/_100sdp" />
+
+
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -279,7 +370,7 @@
                     android:layout_below="@+id/tvTitle"
                     android:layout_alignStart="@+id/tvTitle"
                     android:layout_alignEnd="@+id/ivNotification"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="@dimen/_7sdp"
                     android:backgroundTint="@color/white"
                     app:cardCornerRadius="@dimen/_100sdp"
                     app:cardElevation="@dimen/_5sdp"
@@ -308,4 +399,5 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </layout>

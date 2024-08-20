@@ -1,32 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/tvSuggestion"
+    <data>
+
+        <variable
+            name="suggestion"
+            type="String" />
+
+        <variable
+            name="clickListener"
+            type="com.easyEats.ezeats.ui.main.search_suggestion.adapter.SuggestionsAdapter.OnSuggestionClickListener" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/gilroy_500"
-        android:padding="20dp"
-        android:textColor="#898883"
-        android:textSize="@dimen/_9ssp"
-        app:drawableEndCompat="@drawable/icon_suggestion_list"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="burger king" />
+        android:background="#F7F7F7"
+        android:layout_height="wrap_content">
 
-    <View
-        android:id="@+id/view"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/_1sdp"
-        android:layout_marginHorizontal="@dimen/_17sdp"
-        android:layout_marginStart="@dimen/_17sdp"
-        android:background="#ECECEC"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvSuggestion" />
+        <TextView
+            android:id="@+id/tvSuggestion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/gilroy_500"
+            android:onClick="@{() -> clickListener.onClick(suggestion)}"
+            android:padding="@dimen/_14sdp"
+            android:textColor="#898883"
+            android:textSize="@dimen/_11ssp"
+            app:drawableEndCompat="@drawable/icon_suggestion_list"
+            tools:text="burger king" />
 
+        <View
+            android:id="@+id/view"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_1sdp"
+            android:layout_marginHorizontal="@dimen/_17sdp"
+            android:layout_marginStart="@dimen/_17sdp"
+            android:background="#ECECEC"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvSuggestion" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

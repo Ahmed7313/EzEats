@@ -48,8 +48,12 @@ abstract class BaseBottomSheetFragment<VB : ViewDataBinding> : BottomSheetDialog
         savedInstanceState: Bundle?
     ): View {
         binding = inflateBinding(inflater, container)
+        setUpViews()
+        listenToObservers()
         return binding.root
     }
+    abstract fun setUpViews()
+    abstract fun listenToObservers()
 
     /**
      * Creates and configures the [BottomSheetDialog]. Sets the dialog to be full screen and prevents
@@ -84,11 +88,11 @@ abstract class BaseBottomSheetFragment<VB : ViewDataBinding> : BottomSheetDialog
         val layoutParams = bottomSheet.layoutParams
         val windowHeight = getWindowHeight()
         if (layoutParams != null) {
-            layoutParams.height = windowHeight
+            layoutParams.height = windowHeight-200
         }
         bottomSheet.layoutParams = layoutParams
         behavior.state = BottomSheetBehavior.STATE_EXPANDED
-        behavior.isDraggable = false
+        behavior.isDraggable = true
     }
 
     /**
@@ -113,4 +117,3 @@ abstract class BaseBottomSheetFragment<VB : ViewDataBinding> : BottomSheetDialog
      */
     abstract fun inflateBinding(inflater: LayoutInflater, container: ViewGroup?): VB
 }
-

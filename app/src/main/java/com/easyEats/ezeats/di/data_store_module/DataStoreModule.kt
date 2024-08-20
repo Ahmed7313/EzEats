@@ -1,4 +1,4 @@
-package com.easyEats.ezeats.di
+package com.easyEats.ezeats.di.data_store_module
 
 import android.content.Context
 import androidx.datastore.DataStore

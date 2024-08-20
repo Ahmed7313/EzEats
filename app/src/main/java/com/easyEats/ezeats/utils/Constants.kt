@@ -13,6 +13,7 @@ object Constants {
     // Request Headers
     const val APPLICATION_ID = "X-Parse-Application-Id"
     const val PARSE_KEY = "X-Parse-REST-API-Key"
+    const val CUSTOM_SESSION_TOKEN = "X-Custom-Session-Token"
 
     // Data Store Constants
     const val DATA_STORE_NAME = "easyEts"

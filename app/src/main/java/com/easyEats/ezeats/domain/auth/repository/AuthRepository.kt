@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import com.easyEats.ezeats.base.BaseResponse
 import com.easyEats.ezeats.domain.auth.model.request.SendOtpRequest
 import com.easyEats.ezeats.domain.auth.model.request.VerifyOtpRequest
+import com.easyEats.ezeats.domain.main.model.UserLocationAddress
 import com.easyEats.ezeats.utils.Resource
 import com.parse.ParseUser
 import kotlinx.coroutines.flow.Flow
@@ -14,13 +15,14 @@ interface AuthRepository {
     fun isUserWatchOnBoardingScreen(): Flow<Boolean>
     fun userHasToken(): Flow<String>
     fun isUserVerified(): Flow<Boolean>
+    fun getToke(): Flow<String>
     fun register(phoneNumber: String, name: String): LiveData<Resource<ParseUser>>
     fun login(phoneNumber: String): LiveData<Resource<ParseUser>>
     suspend fun savToken(toke: String)
     suspend fun setUserVerification(isUserVerified: Boolean)
-    suspend fun saveAddress(address: String)
+    suspend fun saveAddress(userLocationAddress: UserLocationAddress)
     suspend fun saveMobileNumber(mobileNumber: String)
     suspend fun saveName(name: String)
-    suspend fun sendOTP(request: SendOtpRequest): Response<BaseResponse<Int>>
-    suspend fun verifyOtp(request: VerifyOtpRequest): Response<BaseResponse<Boolean>>
+    suspend fun sendOTP(request: SendOtpRequest): BaseResponse<Boolean>
+    suspend fun verifyOtp(request: VerifyOtpRequest): BaseResponse<Boolean>
 }

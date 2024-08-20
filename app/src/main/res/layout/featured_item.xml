@@ -4,14 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="featuredOffer"
+            type="com.easyEats.ezeats.domain.main.model.response.home_response.FeaturedOffer" />
 
     </data>
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="@dimen/_5sdp"
         app:cardCornerRadius="@dimen/_25sdp"
         app:cardElevation="0dp"
         app:strokeWidth="0dp">
@@ -19,74 +21,23 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/relativeContainer"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_150sdp"
-            android:background="@drawable/home_top_background">
+            android:layout_height="@dimen/_160sdp">
 
             <ImageView
-                android:id="@+id/ivBrand"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginHorizontal="@dimen/_9sdp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/burger_king_logo" />
-
-
-            <ImageView
-                android:id="@+id/ivLogo"
-                android:layout_width="@dimen/_150sdp"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/app_name"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
                 android:scaleType="fitXY"
+                loadImage="@{featuredOffer.isFeaturedLogo}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:srcCompat="@drawable/burger">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            </ImageView>
-
-            <TextView
-                android:id="@+id/tvTitle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:fontFamily="@font/gilroy_700"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_18ssp"
-                android:layout_marginHorizontal="@dimen/_10sdp"
-                app:layout_constraintBottom_toBottomOf="@+id/ivBrand"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/ivBrand"
-                app:layout_constraintTop_toTopOf="@+id/ivBrand"
-                tools:text="The Burger King Special Offer plah plah " />
-
-
-            <TextView
-                android:id="@+id/tvDescription"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                android:fontFamily="@font/gilroy_500"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_7ssp"
-                android:lineSpacingExtra="@dimen/_4sdp"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:maxLines="3"
-                android:ellipsize="end"
-                app:layout_constraintEnd_toStartOf="@+id/ivLogo"
-                app:layout_constraintStart_toStartOf="@id/ivBrand"
-                app:layout_constraintTop_toBottomOf="@+id/ivBrand"
-                tools:text="Buy one get one free through the month of February and gain 300 BK points to spend on whatever you need " />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btRedeem"
-                android:layout_width="120dp"
-                android:layout_height="50dp"
+                android:id="@+id/btnRedeem"
+                android:layout_width="@dimen/_92sdp"
+                android:layout_height="@dimen/_38sdp"
                 android:layout_alignBaseline="@+id/ivBrand"
                 android:layout_marginHorizontal="@dimen/_9sdp"
                 android:layout_marginBottom="@dimen/_12sdp"

@@ -48,7 +48,7 @@
         <include
             android:id="@+id/clInternetConnectionError"
             layout="@layout/no_internet_connection"
-            android:visibility="@{mainViewModel.isConnected ? View.GONE : View.VISIBLE}" />
+            android:visibility="@{mainViewModel.isConnected ? View.GONE : View.VISIBLE,default=gone}" />
 
         <include
             android:id="@+id/loader"

@@ -4,29 +4,37 @@
 
     <data>
 
+        <variable
+            name="locationClicked"
+            type="com.easyEats.ezeats.ui.main.location.adapter.LocationAdapter.OnLocationListener" />
 
+        <variable
+            name="location"
+            type="com.easyEats.ezeats.domain.main.model.response.location_response.Location" />
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:onClick="@{()->locationClicked.onLocationClicked(location)}"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/tvName"
-            android:padding="@dimen/_3sdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
+            android:fontFamily="@font/gilroy_500"
+            android:padding="@dimen/_3sdp"
+            android:text="@{location.name}"
             android:textColor="@color/black"
-            tools:text="Zamalek"
             android:textSize="@dimen/_15ssp"
-            android:fontFamily="@font/gilroy_500" />
+            tools:text="Zamalek" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#EAEAEA"/>
+            android:background="#EAEAEA" />
 
     </LinearLayout>
 </layout>

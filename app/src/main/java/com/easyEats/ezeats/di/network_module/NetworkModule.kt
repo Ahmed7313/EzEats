@@ -1,20 +1,32 @@
-package com.easyEats.ezeats.di
+package com.easyEats.ezeats.di.network_module
 
+import android.content.Context
+import androidx.datastore.DataStore
+import androidx.datastore.createDataStore
+import androidx.datastore.preferences.createDataStore
 import com.easyEats.ezeats.utils.headers.HeaderInterceptor
 import com.easyEats.ezeats.BuildConfig
-import com.easyEats.ezeats.data.remote.ApiService
+import com.easyEats.ezeats.data.local.data_store.DataStorePreference
+import com.easyEats.ezeats.data.remote.auth.AuthApiService
+import com.easyEats.ezeats.data.remote.main.MainApiService
+import com.easyEats.ezeats.domain.auth.use_case.AuthUseCase
+import com.easyEats.ezeats.domain.main.use_case.MainUseCase
+import com.easyEats.ezeats.utils.Constants
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import java.util.prefs.Preferences
 import javax.inject.Singleton
+
 @InstallIn(SingletonComponent::class)
 @Module
 object NetworkModule {
@@ -48,13 +60,14 @@ object NetworkModule {
         return interceptor
     }
 
+
     /**
      * Provides a custom com.easyEats.ezeats.utils.headers.HeaderInterceptor for adding headers to requests.
      */
     @Provides
     @Singleton
-    fun provideHeaderInterceptor(): HeaderInterceptor {
-        return HeaderInterceptor()
+    fun provideHeaderInterceptor(dataStorePreference: DataStorePreference): HeaderInterceptor {
+        return HeaderInterceptor(dataStorePreference)
     }
 
     /**
@@ -91,11 +104,22 @@ object NetworkModule {
     }
 
     /**
-     * Provides API service interface implementation.
+     * Provides Auth API service interface implementation.
      */
     @Provides
     @Singleton
-    fun provideApiService(retrofit: Retrofit): ApiService {
-        return retrofit.create(ApiService::class.java)
+    fun provideAuthApiService(retrofit: Retrofit): AuthApiService {
+        return retrofit.create(AuthApiService::class.java)
     }
+
+    /**
+     * Provides Main API service interface implementation.
+     */
+    @Provides
+    @Singleton
+    fun provideMainApiService(retrofit: Retrofit): MainApiService {
+        return retrofit.create(MainApiService::class.java)
+    }
+
+
 }

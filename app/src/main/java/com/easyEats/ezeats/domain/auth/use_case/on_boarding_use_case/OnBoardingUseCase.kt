@@ -2,6 +2,7 @@ package com.easyEats.ezeats.domain.auth.use_case.on_boarding_use_case
 
 import android.location.Address
 import com.easyEats.ezeats.domain.auth.repository.AuthRepository
+import com.easyEats.ezeats.domain.main.model.UserLocationAddress
 import javax.inject.Inject
 
 class OnBoardingUseCase @Inject constructor(private val repository: AuthRepository) {
@@ -10,7 +11,7 @@ class OnBoardingUseCase @Inject constructor(private val repository: AuthReposito
         repository.userWatchOnBoardingScreen(userWatchOnBoardingScreen)
     }
 
-    suspend fun saveAddress(address: String) {
-        repository.saveAddress(address)
+    suspend fun saveAddress(userLocationAddress: UserLocationAddress) {
+        repository.saveAddress(userLocationAddress)
     }
 }

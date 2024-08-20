@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.easyEats.ezeats.MyApplication.Companion.baseApplication
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.domain.auth.use_case.AuthUseCase
+import com.easyEats.ezeats.domain.main.model.UserLocationAddress
 import com.easyEats.ezeats.ui.auth.on_boarding.pager.IntroSlide
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -81,9 +82,9 @@ class OnBoardingViewModel @Inject constructor(
      *
      * @param address The address string to be saved.
      */
-    fun saveAddress(address: String) {
+    fun saveAddress(userLocationAddress: UserLocationAddress) {
         viewModelScope.launch {
-            authUseCase.onBoardingUseCase.saveAddress(address)
+            authUseCase.onBoardingUseCase.saveAddress(userLocationAddress)
         }
     }
 }

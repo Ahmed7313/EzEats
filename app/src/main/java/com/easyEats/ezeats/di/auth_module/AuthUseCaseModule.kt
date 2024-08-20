@@ -1,7 +1,5 @@
 package com.easyEats.ezeats.di.auth_module
 
-import com.easyEats.ezeats.domain.auth.model.request.VerifyOtpRequest
-import com.easyEats.ezeats.domain.auth.repository.AuthRepository
 import com.easyEats.ezeats.domain.auth.use_case.AuthUseCase
 import com.easyEats.ezeats.domain.auth.use_case.on_boarding_use_case.OnBoardingUseCase
 import com.easyEats.ezeats.domain.auth.use_case.sign_in_use_case.SignInUseCase

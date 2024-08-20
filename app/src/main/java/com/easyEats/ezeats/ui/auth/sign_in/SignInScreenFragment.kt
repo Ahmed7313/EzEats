@@ -1,10 +1,12 @@
 package com.easyEats.ezeats.ui.auth.sign_in
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.base.BaseFragment
 import com.easyEats.ezeats.databinding.FragmentSignInScreenBinding
@@ -13,6 +15,7 @@ import com.easyEats.ezeats.utils.validation.ValidateFields
 import com.parse.ParseUser
 import dagger.hilt.android.AndroidEntryPoint
 import es.dmoral.toasty.Toasty
+
 @AndroidEntryPoint
 class SignInScreenFragment : BaseFragment<FragmentSignInScreenBinding>() {
 
@@ -45,6 +48,40 @@ class SignInScreenFragment : BaseFragment<FragmentSignInScreenBinding>() {
     }
 
     private fun setUpObservers() {
+        listenToLoginResult()
+        listenToOtpResult()
+    }
+
+    private fun listenToOtpResult() {
+        signInViewModel.sendOtpLiveData.observe(viewLifecycleOwner) { resource ->
+            when (resource) {
+                is Resource.Loading -> {
+                    showLoading()
+                }
+
+                is Resource.Success -> {
+                    hideLoading()
+                    goToVerificationScreen()
+                }
+
+                is Resource.Error -> {
+                    hideLoading()
+                    Toasty.error(requireContext(), resource.message, Toast.LENGTH_LONG).show()
+                }
+
+                is Resource.UnAuthenticated -> {
+                    hideLoading()
+                    authenticateUser()
+                }
+
+                else -> {
+                    hideLoading()
+                }
+            }
+        }
+    }
+
+    private fun listenToLoginResult() {
         signInViewModel.loginResult.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Loading -> {
@@ -52,43 +89,23 @@ class SignInScreenFragment : BaseFragment<FragmentSignInScreenBinding>() {
                 }
                 is Resource.Success -> {
                     hideLoading()
-                    sauceNecessaryData(resource)
+                    sendOtpAndSaveToke(resource)
                 }
                 is Resource.Error -> {
                     hideLoading()
                     Toasty.error(requireContext(), resource.message, Toast.LENGTH_LONG).show()
                 }
-                else->{
-                    hideLoading()
-                }
-            }
-        }
-
-        signInViewModel.sendOtpLiveData.observe(viewLifecycleOwner) { resource ->
-            when (resource) {
-                is Resource.Loading -> {
-                    showLoading()
-                }
-                is Resource.Success -> {
-                    hideLoading()
-                    goToVerificationScreen()
-                }
-                is Resource.Error -> {
-                    hideLoading()
-                    Toasty.error(requireContext(), resource.message, Toast.LENGTH_LONG).show()
-                }
-                else->{
+                else -> {
                     hideLoading()
                 }
             }
         }
     }
 
-    private fun sauceNecessaryData(resource: Resource.Success<ParseUser>) {
+    private fun sendOtpAndSaveToke(resource: Resource.Success<ParseUser>) {
         val user = resource.data
         signInViewModel.sendOtp()
         signInViewModel.saveToken(user ?: return)
-        signInViewModel.saveMobileNumber()
     }
 
     private fun goToVerificationScreen() {
@@ -106,8 +123,8 @@ class SignInScreenFragment : BaseFragment<FragmentSignInScreenBinding>() {
     }
 
     override fun onDestroyView() {
-        signInViewModel.loginResult.value=null
-        signInViewModel.sendOtpLiveData.value=null
+        signInViewModel.loginResult.value = null
+        signInViewModel.sendOtpLiveData.value = null
         super.onDestroyView()
     }
 }

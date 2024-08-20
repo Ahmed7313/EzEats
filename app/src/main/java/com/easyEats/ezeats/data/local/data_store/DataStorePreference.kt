@@ -5,12 +5,15 @@ import androidx.datastore.DataStore
 import androidx.datastore.preferences.Preferences
 import androidx.datastore.preferences.edit
 import androidx.datastore.preferences.preferencesKey
+import com.easyEats.ezeats.domain.main.model.UserLocationAddress
 import com.easyEats.ezeats.utils.Constants.ADDRESS_KEY
 import com.easyEats.ezeats.utils.Constants.IS_VERIFIED
 import com.easyEats.ezeats.utils.Constants.MOBILE_NUMBER_KEY
 import com.easyEats.ezeats.utils.Constants.NAME_KEY
 import com.easyEats.ezeats.utils.Constants.ONBOARD_KEY
 import com.easyEats.ezeats.utils.Constants.TOKEN_KEY
+import com.google.gson.Gson
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -26,11 +29,14 @@ class DataStorePreference @Inject constructor(private val preferences: DataStore
         it[preferencesKey<Boolean>(ONBOARD_KEY)] ?: false
     }
 
-    suspend fun saveAddress(address: String) {
-        preferences.edit {
-            it[preferencesKey<String>(ADDRESS_KEY)] = address
+    suspend fun saveAddress(userLocationAddress: UserLocationAddress) {
+        val gson = Gson()
+        val userLocationAddressGson = gson.toJson(userLocationAddress)
+        preferences.edit { preferences ->
+            preferences[preferencesKey<String>(ADDRESS_KEY)] = userLocationAddressGson
         }
     }
+
 
     suspend fun setUserVerification(isVerified: Boolean) {
         preferences.edit {
@@ -59,9 +65,27 @@ class DataStorePreference @Inject constructor(private val preferences: DataStore
         it[preferencesKey<Boolean>(IS_VERIFIED)] ?: false
     }
 
-    fun fetchAddress() = preferences.data.map {
-        it[preferencesKey<String>(ADDRESS_KEY)] ?: ""
-    }
+//    suspend fun fetchAddress(): UserLocationAddress? {
+//        val gson = Gson()
+//        val userLocationAddressJson = preferences.data
+//            .map { preferences ->
+//                preferences[preferencesKey<String>(ADDRESS_KEY)] ?: ""
+//            }.firstOrNull()  // This ensures you get the first emitted value
+//        return if (userLocationAddressJson.isNullOrEmpty()) {
+//            null
+//        } else {
+//            gson.fromJson(userLocationAddressJson, UserLocationAddress::class.java)
+//        }
+//    }
+
+    val userLocationAddressFlow: Flow<UserLocationAddress?> = preferences.data
+        .map { preferences ->
+            val userLocationAddressGson = preferences[preferencesKey<String>(ADDRESS_KEY)]
+            userLocationAddressGson?.let { gson ->
+                Gson().fromJson(gson, UserLocationAddress::class.java)
+            }
+        }
+
 
     fun fetchMobileNumber() = preferences.data.map {
         it[preferencesKey<String>(MOBILE_NUMBER_KEY)] ?: ""

@@ -1,6 +1,7 @@
 package com.easyEats.ezeats.base
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import com.easyEats.ezeats.ui.auth.main.AuthActivity
+import com.easyEats.ezeats.ui.main.main.HomeActivity
 
 /**
  * BaseFragment is an abstract class that provides a base implementation for fragments using ViewDataBinding.
@@ -35,20 +37,16 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = inflateBinding(inflater, container)
+        setUpViews()
         return binding.root
     }
 
-    /**
-     * Called immediately after onCreateView. Sets the lifecycle owner and calls setUpViews.
-     *
-     * @param view The View returned by onCreateView.
-     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state.
-     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _binding?.lifecycleOwner = viewLifecycleOwner
         setUpViews()
+        _binding?.lifecycleOwner = viewLifecycleOwner
     }
+
 
     /**
      * Abstract method to inflate the ViewDataBinding.
@@ -77,7 +75,16 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
      */
     protected fun showLoading() {
         (activity as? AuthActivity)?.binding?.loader?.visibility = View.VISIBLE
-        (activity as? AuthActivity)?.binding?.loader?.isEnabled=false
+        (activity as? AuthActivity)?.binding?.loader?.isEnabled = false
+    }
+
+    protected fun showMainLoading() {
+        (activity as? HomeActivity)?.binding?.loader?.visibility = View.VISIBLE
+        (activity as? HomeActivity)?.binding?.loader?.isEnabled = false
+    }
+
+    protected fun hideMainLoading() {
+        (activity as? HomeActivity)?.binding?.loader?.visibility = View.GONE
     }
 
     /**
@@ -85,6 +92,11 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
      */
     protected fun hideLoading() {
         (activity as? AuthActivity)?.binding?.loader?.visibility = View.GONE
+    }
+
+    protected fun authenticateUser() {
+        requireActivity().startActivity(Intent(requireActivity(), AuthActivity::class.java))
+        requireActivity().finish()
     }
 }
 

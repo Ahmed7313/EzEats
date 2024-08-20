@@ -75,6 +75,8 @@ class VerificationScreenFragment : BaseFragment<FragmentVerificationScreenBindin
                     hideLoading()
                     Toasty.error(requireContext(), resource.message, Toast.LENGTH_LONG).show()
                 }
+
+                is Resource.UnAuthenticated -> TODO()
             }
         }
 
@@ -91,6 +93,10 @@ class VerificationScreenFragment : BaseFragment<FragmentVerificationScreenBindin
                 is Resource.Error -> {
                     hideLoading()
                     Toasty.error(requireContext(), resource.message, Toast.LENGTH_LONG).show()
+                }
+
+                is Resource.UnAuthenticated -> {
+                    
                 }
             }
         }

@@ -1,11 +1,9 @@
 package com.easyEats.ezeats.ui.auth.otp_verification
 
 import android.util.Log
-import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.MyApplication.Companion.baseApplication
@@ -16,10 +14,13 @@ import com.easyEats.ezeats.domain.auth.model.request.VerifyOtpRequest
 import com.easyEats.ezeats.domain.auth.use_case.AuthUseCase
 import com.easyEats.ezeats.ui.auth.main.AuthViewModel
 import com.easyEats.ezeats.utils.Resource
+import com.easyEats.ezeats.utils.Resource.Loading
+import com.easyEats.ezeats.utils.Resource.UnAuthenticated
+import com.easyEats.ezeats.utils.Resource.Success
+import com.easyEats.ezeats.utils.Resource.Error
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -38,12 +39,15 @@ class VerificationViewModel @Inject constructor(
     AuthViewModel() {
 
     // LiveData to expose OTP verification result
-    private val _verifyOtpMutableLiveData = MutableLiveData<Resource<BaseResponse<Boolean>>>()
-    val verifyOtpLiveData: LiveData<Resource<BaseResponse<Boolean>>> get() = _verifyOtpMutableLiveData
+    private val _verifyOtpMutableLiveData = MutableLiveData<Resource<Boolean>>()
+    val verifyOtpLiveData: LiveData<Resource<Boolean>> get() = _verifyOtpMutableLiveData
 
     // LiveData to expose OTP sending result
-    private val _sendOtpMutableLiveData = MutableLiveData<Resource<BaseResponse<Int>>>()
-    val sendOtpLiveData: LiveData<Resource<BaseResponse<Int>>> get() = _sendOtpMutableLiveData
+    private val _sendOtpMutableLiveData = MutableLiveData<
+            Resource<BaseResponse<Boolean>>>()
+    val sendOtpLiveData: LiveData<
+            Resource<BaseResponse<Boolean>>>
+        get() = _sendOtpMutableLiveData
 
     val phoneNumber: String? = savedStateHandle["phoneNumber"]
 
@@ -51,12 +55,12 @@ class VerificationViewModel @Inject constructor(
 
     private val verifyExceptionHandler = CoroutineExceptionHandler { _, exception ->
         _verifyOtpMutableLiveData.value =
-            Resource.Error(baseApplication.getString(R.string.no_internet_connection))
+            Error(baseApplication.getString(R.string.no_internet_connection))
     }
 
     private val sendOtpExceptionHandler = CoroutineExceptionHandler { _, exception ->
         _sendOtpMutableLiveData.value =
-            Resource.Error(baseApplication.getString(R.string.no_internet_connection))
+            Error(baseApplication.getString(R.string.no_internet_connection))
     }
 
 
@@ -67,7 +71,7 @@ class VerificationViewModel @Inject constructor(
             maxRetries = 2,
             onError = { error ->
                 _verifyOtpMutableLiveData.value =
-                    Resource.Error(error.localizedMessage ?: "Unknown error")
+                    Error(error.localizedMessage ?: "Unknown error")
             },
             onSuccess = { resource ->
                 _verifyOtpMutableLiveData.value = resource
@@ -75,27 +79,26 @@ class VerificationViewModel @Inject constructor(
         )
     }
 
-    private fun createVerifyOtp(): Flow<Resource<BaseResponse<Boolean>>> = channelFlow {
-        send(Resource.Loading())
-        val sendOtp = authUseCase.verifyUseCase.verifyOtp(
+    private fun createVerifyOtp(): Flow<Resource<Boolean>> = flow {
+        emit(Loading())
+        val verifyOtp = authUseCase.verifyUseCase.verifyOtp(
             VerifyOtpRequest(
                 "+2$phoneNumber",
                 otp.value.toString()
             )
         )
-        if (sendOtp.isSuccessful) {
-            if (sendOtp.body()?.result == true) {
+        verifyOtp.handleResponse(
+            onSuccess = {
                 saveUserVerification(true)
-                send(Resource.Success(sendOtp.body()))
-            } else
-                send(Resource.Error("Invalid Otp"))
-
-        } else {
-            send(Resource.Error(sendOtp.message()))
-        }
-        close()
+                emit(Success(it))
+            },
+            onError = { message, error ->
+                emit(Error(message, error))
+            }, onUnauthenticated = {
+                emit(UnAuthenticated())
+            }
+        )
     }
-
 
     fun sendOtp() {
         val flow = createSendOtpFlow()
@@ -104,7 +107,7 @@ class VerificationViewModel @Inject constructor(
             maxRetries = 2,
             onError = { error ->
                 _sendOtpMutableLiveData.value =
-                    Resource.Error(error.localizedMessage ?: "Unknown error")
+                    Error(error.localizedMessage ?: "Unknown error")
             },
             onSuccess = { resource ->
                 _sendOtpMutableLiveData.value = resource
@@ -112,22 +115,25 @@ class VerificationViewModel @Inject constructor(
         )
     }
 
-    private fun createSendOtpFlow(): Flow<Resource<BaseResponse<Int>>> = flow {
+    private fun createSendOtpFlow(): Flow<Resource<BaseResponse<Boolean>>> = flow {
         viewModelScope.launch(sendOtpExceptionHandler) {
-            emit(Resource.Loading())
+            emit(Loading())
             val sendOtp = authUseCase.signInUseCase.sendOTP(SendOtpRequest("+2${phoneNumber}"))
-            if (sendOtp.isSuccessful) {
-                emit(Resource.Success(sendOtp.body()))
-            } else {
-                emit(Resource.Error(sendOtp.message()))
-            }
+            sendOtp.handleResponse(onSuccess = {
+                emit(Success(sendOtp))
+            },
+                onError = { message, error ->
+                    emit(Error(message, error))
+                }, onUnauthenticated = {
+                    emit(UnAuthenticated())
+                }
+            )
         }
     }
 
     private fun saveUserVerification(isUserVerified: Boolean) {
         viewModelScope.launch {
             authUseCase.verifyUseCase.setUserVerification(isUserVerified)
-            Log.d(TAG, "saveUserVerification: $isUserVerified")
         }
     }
 }

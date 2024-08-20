@@ -5,16 +5,24 @@
 
     <data>
 
+        <variable
+            name="popularSearch"
+            type="com.easyEats.ezeats.domain.main.model.response.search_response.PopularSearch" />
+
+        <variable
+            name="clickListener"
+            type="com.easyEats.ezeats.ui.main.search_history.adapter.PopularSearchAdapter.OnPopularSearchClickListener" />
     </data>
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:onClick="@{() -> clickListener.onPopularSearchClicked(popularSearch)}">
 
         <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_7sdp"
+            android:layout_margin="@dimen/_3sdp"
             app:cardCornerRadius="@dimen/_100sdp">
 
             <TextView
@@ -24,8 +32,13 @@
                 android:background="@drawable/rounded_search_background"
                 android:drawablePadding="@dimen/_5sdp"
                 android:fontFamily="@font/gilroy_600"
-                android:textColor="#212B3D"
                 android:padding="@dimen/_10sdp"
+                android:text="@{popularSearch.term}"
+                android:textColor="#212B3D"
+                android:lines="1"
+                android:maxLines="1"
+                android:maxLength="20"
+                android:ellipsize="end"
                 android:textSize="@dimen/_11sdp"
                 app:drawableStartCompat="@drawable/rocket_icon"
                 tools:text="Burger king" />

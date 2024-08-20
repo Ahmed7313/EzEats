@@ -11,6 +11,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.base.BaseFragment
 import com.easyEats.ezeats.databinding.FragmentOnBoardingBinding
+import com.easyEats.ezeats.domain.main.model.UserLocationAddress
 import com.easyEats.ezeats.ui.auth.on_boarding.pager.IntroSliderAdapter
 import com.easyEats.ezeats.utils.Constants.LOCATION_PERMISSION_REQUEST_CODE
 import com.easyEats.ezeats.utils.location.LocationUtil
@@ -147,7 +148,7 @@ class OnBoardingFragment : BaseFragment<FragmentOnBoardingBinding>() {
             onLocationReceived = { latitude, longitude ->
                 locationUtil.reverseGeocode(latitude, longitude,
                     onAddressReceived = { address ->
-                        viewModel.saveAddress(address)
+                        viewModel.saveAddress(UserLocationAddress(address,latitude.toString(),longitude.toString()))
                     },
                     onError = { errorMessage ->
                         // Handle the error
@@ -168,10 +169,8 @@ class OnBoardingFragment : BaseFragment<FragmentOnBoardingBinding>() {
      * Navigates to the intro screen when location permission is denied.
      */
     private fun onLocationPermissionDenied() {
-        locationUtil.askUserForLocationPermission(
-            onPermissionGranted = { onLocationPermissionGranted() },
-            onPermissionDenied = { onLocationPermissionDenied() }
-        )
+        viewModel.userWatchOnBoarding(isWatched = true)
+        navigateToIntroScreen()
     }
 
     /**

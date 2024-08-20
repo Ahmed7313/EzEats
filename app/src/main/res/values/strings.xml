@@ -102,6 +102,16 @@
     <string name="popular_searches">Popular Searches</string>
     <string name="clear">Clear</string>
     <string name="offer">image of offer</string>
+    <string name="location_access_denied">location Access Denied</string>
+    <string name="enable_access">Enable Access</string>
+    <string name="for_a_better_user_experience_please_enable_location_access">For a better user experience, please enable location access!</string>
+    <string name="category_image">Category Image</string>
+    <string name="all_resturant">All Resturant</string>
+    <string name="current_location">Current Location</string>
+    <string name="search_results">Search Results</string>
+    <string name="enter_your_search_keyword">Enter Your Search Keyword</string>
+    <string name="please_check_again_later_for_the_hottest_offers">Please check again later for the hottest offers</string>
+    <string name="has_no_offers_right_now">has no offers right now</string>
 
 
 </resources>

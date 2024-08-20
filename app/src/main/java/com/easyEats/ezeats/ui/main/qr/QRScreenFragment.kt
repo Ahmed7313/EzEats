@@ -37,6 +37,15 @@ class QRScreenFragment : BaseBottomSheetFragment<FragmentQRScreenBinding>() {
     private val permissionHandler: DefaultPermissionHandler by lazy {
         DefaultPermissionHandler(this@QRScreenFragment)
     }
+
+    override fun setUpViews() {
+
+    }
+
+    override fun listenToObservers() {
+
+    }
+
     override fun inflateBinding(
         inflater: LayoutInflater,
         container: ViewGroup?

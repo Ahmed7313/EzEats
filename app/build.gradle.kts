@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
     id("androidx.navigation.safeargs.kotlin")
+    id("kotlin-kapt")
 }
 
 android {
@@ -135,11 +136,14 @@ dependencies {
     // Fragment KTX
     implementation(libs.androidx.fragment.ktx)
     // Activity KTX
-    implementation (libs.androidx.activity.ktx)
-
+    implementation(libs.androidx.activity.ktx)
     //Toasty
-    implementation (libs.toasty)
-
+    implementation(libs.toasty)
+    //coil
+    implementation(libs.coil)
+    //shimmer
+    implementation (libs.shimmer)
+    implementation (libs.shimmer.recyclerview)
 
 
 }

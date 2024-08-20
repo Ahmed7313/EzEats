@@ -1,6 +1,5 @@
 package com.easyEats.ezeats.utils.location
 
-import com.easyEats.ezeats.utils.Constants.LOCATION_PERMISSION_REQUEST_CODE
 import android.Manifest
 import android.app.AlertDialog
 import android.content.pm.PackageManager
@@ -9,7 +8,9 @@ import android.location.Geocoder
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.easyEats.ezeats.R
+import com.easyEats.ezeats.utils.Constants.LOCATION_PERMISSION_REQUEST_CODE
 import com.google.android.gms.location.*
+
 
 class LocationUtil(private val fragment: Fragment) {
 
@@ -21,25 +22,36 @@ class LocationUtil(private val fragment: Fragment) {
         onPermissionGranted: () -> Unit,
         onPermissionDenied: () -> Unit
     ) {
-        when {
+        if (
             ContextCompat.checkSelfPermission(
                 fragment.requireContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED -> {
-                onPermissionGranted()
-            }
-
-            fragment.shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION) -> {
-                showPermissionRationaleDialog()
-            }
-
-            else -> {
-                fragment.requestPermissions(
-                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                    LOCATION_PERMISSION_REQUEST_CODE
-                )
-            }
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            onPermissionGranted()
+        } else {
+            showPermissionRationaleDialog()
+            onPermissionDenied()
         }
+
+    }
+
+    fun listenToLocationPermission(
+        onPermissionGranted: () -> Unit,
+        onPermissionDenied: () -> Unit
+    ) {
+        if (
+            ContextCompat.checkSelfPermission(
+                fragment.requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            onPermissionGranted()
+        } else {
+            showPermissionRationaleDialog()
+            onPermissionDenied()
+        }
+
     }
 
     fun getCurrentLocation(
@@ -91,20 +103,9 @@ class LocationUtil(private val fragment: Fragment) {
     }
 
     private fun showPermissionRationaleDialog() {
-        AlertDialog.Builder(fragment.requireContext())
-            .setTitle(fragment.getString(R.string.location_permission_required))
-            .setMessage(fragment.getString(R.string.location_permission_is_required_to_use_this_feature_please_grant_the_permission_in_the_app_settings))
-            .setPositiveButton(fragment.getString(R.string.ok)) { _, _ ->
-                fragment.requestPermissions(
-                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                    LOCATION_PERMISSION_REQUEST_CODE
-                )
-            }
-            .setNegativeButton(fragment.getString(R.string.cancel)) { dialog, _ ->
-                dialog.dismiss()
-            }
-            .create()
-            .show()
+        fragment.requestPermissions(
+            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+            LOCATION_PERMISSION_REQUEST_CODE
+        )
     }
-
 }

@@ -1,14 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.main.percent.PercentScreenFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <data>
+
+    </data>
+
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Percent" />
+        android:backgroundTint="#F7F7F7"
+        android:fillViewport="true"
+        tools:context=".ui.main.home.HomeScreenFragment">
 
-</FrameLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#F7F7F7"
+            android:backgroundTint="#F7F7F7">
+
+
+            <RelativeLayout
+                android:id="@+id/reTop"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/home_top_background"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+
+                <TextView
+                    android:id="@+id/tvLocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="@dimen/_16sdp"
+                    android:layout_marginTop="@dimen/_26sdp"
+                    android:background="?android:selectableItemBackground"
+                    android:clickable="true"
+                    android:drawablePadding="5dp"
+                    android:ellipsize="end"
+                    android:focusable="true"
+                    android:fontFamily="@font/gilroy_600"
+                    android:maxLength="25"
+                    android:maxLines="1"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12ssp"
+                    app:drawableEndCompat="@drawable/arrow_down_icon"
+                    app:drawableStartCompat="@drawable/marker_pin_icon"
+                    android:text="@string/select_location" />
+
+                <ImageView
+                    android:id="@+id/iv_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="@dimen/_16sdp"
+                    android:fontFamily="@font/gilroy_600"
+                    android:maxLength="25"
+                    android:layout_alignRight="@id/linearContainer"
+                    android:maxLines="1"
+                    android:padding="@dimen/_2sdp"
+                    android:layout_marginTop="@dimen/_25sdp"
+                    android:textSize="@dimen/_12ssp" />
+
+
+                <LinearLayout
+                    android:id="@+id/linearContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/tvLocation"
+                    android:layout_marginTop="@dimen/_50sdp"
+                    android:background="@drawable/home_rounded_layout"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="@dimen/_17sdp">
+
+
+                 <TextView
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_marginTop="@dimen/_70sdp"
+                     android:text="@string/all_resturant"
+                     android:textSize="@dimen/_18ssp"
+                     android:fontFamily="@font/gilroy_700"/>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        tools:listitem="@layout/item_offer"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/_55sdp"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:listitem="@layout/item_category"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+
+            </RelativeLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>

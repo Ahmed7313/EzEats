@@ -1,5 +1,6 @@
 package com.easyEats.ezeats.ui.auth.sign_up
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
@@ -113,14 +114,13 @@ class SignUpScreenFragment : BaseFragment<FragmentSignUpScreenBinding>() {
                 }
 
                 else -> {
-                    hideLoading()
+//                    hideLoading()
                 }
             }
         }
     }
 
     private fun saveNecessaryData(resource: Resource.Success<ParseUser>) {
-        signUpViewModel.saveMobileNumber(signUpViewModel.phoneNumber.value.toString())
         signUpViewModel.saveToken(resource.data)
         signUpViewModel.saveName(signUpViewModel.name.value.toString())
         signUpViewModel.sendOtp()

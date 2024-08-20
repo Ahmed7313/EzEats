@@ -1,26 +1,24 @@
-package com.easyEats.ezeats.data.local.auth.repository
+package com.easyEats.ezeats.data.repository.auth.repository
 
-import android.location.Address
 import androidx.lifecycle.LiveData
 import com.easyEats.ezeats.base.BaseResponse
 import com.easyEats.ezeats.data.local.data_store.DataStorePreference
-import com.easyEats.ezeats.data.remote.ApiService
-import com.easyEats.ezeats.data.remote.AuthWithParsing
+import com.easyEats.ezeats.data.remote.auth.AuthApiService
+import com.easyEats.ezeats.data.remote.auth.AuthWithParsing
 import com.easyEats.ezeats.domain.auth.model.request.SendOtpRequest
 import com.easyEats.ezeats.domain.auth.model.request.VerifyOtpRequest
 import com.easyEats.ezeats.domain.auth.repository.AuthRepository
+import com.easyEats.ezeats.domain.main.model.UserLocationAddress
 import com.easyEats.ezeats.utils.Resource
 import com.parse.ParseUser
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
-import retrofit2.Response
 import javax.inject.Inject
 
 
 class AuthRepositoryImpl @Inject constructor(
     private val dataStorePreference: DataStorePreference,
     private val authWithParsing: AuthWithParsing,
-    private val apiService: ApiService
+    private val authApiService: AuthApiService
 ) : AuthRepository {
 
     override suspend fun userWatchOnBoardingScreen(userWatchOnBoardingScreen: Boolean) {
@@ -32,6 +30,8 @@ class AuthRepositoryImpl @Inject constructor(
     override fun isUserVerified(): Flow<Boolean> {
         return dataStorePreference.isUserVerified()
     }
+
+    override fun getToke() = dataStorePreference.fetchToken()
 
     override fun register(phoneNumber: String, name: String): LiveData<Resource<ParseUser>> =
         authWithParsing.register(phoneNumber, name)
@@ -48,8 +48,8 @@ class AuthRepositoryImpl @Inject constructor(
         dataStorePreference.setUserVerification(isUserVerified)
     }
 
-    override suspend fun saveAddress(address: String) {
-        dataStorePreference.saveAddress(address)
+    override suspend fun saveAddress(userLocationAddress: UserLocationAddress) {
+        dataStorePreference.saveAddress(userLocationAddress)
     }
 
     override suspend fun saveMobileNumber(mobileNumber: String) {
@@ -61,8 +61,8 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override suspend fun sendOTP(request: SendOtpRequest) =
-        apiService.sendOTP(request)
+        authApiService.sendOTP(request)
 
-    override suspend fun verifyOtp(request: VerifyOtpRequest): Response<BaseResponse<Boolean>> =
-        apiService.verifyOtp(request)
+    override suspend fun verifyOtp(request: VerifyOtpRequest): BaseResponse<Boolean> =
+        authApiService.verifyOtp(request)
 }

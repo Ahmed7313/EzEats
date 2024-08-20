@@ -7,6 +7,7 @@ import com.easyEats.ezeats.BuildConfig.URL
 import com.easyEats.ezeats.utils.Constants.EASY_EATS_LOGS
 import com.parse.Parse
 import dagger.hilt.android.HiltAndroidApp
+import kotlinx.coroutines.runBlocking
 
 
 /**
@@ -26,6 +27,9 @@ class MyApplication : Application() {
 
         lateinit var TAG: String
             private set
+
+        lateinit var CustomToken: String
+            private set
     }
 
     /**
@@ -44,5 +48,8 @@ class MyApplication : Application() {
             .server(URL)
             .build()
         )
+
+
+
     }
 }
