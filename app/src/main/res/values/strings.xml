@@ -112,6 +112,9 @@
     <string name="enter_your_search_keyword">Enter Your Search Keyword</string>
     <string name="please_check_again_later_for_the_hottest_offers">Please check again later for the hottest offers</string>
     <string name="has_no_offers_right_now">has no offers right now</string>
+    <string name="your_search_has_no_results">Your search has no results</string>
+    <string name="explore_our_offers">Explore Our Offers</string>
+    <string name="explore_our_restaurants">Explore Our Restaurans</string>
 
 
 </resources>

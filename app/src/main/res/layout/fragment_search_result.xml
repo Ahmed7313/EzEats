@@ -183,10 +183,11 @@
                     android:id="@+id/rvRestaurantSearch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/_17sdp"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginBottom="@dimen/_16sdp"
                     android:clipToPadding="false"
+                    android:visibility="visible"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/item_offer" />
 
@@ -194,13 +195,46 @@
                     android:id="@+id/rvOfferSearch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/_17sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginBottom="@dimen/_16sdp"
                     android:clipToPadding="false"
                     android:visibility="gone"
                     tools:listitem="@layout/hot_deals_item" />
 
+                <LinearLayout
+                    android:id="@+id/ll_explore"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/empty_offers_image" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:fontFamily="@font/gilroy_600"
+                        android:text="@string/your_search_has_no_results" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_explore"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_25sdp"
+                        android:layout_marginTop="@dimen/_30sdp"
+                        android:paddingVertical="@dimen/_12sdp"
+                        android:backgroundTint="@color/main_color"
+                        app:cornerRadius="@dimen/_100sdp"
+                        android:textColor="@color/white"
+                        android:text="@string/explore_our_offers" />
+
+                </LinearLayout>
             </LinearLayout>
 
 
