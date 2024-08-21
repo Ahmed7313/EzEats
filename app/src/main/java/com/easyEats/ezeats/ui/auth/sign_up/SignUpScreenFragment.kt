@@ -1,6 +1,5 @@
 package com.easyEats.ezeats.ui.auth.sign_up
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast

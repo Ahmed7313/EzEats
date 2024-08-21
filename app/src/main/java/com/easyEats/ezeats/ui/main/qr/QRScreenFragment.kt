@@ -3,7 +3,9 @@ package com.easyEats.ezeats.ui.main.qr
 import android.Manifest
 import android.app.Activity
 import android.app.Dialog
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
@@ -79,14 +81,20 @@ class QRScreenFragment : BaseBottomSheetFragment<FragmentQRScreenBinding>() {
             override fun barcodeResult(result: BarcodeResult?) {
                 result?.let {
                     binding.barcodeScanner.pause()
-                    Toast.makeText(requireContext(), result.result.toString(), Toast.LENGTH_SHORT)
-                        .show()
+                    openBrowser(it)
                 }
             }
 
             override fun possibleResultPoints(resultPoints: List<com.google.zxing.ResultPoint>?) {}
         })
     }
+
+    private fun openBrowser(it: BarcodeResult) {
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.data = Uri.parse("${it.result}?")
+        startActivity(intent)
+    }
+
     override fun onResume() {
         super.onResume()
         binding.barcodeScanner.resume()
