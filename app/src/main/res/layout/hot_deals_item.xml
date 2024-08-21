@@ -119,7 +119,7 @@
                         android:gravity="start"
                         android:textColor="@color/main_color"
                         android:textSize="@dimen/_10ssp"
-                        android:text="@{hotDeal.distance}"
+                        android:text='@{String.format("%s Away", hotDeal.distance)}'
                         android:fontFamily="@font/gilroy_600"
                         app:drawableStartCompat="@drawable/marker_pin_icon"
                         app:drawableTint="@color/main_color" />

@@ -24,6 +24,9 @@ class PercentScreenFragment : BaseFragment<FragmentPercentScreenBinding>() {
         binding.tvLocation.setOnClickListener {
             findNavController().navigate(R.id.location_bottom_sheet)
         }
+        binding.ivSearch.setOnClickListener{
+            findNavController().navigate(R.id.searchHistoryFragment)
+        }
 
         listenToObservers()
     }
