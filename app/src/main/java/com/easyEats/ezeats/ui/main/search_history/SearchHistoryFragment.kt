@@ -22,30 +22,52 @@ import com.easyEats.ezeats.ui.main.search_suggestion.SearchFragmentDirections
 import com.easyEats.ezeats.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 
-
+/**
+ * Fragment class responsible for displaying the search history, including categories,
+ * popular searches, and recent searches. The fragment allows the user to interact with
+ * the search history items and navigate to search results or other fragments.
+ *
+ * Implements:
+ * - [CategoryAdapter.OnCategoryClickListener] to handle clicks on categories.
+ * - [PopularSearchAdapter.OnPopularSearchClickListener] to handle clicks on popular searches.
+ * - [RecentSearchAdapter.OnRecentSearchClickListener] to handle clicks on recent searches.
+ *
+ * Dependencies:
+ * - [MainViewModel] is shared across multiple fragments and activities.
+ * - [SearchHistoryViewModel] manages the data and business logic related to search history.
+ *
+ * Annotations:
+ * - [AndroidEntryPoint] is used to inject dependencies via Hilt.
+ */
 @AndroidEntryPoint
 class SearchHistoryFragment : BaseBottomSheetFragment<FragmentSearchHistoryBinding>(),
     CategoryAdapter.OnCategoryClickListener, PopularSearchAdapter.OnPopularSearchClickListener,
     RecentSearchAdapter.OnRecentSearchClickListener {
 
+    // Shared ViewModel between multiple fragments and activities
     private val mainViewModel: MainViewModel by activityViewModels()
 
+    // Adapter for displaying categories in the search history
     private val categoryAdapter by lazy {
         CategoryAdapter(this)
     }
+
+    // Adapter for displaying popular searches
     private val popularSearchAdapter by lazy {
-        PopularSearchAdapter(
-            this
-        )
+        PopularSearchAdapter(this)
     }
 
+    // Adapter for displaying recent searches
     private val recentSearchAdapter by lazy {
-        RecentSearchAdapter(
-            this
-        )
+        RecentSearchAdapter(this)
     }
 
+    // ViewModel specific to this fragment, managing search history
     private val searchHistoryViewModel: SearchHistoryViewModel by viewModels()
+
+    /**
+     * Sets up the views in the fragment, including click listeners and adapters.
+     */
     override fun setUpViews() {
         binding.searchHistoryViewModel = searchHistoryViewModel
         binding.mcvSearch.setOnClickListener {
@@ -57,6 +79,9 @@ class SearchHistoryFragment : BaseBottomSheetFragment<FragmentSearchHistoryBindi
         }
     }
 
+    /**
+     * Called when the fragment resumes. Sets up the RecyclerView adapters and fetches search history data.
+     */
     override fun onResume() {
         super.onResume()
         binding.rvFood.adapter = categoryAdapter
@@ -67,15 +92,17 @@ class SearchHistoryFragment : BaseBottomSheetFragment<FragmentSearchHistoryBindi
         searchHistoryViewModel.getSearchHistory()
     }
 
+    /**
+     * Observes LiveData objects in the ViewModel to update the UI based on changes in data.
+     */
     override fun listenToObservers() {
         searchHistoryViewModel.searchHistoryResultLiveData.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Error -> {}
                 is Resource.Loading -> {}
                 is Resource.Success -> {
-                    setData(resource)
+                    searchHistoryViewModel.setData(categoryAdapter, popularSearchAdapter, recentSearchAdapter, binding, resource)
                 }
-
                 is Resource.UnAuthenticated -> {}
             }
         }
@@ -87,7 +114,6 @@ class SearchHistoryFragment : BaseBottomSheetFragment<FragmentSearchHistoryBindi
                 is Resource.Success -> {
                     searchHistoryViewModel.getSearchHistory()
                 }
-
                 is Resource.UnAuthenticated -> {}
             }
         }
@@ -99,36 +125,38 @@ class SearchHistoryFragment : BaseBottomSheetFragment<FragmentSearchHistoryBindi
         }
     }
 
-    private fun setData(resource: Resource.Success<BaseResponse<SearchScreenResponse>>) {
-        categoryAdapter.submitList(resource.data?.result?.data?.categories)
-        popularSearchAdapter.submitList(resource.data?.result?.data?.popularSearches)
-        recentSearchAdapter.submitList(resource.data?.result?.data?.recentSearches)
-        if (resource.data?.result?.data?.recentSearches!!.isEmpty())
-            binding.llRecentSearch.visibility = GONE
-    }
-
+    /**
+     * Inflates the fragment's view binding.
+     */
     override fun inflateBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
     ) = FragmentSearchHistoryBinding.inflate(layoutInflater)
 
+    /**
+     * Handles clicks on category items.
+     */
     override fun onCategoryClicked(category: Category) {
         findNavController().navigate(
             SearchFragmentDirections.searchResultFragment(category.categoryName ?: "")
         )
     }
 
+    /**
+     * Handles clicks on popular search items.
+     */
     override fun onPopularSearchClicked(popularSearch: PopularSearch) {
         findNavController().navigate(
             SearchFragmentDirections.searchResultFragment(popularSearch.term ?: "")
         )
     }
 
+    /**
+     * Handles clicks on recent search items.
+     */
     override fun onRecentSearchClickListener(recentSearch: String) {
         findNavController().navigate(
             SearchFragmentDirections.searchResultFragment(recentSearch ?: "")
         )
     }
-
-
 }

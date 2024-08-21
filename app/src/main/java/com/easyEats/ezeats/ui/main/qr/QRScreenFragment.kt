@@ -34,27 +34,32 @@ import com.journeyapps.barcodescanner.BarcodeResult
 import com.journeyapps.barcodescanner.DecoratedBarcodeView
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+
 @AndroidEntryPoint
 class QRScreenFragment : BaseBottomSheetFragment<FragmentQRScreenBinding>() {
+
+    // Lazy-initialized property for handling permissions
     private val permissionHandler: DefaultPermissionHandler by lazy {
-        DefaultPermissionHandler(this@QRScreenFragment)
+        DefaultPermissionHandler(this)
     }
 
     override fun setUpViews() {
-
+        // Initialize views here if needed. Currently, it's empty.
     }
 
     override fun listenToObservers() {
-
+        // Set up observers here if needed. Currently, it's empty.
     }
 
     override fun inflateBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ) = FragmentQRScreenBinding.inflate(layoutInflater)
+    ) = FragmentQRScreenBinding.inflate(inflater, container, false)
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Check the camera permission status and handle it
         val state = when {
             ContextCompat.checkSelfPermission(
                 requireContext(),
@@ -65,21 +70,30 @@ class QRScreenFragment : BaseBottomSheetFragment<FragmentQRScreenBinding>() {
             else -> {
                 PermissionState.PERMISSION_NOT_GRANTED
             }
-
         }
         permissionHandler.handlePermission(state)
     }
+
+    /**
+     * Requests camera permission from the user.
+     * This method is called if the permission is not granted.
+     */
     fun requestCameraPermission() {
-        ActivityCompat.requestPermissions(
-            requireActivity(),
+        requestPermissions(
             arrayOf(Manifest.permission.CAMERA),
             REQUEST_CAMERA_PERMISSION
         )
     }
+
+    /**
+     * Sets up the barcode scanner to continuously decode QR codes.
+     * This method is called if the camera permission is granted.
+     */
     fun setupScanner() {
         binding.barcodeScanner.decodeContinuous(object : BarcodeCallback {
             override fun barcodeResult(result: BarcodeResult?) {
                 result?.let {
+                    // Pause scanning and open the URL in a browser
                     binding.barcodeScanner.pause()
                     openBrowser(it)
                 }
@@ -89,18 +103,50 @@ class QRScreenFragment : BaseBottomSheetFragment<FragmentQRScreenBinding>() {
         })
     }
 
-    private fun openBrowser(it: BarcodeResult) {
-        val intent = Intent(Intent.ACTION_VIEW)
-        intent.data = Uri.parse("${it.result}?")
+    /**
+     * Opens a browser with the URL obtained from the scanned QR code.
+     *
+     * @param result The result of the scanned QR code.
+     */
+    private fun openBrowser(result: BarcodeResult) {
+        val intent = Intent(Intent.ACTION_VIEW).apply {
+            data = Uri.parse(result.result.toString())
+        }
         startActivity(intent)
     }
 
     override fun onResume() {
         super.onResume()
+        // Resume barcode scanning when the fragment is visible
         binding.barcodeScanner.resume()
     }
+
     override fun onPause() {
         super.onPause()
+        // Pause barcode scanning when the fragment is not visible
         binding.barcodeScanner.pause()
+    }
+
+    /**
+     * Handles the result of the camera permission request.
+     *
+     * @param requestCode The request code passed in `requestPermissions()`.
+     * @param permissions The requested permissions.
+     * @param grantResults The grant results for the corresponding permissions.
+     */
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_CAMERA_PERMISSION) {
+            val state = if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                PermissionState.PERMISSION_GRANTED
+            } else {
+                PermissionState.PERMISSION_NOT_GRANTED
+            }
+            permissionHandler.handlePermission(state)
+        }
     }
 }
