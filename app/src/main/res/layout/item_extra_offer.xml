@@ -26,6 +26,7 @@
 
             <ImageView
                 android:id="@+id/ivLogo"
+                android:contentDescription="@string/restaurant_logo"
                 loadImage="@{offer.logo}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

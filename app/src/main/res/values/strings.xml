@@ -115,6 +115,12 @@
     <string name="your_search_has_no_results">Your search has no results</string>
     <string name="explore_our_offers">Explore Our Offers</string>
     <string name="explore_our_restaurants">Explore Our Restaurans</string>
+    <string name="empty_offers_image">empty offers image</string>
+    <string name="bottom_sheet_top">bottom sheet top</string>
+    <string name="leaderboards_are_coming_soon_n_stay_tuned_for_fun_challenges_n_and_rewards">Leaderboards are coming soon,\n stay tuned for fun challenges \n and rewards</string>
+    <string name="leader_board_image">leader board image</string>
+    <string name="leaderboards">Leaderboards</string>
+    <string name="featured_image">featured image</string>
 
 
 </resources>

@@ -145,5 +145,9 @@ dependencies {
     implementation (libs.shimmer)
     implementation (libs.shimmer.recyclerview)
 
+    //chucker
+    debugImplementation("com.github.chuckerteam.chucker:library:3.5.2")
+    releaseImplementation("com.github.chuckerteam.chucker:library-no-op:3.5.2")
+
 
 }

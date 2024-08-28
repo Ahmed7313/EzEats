@@ -106,6 +106,9 @@
                 android:clickable="true"
                 android:drawablePadding="@dimen/_5sdp"
                 android:focusable="true"
+                android:maxLength="25"
+                android:maxLines="1"
+                android:ellipsize="end"
                 android:fontFamily="@font/gilroy_600"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_12ssp"
@@ -213,6 +216,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:contentDescription="@string/empty_offers_image"
                         android:src="@drawable/empty_offers_image" />
 
                     <TextView

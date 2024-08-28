@@ -298,7 +298,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:layout_marginVertical="@dimen/_7sdp"
-                                android:drawableLeft="@drawable/marker_pin_icon"
+                                android:drawableStart="@drawable/marker_pin_icon"
                                 android:fontFamily="@font/gilroy_600"
                                 android:gravity="center"
                                 android:paddingHorizontal="@dimen/_70sdp"

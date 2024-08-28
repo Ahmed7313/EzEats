@@ -176,7 +176,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/gilroy_700"
-                    android:text="Leaderboards"
+                    android:text="@string/leaderboards"
                     android:textSize="@dimen/_18ssp" />
 
                 <LinearLayout
@@ -185,11 +185,13 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/_90sdp"
                     android:gravity="center"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    tools:ignore="UseCompoundDrawables">
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:contentDescription="@string/leader_board_image"
                         android:src="@drawable/leader_board_image" />
 
                     <TextView
@@ -197,8 +199,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/gilroy_700"
                         android:gravity="center"
-                        android:text="Leaderboards are coming soon,\n
-stay tuned for fun challenges \n and rewards"
+                        android:text="@string/leaderboards_are_coming_soon_n_stay_tuned_for_fun_challenges_n_and_rewards"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_14ssp" />
                 </LinearLayout>

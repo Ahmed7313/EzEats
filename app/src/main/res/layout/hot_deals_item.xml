@@ -56,7 +56,6 @@
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:visibility="@{hotDeal.isNew()?View.VISIBLE:View.GONE}"
-                    tools:ignore="RelativeOverlap"
                     android:text="New">
 
                 </TextView>

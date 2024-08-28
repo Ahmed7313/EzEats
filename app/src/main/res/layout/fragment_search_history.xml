@@ -32,6 +32,7 @@
                 android:layout_alignStart="@+id/tvLocation"
                 android:layout_alignEnd="@+id/ivClose"
                 android:layout_marginTop="@dimen/_5sdp"
+                android:contentDescription="@string/bottom_sheet_top"
                 android:src="@drawable/botttom_sheet_top"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -47,6 +48,9 @@
                 android:clickable="true"
                 android:drawablePadding="@dimen/_5sdp"
                 android:focusable="true"
+                android:maxLength="25"
+                android:maxLines="1"
+                android:ellipsize="end"
                 android:fontFamily="@font/gilroy_600"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_12ssp"

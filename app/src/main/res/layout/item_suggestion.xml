@@ -29,6 +29,9 @@
             android:textColor="#898883"
             android:textSize="@dimen/_11ssp"
             app:drawableEndCompat="@drawable/icon_suggestion_list"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="burger king" />
 
         <View

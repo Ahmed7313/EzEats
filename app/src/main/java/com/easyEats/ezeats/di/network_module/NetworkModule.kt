@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.datastore.DataStore
 import androidx.datastore.createDataStore
 import androidx.datastore.preferences.createDataStore
+import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.easyEats.ezeats.utils.headers.HeaderInterceptor
 import com.easyEats.ezeats.BuildConfig
 import com.easyEats.ezeats.data.local.data_store.DataStorePreference
@@ -77,11 +78,13 @@ object NetworkModule {
     @Singleton
     fun provideOkHttpClient(
         loggingInterceptor: HttpLoggingInterceptor,
-        headerInterceptor: HeaderInterceptor
+        headerInterceptor: HeaderInterceptor,
+        @ApplicationContext context: Context
     ): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
             .addInterceptor(headerInterceptor)
+            .addInterceptor(ChuckerInterceptor(context))
             .connectTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
             .build()

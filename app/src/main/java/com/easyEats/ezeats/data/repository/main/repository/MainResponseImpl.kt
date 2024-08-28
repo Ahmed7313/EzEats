@@ -5,10 +5,12 @@ import com.easyEats.ezeats.data.local.data_store.DataStorePreference
 import com.easyEats.ezeats.data.remote.main.MainApiService
 import com.easyEats.ezeats.domain.main.model.UserLocationAddress
 import com.easyEats.ezeats.domain.main.model.request.home.HomeRequest
+import com.easyEats.ezeats.domain.main.model.request.offers.OffersRequest
 import com.easyEats.ezeats.domain.main.model.request.search.SearchRequest
 import com.easyEats.ezeats.domain.main.model.request.search.SearchSuggestionsRequest
 import com.easyEats.ezeats.domain.main.model.response.home_response.HotDeal
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.Restaurant
+import com.easyEats.ezeats.domain.main.model.response.search_response.Category
 import com.easyEats.ezeats.domain.main.repository.MainRepository
 import javax.inject.Inject
 
@@ -36,6 +38,14 @@ class MainResponseImpl @Inject constructor(
 
     override suspend fun searchRestaurant(searchRequest: SearchRequest): BaseResponse<List<Restaurant>> {
         return mainApiService.searchRestaurant(searchRequest)
+    }
+
+    override suspend fun getRestaurantsByCategory(offersRequest: OffersRequest): BaseResponse<List<Restaurant>> {
+        return mainApiService.getRestaurantsByCategory(offersRequest)
+    }
+
+    override suspend fun getCategory(): BaseResponse<List<Category>> {
+        return mainApiService.getCategory()
     }
 
     override suspend fun searchOffer(searchRequest: SearchRequest): BaseResponse<List<HotDeal>> {

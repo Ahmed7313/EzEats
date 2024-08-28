@@ -44,7 +44,7 @@
                     android:layout_marginStart="@dimen/_8sdp"
                     android:fontFamily="@font/gilroy_700"
                     android:lineSpacingExtra="@dimen/_3sdp"
-                    android:text="Ahmed\nHassan"
+                    tools:text="Ahmed\nKenawy"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_18ssp" />
 
@@ -54,7 +54,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_8sdp"
                     android:fontFamily="@font/gilroy_600"
-                    android:text="ahmedhassan@gmail.com"
+                    tools:text="a7medsa3dkenawy@gmail.com"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12ssp" />
 

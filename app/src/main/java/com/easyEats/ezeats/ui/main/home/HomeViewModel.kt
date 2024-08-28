@@ -147,7 +147,6 @@ class HomeViewModel @Inject constructor(private val mainUseCase: MainUseCase) :
                 )
             },
             onError = {
-                Log.d(TAG, "getLocationAndAddress: ")
                 getHomeResult(HomeRequest("0.0", "0.0"))
             }
         )

@@ -7,110 +7,107 @@
 
     </data>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:backgroundTint="#F7F7F7"
-        android:fillViewport="true"
-        tools:context=".ui.main.home.HomeScreenFragment">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#F7F7F7"
+        android:backgroundTint="#F7F7F7">
+
+
+        <RelativeLayout
+            android:id="@+id/reTop"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#F7F7F7"
-            android:backgroundTint="#F7F7F7">
+            android:background="@drawable/home_top_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
 
-            <RelativeLayout
-                android:id="@+id/reTop"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/tvLocation"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/home_top_background"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_26sdp"
+                android:background="?android:selectableItemBackground"
+                android:clickable="true"
+                android:drawablePadding="5dp"
+                android:ellipsize="end"
+                android:focusable="true"
+                android:fontFamily="@font/gilroy_600"
+                android:maxLength="25"
+                android:maxLines="1"
+                android:text="@string/select_location"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_12ssp"
+                app:drawableEndCompat="@drawable/arrow_down_icon"
+                app:drawableStartCompat="@drawable/marker_pin_icon" />
+
+            <ImageView
+                android:id="@+id/iv_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@id/linearContainer"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:background="@drawable/rounded_search_background"
+                android:contentDescription="@string/search_results"
+                android:fontFamily="@font/gilroy_600"
+                android:padding="@dimen/_4sdp"
+                android:src="@drawable/search_ic"
+                android:textSize="@dimen/_12ssp" />
+
+            <LinearLayout
+                android:id="@+id/linearContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/tvLocation"
+                android:layout_marginTop="@dimen/_50sdp"
+                android:background="@drawable/home_rounded_layout"
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/_17sdp">
 
 
                 <TextView
-                    android:id="@+id/tvLocation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginHorizontal="@dimen/_16sdp"
-                    android:layout_marginTop="@dimen/_26sdp"
-                    android:background="?android:selectableItemBackground"
-                    android:clickable="true"
-                    android:drawablePadding="5dp"
-                    android:ellipsize="end"
-                    android:focusable="true"
-                    android:fontFamily="@font/gilroy_600"
-                    android:maxLength="25"
-                    android:maxLines="1"
-                    android:text="@string/select_location"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_12ssp"
-                    app:drawableEndCompat="@drawable/arrow_down_icon"
-                    app:drawableStartCompat="@drawable/marker_pin_icon" />
-
-                <ImageView
-                    android:id="@+id/iv_search"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:fontFamily="@font/gilroy_600"
-                    android:src="@drawable/search_ic"
-                    android:background="@drawable/rounded_search_background"
-                    android:layout_alignRight="@id/linearContainer"
-                    android:layout_marginHorizontal="@dimen/_16sdp"
-                    android:layout_marginTop="@dimen/_20sdp"
-                    android:padding="@dimen/_4sdp"
-                    android:textSize="@dimen/_12ssp" />
-
-                <LinearLayout
-                    android:id="@+id/linearContainer"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_below="@+id/tvLocation"
-                    android:layout_marginTop="@dimen/_50sdp"
-                    android:background="@drawable/home_rounded_layout"
-                    android:orientation="vertical"
-                    android:paddingHorizontal="@dimen/_17sdp">
-
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_70sdp"
-                        android:fontFamily="@font/gilroy_700"
-                        android:text="@string/all_resturant"
-                        android:textSize="@dimen/_18ssp" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_15sdp"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        tools:listitem="@layout/item_offer" />
-
-                </LinearLayout>
+                    android:layout_marginTop="@dimen/_70sdp"
+                    android:fontFamily="@font/gilroy_700"
+                    android:text="@string/all_resturant"
+                    android:textSize="@dimen/_18ssp" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/rv_Restaurant"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/_10sdp"
-                    android:layout_marginTop="@dimen/_55sdp"
-                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:paddingBottom="@dimen/_60sdp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    tools:listitem="@layout/item_category" />
+                    tools:listitem="@layout/item_offer" />
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_Categories"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_55sdp"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:listitem="@layout/item_category" />
 
 
-            </RelativeLayout>
+        </RelativeLayout>
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

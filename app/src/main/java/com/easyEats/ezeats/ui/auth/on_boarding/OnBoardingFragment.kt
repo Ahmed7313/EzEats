@@ -1,6 +1,7 @@
 package com.easyEats.ezeats.ui.auth.on_boarding
 
 import android.content.pm.PackageManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
@@ -8,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
+import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.base.BaseFragment
 import com.easyEats.ezeats.databinding.FragmentOnBoardingBinding
@@ -92,7 +94,7 @@ class OnBoardingFragment : BaseFragment<FragmentOnBoardingBinding>() {
         binding.tvSkip.setOnClickListener {
             locationUtil.askUserForLocationPermission(
                 onPermissionGranted = { onLocationPermissionGranted() },
-                onPermissionDenied = { onLocationPermissionDenied() }
+                onPermissionDenied = {  }
             )
         }
     }
@@ -123,7 +125,7 @@ class OnBoardingFragment : BaseFragment<FragmentOnBoardingBinding>() {
             binding.buttonNext.setOnClickListener {
                 locationUtil.askUserForLocationPermission(
                     onPermissionGranted = { onLocationPermissionGranted() },
-                    onPermissionDenied = { onLocationPermissionDenied() }
+                    onPermissionDenied = {  }
                 )
             }
         } else {
@@ -170,6 +172,7 @@ class OnBoardingFragment : BaseFragment<FragmentOnBoardingBinding>() {
      */
     private fun onLocationPermissionDenied() {
         viewModel.userWatchOnBoarding(isWatched = true)
+        Log.d(TAG, "onLocationPermissionDenied: ")
         navigateToIntroScreen()
     }
 

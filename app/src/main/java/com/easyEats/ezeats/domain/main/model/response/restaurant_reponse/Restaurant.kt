@@ -9,8 +9,8 @@ data class Restaurant(
     val name: String?,
     val offers: List<Offer?>?,
     val type: String?,
-    val restaurantCategory: String? = "",
-    val stars: Double? = 0.0,
-    val totalReviews: String? = ""
+    val category: List<String>? = listOf(),
+    val rating: Double? = 0.0,
+    val reviewsCount: Int? = 0
 
 )

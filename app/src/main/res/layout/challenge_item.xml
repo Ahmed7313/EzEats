@@ -52,6 +52,7 @@
                     android:layout_gravity="end|center"
                     android:layout_marginHorizontal="@dimen/_12sdp"
                     android:background="@drawable/circle_background"
+                    android:contentDescription="@string/restaurant_logo"
                     android:padding="@dimen/_8sdp"
                     android:scaleType="centerInside"
                     app:srcCompat="@drawable/dummy_logo_icon">
