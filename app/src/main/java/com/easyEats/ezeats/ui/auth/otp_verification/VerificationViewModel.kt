@@ -21,6 +21,7 @@ import com.easyEats.ezeats.utils.Resource.Error
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -115,20 +116,18 @@ class VerificationViewModel @Inject constructor(
         )
     }
 
-    private fun createSendOtpFlow(): Flow<Resource<BaseResponse<Boolean>>> = flow {
-        viewModelScope.launch(sendOtpExceptionHandler) {
-            emit(Loading())
-            val sendOtp = authUseCase.signInUseCase.sendOTP(SendOtpRequest("+2${phoneNumber}"))
-            sendOtp.handleResponse(onSuccess = {
-                emit(Success(sendOtp))
-            },
-                onError = { message, error ->
-                    emit(Error(message, error))
-                }, onUnauthenticated = {
-                    emit(UnAuthenticated())
-                }
-            )
-        }
+    private fun createSendOtpFlow(): Flow<Resource<BaseResponse<Boolean>>> = channelFlow {
+        send(Loading())
+        val sendOtp = authUseCase.signInUseCase.sendOTP(SendOtpRequest("+2${phoneNumber}"))
+        sendOtp.handleResponse(onSuccess = {
+            send(Success(sendOtp))
+        },
+            onError = { message, error ->
+                send(Error(message, error))
+            }, onUnauthenticated = {
+                send(UnAuthenticated())
+            }
+        )
     }
 
     private fun saveUserVerification(isUserVerified: Boolean) {

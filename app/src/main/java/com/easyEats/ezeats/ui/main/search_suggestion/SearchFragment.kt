@@ -1,9 +1,14 @@
 package com.easyEats.ezeats.ui.main.search_suggestion
 
+import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.base.BaseBottomSheetFragment
 import com.easyEats.ezeats.databinding.FragmentSearchBinding
 import com.easyEats.ezeats.ui.main.search_suggestion.adapter.SuggestionsAdapter
@@ -48,6 +53,9 @@ class SearchFragment : BaseBottomSheetFragment<FragmentSearchBinding>(),
         binding.lifecycleOwner = viewLifecycleOwner
         suggestionsAdapter = SuggestionsAdapter(viewModel, this)
         binding.rvSuggestionResult.adapter = suggestionsAdapter
+        binding.etRealSearch.requestFocus()
+        showKeyboard(binding.etRealSearch)
+
     }
 
     /**
@@ -57,6 +65,7 @@ class SearchFragment : BaseBottomSheetFragment<FragmentSearchBinding>(),
     override fun listenToObservers() {
         viewModel.searchKey.observe(viewLifecycleOwner) {
             viewModel.getSearchResult()
+            viewModel.isEmptySearch()
         }
 
         viewModel.searchSuggestionResultLiveData.observe(viewLifecycleOwner) { resource ->
@@ -64,14 +73,17 @@ class SearchFragment : BaseBottomSheetFragment<FragmentSearchBinding>(),
                 is Resource.Error -> {
                     // Handle error state
                 }
+
                 is Resource.Loading -> {
                     // Handle loading state
                 }
+
                 is Resource.Success -> {
                     // Update the suggestions adapter with the new data
                     suggestionsAdapter.notifyDataSetChanged()
                     suggestionsAdapter.submitList(resource.data?.result?.data)
                 }
+
                 is Resource.UnAuthenticated -> {
                     // Handle unauthenticated state
                 }
@@ -86,6 +98,12 @@ class SearchFragment : BaseBottomSheetFragment<FragmentSearchBinding>(),
      * @param suggestion The selected suggestion string.
      */
     override fun onClick(suggestion: String) {
-        findNavController().navigate(SearchFragmentDirections.searchResultFragment(suggestion))
+        findNavController().navigate(SearchFragmentDirections.goToSearchResultFragment(suggestion))
     }
+
+    private fun showKeyboard(editText: EditText) {
+        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT)
+    }
+
 }

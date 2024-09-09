@@ -87,14 +87,17 @@ class SignInScreenFragment : BaseFragment<FragmentSignInScreenBinding>() {
                 is Resource.Loading -> {
                     showLoading()
                 }
+
                 is Resource.Success -> {
                     hideLoading()
-                    sendOtpAndSaveToke(resource)
+                    signInViewModel.sendOtpAndSaveToke(resource)
                 }
+
                 is Resource.Error -> {
                     hideLoading()
                     Toasty.error(requireContext(), resource.message, Toast.LENGTH_LONG).show()
                 }
+
                 else -> {
                     hideLoading()
                 }
@@ -102,11 +105,6 @@ class SignInScreenFragment : BaseFragment<FragmentSignInScreenBinding>() {
         }
     }
 
-    private fun sendOtpAndSaveToke(resource: Resource.Success<ParseUser>) {
-        val user = resource.data
-        signInViewModel.sendOtp()
-        signInViewModel.saveToken(user ?: return)
-    }
 
     private fun goToVerificationScreen() {
         val action =
@@ -125,7 +123,9 @@ class SignInScreenFragment : BaseFragment<FragmentSignInScreenBinding>() {
     override fun onDestroyView() {
         signInViewModel.loginResult.value = null
         signInViewModel.sendOtpLiveData.value = null
+        signInViewModel.isOtpSent(false)
         super.onDestroyView()
     }
+
 }
 

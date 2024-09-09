@@ -21,24 +21,24 @@
         tools:context=".ui.auth.main.AuthActivity">
 
 
-        <androidx.fragment.app.FragmentContainerView
+
+        <fragment
             android:id="@+id/fragmentContainerView"
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:defaultNavHost="true"
+            app:navGraph="@navigation/auth_nav"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:navGraph="@navigation/auth_nav" />
+            app:layout_constraintTop_toTopOf="parent" />
 
 
         <include
             android:id="@+id/clInternetConnectionError"
             layout="@layout/no_internet_connection"
-            android:visibility="@{authViewModel.isConnected ? View.GONE : View.VISIBLE}" />
+            android:visibility="@{authViewModel.isConnected ? View.GONE : View.VISIBLE,default=gone}" />
 
         <include
             android:id="@+id/loader"

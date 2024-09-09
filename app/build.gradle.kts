@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.hilt)
     id("androidx.navigation.safeargs.kotlin")
     id("kotlin-kapt")
+    id ("kotlin-parcelize")
 }
 
 android {
@@ -43,6 +44,9 @@ android {
             buildConfigField(
                 "String", "PARSE_REST_API_KEY", "\"rVEiA55uav4M5PbI3dYbWbJcIR67pf8JFIHRQNQn\""
             )
+
+            buildConfigField("String", "SECRET_KEY", "\"${project.findProperty("secret-key")}\"")
+
         }
         getByName("release") {
             isMinifyEnabled = false
@@ -58,6 +62,8 @@ android {
                 "URL",
                 "\"https://pg-app-jtxlimrcv63uszqdkzh2a9d1r7pd0u.scalabl.cloud/1/\""
             )
+            buildConfigField("String", "SECRET_KEY", "\"${project.findProperty("secret-key")}\"")
+
             buildConfigField(
                 "String",
                 "BASE_URL",

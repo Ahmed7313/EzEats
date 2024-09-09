@@ -5,6 +5,10 @@
 
     <data>
 
+        <variable
+            name="restaurantPoint"
+            type="com.easyEats.ezeats.domain.main.model.response.points.RestaurantPoint" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -30,7 +34,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     android:layout_marginStart="@dimen/_8sdp"
                     android:layout_marginTop="@dimen/_8sdp"
-                    android:src="@drawable/ez_logo"
+                    loadImage="@{restaurantPoint.restaurantLogo}"
                     android:layout_width="@dimen/_30sdp"
                     app:riv_oval="true"
                     android:layout_height="@dimen/_30sdp" />
@@ -44,6 +48,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_8sdp"
                     tools:text="Burger King"
+                    android:text="@{restaurantPoint.restaurantName}"
                     android:textColor="#3A3D42"
                     android:textSize="@dimen/_13ssp"
                     android:maxLines="1"
@@ -59,6 +64,7 @@
                     android:maxLines="1"
                     android:layout_marginEnd="@dimen/_8sdp"
                     tools:text="320pts"
+                    android:text="@{String.valueOf(restaurantPoint.points)}"
                     android:textColor="#EA374A"
                     android:textSize="@dimen/_13ssp"
                     android:fontFamily="@font/gilroy_600"
@@ -76,6 +82,7 @@
                     android:paddingVertical="@dimen/_8sdp"
                     android:textColor="#3A3D42"
                     android:textSize="@dimen/_10ssp"
+                    android:text='@{"You can use your " + restaurantPoint.restaurantName + " points to redeem any offer from this restaurant"}'
                     android:fontFamily="@font/gilroy_500"
                     android:layout_marginBottom="@dimen/_3sdp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -101,6 +108,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         tools:text="300"
+                        android:text="@{String.valueOf(restaurantPoint.points)}"
                         android:textColor="#3A3D42"
                         android:textSize="@dimen/_20ssp"
                         android:fontFamily="@font/gilroy_700" />

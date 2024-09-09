@@ -13,10 +13,17 @@ import com.easyEats.ezeats.domain.main.model.response.home_response.FeaturedOffe
  *
  * @property FeaturedOffer The data model representing a featured offer item.
  */
-class FeaturedOfferAdapter :
+
+class FeaturedOfferAdapter(
+    val onFeaturedClicked: OnFeaturedClicked
+) :
     ListAdapter<FeaturedOffer, FeaturedOfferAdapter.FeaturedOfferViewHolder>(
         FeaturedOfferDiffCallback()
     ) {
+
+    interface OnFeaturedClicked {
+        fun onFeatureClicked(offerId: String)
+    }
 
     /**
      * Creates a new ViewHolder for the featured offer item.
@@ -58,6 +65,12 @@ class FeaturedOfferAdapter :
         fun bind(featuredOffer: FeaturedOffer) {
             binding.featuredOffer = featuredOffer
             binding.executePendingBindings()
+            binding.root.setOnClickListener {
+                onFeaturedClicked.onFeatureClicked(offerId = featuredOffer.id)
+            }
+            binding.btnRedeem.setOnClickListener {
+                onFeaturedClicked.onFeatureClicked(offerId = featuredOffer.id)
+            }
         }
     }
 }

@@ -136,6 +136,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
+                        android:gravity="end"
                         android:fontFamily="@font/gilroy_500"
                         android:text="@string/clear"
                         android:padding="@dimen/_5sdp"

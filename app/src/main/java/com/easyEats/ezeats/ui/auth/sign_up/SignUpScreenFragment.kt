@@ -82,7 +82,7 @@ class SignUpScreenFragment : BaseFragment<FragmentSignUpScreenBinding>() {
 
                 is Resource.Success -> {
                     hideLoading()
-                    saveNecessaryData(resource)
+                    signUpViewModel.saveNecessaryData(resource)
                 }
 
                 is Resource.Error -> {
@@ -119,11 +119,6 @@ class SignUpScreenFragment : BaseFragment<FragmentSignUpScreenBinding>() {
         }
     }
 
-    private fun saveNecessaryData(resource: Resource.Success<ParseUser>) {
-        signUpViewModel.saveToken(resource.data)
-        signUpViewModel.saveName(signUpViewModel.name.value.toString())
-        signUpViewModel.sendOtp()
-    }
 
     /**
      * Navigates to the verification screen with the phone number input.
@@ -149,7 +144,8 @@ class SignUpScreenFragment : BaseFragment<FragmentSignUpScreenBinding>() {
 
     override fun onDestroyView() {
         signUpViewModel.registrationResult.value = null
-        signUpViewModel.sendOtpLiveData.value=null
+        signUpViewModel.sendOtpLiveData.value = null
+        signUpViewModel.isOtpSent(false)
         super.onDestroyView()
     }
 }

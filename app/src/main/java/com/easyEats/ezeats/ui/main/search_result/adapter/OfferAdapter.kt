@@ -8,13 +8,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.easyEats.ezeats.databinding.ItemExtraOfferBinding
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.Offer
 import javax.inject.Inject
+
 /**
  * Adapter class for displaying a list of Offer items in a RecyclerView.
  * This adapter uses ListAdapter to handle item differences efficiently using DiffUtil.
  * It binds Offer data to the corresponding views using data binding.
  */
-class OfferAdapter @Inject constructor() :
+class OfferAdapter @Inject constructor(
+    val onOfferClicked: OnOfferClicked
+) :
     ListAdapter<Offer, OfferAdapter.OfferViewHolder>(OfferDiffUtil()) {
+
+    interface OnOfferClicked {
+        fun onOfferClicked(offerId: String)
+    }
 
     /**
      * Creates and returns a new OfferViewHolder.
@@ -39,7 +46,11 @@ class OfferAdapter @Inject constructor() :
      * @param position The position of the item within the adapter's data set.
      */
     override fun onBindViewHolder(holder: OfferViewHolder, position: Int) {
-        holder.binding.offer = getItem(position)
+        val offer = getItem(position)
+        holder.binding.offer = offer
+        holder.binding.root.setOnClickListener {
+            onOfferClicked.onOfferClicked(offer.id!!)
+        }
     }
 
     /**

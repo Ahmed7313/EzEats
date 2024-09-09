@@ -1,8 +1,10 @@
 package com.easyEats.ezeats.ui.main.search_history
 
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.base.BaseResponse
 import com.easyEats.ezeats.databinding.FragmentSearchHistoryBinding
 import com.easyEats.ezeats.domain.main.model.response.search_response.SearchScreenResponse
@@ -30,7 +32,7 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class SearchHistoryViewModel @Inject constructor(private val mainUseCase: MainUseCase) :
-    MainViewModel(mainUseCase.mainUseCase) {
+    MainViewModel(mainUseCase) {
 
     // LiveData to show/hide shimmer (loading indicator) in the UI
     val showShimmer = MutableLiveData(true)
@@ -99,6 +101,7 @@ class SearchHistoryViewModel @Inject constructor(private val mainUseCase: MainUs
             onError = { error ->
                 _clearSearchHistoryResultMutableLiveData.value =
                     Resource.Error(error.localizedMessage ?: "Unknown error")
+                Log.d(TAG, "clearRecentSearch: ${error.localizedMessage ?: "Unknown error"}")
             },
             onSuccess = { resource ->
                 showShimmer.value = false

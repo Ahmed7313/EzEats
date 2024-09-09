@@ -41,7 +41,7 @@ class HeaderInterceptor @Inject constructor(private val dataStorePreference: Dat
         val request = chain.request().newBuilder()
             .addHeader(APPLICATION_ID, BuildConfig.PARSE_APPLICATION_ID)
             .addHeader(PARSE_KEY, BuildConfig.PARSE_REST_API_KEY)
-            .addHeader(CUSTOM_SESSION_TOKEN, token?:"")
+            .addHeader(CUSTOM_SESSION_TOKEN, token ?: "")
             .build()
         return chain.proceed(request)
     }

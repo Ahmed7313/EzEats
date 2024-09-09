@@ -25,7 +25,7 @@
 
     <fragment
         android:id="@+id/percentScreenFragment"
-        android:name="com.easyEats.ezeats.ui.main.percent.PercentScreenFragment"
+        android:name="com.easyEats.ezeats.ui.main.offers.OffersScreenFragment"
         android:label="fragment_percent_screen"
         tools:layout="@layout/fragment_percent_screen" />
 
@@ -56,7 +56,7 @@
         app:destination="@id/percentScreenFragment" />
 
     <action
-        android:id="@+id/searchFragment"
+        android:id="@+id/goToSearchFragment"
         app:destination="@id/searchFragment" />
     <dialog
         android:id="@+id/searchResultFragment"
@@ -69,7 +69,7 @@
     </dialog>
 
     <action
-        android:id="@+id/searchResultFragment"
+        android:id="@+id/goToSearchResultFragment"
         app:destination="@id/searchResultFragment" />
     <dialog
         android:id="@+id/searchHistoryFragment"
@@ -77,6 +77,63 @@
         android:label="SearchHistoryFragment"
         tools:layout="@layout/fragment_search_history" />
     <action
-        android:id="@+id/searchHistoryFragment"
+        android:id="@+id/goToSearchHistoryFragment"
         app:destination="@id/searchHistoryFragment" />
+    <dialog
+        android:id="@+id/restaurantFragment"
+        android:name="com.easyEats.ezeats.ui.main.restaurant.RestaurantFragment"
+        android:label="RestaurantFragment"
+        tools:layout="@layout/fragment_restaurant">
+        <argument
+            android:name="restaurantId"
+            app:argType="string" />
+
+    </dialog>
+
+    <action
+        android:id="@+id/goToRestaurantFragment"
+        app:destination="@+id/restaurantFragment" />
+    <dialog
+        android:id="@+id/redeemFragment"
+        android:name="com.easyEats.ezeats.ui.main.redeem.RedeemFragment"
+        android:label="RedeemFragment"
+        tools:layout="@layout/fragment_redeem">
+
+        <argument
+            android:name="offerId"
+            app:argType="string" />
+    </dialog>
+    <action
+        android:id="@+id/goToRedeemScreen"
+        app:destination="@+id/redeemFragment" />
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="com.easyEats.ezeats.ui.main.edit_profile.EditProfileFragment"
+        android:label="EditProfileFragment"
+        tools:layout="@layout/fragment_edit_profile">
+        <argument
+            android:name="userInfo"
+            app:argType="com.easyEats.ezeats.domain.main.model.response.user_info.UserInfoResponse" />
+    </fragment>
+
+    <action
+        android:id="@+id/goToEditProfile"
+        app:destination="@+id/editProfileFragment" />
+    <fragment
+        android:id="@+id/orderHistoryFragment"
+        android:name="com.easyEats.ezeats.ui.main.order_history.OrderHistoryFragment"
+        android:label="OrderHistoryFragment"
+        tools:layout="@layout/fragment_order_history" />
+
+    <action
+        android:id="@+id/goToOrderHistoryScreen"
+        app:destination="@+id/orderHistoryFragment" />
+    <dialog
+        android:id="@+id/guestUserBottomSheet"
+        android:name="com.easyEats.ezeats.ui.main.guest_user.GuestUserBottomSheet"
+        android:label="GuestUserBottomSheet" />
+
+    <action
+        android:id="@+id/goToUserGuestScreen"
+        app:destination="@+id/guestUserBottomSheet" />
 </navigation>

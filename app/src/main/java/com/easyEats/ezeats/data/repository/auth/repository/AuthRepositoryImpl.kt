@@ -31,7 +31,7 @@ class AuthRepositoryImpl @Inject constructor(
         return dataStorePreference.isUserVerified()
     }
 
-    override fun getToke() = dataStorePreference.fetchToken()
+    override fun getToken() = dataStorePreference.fetchToken()
 
     override fun register(phoneNumber: String, name: String): LiveData<Resource<ParseUser>> =
         authWithParsing.register(phoneNumber, name)

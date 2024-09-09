@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LocationViewModel @Inject constructor(private val mainUseCase: MainUseCase) :
-    MainViewModel(mainUseCase.mainUseCase) {
+    MainViewModel(mainUseCase) {
     private val _getLocationsResultMutableLiveData =
         MutableLiveData<Resource<BaseResponse<List<Location>>>>()
     val getLocationsResultLiveData: LiveData<Resource<BaseResponse<List<Location>>>> get() = _getLocationsResultMutableLiveData

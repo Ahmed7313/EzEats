@@ -19,8 +19,14 @@ import javax.inject.Inject
  * This adapter uses ListAdapter to handle item differences efficiently using DiffUtil.
  * It also manages a nested RecyclerView for displaying offers within each Restaurant item.
  */
-class RestaurantAdapter @Inject constructor() :
+class RestaurantAdapter @Inject constructor(
+    val onRestaurantClicked: OnRestaurantClicked, val onOfferClicked: OfferAdapter.OnOfferClicked
+) :
     ListAdapter<Restaurant, RestaurantAdapter.RestaurantViewHolder>(RestaurantDiffUtil()) {
+
+    interface OnRestaurantClicked {
+        fun onRestaurantClickListener(restaurant: Restaurant)
+    }
 
     // Adapter for handling offers within a restaurant
     private lateinit var offerAdapter: OfferAdapter
@@ -80,8 +86,19 @@ class RestaurantAdapter @Inject constructor() :
     override fun onBindViewHolder(holder: RestaurantViewHolder, position: Int) {
         val restaurant = getItem(position)
         holder.binding.restaurant = restaurant
-        offerAdapter = OfferAdapter()
+        offerAdapter = OfferAdapter(onOfferClicked)
 
+        handleEmptyData(restaurant, holder)
+        holder.binding.clRestaurantDetails.setOnClickListener {
+            onRestaurantClicked.onRestaurantClickListener(restaurant)
+        }
+
+    }
+
+    private fun handleEmptyData(
+        restaurant: Restaurant,
+        holder: RestaurantViewHolder
+    ) {
         if (restaurant.offers?.isEmpty() == true) {
             holder.binding.tvRestaurantHasNoOffers.text =
                 restaurant.name + " " + context.getString(R.string.has_no_offers_right_now)

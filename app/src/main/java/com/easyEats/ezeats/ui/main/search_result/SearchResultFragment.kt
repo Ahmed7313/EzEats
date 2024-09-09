@@ -1,5 +1,6 @@
 package com.easyEats.ezeats.ui.main.search_result
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -9,15 +10,19 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.base.BaseBottomSheetFragment
 import com.easyEats.ezeats.base.BaseResponse
 import com.easyEats.ezeats.databinding.FragmentSearchResultBinding
 import com.easyEats.ezeats.domain.main.model.response.home_response.HotDeal
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.Restaurant
+import com.easyEats.ezeats.ui.main.home.HomeScreenFragmentDirections
 import com.easyEats.ezeats.ui.main.home.adapter.hot_deals.HotDealsAdapter
 import com.easyEats.ezeats.ui.main.main.MainViewModel
+import com.easyEats.ezeats.ui.main.search_result.adapter.OfferAdapter
 import com.easyEats.ezeats.ui.main.search_result.adapter.RestaurantAdapter
+import com.easyEats.ezeats.ui.main.search_suggestion.SearchFragmentDirections
 import com.easyEats.ezeats.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import es.dmoral.toasty.Toasty
@@ -32,7 +37,9 @@ import es.dmoral.toasty.Toasty
  * a bottom sheet UI component.
  */
 @AndroidEntryPoint
-class SearchResultFragment : BaseBottomSheetFragment<FragmentSearchResultBinding>() {
+class SearchResultFragment : BaseBottomSheetFragment<FragmentSearchResultBinding>(),
+    RestaurantAdapter.OnRestaurantClicked, HotDealsAdapter.OnHotDealClicked,
+    OfferAdapter.OnOfferClicked {
 
     // ViewModel shared with other fragments/activities to observe the user's location
     private val mainViewModel: MainViewModel by activityViewModels()
@@ -63,8 +70,8 @@ class SearchResultFragment : BaseBottomSheetFragment<FragmentSearchResultBinding
      */
     override fun setUpViews() {
         // Initialize the adapters for restaurant and hot deals RecyclerViews
-        restaurantAdapter = RestaurantAdapter()
-        hotDealsAdapter = HotDealsAdapter()
+        restaurantAdapter = RestaurantAdapter(this, this)
+        hotDealsAdapter = HotDealsAdapter(this)
 
         // Bind the restaurant adapter to the RecyclerView in the layout
         binding.rvRestaurantSearch.adapter = restaurantAdapter
@@ -90,7 +97,9 @@ class SearchResultFragment : BaseBottomSheetFragment<FragmentSearchResultBinding
         // Observe changes in the user's location and update the location text view
         mainViewModel.userLocationAddressMutableLiveData.observe(viewLifecycleOwner) {
             it?.let {
-                binding.tvLocation.text = it.address ?: getString(R.string.select_location)
+                binding.tvLocation.text =
+                    ("You're at " + it.address) ?: getString(R.string.select_location)
+
             }
         }
 
@@ -106,13 +115,21 @@ class SearchResultFragment : BaseBottomSheetFragment<FragmentSearchResultBinding
                     // Show an error message if there is an error
                     Toasty.error(requireContext(), resource.message, Toast.LENGTH_LONG).show()
                 }
+
                 is Resource.Loading -> {
                     // Handle loading state if needed
                 }
+
                 is Resource.Success -> {
                     // Update the UI with the list of restaurants
-                    searchResultViewModel.setRestaurantsData(requireContext(), binding, restaurantAdapter, resource)
+                    searchResultViewModel.setRestaurantsData(
+                        requireContext(),
+                        binding,
+                        restaurantAdapter,
+                        resource
+                    )
                 }
+
                 is Resource.UnAuthenticated -> {
                     // Handle unauthenticated state if needed
                 }
@@ -126,17 +143,38 @@ class SearchResultFragment : BaseBottomSheetFragment<FragmentSearchResultBinding
                     // Show an error message if there is an error
                     Toasty.error(requireContext(), resource.message, Toast.LENGTH_LONG).show()
                 }
+
                 is Resource.Loading -> {
                     // Handle loading state if needed
                 }
+
                 is Resource.Success -> {
                     // Update the UI with the list of hot deals
-                    searchResultViewModel.setOffersData(requireContext(), binding, hotDealsAdapter, resource)
+                    searchResultViewModel.setOffersData(
+                        requireContext(),
+                        binding,
+                        hotDealsAdapter,
+                        resource
+                    )
                 }
+
                 is Resource.UnAuthenticated -> {
-                    // Handle unauthenticated state if needed
                 }
             }
         }
+    }
+
+    override fun onRestaurantClickListener(restaurant: Restaurant) {
+        findNavController().navigate(
+            SearchResultFragmentDirections.goToRestaurantFragment(restaurant.id!!)
+        )
+    }
+
+    override fun onHotDealClickListener(offer: HotDeal) {
+        findNavController().navigate(SearchResultFragmentDirections.goToRedeemScreen(offer.id.toString()))
+    }
+
+    override fun onOfferClicked(offerId: String) {
+        findNavController().navigate(SearchResultFragmentDirections.goToRedeemScreen(offerId))
     }
 }

@@ -72,6 +72,7 @@ abstract class BaseBottomSheetFragment<VB : ViewDataBinding> : BottomSheetDialog
         dialog.setCancelable(false)
         dialog.setCanceledOnTouchOutside(false)
 
+
         return dialog
     }
 

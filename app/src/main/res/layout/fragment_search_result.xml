@@ -179,6 +179,7 @@
                         android:contentDescription="@string/offer"
                         android:onClick="@{()->searchResultViewModel.setOfferViewType()}"
                         android:padding="@dimen/_3sdp"
+                        android:visibility="gone"
                         android:src="@drawable/offer_icon" />
                 </LinearLayout>
 

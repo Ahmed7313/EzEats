@@ -11,10 +11,13 @@ import androidx.lifecycle.viewModelScope
 import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.MyApplication.Companion.baseApplication
 import com.easyEats.ezeats.domain.main.model.UserLocationAddress
+import com.easyEats.ezeats.domain.main.use_case.MainUseCase
 import com.easyEats.ezeats.domain.main.use_case.main_use_case.MainActivityUseCase
 import com.easyEats.ezeats.utils.reciveirs.LocationReceiver
 import com.easyEats.ezeats.utils.reciveirs.NetworkChangeReceiver
+import com.google.android.gms.common.internal.Objects
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -26,15 +29,18 @@ import kotlin.math.pow
 
 @HiltViewModel
 open class MainViewModel @Inject constructor(
-    private val mainActivityUseCase: MainActivityUseCase
+    private val mainUseCase: MainUseCase
 ) : ViewModel() {
 
     // LiveData to expose network connectivity status
     private val _isConnected = MutableLiveData(true)
     val isConnected: LiveData<Boolean> get() = _isConnected
 
+
     // LiveData to expose location permission status
     val isLocationGranted = MutableLiveData<Boolean>()
+
+    val isOpenShareLink = MutableLiveData<HashMap<String, Any>?>()
 
     // NetworkChangeReceiver to listen for connectivity changes
     private val networkChangeReceiver = NetworkChangeReceiver { isConnected ->
@@ -45,11 +51,11 @@ open class MainViewModel @Inject constructor(
     // NetworkChangeReceiver to listen for connectivity changes
     private val locationChangeReceiver = LocationReceiver { isConnected ->
         isLocationGranted.postValue(isConnected)
-        Log.d(TAG, "isLocationGranted: $isConnected")
     }
     private val intentFilter_ = IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION)
 
-    val userLocationAddressMutableLiveData = MutableLiveData<UserLocationAddress>()
+    val userLocationAddressMutableLiveData = MutableLiveData<UserLocationAddress?>()
+
 
     /**
      * Initializes the ViewModel.
@@ -64,7 +70,7 @@ open class MainViewModel @Inject constructor(
 
     private fun fetchCurrentAddress() {
         viewModelScope.launch {
-            mainActivityUseCase.getCurrentAddress().collect { address ->
+            mainUseCase.mainUseCase.getCurrentAddress().collect { address ->
                 userLocationAddressMutableLiveData.value = address
             }
         }
@@ -109,8 +115,32 @@ open class MainViewModel @Inject constructor(
 
     fun saveAddress(userLocationAddress: UserLocationAddress) {
         viewModelScope.launch {
-            mainActivityUseCase.saveAddress(userLocationAddress)
+            mainUseCase.mainUseCase.saveAddress(userLocationAddress)
         }
     }
+
+    fun saveToke(token: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            mainUseCase.mainUseCase.saveToken(token)
+        }
+    }
+
+    fun setUserVerification(isUserVerified: Boolean) {
+        viewModelScope.launch(Dispatchers.IO) {
+            mainUseCase.mainUseCase.setUserVerification(isUserVerified)
+        }
+    }
+
+    suspend fun isUserVerified(): Flow<Boolean> {
+        return viewModelScope.async { mainUseCase.mainUseCase.isUserVerified() }.await()
+    }
+
+    fun getToken(): Flow<String> {
+        return mainUseCase.userInfoUseCase.getToken()
+    }
+
+
+    fun getAddress() = mainUseCase.mainUseCase.getCurrentAddress()
+
 
 }

@@ -6,7 +6,7 @@
 
         <variable
             name="clickListener"
-            type="com.easyEats.ezeats.ui.main.percent.adapter.OffersCategoryAdapter.OnCategoryClickListener" />
+            type="com.easyEats.ezeats.ui.main.offers.adapter.OffersCategoryAdapter.OnCategoryClickListener" />
         <variable
             name="category"
             type="com.easyEats.ezeats.domain.main.model.response.search_response.Category" />

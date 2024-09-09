@@ -10,12 +10,15 @@ import com.easyEats.ezeats.databinding.FeaturedItemBinding
 import com.easyEats.ezeats.databinding.HotDealsItemBinding
 import com.easyEats.ezeats.domain.main.model.response.home_response.FeaturedOffer
 import com.easyEats.ezeats.domain.main.model.response.home_response.HotDeal
+
 /**
  * Adapter for displaying a list of hot deals in a RecyclerView.
  *
  * @property HotDeal The data model representing a hot deal item.
  */
-class HotDealsAdapter :
+class HotDealsAdapter (
+    val onHotDealClicked: OnHotDealClicked
+):
     ListAdapter<HotDeal, HotDealsAdapter.HotDealsViewHolder>(HotDealsAdapterDiffCallback()) {
 
     /**
@@ -26,8 +29,13 @@ class HotDealsAdapter :
      * @return A new instance of [HotDealsViewHolder].
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HotDealsViewHolder {
-        val binding = HotDealsItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            HotDealsItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return HotDealsViewHolder(binding)
+    }
+
+    interface OnHotDealClicked {
+        fun onHotDealClickListener(offer: HotDeal)
     }
 
     /**
@@ -39,7 +47,6 @@ class HotDealsAdapter :
     override fun onBindViewHolder(holder: HotDealsViewHolder, position: Int) {
         val hotDealOffer = getItem(position)
         holder.bind(hotDealOffer)
-        Log.d("TAG", "onBindViewHolder: $hotDealOffer ")
     }
 
     /**
@@ -58,6 +65,9 @@ class HotDealsAdapter :
         fun bind(hotDeal: HotDeal) {
             binding.hotDeal = hotDeal
             binding.executePendingBindings()
+            binding.root.setOnClickListener {
+                onHotDealClicked.onHotDealClickListener(hotDeal)
+            }
         }
     }
 }

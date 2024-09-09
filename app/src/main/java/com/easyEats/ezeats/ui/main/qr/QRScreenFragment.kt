@@ -67,6 +67,7 @@ class QRScreenFragment : BaseBottomSheetFragment<FragmentQRScreenBinding>() {
             ) == PackageManager.PERMISSION_GRANTED -> {
                 PermissionState.PERMISSION_GRANTED
             }
+
             else -> {
                 PermissionState.PERMISSION_NOT_GRANTED
             }
@@ -110,9 +111,10 @@ class QRScreenFragment : BaseBottomSheetFragment<FragmentQRScreenBinding>() {
      */
     private fun openBrowser(result: BarcodeResult) {
         val intent = Intent(Intent.ACTION_VIEW).apply {
-            data = Uri.parse(result.result.toString())
+            data = Uri.parse(result.text.toString())
         }
-        startActivity(intent)
+        requireActivity().startActivity(intent)
+
     }
 
     override fun onResume() {
@@ -141,11 +143,12 @@ class QRScreenFragment : BaseBottomSheetFragment<FragmentQRScreenBinding>() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CAMERA_PERMISSION) {
-            val state = if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                PermissionState.PERMISSION_GRANTED
-            } else {
-                PermissionState.PERMISSION_NOT_GRANTED
-            }
+            val state =
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    PermissionState.PERMISSION_GRANTED
+                } else {
+                    PermissionState.PERMISSION_NOT_GRANTED
+                }
             permissionHandler.handlePermission(state)
         }
     }

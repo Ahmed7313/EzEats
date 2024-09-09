@@ -4,14 +4,25 @@ import com.easyEats.ezeats.base.BaseResponse
 import com.easyEats.ezeats.data.local.data_store.DataStorePreference
 import com.easyEats.ezeats.data.remote.main.MainApiService
 import com.easyEats.ezeats.domain.main.model.UserLocationAddress
+import com.easyEats.ezeats.domain.main.model.request.edit_user_info.UserInfoRequest
 import com.easyEats.ezeats.domain.main.model.request.home.HomeRequest
+import com.easyEats.ezeats.domain.main.model.request.offer_request.OfferRequest
 import com.easyEats.ezeats.domain.main.model.request.offers.OffersRequest
+import com.easyEats.ezeats.domain.main.model.request.order_history.OrderHistoryRequest
+import com.easyEats.ezeats.domain.main.model.request.points.PointsRequest
+import com.easyEats.ezeats.domain.main.model.request.restaurant.RestaurantRequest
 import com.easyEats.ezeats.domain.main.model.request.search.SearchRequest
 import com.easyEats.ezeats.domain.main.model.request.search.SearchSuggestionsRequest
 import com.easyEats.ezeats.domain.main.model.response.home_response.HotDeal
+import com.easyEats.ezeats.domain.main.model.response.order_history.OrderHistoryResponse
+import com.easyEats.ezeats.domain.main.model.response.points.PointsResponse
+import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.Offer
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.Restaurant
+import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.RestaurantInfo
 import com.easyEats.ezeats.domain.main.model.response.search_response.Category
+import com.easyEats.ezeats.domain.main.model.response.user_info.UserInfoResponse
 import com.easyEats.ezeats.domain.main.repository.MainRepository
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class MainResponseImpl @Inject constructor(
@@ -51,4 +62,47 @@ class MainResponseImpl @Inject constructor(
     override suspend fun searchOffer(searchRequest: SearchRequest): BaseResponse<List<HotDeal>> {
         return mainApiService.searchOffer(searchRequest)
     }
+
+    override suspend fun getOffersByRestaurantId(restaurantRequest: RestaurantRequest): BaseResponse<RestaurantInfo> {
+        return mainApiService.getOffersByRestaurantId(restaurantRequest)
+    }
+
+    override suspend fun getOfferById(offerRequest: OfferRequest): BaseResponse<HotDeal> {
+        return mainApiService.getOfferById(offerRequest)
+    }
+
+    override suspend fun getUserInfo(): BaseResponse<UserInfoResponse> {
+        return mainApiService.getUserInfo()
+    }
+
+    override suspend fun editUserProfile(userInfoRequest: UserInfoRequest): BaseResponse<Any> {
+        return mainApiService.editUserProfile(userInfoRequest)
+    }
+
+    override fun isUserVerified(): Flow<Boolean> {
+        return dataStorePreference.isUserVerified()
+    }
+
+    override suspend fun saveToken(token: String) {
+        return dataStorePreference.saveToken(token)
+    }
+
+    override suspend fun setUserVerification(isUserVerified: Boolean) {
+        return dataStorePreference.setUserVerification(isUserVerified)
+    }
+
+    override suspend fun deleteAccount(): BaseResponse<Any> {
+        return mainApiService.deleteAccount()
+    }
+
+    override suspend fun getUserOrderHistory(orderHistoryRequest: OrderHistoryRequest): BaseResponse<OrderHistoryResponse> {
+        return mainApiService.getUserOrderHistory(orderHistoryRequest)
+    }
+
+    override suspend fun getUserPoints(pointsRequest: PointsRequest): BaseResponse<PointsResponse> {
+        return mainApiService.getUserPoints(pointsRequest)
+    }
+
+    override fun getToken() = dataStorePreference.fetchToken()
+
 }

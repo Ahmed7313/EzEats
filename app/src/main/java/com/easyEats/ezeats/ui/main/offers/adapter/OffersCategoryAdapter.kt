@@ -1,13 +1,11 @@
-package com.easyEats.ezeats.ui.main.percent.adapter
+package com.easyEats.ezeats.ui.main.offers.adapter
 
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.MyApplication.Companion.baseApplication
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.databinding.ItemOffersCategoryBinding

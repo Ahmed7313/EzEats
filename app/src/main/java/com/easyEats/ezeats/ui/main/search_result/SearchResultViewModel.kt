@@ -1,6 +1,7 @@
 package com.easyEats.ezeats.ui.main.search_result
 
 import android.content.Context
+import android.util.Log
 import android.view.View
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat.getString
@@ -8,6 +9,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.recyclerview.widget.GridLayoutManager
+import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.base.BaseResponse
 import com.easyEats.ezeats.databinding.FragmentSearchResultBinding
@@ -35,7 +37,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchResultViewModel @Inject constructor(
     val mainUseCase: MainUseCase, savedStateHandle: SavedStateHandle
-) : MainViewModel(mainUseCase.mainUseCase) {
+) : MainViewModel(mainUseCase) {
 
     // The search key extracted from the saved state, used to perform search queries.
     val searchKey: String? = savedStateHandle["searchKey"]
@@ -89,7 +91,13 @@ class SearchResultViewModel @Inject constructor(
      * @param viewType The type of view for which to fetch results, default is "restaurant".
      */
     private fun getSearchRestaurantResult(viewType: String = "restaurant") {
-        val flow = createSearchResultRequest(SearchRequest(searchKey ?: "", viewType))
+        val flow = createSearchResultRequest(
+            SearchRequest(
+                searchKey ?: "", viewType,
+                userLat = userLocationAddressMutableLiveData.value?.lat.toString(),
+                userLon = userLocationAddressMutableLiveData.value?.lng.toString()
+            )
+        )
         apply(flow = flow, maxRetries = 2, onError = { error ->
             _searchResultMutableLiveData.value =
                 Resource.Error(error.localizedMessage ?: "Unknown error")
@@ -123,7 +131,14 @@ class SearchResultViewModel @Inject constructor(
      * @param viewType The type of view for which to fetch results, default is "offers".
      */
     private fun getSearchOfferResult(viewType: String = "offers") {
-        val flow = createSearchOfferResultRequest(SearchRequest(searchKey ?: "", viewType))
+        val flow = createSearchOfferResultRequest(
+            SearchRequest(
+                searchKey ?: "",
+                viewType,
+                userLat = userLocationAddressMutableLiveData.value?.lat.toString(),
+                userLon = userLocationAddressMutableLiveData.value?.lng.toString()
+            )
+        )
         apply(flow = flow, maxRetries = 2, onError = { error ->
             _searchOfferResultMutableLiveData.value =
                 Resource.Error(error.localizedMessage ?: "Unknown error")

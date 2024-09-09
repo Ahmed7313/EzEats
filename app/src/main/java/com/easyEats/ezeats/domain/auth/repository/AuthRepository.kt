@@ -8,14 +8,13 @@ import com.easyEats.ezeats.domain.main.model.UserLocationAddress
 import com.easyEats.ezeats.utils.Resource
 import com.parse.ParseUser
 import kotlinx.coroutines.flow.Flow
-import retrofit2.Response
 
 interface AuthRepository {
     suspend fun userWatchOnBoardingScreen(userWatchOnBoardingScreen: Boolean)
     fun isUserWatchOnBoardingScreen(): Flow<Boolean>
     fun userHasToken(): Flow<String>
     fun isUserVerified(): Flow<Boolean>
-    fun getToke(): Flow<String>
+    fun getToken(): Flow<String>
     fun register(phoneNumber: String, name: String): LiveData<Resource<ParseUser>>
     fun login(phoneNumber: String): LiveData<Resource<ParseUser>>
     suspend fun savToken(toke: String)

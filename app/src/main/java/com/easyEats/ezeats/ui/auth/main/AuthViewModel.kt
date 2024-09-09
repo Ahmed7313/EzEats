@@ -40,6 +40,9 @@ open class AuthViewModel : ViewModel() {
     private val _isOtpValid = MutableLiveData<Boolean>()
     val isOtpValid: LiveData<Boolean> get() = _isOtpValid
 
+    var isOtpSent = false
+
+
 
     /**
      * Validates the phone number using a regex pattern.
@@ -110,6 +113,10 @@ open class AuthViewModel : ViewModel() {
                     onSuccess(result)
                 }
         }
+    }
+
+    fun isOtpSent(_isOtpSent: Boolean) {
+        isOtpSent = _isOtpSent
     }
 }
 

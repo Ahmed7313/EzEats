@@ -3,15 +3,11 @@
     android:height="@dimen/_18sdp"
     android:viewportWidth="18"
     android:viewportHeight="18">
-  <group>
-    <clip-path
-        android:pathData="M0,0h18v18h-18z"/>
-    <path
-        android:pathData="M6.818,6.75C6.994,6.249 7.342,5.826 7.8,5.557C8.258,5.288 8.797,5.189 9.32,5.279C9.844,5.369 10.319,5.641 10.661,6.048C11.003,6.454 11.191,6.969 11.19,7.5C11.19,9 8.94,9.75 8.94,9.75M9,12.75H9.007M16.5,9C16.5,13.142 13.142,16.5 9,16.5C4.858,16.5 1.5,13.142 1.5,9C1.5,4.858 4.858,1.5 9,1.5C13.142,1.5 16.5,4.858 16.5,9Z"
-        android:strokeLineJoin="round"
-        android:strokeWidth="1.5"
-        android:fillColor="#00000000"
-        android:strokeColor="#EA374A"
-        android:strokeLineCap="round"/>
-  </group>
+  <path
+      android:pathData="M10.5,8.25H6M7.5,11.25H6M12,5.25H6M15,7.5V5.1C15,3.84 15,3.21 14.755,2.729C14.539,2.305 14.195,1.961 13.771,1.745C13.29,1.5 12.66,1.5 11.4,1.5H6.6C5.34,1.5 4.71,1.5 4.229,1.745C3.805,1.961 3.461,2.305 3.245,2.729C3,3.21 3,3.84 3,5.1V12.9C3,14.16 3,14.79 3.245,15.271C3.461,15.695 3.805,16.039 4.229,16.255C4.71,16.5 5.34,16.5 6.6,16.5H9.375M13.5,15.75C13.5,15.75 15.75,14.678 15.75,13.069V11.192L14.109,10.606C13.715,10.465 13.284,10.465 12.89,10.606L11.25,11.192V13.069C11.25,14.678 13.5,15.75 13.5,15.75Z"
+      android:strokeLineJoin="round"
+      android:strokeWidth="1.5"
+      android:fillColor="#00000000"
+      android:strokeColor="#EA374A"
+      android:strokeLineCap="round"/>
 </vector>

@@ -28,22 +28,17 @@ class SignInViewModel @Inject constructor(private val authUseCase: AuthUseCase) 
 
     val phoneNumber = MutableLiveData<String>()
 
-
-    private val sendOtpExceptionHandler = CoroutineExceptionHandler { _, exception ->
-        _sendOtpMutableLiveData.value =
-            Resource.Error(exception.message.toString())
-    }
-
     fun login() {
-        val loginLiveData = authUseCase.signInUseCase.login(phoneNumber.value ?: "")
+        val phone=("+2" + phoneNumber.value) ?: ""
+        Log.d(TAG, "login: $phone")
+        val loginLiveData = authUseCase.signInUseCase.login(("+2" + phoneNumber.value) ?: "")
         loginLiveData.observeForever { resource ->
             _loginResult.value = resource
         }
     }
 
-    fun saveToken(user: ParseUser) {
+    private fun saveToken(user: ParseUser) {
         viewModelScope.launch {
-            Log.d(TAG, "saveToken: ${user.sessionToken}")
             authUseCase.signInUseCase.saveToken(user.sessionToken)
         }
     }
@@ -54,11 +49,11 @@ class SignInViewModel @Inject constructor(private val authUseCase: AuthUseCase) 
         }
     }
 
-    fun sendOtp() {
+    private fun sendOtp() {
         val flow = createSendOtpFlow()
         apply(
             flow = flow,
-            maxRetries = 1,
+            maxRetries = 2,
             onError = { error ->
                 _sendOtpMutableLiveData.value =
                     Resource.Error(error.localizedMessage ?: "Unknown error")
@@ -70,19 +65,31 @@ class SignInViewModel @Inject constructor(private val authUseCase: AuthUseCase) 
     }
 
     private fun createSendOtpFlow(): Flow<Resource<BaseResponse<Boolean>>> = channelFlow {
-            send(Resource.Loading())
-            val sendOtp = authUseCase.signInUseCase.sendOTP(SendOtpRequest("+2${phoneNumber.value.toString()}"))
-            sendOtp.handleResponse(
-                onSuccess = {
+        send(Resource.Loading())
+        val sendOtp =
+            authUseCase.signInUseCase.sendOTP(SendOtpRequest("+2${phoneNumber.value.toString()}"))
+        sendOtp.handleResponse(
+            onSuccess = {
                 saveMobileNumber()
-                    send(Resource.Success(sendOtp))
-                            },
-                onError = { message, error ->
-                    send(Resource.Error(message, error))
-                }, onUnauthenticated = {
-                    send(Resource.UnAuthenticated())
-                }
-            )
+                send(Resource.Success(sendOtp))
+            },
+            onError = { message, error ->
+                send(Resource.Error(message, error))
+            }, onUnauthenticated = {
+                send(Resource.UnAuthenticated())
+            }
+        )
     }
+
+    fun sendOtpAndSaveToke(resource: Resource.Success<ParseUser>) {
+        if (!isOtpSent) {
+            isOtpSent=true
+            val user = resource.data
+            sendOtp()
+            saveToken(user ?: return)
+        }
+    }
+
+
 }
 

@@ -1,7 +1,9 @@
 package com.easyEats.ezeats.data.remote.auth
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.utils.Constants
 import com.easyEats.ezeats.utils.Constants.FIRST_NAME
 import com.easyEats.ezeats.utils.Constants.LAST_NAME
@@ -12,6 +14,7 @@ import com.parse.ParseInstallation
 import com.parse.ParseUser
 import java.util.UUID
 import javax.inject.Inject
+import kotlin.math.log
 
 /**
  * Handles user registration with the backend using Parse.
@@ -27,14 +30,27 @@ class AuthWithParsing @Inject constructor() {
      * [Resource.Loading], [Resource.Success], or [Resource.Error] based on the registration result.
      */
     fun register(phoneNumber: String, name: String): LiveData<Resource<ParseUser>> {
+        ParseUser.logOut()  // Log out any existing user
         val result = MutableLiveData<Resource<ParseUser>>().apply {
             value = Resource.Loading()
         }
-        val uuid = UUID.randomUUID().toString()
+        val uuid = "+2$phoneNumber"
         val user = createUser(name, "+2$phoneNumber", uuid)
-        signUp(user, result, uuid)
+
+        // Check if the user already exists
+        val query = ParseUser.getQuery()
+        query.whereEqualTo("username", "+2$phoneNumber")
+        query.findInBackground { users, e ->
+            if (e == null && users.isEmpty()) {
+                signUp(user, result, uuid)
+            } else {
+                result.postValue(Resource.Error("User already exists or error: ${e?.localizedMessage}"))
+            }
+        }
+
         return result
     }
+
 
     /**
      * Signs up the user in the background and handles installation saving.
@@ -43,19 +59,18 @@ class AuthWithParsing @Inject constructor() {
      * @param result A [MutableLiveData] object where the result of the sign-up operation will be posted.
      * @param uuid The UUID to associate with the installation.
      */
-    private fun signUp(
-        user: ParseUser,
-        result: MutableLiveData<Resource<ParseUser>>,
-        uuid: String
-    ) {
+    private fun signUp(user: ParseUser, result: MutableLiveData<Resource<ParseUser>>, uuid: String) {
         user.signUpInBackground { e ->
             if (e == null) {
-                saveInstallation(user, uuid, result)
+                // Sign up successful
+                result.postValue(Resource.Success(user))
             } else {
-                result.postValue(Resource.Error(e.localizedMessage ?: "Sign-up failed."))
+                // Handle sign up failure
+                result.postValue(Resource.Error(e.localizedMessage ?: "Sign up failed"))
             }
         }
     }
+
 
     /**
      * Logs in a user using the provided phone number.
@@ -72,8 +87,10 @@ class AuthWithParsing @Inject constructor() {
             if (e == null && user != null) {
                 // Successfully logged in
                 updateInstallation(user, result)
+                Log.d(TAG, "login: Success")
             } else {
                 // Login failed
+                Log.d(TAG, "login: Failed")
                 result.postValue(Resource.Error(e?.localizedMessage ?: "Login failed."))
             }
         }
@@ -94,6 +111,7 @@ class AuthWithParsing @Inject constructor() {
         installation.saveInBackground { ex ->
             if (ex == null) {
                 result.postValue(Resource.Success(user))
+                Log.d(TAG, "updateInstallation:ex == null ")
             } else {
                 result.postValue(Resource.Error(ex.localizedMessage ?: "Failed to update installation."))
             }
@@ -114,8 +132,12 @@ class AuthWithParsing @Inject constructor() {
         }
         installation.saveInBackground { ex ->
             if (ex == null) {
+                Log.d(TAG, "saveInstallation: success")
+                Log.d(TAG, "saveInstallation: success${user.sessionToken}")
+                Log.d(TAG, "saveInstallation: success${uuid}")
                 result.postValue(Resource.Success(user))
             } else {
+                Log.d(TAG, "saveInstallation:${ex.localizedMessage } ")
                 result.postValue(Resource.Error(ex.localizedMessage ?: "Failed to save installation."))
             }
         }
@@ -132,7 +154,8 @@ class AuthWithParsing @Inject constructor() {
     private fun createUser(name: String, phoneNumber: String, uuid: String): ParseUser {
         val (firstName, lastName) = splitName(name)
         return ParseUser().apply {
-            username = uuid
+            username = phoneNumber
+            Log.d(TAG, "createUser: UUID $username")
             put(MOBILE_NUMBER, phoneNumber)
             put(NAME, name)
             put(FIRST_NAME, firstName)

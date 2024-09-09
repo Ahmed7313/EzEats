@@ -20,21 +20,21 @@ import dagger.hilt.android.AndroidEntryPoint
 import es.dmoral.toasty.Toasty
 import android.provider.Settings
 import android.util.Log
-import androidx.lifecycle.lifecycleScope
 import com.easyEats.ezeats.MyApplication.Companion.TAG
-import kotlinx.coroutines.launch
-
+import com.easyEats.ezeats.domain.main.model.response.home_response.HotDeal
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 @AndroidEntryPoint
-class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
+class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
+    HotDealsAdapter.OnHotDealClicked, FeaturedOfferAdapter.OnFeaturedClicked {
 
     // ViewModels for managing UI-related data across the activity and fragment
     val mainViewModel: MainViewModel by activityViewModels()
     private val homeViewModel: HomeViewModel by viewModels()
 
     // Adapters for the RecyclerViews
-    private val featuredOfferAdapter: FeaturedOfferAdapter by lazy { FeaturedOfferAdapter() }
-    private val hotDealsOfferAdapter: HotDealsAdapter by lazy { HotDealsAdapter() }
+    private val featuredOfferAdapter: FeaturedOfferAdapter by lazy { FeaturedOfferAdapter(this) }
+    private val hotDealsOfferAdapter: HotDealsAdapter by lazy { HotDealsAdapter(this) }
 
     /**
      * Inflate the binding object for this fragment.
@@ -80,7 +80,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         }
 
         binding.etSearch.setOnClickListener {
-            findNavController().navigate(R.id.searchHistoryFragment)
+            findNavController().navigate(R.id.goToSearchHistoryFragment)
         }
         binding.swipeToRefresh.setOnRefreshListener {
             homeViewModel.checkLocationPermission()
@@ -90,11 +90,15 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         }
 
         binding.tvViewAllFeatured.setOnClickListener {
+            val bottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.nav_view)
+            bottomNavigationView?.selectedItemId = R.id.percentScreenFragment
             findNavController().navigate(R.id.offers_fragment)
         }
 
         binding.tvViewAllHotDeals.setOnClickListener {
-            findNavController().navigate(R.id.offers_fragment)
+//            val bottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.nav_view)
+//            bottomNavigationView?.selectedItemId = R.id.percentScreenFragment
+//            findNavController().navigate(R.id.offers_fragment)
         }
     }
 
@@ -110,6 +114,20 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
      * This method is called to observe data during the fragment's lifecycle.
      */
     private fun observeViewModelData() {
+
+        mainViewModel.isOpenShareLink.observe(viewLifecycleOwner) { data ->
+            if (data?.get("isOpenShareLink") == true) {
+                Log.d(TAG, "observeViewModelData: ${data["restaurantId"].toString()}")
+                findNavController().navigate(
+                    HomeScreenFragmentDirections.goToRestaurantFragment(
+                        data["restaurantId"].toString()
+                    )
+                )
+                mainViewModel.isOpenShareLink.value = null
+            }
+
+        }
+
         homeViewModel.homeResultLiveData.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Loading -> {
@@ -135,9 +153,19 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
 
         mainViewModel.userLocationAddressMutableLiveData.observe(viewLifecycleOwner) {
             it?.let {
-                binding.tvLocation.text = it.address ?: getString(R.string.select_location)
+                binding.tvLocation.text =
+                    ("You're at " + it.address) ?: getString(R.string.select_location)
                 homeViewModel.checkLocationPermission()
             }
         }
+    }
+
+    override fun onHotDealClickListener(offer: HotDeal) {
+        findNavController().navigate(HomeScreenFragmentDirections.goToRedeemScreen(offer.id.toString()))
+    }
+
+    override fun onFeatureClicked(offerId: String) {
+//        findNavController().navigate(HomeScreenFragmentDirections.goToRedeemScreen(offerId))
+
     }
 }

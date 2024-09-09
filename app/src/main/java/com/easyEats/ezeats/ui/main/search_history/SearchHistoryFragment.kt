@@ -1,7 +1,6 @@
 package com.easyEats.ezeats.ui.main.search_history
 
 import android.view.LayoutInflater
-import android.view.View.GONE
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -9,11 +8,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.base.BaseBottomSheetFragment
-import com.easyEats.ezeats.base.BaseResponse
 import com.easyEats.ezeats.databinding.FragmentSearchHistoryBinding
 import com.easyEats.ezeats.domain.main.model.response.search_response.Category
 import com.easyEats.ezeats.domain.main.model.response.search_response.PopularSearch
-import com.easyEats.ezeats.domain.main.model.response.search_response.SearchScreenResponse
 import com.easyEats.ezeats.ui.main.main.MainViewModel
 import com.easyEats.ezeats.ui.main.search_history.adapter.CategoryAdapter
 import com.easyEats.ezeats.ui.main.search_history.adapter.PopularSearchAdapter
@@ -71,7 +68,7 @@ class SearchHistoryFragment : BaseBottomSheetFragment<FragmentSearchHistoryBindi
     override fun setUpViews() {
         binding.searchHistoryViewModel = searchHistoryViewModel
         binding.mcvSearch.setOnClickListener {
-            findNavController().navigate(R.id.searchFragment)
+            findNavController().navigate(R.id.goToSearchFragment)
         }
 
         binding.tvLocation.setOnClickListener {
@@ -90,7 +87,9 @@ class SearchHistoryFragment : BaseBottomSheetFragment<FragmentSearchHistoryBindi
         binding.rvRecentSearch.adapter = recentSearchAdapter
         binding.rvPopularSearch.layoutManager = GridLayoutManager(requireContext(), 3)
         searchHistoryViewModel.getSearchHistory()
+
     }
+
 
     /**
      * Observes LiveData objects in the ViewModel to update the UI based on changes in data.
@@ -110,7 +109,9 @@ class SearchHistoryFragment : BaseBottomSheetFragment<FragmentSearchHistoryBindi
         searchHistoryViewModel.clearSearchHistoryResultLiveData.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Error -> {}
-                is Resource.Loading -> {}
+                is Resource.Loading -> {
+                    searchHistoryViewModel.getSearchHistory()
+                }
                 is Resource.Success -> {
                     searchHistoryViewModel.getSearchHistory()
                 }
@@ -120,7 +121,8 @@ class SearchHistoryFragment : BaseBottomSheetFragment<FragmentSearchHistoryBindi
 
         mainViewModel.userLocationAddressMutableLiveData.observe(viewLifecycleOwner) {
             it?.let {
-                binding.tvLocation.text = it.address ?: getString(R.string.select_location)
+                binding.tvLocation.text =
+                    ("You're at " + it.address) ?: getString(R.string.select_location)
             }
         }
     }
@@ -138,7 +140,7 @@ class SearchHistoryFragment : BaseBottomSheetFragment<FragmentSearchHistoryBindi
      */
     override fun onCategoryClicked(category: Category) {
         findNavController().navigate(
-            SearchFragmentDirections.searchResultFragment(category.categoryName ?: "")
+            SearchFragmentDirections.goToSearchResultFragment(category.categoryName ?: "")
         )
     }
 
@@ -147,7 +149,7 @@ class SearchHistoryFragment : BaseBottomSheetFragment<FragmentSearchHistoryBindi
      */
     override fun onPopularSearchClicked(popularSearch: PopularSearch) {
         findNavController().navigate(
-            SearchFragmentDirections.searchResultFragment(popularSearch.term ?: "")
+            SearchFragmentDirections.goToSearchResultFragment(popularSearch.term ?: "")
         )
     }
 
@@ -156,7 +158,7 @@ class SearchHistoryFragment : BaseBottomSheetFragment<FragmentSearchHistoryBindi
      */
     override fun onRecentSearchClickListener(recentSearch: String) {
         findNavController().navigate(
-            SearchFragmentDirections.searchResultFragment(recentSearch ?: "")
+            SearchFragmentDirections.goToSearchResultFragment(recentSearch ?: "")
         )
     }
 }

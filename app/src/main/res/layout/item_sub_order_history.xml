@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="subOrder"
+            type="com.easyEats.ezeats.domain.main.model.response.order_history.SubOrder" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_10sdp">
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/iv_order_logo"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_40sdp"
+            loadImage="@{subOrder.picture}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:riv_corner_radius="@dimen/_5sdp" />
+
+        <TextView
+            android:id="@+id/tv_order_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:fontFamily="@font/gilroy_600"
+            android:text="@{subOrder.name}"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12ssp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/tv_order_price"
+            app:layout_constraintHorizontal_bias="0.044"
+            app:layout_constraintStart_toEndOf="@+id/iv_order_logo"
+            app:layout_constraintTop_toTopOf="@+id/iv_order_logo"
+            tools:text="Cheesy Buffalo Burger " />
+
+        <TextView
+            android:id="@+id/tv_order_no"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:textSize="@dimen/_10ssp"
+            android:fontFamily="@font/gilroy_400"
+            android:text="@{subOrder.description}"
+            app:layout_constraintEnd_toStartOf="@+id/tv_order_price"
+            app:layout_constraintStart_toStartOf="@+id/tv_order_title"
+            app:layout_constraintTop_toBottomOf="@+id/tv_order_title"
+            tools:text="Buffalo Burger Combo meal, with
+extra Onions" />
+
+        <TextView
+            android:id="@+id/tv_order_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/gilroy_600"
+            android:text='@{String.format("%s EGP", subOrder.price.toString())}'
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12ssp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_order_title"
+            tools:text="215 EGP" />
+
+        <TextView
+            android:id="@+id/tv_order_qty"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:fontFamily="@font/gilroy_400"
+            android:text='@{String.format("Qty %s", subOrder.quantity.toString())}'
+            app:layout_constraintEnd_toEndOf="@+id/tv_order_price"
+            app:layout_constraintTop_toBottomOf="@+id/tv_order_price"
+            tools:text="Qty 3" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

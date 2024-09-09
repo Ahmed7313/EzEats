@@ -59,6 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_25sdp"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="@id/tv_start_saving"
                 app:layout_constraintTop_toBottomOf="@id/tv_start_saving">
 

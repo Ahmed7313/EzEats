@@ -9,7 +9,7 @@ data class Result<T>(
 ) {
     // Check if the response is successful
     fun isSuccess(): Boolean {
-        return code in 200..299 && data != null
+        return code in 200..299
     }
 
     // Check if there is an error
@@ -34,12 +34,19 @@ data class BaseResponse<T>(
 ) {
     // Process the result and handle success, error, or unauthenticated accordingly
     suspend fun handleResponse(
-        onSuccess: suspend (T) -> Unit,
+        onSuccess: suspend (T?) -> Unit,
         onError: suspend (String, Error?) -> Unit,
         onUnauthenticated: suspend () -> Unit = {}
     ) {
         when {
-            result.isSuccess() -> result.data?.let { onSuccess(it) }
+            result.isSuccess() -> {
+                if (result.data!=null){
+                    result.data.let { onSuccess(it) }
+                }else{
+                    onSuccess(null)
+                }
+
+            }
             result.isUnauthenticated() -> onUnauthenticated()
             else -> onError(result.message.toString(), result.error)
         }

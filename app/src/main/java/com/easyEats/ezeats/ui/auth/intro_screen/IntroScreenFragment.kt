@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.R
@@ -19,6 +20,8 @@ import dagger.hilt.android.AndroidEntryPoint
  */
 @AndroidEntryPoint
 class IntroScreenFragment : BaseFragment<FragmentIntroScreenBinding>() {
+
+    private val introScreenViewModel: IntroScreenViewModel by viewModels()
 
     /**
      * Inflates the view binding for this fragment.
@@ -56,6 +59,7 @@ class IntroScreenFragment : BaseFragment<FragmentIntroScreenBinding>() {
             findNavController().navigate(R.id.action_introScreenFragment_to_signUpScreenFragment)
         }
         binding.btnContinueAsGuest.setOnClickListener {
+            introScreenViewModel.saveUserVerification(true)
             startActivity(Intent(requireContext(), HomeActivity::class.java))
             requireActivity().finish()
         }

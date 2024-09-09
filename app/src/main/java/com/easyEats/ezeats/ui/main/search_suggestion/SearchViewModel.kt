@@ -23,10 +23,11 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class SearchViewModel @Inject constructor(private val mainUseCase: MainUseCase) :
-    MainViewModel(mainUseCase.mainUseCase) {
+    MainViewModel(mainUseCase) {
 
     // LiveData for holding the user's search input key
     val searchKey = MutableLiveData("")
+    val _isEmptySearch = MutableLiveData(true)
 
     // LiveData for observing the search suggestions result
     private val _searchSuggestionResultMutableLiveData =
@@ -76,4 +77,8 @@ class SearchViewModel @Inject constructor(private val mainUseCase: MainUseCase) 
                 }
             )
         }
+
+    fun isEmptySearch() {
+        _isEmptySearch.value = searchKey.value?.isEmpty() == true
+    }
 }

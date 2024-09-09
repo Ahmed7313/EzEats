@@ -73,6 +73,7 @@
 
 
                 <TextView
+                    android:id="@+id/tv_all_restaurants"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_70sdp"
@@ -91,6 +92,32 @@
                     app:layout_constraintStart_toStartOf="parent"
                     tools:listitem="@layout/item_offer" />
 
+                <LinearLayout
+                    android:id="@+id/ll_no_restaurants"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/empty_restaurants_placeholder" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/gilroy_600"
+                        android:gravity="center"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:layout_marginHorizontal="@dimen/_30sdp"
+                        android:text="@string/this_category_has_no_offers_currently_check_again_later"
+                        android:textSize="@dimen/_13ssp" />
+                </LinearLayout>
+
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -103,7 +130,7 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:listitem="@layout/item_category" />
+                tools:listitem="@layout/item_offers__category" />
 
 
         </RelativeLayout>

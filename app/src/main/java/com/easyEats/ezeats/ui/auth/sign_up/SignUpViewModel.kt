@@ -86,7 +86,8 @@ class SignUpViewModel @Inject constructor(private val authUseCase: AuthUseCase) 
 
     private fun createSendOtpFlow(): Flow<Resource<BaseResponse<Boolean>>> = channelFlow {
         send(Resource.Loading())
-        val sendOtp = authUseCase.signInUseCase.sendOTP(SendOtpRequest("+2${phoneNumber.value.toString()}"))
+        val sendOtp =
+            authUseCase.signInUseCase.sendOTP(SendOtpRequest("+2${phoneNumber.value.toString()}"))
         sendOtp.handleResponse(
             onSuccess = {
                 saveMobileNumber()
@@ -130,6 +131,15 @@ class SignUpViewModel @Inject constructor(private val authUseCase: AuthUseCase) 
      */
     fun validateName(name: String) {
         isNameValid.value = name.isNotBlank()
+    }
+
+    fun saveNecessaryData(resource: Resource.Success<ParseUser>) {
+        if (!isOtpSent) {
+            isOtpSent=true
+            saveToken(resource.data)
+            saveName(name.value.toString())
+            sendOtp()
+        }
     }
 
     /**

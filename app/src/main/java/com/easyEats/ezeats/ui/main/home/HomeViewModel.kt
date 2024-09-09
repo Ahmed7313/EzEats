@@ -25,7 +25,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(private val mainUseCase: MainUseCase) :
-    MainViewModel(mainUseCase.mainUseCase) {
+    MainViewModel(mainUseCase) {
 
     private val _homeResultMutableLiveData = MutableLiveData<Resource<BaseResponse<HomeResponse>>>()
     val homeResultLiveData: LiveData<Resource<BaseResponse<HomeResponse>>> get() = _homeResultMutableLiveData
@@ -58,17 +58,12 @@ class HomeViewModel @Inject constructor(private val mainUseCase: MainUseCase) :
      */
     private fun getHomeResult(homeRequest: HomeRequest) {
         val flow = createHomeResultRequest(homeRequest)
-        apply(
-            flow = flow,
-            maxRetries = 2,
-            onError = { error ->
-                _homeResultMutableLiveData.value =
-                    Resource.Error(error.localizedMessage ?: "Unknown error")
-            },
-            onSuccess = { resource ->
-                _homeResultMutableLiveData.value = resource
-            }
-        )
+        apply(flow = flow, maxRetries = 2, onError = { error ->
+            _homeResultMutableLiveData.value =
+                Resource.Error(error.localizedMessage ?: "Unknown error")
+        }, onSuccess = { resource ->
+            _homeResultMutableLiveData.value = resource
+        })
     }
 
 
@@ -79,19 +74,16 @@ class HomeViewModel @Inject constructor(private val mainUseCase: MainUseCase) :
         channelFlow {
             send(Resource.Loading())
             val homeResult = mainUseCase.homeUseCase.getHomeDetails(homeRequest)
-            homeResult.handleResponse(
-                onSuccess = {
-                    send(Resource.Success(homeResult))
-                    _featuredOffers.value = homeResult.result.data?.featuredOffers
-                    _hotDealsOffers.value = homeResult.result.data?.hotDeals
-                    _showShimmer.value = false
-                },
-                onError = { message, error ->
-                    send(Resource.Error(message, error))
-                }, onUnauthenticated = {
-                    send(Resource.UnAuthenticated())
-                }
-            )
+            homeResult.handleResponse(onSuccess = {
+                send(Resource.Success(homeResult))
+                _featuredOffers.value = homeResult.result.data?.featuredOffers
+                _hotDealsOffers.value = homeResult.result.data?.hotDeals
+                _showShimmer.value = false
+            }, onError = { message, error ->
+                send(Resource.Error(message, error))
+            }, onUnauthenticated = {
+                send(Resource.UnAuthenticated())
+            })
         }
 
     /**
@@ -102,22 +94,19 @@ class HomeViewModel @Inject constructor(private val mainUseCase: MainUseCase) :
         if (userLocationAddressMutableLiveData.value?.lat.isNullOrEmpty().not()) {
             getHomeResult(
                 HomeRequest(
-                    userLocationAddressMutableLiveData.value?.lat.toString(),
-                    userLocationAddressMutableLiveData.value?.lng.toString()
+                    userLat = userLocationAddressMutableLiveData.value?.lat.toString(),
+                    userLon = userLocationAddressMutableLiveData.value?.lng.toString()
                 )
             )
             isLocationGranted.value = true
         } else {
-            locationUtil.askUserForLocationPermission(
-                onPermissionDenied = {
-                    isLocationGranted.value = false
-                    getHomeResult(HomeRequest("", ""))
-                },
-                onPermissionGranted = {
-                    isLocationGranted.value = true
-                    getLocationAndAddress()
-                }
-            )
+            locationUtil.askUserForLocationPermission(onPermissionDenied = {
+                isLocationGranted.value = false
+                getHomeResult(HomeRequest("", ""))
+            }, onPermissionGranted = {
+                isLocationGranted.value = true
+                getLocationAndAddress()
+            })
         }
 
 
@@ -128,27 +117,26 @@ class HomeViewModel @Inject constructor(private val mainUseCase: MainUseCase) :
      * The location and address data are used to update the home screen content.
      */
     private fun getLocationAndAddress() {
-        locationUtil.getCurrentLocation(
-            onLocationReceived = { latitude, longitude ->
-                getHomeResult(HomeRequest(latitude.toString(), longitude.toString()))
-                locationUtil.reverseGeocode(latitude, longitude,
-                    onAddressReceived = { address ->
-                        _addressMutableLiveData.value = address
-                        saveAddress(
-                            UserLocationAddress(
-                                address,
-                                latitude.toString(),
-                                longitude.toString()
-                            )
-                        )
-                    },
-                    onError = {
-                    }
+        locationUtil.getCurrentLocation(onLocationReceived = { latitude, longitude ->
+            getHomeResult(HomeRequest(latitude.toString(), longitude.toString()))
+            locationUtil.reverseGeocode(latitude, longitude, onAddressReceived = { address ->
+                _addressMutableLiveData.value = address
+                saveAddress(
+                    UserLocationAddress(
+                        address, latitude.toString(), longitude.toString()
+                    )
                 )
-            },
-            onError = {
-                getHomeResult(HomeRequest("0.0", "0.0"))
-            }
-        )
+            }, onError = {
+                getHomeResult(HomeRequest(
+                    userLat = "",
+                    userLon = ""
+                ))
+            })
+        }, onError = {
+            getHomeResult(HomeRequest(
+                userLat = "",
+                userLon = ""
+            ))
+        })
     }
 }
