@@ -37,7 +37,6 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = inflateBinding(inflater, container)
-        setUpViews()
         return binding.root
     }
 

@@ -1,17 +1,21 @@
 package com.easyEats.ezeats.ui.auth.sign_in
 
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.easyEats.ezeats.MyApplication.Companion.TAG
+import com.easyEats.ezeats.MyApplication.Companion.baseApplication
 import com.easyEats.ezeats.base.BaseResponse
+import com.easyEats.ezeats.domain.auth.model.request.FindUserRequest
 import com.easyEats.ezeats.domain.auth.model.request.SendOtpRequest
+import com.easyEats.ezeats.domain.auth.model.response.FindUserResponse
 import com.easyEats.ezeats.domain.auth.use_case.AuthUseCase
 import com.easyEats.ezeats.ui.auth.main.AuthViewModel
 import com.easyEats.ezeats.utils.Resource
 import com.parse.ParseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineExceptionHandler
+import es.dmoral.toasty.Toasty
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.launch
@@ -20,26 +24,32 @@ import javax.inject.Inject
 @HiltViewModel
 class SignInViewModel @Inject constructor(private val authUseCase: AuthUseCase) : AuthViewModel() {
 
-    private val _loginResult = MutableLiveData<Resource<ParseUser>?>()
-    val loginResult: MutableLiveData<Resource<ParseUser>?> get() = _loginResult
-
     private val _sendOtpMutableLiveData = MutableLiveData<Resource<BaseResponse<Boolean>>?>()
     val sendOtpLiveData: MutableLiveData<Resource<BaseResponse<Boolean>>?> get() = _sendOtpMutableLiveData
 
     val phoneNumber = MutableLiveData<String>()
 
-    fun login() {
-        val phone=("+2" + phoneNumber.value) ?: ""
-        Log.d(TAG, "login: $phone")
-        val loginLiveData = authUseCase.signInUseCase.login(("+2" + phoneNumber.value) ?: "")
-        loginLiveData.observeForever { resource ->
-            _loginResult.value = resource
+
+    fun findUser() {
+        viewModelScope.launch {
+            val findUser =
+                authUseCase.signInUseCase.findUser(FindUserRequest("+2${phoneNumber.value.toString()}"))
+            if (findUser.isSuccessful) {
+                if (findUser.body()?.result != null) {
+                    saveToken(findUser.body()?.result.toString())
+                    sendOtp()
+                }else{
+                    Toasty.error(baseApplication, "User Not Found", Toast.LENGTH_LONG).show()
+                }
+            } else {
+                Toasty.error(baseApplication, "unExpected Error occurred, Please Try Again.", Toast.LENGTH_LONG).show()
+            }
         }
     }
 
-    private fun saveToken(user: ParseUser) {
+    private fun saveToken(token: String) {
         viewModelScope.launch {
-            authUseCase.signInUseCase.saveToken(user.sessionToken)
+            authUseCase.signInUseCase.saveToken(token)
         }
     }
 
@@ -83,10 +93,8 @@ class SignInViewModel @Inject constructor(private val authUseCase: AuthUseCase) 
 
     fun sendOtpAndSaveToke(resource: Resource.Success<ParseUser>) {
         if (!isOtpSent) {
-            isOtpSent=true
-            val user = resource.data
+            isOtpSent = true
             sendOtp()
-            saveToken(user ?: return)
         }
     }
 

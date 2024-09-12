@@ -44,13 +44,14 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
             ivSearch.setOnClickListener { findNavController().navigate(R.id.goToSearchHistoryFragment) }
         }
 
+        binding.srGetOffers.setOnRefreshListener{
+            offersViewModel.getRestaurantsResult("")
+            offersViewModel.getCategoriesRestaurantResult()
+        }
+
         listenToObservers()
     }
 
-    override fun onResume() {
-        super.onResume()
-
-    }
 
     private fun listenToObservers() {
         mainViewModel.userLocationAddressMutableLiveData.observe(viewLifecycleOwner) {
@@ -73,6 +74,7 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
 
                 is Resource.Success -> {
                     hideMainLoading()
+                    binding.srGetOffers.isRefreshing = false
                     offersViewModel.setRestaurantsData(binding, restaurantAdapter, resource)
                 }
 
@@ -90,6 +92,7 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
                 }
 
                 is Resource.Loading -> {
+                    binding.srGetOffers.isRefreshing = false
                     showMainLoading()
                 }
 
@@ -108,9 +111,9 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
 
     override fun onCategoryClicked(category: Category) {
         if (category.categoryId == "eqvWcHcHaD")
-            offersViewModel.getRestaurantsRestaurantResult("")
+            offersViewModel.getRestaurantsResult("")
         else
-            offersViewModel.getRestaurantsRestaurantResult(category.categoryId!!)
+            offersViewModel.getRestaurantsResult(category.categoryId!!)
     }
 
     override fun onRestaurantClickListener(restaurant: Restaurant) {

@@ -5,13 +5,16 @@ import com.easyEats.ezeats.base.BaseResponse
 import com.easyEats.ezeats.data.local.data_store.DataStorePreference
 import com.easyEats.ezeats.data.remote.auth.AuthApiService
 import com.easyEats.ezeats.data.remote.auth.AuthWithParsing
+import com.easyEats.ezeats.domain.auth.model.request.FindUserRequest
 import com.easyEats.ezeats.domain.auth.model.request.SendOtpRequest
 import com.easyEats.ezeats.domain.auth.model.request.VerifyOtpRequest
+import com.easyEats.ezeats.domain.auth.model.response.FindUserResponse
 import com.easyEats.ezeats.domain.auth.repository.AuthRepository
 import com.easyEats.ezeats.domain.main.model.UserLocationAddress
 import com.easyEats.ezeats.utils.Resource
 import com.parse.ParseUser
 import kotlinx.coroutines.flow.Flow
+import retrofit2.Response
 import javax.inject.Inject
 
 
@@ -36,8 +39,6 @@ class AuthRepositoryImpl @Inject constructor(
     override fun register(phoneNumber: String, name: String): LiveData<Resource<ParseUser>> =
         authWithParsing.register(phoneNumber, name)
 
-    override fun login(phoneNumber: String): LiveData<Resource<ParseUser>> =
-        authWithParsing.login(phoneNumber)
 
 
     override suspend fun savToken(token: String) {
@@ -65,4 +66,8 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun verifyOtp(request: VerifyOtpRequest): BaseResponse<Boolean> =
         authApiService.verifyOtp(request)
+
+    override suspend fun findUser(findUserRequest: FindUserRequest): Response<FindUserResponse> {
+        return authApiService.findUser(findUserRequest)
+    }
 }

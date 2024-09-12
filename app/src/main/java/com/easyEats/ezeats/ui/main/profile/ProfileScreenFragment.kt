@@ -46,7 +46,8 @@ class ProfileScreenFragment : BaseFragment<FragmentProfileScreenBinding>(),
     override fun setUpViews() {
         listenToObservers()
         binding.tvProfile.setOnClickListener {
-            findNavController().navigate(ProfileScreenFragmentDirections.goToEditProfile(user))
+            if (::user.isInitialized)
+                findNavController().navigate(ProfileScreenFragmentDirections.goToEditProfile(user))
         }
         binding.tvLogin.setOnClickListener {
             val intent = Intent(requireActivity(), AuthActivity::class.java)
@@ -87,20 +88,21 @@ class ProfileScreenFragment : BaseFragment<FragmentProfileScreenBinding>(),
         profileViewModel.userResultLiveData.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Error -> {
-
+                    hideMainLoading()
                 }
 
                 is Resource.Loading -> {
-
+                    showMainLoading()
                 }
 
                 is Resource.Success -> {
+                    hideMainLoading()
                     user = resource.data?.result?.data!!
                     binding.userInfo = user
                 }
 
                 is Resource.UnAuthenticated -> {
-
+                    hideMainLoading()
                 }
             }
 

@@ -34,11 +34,11 @@ class OffersViewModel @Inject constructor(val mainUseCase: MainUseCase) :
     val categoryResultLiveData: LiveData<Resource<BaseResponse<List<Category>>>> get() = _categoryResultMutableLiveData
 
     init {
-        getRestaurantsRestaurantResult("")
+        getRestaurantsResult("")
         getCategoriesRestaurantResult()
     }
 
-    fun getRestaurantsRestaurantResult(categoryId: String) {
+    fun getRestaurantsResult(categoryId: String) {
         val flow = createRestaurantsResultRequest(
             OffersRequest(
                 categoryId = categoryId,

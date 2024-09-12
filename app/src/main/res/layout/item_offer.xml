@@ -38,7 +38,7 @@
                     android:layout_marginStart="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:elevation="0dp"
-                    app:cardCornerRadius="@dimen/_3sdp"
+                    app:cardCornerRadius="@dimen/_4sdp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:strokeWidth="0dp">
@@ -48,8 +48,7 @@
                         android:layout_width="@dimen/_52sdp"
                         android:layout_height="@dimen/_63sdp"
                         android:contentDescription="@string/restaurant_logo"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/test_burger_image" />
+                        android:scaleType="fitXY"/>
                 </com.google.android.material.card.MaterialCardView>
 
                 <TextView
@@ -142,7 +141,7 @@
             <LinearLayout
                 android:id="@+id/ll_empty_offers"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/_40sdp"
+                android:layout_height="@dimen/_45sdp"
                 android:orientation="vertical"
                 android:layout_marginTop="@dimen/_5sdp"
                 app:layout_constraintEnd_toEndOf="parent"

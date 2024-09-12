@@ -6,6 +6,7 @@ import kotlinx.parcelize.RawValue
 data class RestaurantInfo(
     val restaurantName: String?,
     val restaurantLogo: String?,
+    val restaurantCover: String?,
     val distance: String?,
     val reviewsCount: Int?,
     val rating: Double?,

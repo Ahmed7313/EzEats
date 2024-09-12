@@ -163,6 +163,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_10sdp"
+                    android:paddingBottom="@dimen/_70sdp"
                     android:visibility="@{pointsResponse.loyaltyPoints.size()!=0?View.VISIBLE:View.GONE}"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     android:orientation="vertical"

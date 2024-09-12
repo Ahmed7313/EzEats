@@ -42,9 +42,9 @@ class OrderHistoryFragment : BaseFragment<FragmentOrderHistoryBinding>() {
     private fun listenToObservers() {
         orderHistoryViewModel.orders.observe(viewLifecycleOwner) { orders ->
             orders.isEmpty().let { binding.llEmptyOrderHistory.visibility= VISIBLE }
+            orders.isNotEmpty().let {  binding.llEmptyOrderHistory.visibility= GONE}
             orderHistoryAdapter.submitList(orders)
         }
     }
-
 
 }

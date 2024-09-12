@@ -48,7 +48,6 @@ class SignInScreenFragment : BaseFragment<FragmentSignInScreenBinding>() {
     }
 
     private fun setUpObservers() {
-        listenToLoginResult()
         listenToOtpResult()
     }
 
@@ -81,29 +80,6 @@ class SignInScreenFragment : BaseFragment<FragmentSignInScreenBinding>() {
         }
     }
 
-    private fun listenToLoginResult() {
-        signInViewModel.loginResult.observe(viewLifecycleOwner) { resource ->
-            when (resource) {
-                is Resource.Loading -> {
-                    showLoading()
-                }
-
-                is Resource.Success -> {
-                    hideLoading()
-                    signInViewModel.sendOtpAndSaveToke(resource)
-                }
-
-                is Resource.Error -> {
-                    hideLoading()
-                    Toasty.error(requireContext(), resource.message, Toast.LENGTH_LONG).show()
-                }
-
-                else -> {
-                    hideLoading()
-                }
-            }
-        }
-    }
 
 
     private fun goToVerificationScreen() {
@@ -121,7 +97,6 @@ class SignInScreenFragment : BaseFragment<FragmentSignInScreenBinding>() {
     }
 
     override fun onDestroyView() {
-        signInViewModel.loginResult.value = null
         signInViewModel.sendOtpLiveData.value = null
         signInViewModel.isOtpSent(false)
         super.onDestroyView()

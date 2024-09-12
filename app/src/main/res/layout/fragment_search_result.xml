@@ -17,6 +17,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:background="@drawable/rounded_top_bottom_sheet_background"
         android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -78,7 +79,7 @@
             android:id="@+id/reTop"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/home_top_background"
+            android:background="@drawable/rounded_top_bottom_sheet_background"
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -102,10 +103,7 @@
                 android:layout_gravity="center"
                 android:layout_marginHorizontal="@dimen/_17sdp"
                 android:layout_marginVertical="@dimen/_28sdp"
-                android:background="?android:selectableItemBackground"
-                android:clickable="true"
                 android:drawablePadding="@dimen/_5sdp"
-                android:focusable="true"
                 android:maxLength="25"
                 android:maxLines="1"
                 android:ellipsize="end"

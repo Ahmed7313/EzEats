@@ -20,6 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import es.dmoral.toasty.Toasty
 import android.provider.Settings
 import android.util.Log
+import android.view.animation.AnimationUtils
 import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.domain.main.model.response.home_response.HotDeal
 import com.google.android.material.bottomnavigation.BottomNavigationView

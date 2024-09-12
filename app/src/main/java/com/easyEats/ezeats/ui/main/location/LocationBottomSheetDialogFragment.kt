@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -48,9 +50,15 @@ class LocationBottomSheetDialogFragment : BottomSheetDialogFragment(),
     private fun listenToObservers() {
         locationViewModel.getLocationsResultLiveData.observe(viewLifecycleOwner) { resource ->
             when (resource) {
-                is Resource.Error -> {}
-                is Resource.Loading -> {}
+                is Resource.Error -> {
+
+                }
+                is Resource.Loading -> {
+                    binding.loader.visibility=VISIBLE
+                }
                 is Resource.Success -> {
+                    binding.loader.visibility= GONE
+
                     locationAdapter.submitList(resource.data?.result?.data)
                 }
 

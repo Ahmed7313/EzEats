@@ -1,18 +1,22 @@
 package com.easyEats.ezeats.ui.main.points
 
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.base.BaseFragment
 import com.easyEats.ezeats.databinding.FragmentPointScreenBinding
 import com.easyEats.ezeats.ui.main.points.adapter.PointsAdapter
 import com.easyEats.ezeats.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 
@@ -33,11 +37,10 @@ class PointScreenFragment : BaseFragment<FragmentPointScreenBinding>() {
     }
 
     private fun listenToObserver() {
-        lifecycleScope.launch {
-            pointsViewModel.getUserToken().collect{token->
-                if (token.isNullOrEmpty()){
-                    findNavController().navigate(R.id.goToUserGuestScreen)
-                }
+        lifecycleScope.launchWhenResumed {
+            val token = pointsViewModel.getUserToken().first()
+            if (token.isEmpty()) {
+                findNavController().navigate(R.id.goToUserGuestScreen)
             }
         }
 
