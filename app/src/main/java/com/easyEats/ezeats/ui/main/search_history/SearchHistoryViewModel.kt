@@ -58,7 +58,7 @@ class SearchHistoryViewModel @Inject constructor(private val mainUseCase: MainUs
             maxRetries = 2,
             onError = { error ->
                 _searchHistoryResultMutableLiveData.value =
-                    Resource.Error(error.localizedMessage ?: "Unknown error")
+                    Resource.Error("No Internet Connection")
             },
             onSuccess = { resource ->
                 showShimmer.value = false
@@ -100,8 +100,8 @@ class SearchHistoryViewModel @Inject constructor(private val mainUseCase: MainUs
             maxRetries = 2,
             onError = { error ->
                 _clearSearchHistoryResultMutableLiveData.value =
-                    Resource.Error(error.localizedMessage ?: "Unknown error")
-                Log.d(TAG, "clearRecentSearch: ${error.localizedMessage ?: "Unknown error"}")
+                    Resource.Error("No Internet Connection")
+                Log.d(TAG, "clearRecentSearch: ${"No Internet Connection"}")
             },
             onSuccess = { resource ->
                 showShimmer.value = false

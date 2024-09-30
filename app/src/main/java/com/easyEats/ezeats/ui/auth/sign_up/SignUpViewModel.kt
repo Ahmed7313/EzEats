@@ -76,7 +76,7 @@ class SignUpViewModel @Inject constructor(private val authUseCase: AuthUseCase) 
             maxRetries = 1,
             onError = { error ->
                 _sendOtpMutableLiveData.value =
-                    Resource.Error(error.localizedMessage ?: "Unknown error")
+                    Resource.Error("No Internet Connection")
             },
             onSuccess = { resource ->
                 _sendOtpMutableLiveData.value = resource

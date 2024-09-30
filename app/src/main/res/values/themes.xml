@@ -55,5 +55,16 @@
         <item name="android:layout_gravity">bottom</item>
     </style>
 
+    <style name="FullWidthBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/FullWidthBottomSheetStyle</item>
+    </style>
+
+    <style name="FullWidthBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:radius">@dimen/_20sdp</item>
+        <item name="behavior_peekHeight">0dp</item>
+    </style>
+
+
 
 </resources>

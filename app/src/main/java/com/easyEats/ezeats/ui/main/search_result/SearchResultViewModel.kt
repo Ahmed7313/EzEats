@@ -100,7 +100,7 @@ class SearchResultViewModel @Inject constructor(
         )
         apply(flow = flow, maxRetries = 2, onError = { error ->
             _searchResultMutableLiveData.value =
-                Resource.Error(error.localizedMessage ?: "Unknown error")
+                Resource.Error("No Internet Connection")
         }, onSuccess = { resource ->
             _searchResultMutableLiveData.value = resource
         })
@@ -141,7 +141,7 @@ class SearchResultViewModel @Inject constructor(
         )
         apply(flow = flow, maxRetries = 2, onError = { error ->
             _searchOfferResultMutableLiveData.value =
-                Resource.Error(error.localizedMessage ?: "Unknown error")
+                Resource.Error("No Internet Connection")
         }, onSuccess = { resource ->
             _searchOfferResultMutableLiveData.value = resource
         })
@@ -209,7 +209,7 @@ class SearchResultViewModel @Inject constructor(
         binding.rvRestaurantSearch.adapter = restaurantAdapter
         binding.llExplore.visibility =
             if (resource.data?.result?.data?.isEmpty() == true) View.VISIBLE else View.GONE
-        binding.btnExplore.text = getString(context, R.string.explore_our_offers)
+//        binding.btnExplore.text = getString(context, R.string.explore_our_offers)
         restaurantAdapter.submitList(resource.data?.result?.data)
     }
 

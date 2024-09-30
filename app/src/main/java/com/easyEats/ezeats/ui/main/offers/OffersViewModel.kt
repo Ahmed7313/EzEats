@@ -1,9 +1,13 @@
 package com.easyEats.ezeats.ui.main.offers
 
+import android.content.Context
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.view.animation.AnimationUtils
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.recyclerview.widget.DefaultItemAnimator
+import com.easyEats.ezeats.R
 import com.easyEats.ezeats.base.BaseResponse
 import com.easyEats.ezeats.databinding.FragmentPercentScreenBinding
 import com.easyEats.ezeats.domain.main.model.request.offers.OffersRequest
@@ -48,7 +52,7 @@ class OffersViewModel @Inject constructor(val mainUseCase: MainUseCase) :
         )
         apply(flow = flow, maxRetries = 2, onError = { error ->
             _restaurantResultMutableLiveData.value =
-                Resource.Error(error.localizedMessage ?: "Unknown error")
+                Resource.Error("No Internet Connection")
         }, onSuccess = { resource ->
             _restaurantResultMutableLiveData.value = resource
         })
@@ -72,7 +76,7 @@ class OffersViewModel @Inject constructor(val mainUseCase: MainUseCase) :
         val flow = createCategoriesResultRequest()
         apply(flow = flow, maxRetries = 2, onError = { error ->
             _categoryResultMutableLiveData.value =
-                Resource.Error(error.localizedMessage ?: "Unknown error")
+                Resource.Error("No Internet Connection")
         }, onSuccess = { resource ->
             _categoryResultMutableLiveData.value = resource
         })
@@ -93,20 +97,25 @@ class OffersViewModel @Inject constructor(val mainUseCase: MainUseCase) :
         }
 
     fun setRestaurantsData(
+        context: Context,
         binding: FragmentPercentScreenBinding,
         restaurantAdapter: RestaurantAdapter,
         resource: Resource.Success<BaseResponse<List<Restaurant>>>
     ) {
         binding.rvRestaurant.adapter = restaurantAdapter
-        restaurantAdapter.submitList(resource.data?.result?.data)
         if (resource.data?.result?.data?.isEmpty() == true) {
             binding.rvRestaurant.visibility = GONE
             binding.tvAllRestaurants.visibility = GONE
             binding.llNoRestaurants.visibility = VISIBLE
         } else {
+            val animationController = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation_fade_in)
+            binding.rvRestaurant.layoutAnimation = animationController
             binding.rvRestaurant.visibility = VISIBLE
             binding.tvAllRestaurants.visibility = VISIBLE
             binding.llNoRestaurants.visibility = GONE
+            restaurantAdapter.submitList(resource.data?.result?.data){
+                binding.rvRestaurant.startLayoutAnimation()
+            }
         }
     }
 

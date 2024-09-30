@@ -72,7 +72,7 @@ class VerificationViewModel @Inject constructor(
             maxRetries = 2,
             onError = { error ->
                 _verifyOtpMutableLiveData.value =
-                    Error(error.localizedMessage ?: "Unknown error")
+                    Error("No Internet Connection")
             },
             onSuccess = { resource ->
                 _verifyOtpMutableLiveData.value = resource
@@ -108,7 +108,7 @@ class VerificationViewModel @Inject constructor(
             maxRetries = 2,
             onError = { error ->
                 _sendOtpMutableLiveData.value =
-                    Error(error.localizedMessage ?: "Unknown error")
+                    Error("No Internet Connection")
             },
             onSuccess = { resource ->
                 _sendOtpMutableLiveData.value = resource

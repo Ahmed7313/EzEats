@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:gravity="center"
         android:paddingHorizontal="@dimen/_20sdp"
         tools:context=".ui.main.guest_user.GuestUserBottomSheet">
 
@@ -19,6 +20,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/gilroy_700"
             android:layout_marginTop="@dimen/_20sdp"
+            android:gravity="center"
             android:text="@string/please_sign_up_or_login_to_continue"
             android:textSize="@dimen/_16ssp" />
 
@@ -53,7 +55,7 @@
             android:layout_marginTop="@dimen/_10sdp"
             android:backgroundTint="@color/main_color"
             android:fontFamily="@font/gilroy_700"
-            android:paddingVertical="@dimen/_12sdp"
+            android:paddingVertical="@dimen/_15sdp"
             android:text="@string/sign_in"
             android:textColor="@color/white"
             android:textSize="@dimen/_12ssp"

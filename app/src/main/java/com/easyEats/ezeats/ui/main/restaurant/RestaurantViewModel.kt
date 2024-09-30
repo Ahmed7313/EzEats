@@ -41,8 +41,8 @@ class RestaurantViewModel @Inject constructor(
         val flow = createSpecialOffersRequest(
             RestaurantRequest(
                 restaurantId!!,
-                userLat = userLocationAddressMutableLiveData.value?.lat.toString(),
-                userLon = userLocationAddressMutableLiveData.value?.lng.toString()
+                userLat = userLocationAddressMutableLiveData.value?.lat ?: "0.0",
+                userLon = userLocationAddressMutableLiveData.value?.lng ?: "0.0"
             )
         )
         apply(
@@ -50,7 +50,7 @@ class RestaurantViewModel @Inject constructor(
             maxRetries = 2,
             onError = { error ->
                 _specialOffers.value =
-                    Resource.Error(error.localizedMessage ?: "Unknown error")
+                    Resource.Error("No Internet Connection")
             },
             onSuccess = { resource ->
                 _specialOffers.value = resource
@@ -69,10 +69,6 @@ class RestaurantViewModel @Inject constructor(
                 },
                 onError = { message, error ->
                     send(Resource.Error(message, error))
-                    Log.d(
-                        TAG,
-                        "createSpecialOffersRequest:message $message error ${error?.message} "
-                    )
                 }, onUnauthenticated = {
                     send(Resource.UnAuthenticated())
                 }

@@ -6,11 +6,23 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.easyEats.ezeats.databinding.ItemSubOrderHistoryBinding
+import com.easyEats.ezeats.domain.main.model.response.order_history.Choices
 import com.easyEats.ezeats.domain.main.model.response.order_history.SubOrder
 
-class SubOrderHistoryAdapter : ListAdapter<SubOrder, SubOrderHistoryAdapter.SubOrderHistoryViewHolder>(SubOrderHistoryDiffCallback()) {
+class SubOrderHistoryAdapter :
+    ListAdapter<SubOrder, SubOrderHistoryAdapter.SubOrderHistoryViewHolder>(
+        SubOrderHistoryDiffCallback()
+    ) {
 
-    inner class SubOrderHistoryViewHolder(val binding: ItemSubOrderHistoryBinding) : RecyclerView.ViewHolder(binding.root) { fun bind(subOrder: SubOrder) { binding.subOrder = subOrder } }
+    inner class SubOrderHistoryViewHolder(val binding: ItemSubOrderHistoryBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(subOrder: SubOrder) {
+            binding.subOrder = subOrder
+            val choicesAdapter = ChoicesAdapter()
+            binding.rvExtras.adapter = choicesAdapter
+            choicesAdapter.submitList(subOrder.extras)
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SubOrderHistoryViewHolder {
         val inflater = LayoutInflater.from(parent.context)

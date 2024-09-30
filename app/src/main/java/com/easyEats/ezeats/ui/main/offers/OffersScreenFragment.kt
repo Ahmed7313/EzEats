@@ -58,7 +58,8 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
             it?.let {
                 binding.tvLocation.text =
                     ("You're at " + it.address) ?: getString(R.string.select_location)
-
+                offersViewModel.getRestaurantsResult("")
+                offersViewModel.getCategoriesRestaurantResult()
             }
         }
         offersViewModel.restaurantResultLiveData.observe(viewLifecycleOwner) { resource ->
@@ -73,9 +74,10 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
                 }
 
                 is Resource.Success -> {
-                    hideMainLoading()
                     binding.srGetOffers.isRefreshing = false
-                    offersViewModel.setRestaurantsData(binding, restaurantAdapter, resource)
+                    offersViewModel.setRestaurantsData(requireContext(),binding, restaurantAdapter, resource)
+                    hideMainLoading()
+
                 }
 
                 is Resource.UnAuthenticated -> {
@@ -126,6 +128,11 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
 
     override fun onOfferClicked(offerId: String) {
         findNavController().navigate(OffersScreenFragmentDirections.goToRedeemScreen(offerId))
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        hideMainLoading()
     }
 
 

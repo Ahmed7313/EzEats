@@ -34,7 +34,7 @@ class PointsViewModel @Inject constructor(val mainUseCase: MainUseCase) :
                 val flow = createPointsResultRequest(PointsRequest(token))
                 apply(flow = flow, maxRetries = 2, onError = { error ->
                     _pointsResultMutableLiveData.value =
-                        Resource.Error(error.localizedMessage ?: "Unknown error")
+                        Resource.Error("No Internet Connection")
                 }, onSuccess = { resource ->
                     _pointsResultMutableLiveData.value = resource
                 })

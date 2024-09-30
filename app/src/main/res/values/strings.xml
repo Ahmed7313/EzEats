@@ -94,8 +94,6 @@
     <string name="loyalty_points">Loyalty Points</string>
     <string name="you_can_use_your_ezpoints_to_redeem_any_offers_regardless_of_the_restaurant">You can use your EZpoints to redeem any offers, regardless of the restaurant</string>
     <string name="restuarnats_points">Restaurants Points</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="close">Close Icon</string>
     <string name="what_do_you_want_to_eat">What do you want to eat?</string>
     <string name="recent_searches">Recent Searches</string>
@@ -127,8 +125,8 @@
     <string name="offer_image">offer image</string>
     <string name="new_">New</string>
     <string name="no_offers_available">No Offers Available</string>
-    <string name="there_is_no_offers_going_on_right_now_please_check_again_later_for_all_the_pizza_goodness">There is no offers going on right now, please check again later for all the pizza goodness</string>
-    <string name="check_other_offers">Check Other Offers</string>
+    <string name="there_is_no_offers_going_on_right_now_please_check_again_later_for_all_the_pizza_goodness">You can order your favourite food through our web app now</string>
+    <string name="check_other_offers">Order through the web app</string>
     <string name="this_category_has_no_offers_currently_check_again_later">This category has no offers currently, check again later!</string>
     <string name="redeem_and_pay_in_the_restaurant_and_gain_300_dp_points_to_enjoy_the_next_time_you_are_visiting">Redeem and pay at the restaurant to enjoy the offer on your visit.</string>
     <string name="redeem_pay"><![CDATA[redeem & pay\n]]></string>
@@ -147,12 +145,15 @@
     <string name="save_changes">Save Changes</string>
     <string name="email">Email</string>
     <string name="full_name">Full Name</string>
-    <string name="deliciousness_is_just_a_search_away">Deliciousness is just a search away</string>
+    <string name="deliciousness_is_just_a_search_away">Deliciousness is \n just a search away</string>
     <string name="keep_collecting_points_and_soon_you_will_be_able_to_redeem_them_in_exchange_for_awesome_deals">Keep collecting points, and soon you will be able to redeem them in exchange for awesome deals!</string>
     <string name="you_don_t_have_any_orders_yet_make_some_orders_to_see_your_history_here">You don\'t have any orders yet, make some orders to see your history here</string>
     <string name="coming_soon">Coming Soon !</string>
-    <string name="that_cart_looks_lovely_please_sign_up_or_log_back_in_to_be_able_to_make_an_order">That cart looks lovely, please sign up or log back in, to be able to make an order</string>
-    <string name="please_sign_up_or_login_to_continue">Please Sign up or login to continue</string>
+    <string name="that_cart_looks_lovely_please_sign_up_or_log_back_in_to_be_able_to_make_an_order">To start collecting and redeeming points, create an account or login</string>
+    <string name="please_sign_up_or_login_to_continue">Please Sign up or login \n to continue</string>
+    <string name="log_out">Log Out</string>
+    <string name="extras">Extras</string>
+    <string name="birth_date">Date of birth</string>
 
 
 </resources>

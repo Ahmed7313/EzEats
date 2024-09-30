@@ -45,7 +45,7 @@ class SearchViewModel @Inject constructor(private val mainUseCase: MainUseCase) 
             maxRetries = 2,
             onError = { error ->
                 _searchSuggestionResultMutableLiveData.value =
-                    Resource.Error(error.localizedMessage ?: "Unknown error")
+                    Resource.Error("No Internet Connection")
             },
             onSuccess = { resource ->
                 _searchSuggestionResultMutableLiveData.value = resource

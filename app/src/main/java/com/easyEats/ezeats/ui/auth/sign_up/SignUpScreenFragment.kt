@@ -83,6 +83,7 @@ class SignUpScreenFragment : BaseFragment<FragmentSignUpScreenBinding>() {
                 is Resource.Success -> {
                     hideLoading()
                     signUpViewModel.saveNecessaryData(resource)
+                    binding.btnSignUp.isEnabled = true
                 }
 
                 is Resource.Error -> {
@@ -139,6 +140,11 @@ class SignUpScreenFragment : BaseFragment<FragmentSignUpScreenBinding>() {
         // Navigate to Sign In screen when "Sign In" text view is clicked
         binding.tvSignIn.setOnClickListener {
             findNavController().navigate(R.id.action_signUpScreenFragment_to_signInScreenFragment)
+        }
+        binding.btnSignUp.setOnClickListener {
+            binding.btnSignUp.isEnabled=false
+            signUpViewModel.register()
+
         }
     }
 

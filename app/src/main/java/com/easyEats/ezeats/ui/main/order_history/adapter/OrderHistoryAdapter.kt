@@ -1,7 +1,10 @@
 package com.easyEats.ezeats.ui.main.order_history.adapter
 
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -10,22 +13,31 @@ import com.easyEats.ezeats.databinding.ItemOrderHistoryBinding
 import com.easyEats.ezeats.domain.main.model.response.order_history.Order
 
 class OrderHistoryAdapter(
+    private val onReorderButtonClicked: OnReorderButtonClicked
 ) : ListAdapter<Order, OrderHistoryAdapter.OrderHistoryViewHolder>(OrderHistoryDiffCallback()) {
     private lateinit var subOrderAdapter: SubOrderHistoryAdapter
 
 
+    interface OnReorderButtonClicked {
+        fun onReorderButtonClicked(restaurantId: String)
+    }
+
     inner class OrderHistoryViewHolder(val binding: ItemOrderHistoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(order: Order) {
-            binding.order = order
+            if (order.totalPrice != 0.0)
+                binding.order = order
             subOrderAdapter.submitList(order.subOrders)
+            binding.btnReOrder.setOnClickListener {
+                onReorderButtonClicked.onReorderButtonClicked(order.restaurantId)
+            }
             binding.ivCollapse.setOnClickListener {
-                if (binding.rvSubOrder.isVisible){
-                    binding.ivCollapse.rotation=0f
-                    binding.rvSubOrder.isVisible=false
-                }else{
-                    binding.ivCollapse.rotation=180f
-                    binding.rvSubOrder.isVisible=true
+                if (binding.rvSubOrder.isVisible) {
+                    binding.ivCollapse.rotation = 0f
+                    binding.rvSubOrder.isVisible = false
+                } else {
+                    binding.ivCollapse.rotation = 180f
+                    binding.rvSubOrder.isVisible = true
                 }
             }
         }
@@ -43,6 +55,7 @@ class OrderHistoryAdapter(
         holder.binding.rvSubOrder.adapter = subOrderAdapter
         holder.bind(order)
     }
+
 }
 
 class OrderHistoryDiffCallback : DiffUtil.ItemCallback<Order>() {

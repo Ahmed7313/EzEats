@@ -47,6 +47,7 @@ class PointScreenFragment : BaseFragment<FragmentPointScreenBinding>() {
         pointsViewModel.pointsResultLiveData.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Error -> {
+                    Log.d(TAG, "listenToObserver:error ${resource.message.toString()} ")
                     hideMainLoading()
                 }
 
@@ -58,15 +59,22 @@ class PointScreenFragment : BaseFragment<FragmentPointScreenBinding>() {
                     hideMainLoading()
                     binding.pointsResponse = resource.data?.result?.data
                     binding.rvPoints.adapter = pointsAdapter
+                    Log.d(TAG, "listenToObserver: ${resource.data?.result?.data?.eZPoints}")
                     pointsAdapter.submitList(resource.data?.result?.data?.loyaltyPoints)
                 }
 
                 is Resource.UnAuthenticated -> {
                     hideMainLoading()
+                    Log.d(TAG, "listenToObserver: .UnAuthenticated ")
+
                 }
             }
 
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        hideMainLoading()
+    }
 }

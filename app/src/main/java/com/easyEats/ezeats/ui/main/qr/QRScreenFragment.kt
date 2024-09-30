@@ -1,42 +1,29 @@
 package com.easyEats.ezeats.ui.main.qr
 
 import android.Manifest
-import android.app.Activity
-import android.app.Dialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.util.DisplayMetrics
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.easyEats.ezeats.MyApplication.Companion.TAG
-import com.easyEats.ezeats.R
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.easyEats.ezeats.base.BaseBottomSheetFragment
 import com.easyEats.ezeats.databinding.FragmentQRScreenBinding
 import com.easyEats.ezeats.ui.main.qr.permession.DefaultPermissionHandler
 import com.easyEats.ezeats.ui.main.qr.permession.PermissionState
 import com.easyEats.ezeats.utils.Constants.REQUEST_CAMERA_PERMISSION
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.journeyapps.barcodescanner.BarcodeCallback
 import com.journeyapps.barcodescanner.BarcodeResult
-import com.journeyapps.barcodescanner.DecoratedBarcodeView
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class QRScreenFragment : BaseBottomSheetFragment<FragmentQRScreenBinding>() {
+    private val viewModel: QRScreenViewModel by viewModels()
 
     // Lazy-initialized property for handling permissions
     private val permissionHandler: DefaultPermissionHandler by lazy {
@@ -110,11 +97,10 @@ class QRScreenFragment : BaseBottomSheetFragment<FragmentQRScreenBinding>() {
      * @param result The result of the scanned QR code.
      */
     private fun openBrowser(result: BarcodeResult) {
-        val intent = Intent(Intent.ACTION_VIEW).apply {
-            data = Uri.parse(result.text.toString())
+        viewModel.handleOpenBrowser(result) { link ->
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+            requireActivity().startActivity(intent)
         }
-        requireActivity().startActivity(intent)
-
     }
 
     override fun onResume() {

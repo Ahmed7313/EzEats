@@ -22,6 +22,8 @@ import com.easyEats.ezeats.ui.auth.main.AuthActivity
 import com.easyEats.ezeats.ui.main.delete_account.DeleteAccountDialogFragment
 import com.easyEats.ezeats.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Delay
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
@@ -40,7 +42,6 @@ class ProfileScreenFragment : BaseFragment<FragmentProfileScreenBinding>(),
     override fun onResume() {
         super.onResume()
         profileViewModel.getUserInfoResult()
-
     }
 
     override fun setUpViews() {
@@ -54,10 +55,10 @@ class ProfileScreenFragment : BaseFragment<FragmentProfileScreenBinding>(),
             intent.putExtra("FRAGMENT_ID", R.id.signInScreenFragment)
             startActivity(intent)
         }
-        binding.ivLogout.setOnClickListener {
+        binding.tvLogout.setOnClickListener {
+            findNavController().navigate(R.id.homeScreenFragment)
             profileViewModel.saveToke("")
             profileViewModel.setUserVerification(false)
-            startActivity(Intent(requireActivity(), AuthActivity::class.java))
         }
 
         binding.tvDeleteAccount.setOnClickListener {
@@ -103,6 +104,10 @@ class ProfileScreenFragment : BaseFragment<FragmentProfileScreenBinding>(),
 
                 is Resource.UnAuthenticated -> {
                     hideMainLoading()
+                    profileViewModel.saveToke("")
+                    binding.containerHeader.visibility = GONE
+                    binding.llGuestUser.visibility = VISIBLE
+                    binding.llAccount.visibility = GONE
                 }
             }
 
@@ -132,16 +137,13 @@ class ProfileScreenFragment : BaseFragment<FragmentProfileScreenBinding>(),
         }
 
         lifecycleScope.launch {
-            profileViewModel.isUserVerified().asLiveData()
-                .observe(viewLifecycleOwner) { isUserVerified ->
-                    profileViewModel.getToken().asLiveData()
-                        .observe(viewLifecycleOwner) { token ->
-                            if (!isUserVerified || token.isNullOrEmpty()) {
-                                binding.containerHeader.visibility = GONE
-                                binding.llGuestUser.visibility = VISIBLE
-                                binding.llAccount.visibility = GONE
-                            }
-                        }
+            profileViewModel.getToken().asLiveData()
+                .observe(viewLifecycleOwner) { token ->
+                    if (token.isNullOrEmpty()) {
+                        binding.containerHeader.visibility = GONE
+                        binding.llGuestUser.visibility = VISIBLE
+                        binding.llAccount.visibility = GONE
+                    }
                 }
         }
     }
@@ -150,8 +152,7 @@ class ProfileScreenFragment : BaseFragment<FragmentProfileScreenBinding>(),
         profileViewModel.deleteUserInfoResult()
     }
 
-    override fun onCancelClicked() {
-    }
+    override fun onCancelClicked() {}
 
 
     private fun openBrowser(url: String) {
@@ -164,5 +165,10 @@ class ProfileScreenFragment : BaseFragment<FragmentProfileScreenBinding>(),
         val dialIntent = Intent(Intent.ACTION_DIAL)
         dialIntent.data = Uri.parse("tel:+201040302211")
         requireActivity().startActivity(dialIntent)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        hideMainLoading()
     }
 }

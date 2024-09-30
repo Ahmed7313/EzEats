@@ -12,6 +12,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
+import com.easyEats.ezeats.R
 import com.easyEats.ezeats.ui.main.main.HomeActivity
 
 
@@ -54,7 +55,6 @@ abstract class BaseBottomSheetFragment<VB : ViewDataBinding> : BottomSheetDialog
     }
     abstract fun setUpViews()
     abstract fun listenToObservers()
-
     /**
      * Creates and configures the [BottomSheetDialog]. Sets the dialog to be full screen and prevents
      * it from being canceled by clicking outside or by the back button.
@@ -106,6 +106,10 @@ abstract class BaseBottomSheetFragment<VB : ViewDataBinding> : BottomSheetDialog
         requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
         return displayMetrics.heightPixels
     }
+
+//    override fun getTheme(): Int {
+//        return R.style.FullWidthBottomSheetDialogTheme
+//    }
 
     /**
      * An abstract method that should be implemented by subclasses to return the appropriate data

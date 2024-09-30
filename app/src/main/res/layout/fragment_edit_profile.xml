@@ -61,6 +61,7 @@
                 android:layout_width="@dimen/_70sdp"
                 android:layout_height="@dimen/_70sdp"
                 android:scaleType="fitXY"
+                android:saveEnabled="false"
                 android:src="@drawable/dummy_image"
                 app:riv_corner_radius="1000dp"
                 app:riv_oval="true">
@@ -75,6 +76,7 @@
                 android:layout_marginTop="@dimen/_3sdp"
                 android:backgroundTint="@color/main_color"
                 android:elevation="0dp"
+                android:saveEnabled="false"
                 app:cardCornerRadius="1000dp"
                 app:strokeWidth="0dp">
 
@@ -177,6 +179,7 @@
                 android:layout_marginTop="@dimen/_20sdp"
                 android:hint="@string/email"
                 android:selectAllOnFocus="true"
+                android:visibility="@{viewModel.email!=null ?View.VISIBLE:View.GONE}"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_13ssp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -218,6 +221,33 @@
                     android:enabled="false"
                     android:inputType="phone"
                     android:text="@={viewModel.mobileNumber}"
+                    android:textSize="@dimen/_13ssp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/birthDateInputLayout"
+                style="@style/defaultInputText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:hint="@string/birth_date"
+                android:selectAllOnFocus="true"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_13ssp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ll_social_media_icons">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tv_birth_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_42sdp"
+                    android:drawableStart="@drawable/calendar_icon"
+                    android:drawablePadding="10dp"
+                    android:enabled="false"
+                    android:focusable="false"
+                    android:inputType="none"
+                    android:text="@={viewModel.birthDate}"
                     android:textSize="@dimen/_13ssp" />
             </com.google.android.material.textfield.TextInputLayout>
 

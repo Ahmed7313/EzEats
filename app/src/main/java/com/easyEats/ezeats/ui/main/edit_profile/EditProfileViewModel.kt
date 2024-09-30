@@ -31,6 +31,7 @@ class EditProfileViewModel @Inject constructor(
     var fullName = user?.name
     var email = user?.email
     var mobileNumber = user?.mobileNumber
+    var birthDate = user?.birthDate
 
     private val _imageBase64 = MutableLiveData<String>()
     val imageBase64: LiveData<String> = _imageBase64
@@ -62,12 +63,13 @@ class EditProfileViewModel @Inject constructor(
                 name = fullName,
                 email = email,
                 mobileNumber = mobileNumber,
-                profilePicture = imageBase64.value
+                profilePicture = imageBase64.value,
+                birthDate = birthDate
             )
         )
         apply(flow = flow, maxRetries = 2, onError = { error ->
             _editUserResultMutableLiveData.value =
-                Resource.Error(error.localizedMessage ?: "Unknown error")
+                Resource.Error("No Internet Connection")
         }, onSuccess = { resource ->
             _editUserResultMutableLiveData.value = resource
         })

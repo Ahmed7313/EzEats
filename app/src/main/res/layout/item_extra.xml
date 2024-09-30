@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="extra"
+            type="com.easyEats.ezeats.domain.main.model.response.order_history.Extras" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_5sdp">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/gilroy_500"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_9ssp"
+            android:textStyle="italic"
+            android:text="@{extra.name}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Extra Cheese" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/gilroy_500"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_9ssp"
+            android:textStyle="italic"
+            android:text="@{extra.price.toString()}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="450 EGP " />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

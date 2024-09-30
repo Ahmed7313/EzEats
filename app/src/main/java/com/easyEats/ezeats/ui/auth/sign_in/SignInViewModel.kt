@@ -16,6 +16,7 @@ import com.easyEats.ezeats.utils.Resource
 import com.parse.ParseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import es.dmoral.toasty.Toasty
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.launch
@@ -29,20 +30,28 @@ class SignInViewModel @Inject constructor(private val authUseCase: AuthUseCase) 
 
     val phoneNumber = MutableLiveData<String>()
 
+    private val exceptionHandler = CoroutineExceptionHandler { _, ex ->
+        Toasty.error(baseApplication, "No Internet Connection", Toast.LENGTH_LONG).show()
+    }
+
 
     fun findUser() {
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             val findUser =
                 authUseCase.signInUseCase.findUser(FindUserRequest("+2${phoneNumber.value.toString()}"))
             if (findUser.isSuccessful) {
                 if (findUser.body()?.result != null) {
                     saveToken(findUser.body()?.result.toString())
                     sendOtp()
-                }else{
+                } else {
                     Toasty.error(baseApplication, "User Not Found", Toast.LENGTH_LONG).show()
                 }
             } else {
-                Toasty.error(baseApplication, "unExpected Error occurred, Please Try Again.", Toast.LENGTH_LONG).show()
+                Toasty.error(
+                    baseApplication,
+                    "unExpected Error occurred, Please Try Again.",
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
     }
@@ -66,7 +75,7 @@ class SignInViewModel @Inject constructor(private val authUseCase: AuthUseCase) 
             maxRetries = 2,
             onError = { error ->
                 _sendOtpMutableLiveData.value =
-                    Resource.Error(error.localizedMessage ?: "Unknown error")
+                    Resource.Error("No Internet Connection")
             },
             onSuccess = { resource ->
                 _sendOtpMutableLiveData.value = resource

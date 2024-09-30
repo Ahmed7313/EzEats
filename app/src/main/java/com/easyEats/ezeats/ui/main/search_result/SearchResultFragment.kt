@@ -86,7 +86,10 @@ class SearchResultFragment : BaseBottomSheetFragment<FragmentSearchResultBinding
         binding.tvLocation.setOnClickListener { findNavController().navigate(R.id.location_bottom_sheet) }
 
         // Set up click listener for the explore button to change the view type (toggle between Restaurants and Offers)
-        binding.btnExplore.setOnClickListener { searchResultViewModel.changeViewType() }
+        binding.btnExplore.setOnClickListener {
+//            searchResultViewModel.changeViewType()
+
+        }
     }
 
     /**

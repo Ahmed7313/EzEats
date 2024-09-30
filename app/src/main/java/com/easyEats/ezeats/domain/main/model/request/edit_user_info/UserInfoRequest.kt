@@ -4,7 +4,8 @@ data class UserInfoRequest(
     val name: String?,
     val email: String?,
     val mobileNumber: String?,
-    val profilePicture: String?
+    val profilePicture: String?,
+    val birthDate:String?
 )
 
 

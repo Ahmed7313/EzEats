@@ -30,8 +30,13 @@ class OrderHistoryViewModel @Inject constructor(val mainUseCase: MainUseCase) :
                     page = currentPage
                 )
             )
-            _orders.value = _orders.value.orEmpty() + (response.result.data?.orders ?: emptyList())
-            currentPage++
+            if (response.result.isSuccess()) {
+                _orders.value =
+                    _orders.value.orEmpty() + (response.result.data?.orders ?: emptyList())
+                currentPage++
+            }
         }
     }
+
+
 }

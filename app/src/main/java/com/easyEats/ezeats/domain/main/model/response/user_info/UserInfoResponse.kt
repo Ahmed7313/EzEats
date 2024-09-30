@@ -10,7 +10,8 @@ data class UserInfoResponse(
     val username: String?,
     val email: String?,
     val profilePicture: ProfilePicture?,
-    val mobileNumber: String?
+    val mobileNumber: String?,
+    val birthDate: String?,
 ) : Parcelable {
     fun getFirstName(fullName: String?): String? {
         return fullName?.split(" ")?.firstOrNull() ?: ""

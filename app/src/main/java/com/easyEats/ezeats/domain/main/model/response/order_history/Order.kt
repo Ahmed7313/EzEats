@@ -20,6 +20,8 @@ data class Order(
     val paymentMode: String?,
     @SerializedName("restaurantName")
     val restaurantName: String?,
+    @SerializedName("restaurantId")
+    val restaurantId: String,
     @SerializedName("totalPrice")
     val totalPrice: Double?,
     val isPickup: Boolean?

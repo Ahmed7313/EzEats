@@ -60,7 +60,7 @@ class HomeViewModel @Inject constructor(private val mainUseCase: MainUseCase) :
         val flow = createHomeResultRequest(homeRequest)
         apply(flow = flow, maxRetries = 2, onError = { error ->
             _homeResultMutableLiveData.value =
-                Resource.Error(error.localizedMessage ?: "Unknown error")
+                Resource.Error("No Internet Connection")
         }, onSuccess = { resource ->
             _homeResultMutableLiveData.value = resource
         })

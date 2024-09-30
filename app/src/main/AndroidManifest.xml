@@ -26,7 +26,9 @@
 
         <activity
             android:name=".ui.auth.main.AuthActivity"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -36,14 +38,16 @@
 
         <activity
             android:name=".ui.main.main.HomeActivity"
-            android:exported="true" >
-            <intent-filter>
+            android:exported="true"
+            android:screenOrientation="portrait"
+            >
+            <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data
                     android:scheme="https"
-                    android:host="www.ezeats.com"
+                    android:host="www.ezeats.app"
                     android:pathPattern="/restaurant/.*" />
             </intent-filter>
         </activity>

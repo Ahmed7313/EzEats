@@ -38,6 +38,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLength="25"
                 android:fontFamily="@font/gilroy_600"
                 android:textColor="@color/main_color"
                 android:textSize="@dimen/_15ssp" />

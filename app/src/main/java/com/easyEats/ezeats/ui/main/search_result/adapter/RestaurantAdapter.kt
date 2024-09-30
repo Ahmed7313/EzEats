@@ -93,7 +93,16 @@ class RestaurantAdapter @Inject constructor(
             onRestaurantClicked.onRestaurantClickListener(restaurant)
         }
 
+        // Apply slide-in animation when binding the ViewHolder
+//        holder.itemView.translationY = 100f
+//        holder.itemView.alpha = 0f
+//        holder.itemView.animate()
+//            .translationY(0.5f)
+//            .alpha(1f)
+//            .setDuration(300L)  // Duration of the slide-in animation
+//            .start()
     }
+
 
     private fun handleEmptyData(
         restaurant: Restaurant,

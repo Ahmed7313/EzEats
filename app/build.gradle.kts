@@ -6,6 +6,7 @@ plugins {
     id("androidx.navigation.safeargs.kotlin")
     id("kotlin-kapt")
     id ("kotlin-parcelize")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -33,6 +34,8 @@ android {
                 "URL",
                 "\"https://pg-app-jtxlimrcv63uszqdkzh2a9d1r7pd0u.scalabl.cloud/1/\""
             )
+            buildConfigField("String", "SECRET_KEY", "\"${project.findProperty("secret-key")}\"")
+
             buildConfigField(
                 "String",
                 "BASE_URL",
@@ -44,8 +47,6 @@ android {
             buildConfigField(
                 "String", "PARSE_REST_API_KEY", "\"rVEiA55uav4M5PbI3dYbWbJcIR67pf8JFIHRQNQn\""
             )
-
-            buildConfigField("String", "SECRET_KEY", "\"${project.findProperty("secret-key")}\"")
 
         }
         getByName("release") {
@@ -147,6 +148,7 @@ dependencies {
     implementation(libs.toasty)
     //coil
     implementation(libs.coil)
+    implementation("io.coil-kt:coil-svg:2.3.0")
     //shimmer
     implementation (libs.shimmer)
     implementation (libs.shimmer.recyclerview)
@@ -155,5 +157,6 @@ dependencies {
     debugImplementation("com.github.chuckerteam.chucker:library:3.5.2")
     releaseImplementation("com.github.chuckerteam.chucker:library-no-op:3.5.2")
 
-
+    implementation(platform("com.google.firebase:firebase-bom:33.2.0"))
+    implementation("com.google.firebase:firebase-analytics")
 }

@@ -38,7 +38,7 @@ class RedeemViewModel @Inject constructor(
         val flow = createOfferResultRequest(OfferRequest(offerId.toString()))
         apply(flow = flow, maxRetries = 2, onError = { error ->
             _offerResultMutableLiveData.value =
-                Resource.Error(error.localizedMessage ?: "Unknown error")
+                Resource.Error("No Internet Connection")
         }, onSuccess = { resource ->
             _offerResultMutableLiveData.value = resource
         })

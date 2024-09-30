@@ -1,7 +1,10 @@
 package com.easyEats.ezeats.ui.main.home
 
+import android.app.Activity
 import android.content.Intent
+import android.content.IntentSender
 import android.net.Uri
+import android.os.Bundle
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -21,13 +24,22 @@ import es.dmoral.toasty.Toasty
 import android.provider.Settings
 import android.util.Log
 import android.view.animation.AnimationUtils
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.domain.main.model.response.home_response.HotDeal
+import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.LocationSettingsRequest
+import com.google.android.gms.location.Priority
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 @AndroidEntryPoint
 class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
     HotDealsAdapter.OnHotDealClicked, FeaturedOfferAdapter.OnFeaturedClicked {
+
 
     // ViewModels for managing UI-related data across the activity and fragment
     val mainViewModel: MainViewModel by activityViewModels()
@@ -37,32 +49,31 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
     private val featuredOfferAdapter: FeaturedOfferAdapter by lazy { FeaturedOfferAdapter(this) }
     private val hotDealsOfferAdapter: HotDealsAdapter by lazy { HotDealsAdapter(this) }
 
-    /**
-     * Inflate the binding object for this fragment.
-     *
-     * @param inflater The LayoutInflater object that can be used to inflate any views in the fragment
-     * @param container The parent view that the fragment's UI should be attached to
-     * @return The inflated binding object for this fragment
-     */
+    // Register ActivityResultLauncher
+    private lateinit var locationSettingsLauncher: ActivityResultLauncher<IntentSenderRequest>
+
     override fun inflateBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
     ) = FragmentHomeScreenBinding.inflate(inflater, container, false)
 
-    /**
-     * Called when the fragment is visible to the user and actively running.
-     * This method sets up data observation and checks for location permissions.
-     */
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        askUserToEnableLocation()
+
+
+        locationSettingsLauncher = registerForActivityResult(
+            ActivityResultContracts.StartIntentSenderForResult()
+        ) {
+            homeViewModel.checkLocationPermission()
+        }
+    }
+
     override fun onResume() {
         super.onResume()
         observeViewModelData()
     }
 
-
-    /**
-     * Initializes views and sets up click listeners. This method is called
-     * during the setup phase of the fragment lifecycle.
-     */
     override fun setUpViews() {
         // Bind ViewModels and Adapters to the layout
         binding.mainViewModel = mainViewModel
@@ -72,8 +83,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
 
         // Inject LocationUtil and set it in the ViewModel
         homeViewModel.setLocationUtil(LocationUtil(this))
-
-        homeViewModel.checkLocationPermission()
+//        homeViewModel.checkLocationPermission()
 
         // Setup click listeners for location and search
         binding.tvLocation.setOnClickListener {
@@ -97,9 +107,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
         }
 
         binding.tvViewAllHotDeals.setOnClickListener {
-//            val bottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.nav_view)
-//            bottomNavigationView?.selectedItemId = R.id.percentScreenFragment
-//            findNavController().navigate(R.id.offers_fragment)
+            // Handle action for Hot Deals View All
         }
     }
 
@@ -110,12 +118,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
         requireActivity().finish()
     }
 
-    /**
-     * Observes LiveData objects in the ViewModel and handles UI updates based on the data changes.
-     * This method is called to observe data during the fragment's lifecycle.
-     */
     private fun observeViewModelData() {
-
         mainViewModel.isOpenShareLink.observe(viewLifecycleOwner) { data ->
             if (data?.get("isOpenShareLink") == true) {
                 Log.d(TAG, "observeViewModelData: ${data["restaurantId"].toString()}")
@@ -126,27 +129,23 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
                 )
                 mainViewModel.isOpenShareLink.value = null
             }
-
         }
 
         homeViewModel.homeResultLiveData.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Loading -> {
-                    // Handle loading state, e.g., show a progress   indicator
+                    // Show a loading indicator
                 }
 
                 is Resource.Error -> {
-                    // Show an error message using Toasty
                     Toasty.error(requireContext(), resource.message, Toast.LENGTH_LONG).show()
                 }
 
                 is Resource.Success -> {
-                    // Handle success state, update UI with the fetched data
                     binding.swipeToRefresh.isRefreshing = false
                 }
 
                 is Resource.UnAuthenticated -> {
-                    // Handle unauthenticated state, prompt user to log in
                     authenticateUser()
                 }
             }
@@ -166,7 +165,40 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
     }
 
     override fun onFeatureClicked(offerId: String) {
-//        findNavController().navigate(HomeScreenFragmentDirections.goToRedeemScreen(offerId))
+        // Handle click event for feature
+    }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        hideMainLoading()
+    }
+
+    private fun askUserToEnableLocation() {
+        val locationRequest = LocationRequest.Builder(
+            Priority.PRIORITY_HIGH_ACCURACY, 1000L
+        ).build()
+
+        val builder = LocationSettingsRequest.Builder()
+            .addLocationRequest(locationRequest)
+
+        val client = LocationServices.getSettingsClient(requireActivity())
+        val task = client.checkLocationSettings(builder.build())
+
+        task.addOnSuccessListener {
+            homeViewModel.checkLocationPermission()
+        }
+
+        task.addOnFailureListener { exception ->
+            if (exception is ResolvableApiException) {
+                try {
+                    val intentSenderRequest =
+                        IntentSenderRequest.Builder(exception.resolution).build()
+                    locationSettingsLauncher.launch(intentSenderRequest)
+                } catch (sendEx: IntentSender.SendIntentException) {
+                    Toast.makeText(requireContext(), "Error: ${sendEx.message}", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+        }
     }
 }

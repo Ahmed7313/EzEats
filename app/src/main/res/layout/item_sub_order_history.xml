@@ -18,9 +18,9 @@
 
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/iv_order_logo"
+            loadImage="@{subOrder.picture}"
             android:layout_width="@dimen/_35sdp"
             android:layout_height="@dimen/_40sdp"
-            loadImage="@{subOrder.picture}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:riv_corner_radius="@dimen/_5sdp" />
@@ -34,7 +34,7 @@
             android:fontFamily="@font/gilroy_600"
             android:text="@{subOrder.name}"
             android:textColor="@color/black"
-            android:textSize="@dimen/_12ssp"
+            android:textSize="@dimen/_10ssp"
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/tv_order_price"
             app:layout_constraintHorizontal_bias="0.044"
@@ -48,9 +48,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_10sdp"
-            android:textSize="@dimen/_10ssp"
             android:fontFamily="@font/gilroy_400"
             android:text="@{subOrder.description}"
+            android:textSize="@dimen/_9ssp"
             app:layout_constraintEnd_toStartOf="@+id/tv_order_price"
             app:layout_constraintStart_toStartOf="@+id/tv_order_title"
             app:layout_constraintTop_toBottomOf="@+id/tv_order_title"
@@ -64,7 +64,7 @@ extra Onions" />
             android:fontFamily="@font/gilroy_600"
             android:text='@{String.format("%s EGP", subOrder.price.toString())}'
             android:textColor="@color/black"
-            android:textSize="@dimen/_12ssp"
+            android:textSize="@dimen/_10ssp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_order_title"
@@ -77,10 +77,22 @@ extra Onions" />
             android:layout_marginTop="@dimen/_5sdp"
             android:fontFamily="@font/gilroy_400"
             android:text='@{String.format("Qty %s", subOrder.quantity.toString())}'
+            android:textSize="@dimen/_10ssp"
             app:layout_constraintEnd_toEndOf="@+id/tv_order_price"
             app:layout_constraintTop_toBottomOf="@+id/tv_order_price"
             tools:text="Qty 3" />
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_extras"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@+id/tv_order_qty"
+            app:layout_constraintStart_toStartOf="@+id/tv_order_no"
+            app:layout_constraintTop_toBottomOf="@+id/tv_order_no"
+            tools:itemCount="2"
+            android:layout_marginTop="@dimen/_15sdp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_extras_parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

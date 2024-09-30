@@ -1,18 +1,13 @@
 package com.easyEats.ezeats.di.network_module
 
 import android.content.Context
-import androidx.datastore.DataStore
-import androidx.datastore.createDataStore
-import androidx.datastore.preferences.createDataStore
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.easyEats.ezeats.utils.headers.HeaderInterceptor
 import com.easyEats.ezeats.BuildConfig
 import com.easyEats.ezeats.data.local.data_store.DataStorePreference
 import com.easyEats.ezeats.data.remote.auth.AuthApiService
 import com.easyEats.ezeats.data.remote.main.MainApiService
-import com.easyEats.ezeats.domain.auth.use_case.AuthUseCase
-import com.easyEats.ezeats.domain.main.use_case.MainUseCase
-import com.easyEats.ezeats.utils.Constants
+import com.easyEats.ezeats.utils.headers.CacheInterceptor
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -25,7 +20,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
-import java.util.prefs.Preferences
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
@@ -85,6 +79,7 @@ object NetworkModule {
             .addInterceptor(loggingInterceptor)
             .addInterceptor(headerInterceptor)
             .addInterceptor(ChuckerInterceptor(context))
+            .addNetworkInterceptor(CacheInterceptor())
             .connectTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
             .build()

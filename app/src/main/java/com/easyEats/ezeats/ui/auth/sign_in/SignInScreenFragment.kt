@@ -61,6 +61,7 @@ class SignInScreenFragment : BaseFragment<FragmentSignInScreenBinding>() {
                 is Resource.Success -> {
                     hideLoading()
                     goToVerificationScreen()
+                    binding.btnSignIn.isEnabled=true
                 }
 
                 is Resource.Error -> {
@@ -93,6 +94,11 @@ class SignInScreenFragment : BaseFragment<FragmentSignInScreenBinding>() {
     private fun setUpClickListeners() {
         binding.tvSignUp.setOnClickListener {
             findNavController().navigate(R.id.action_signInScreenFragment_to_signUpScreenFragment)
+        }
+
+        binding.btnSignIn.setOnClickListener {
+            binding.btnSignIn.isEnabled=false
+            signInViewModel.findUser()
         }
     }
 

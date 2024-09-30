@@ -9,14 +9,14 @@ import kotlinx.parcelize.RawValue
 
 @Parcelize
 data class Restaurant(
-    val distance: @RawValue Any?,
+    val distance: String?,
     val id: String?,
     val locationName: String?,
     val logo: String?,
     val name: String?,
     val offers: @RawValue List<Offer?>?,
     val type: String?,
-    val category: List<String>? = listOf(),
+    val category:@RawValue Any? ,
     val rating: Double? = 0.0,
     val reviewsCount: Int? = 0
 

@@ -72,7 +72,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_2sdp"
                     android:fontFamily="@font/gilroy_500"
-                    android:text="@{restaurant.category.get(0)}"
+                    android:text="@{restaurant.category.toString()}"
                     android:textColor="@color/main_color"
                     android:textSize="@dimen/_8ssp"
                     app:layout_constraintStart_toStartOf="@+id/tvName"
@@ -102,7 +102,7 @@
                     android:drawablePadding="@dimen/_3sdp"
                     android:fontFamily="@font/gilroy_600"
                     android:gravity="start"
-                    android:text='@{String.format("%s Aways", restaurant.distance.toString())}'
+                    android:text='@{String.format("%s", restaurant.distance.toString())}'
                     android:textColor="@color/main_color"
                     android:textSize="@dimen/_12ssp"
                     app:drawableStartCompat="@drawable/marker_pin_icon"

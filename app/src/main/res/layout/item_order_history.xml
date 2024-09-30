@@ -45,7 +45,7 @@
                 android:maxLength="25"
                 android:text="@{order.restaurantName}"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_12ssp"
+                android:textSize="@dimen/_10ssp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="@+id/tv_order_price"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -60,8 +60,8 @@
                 android:layout_marginTop="@dimen/_6sdp"
                 android:layout_marginEnd="@dimen/_6sdp"
                 android:fontFamily="@font/gilroy_400"
-                android:textSize="@dimen/_10ssp"
-                android:text='@{String.format("Order Number #%s", order.orderId.toString())}'
+                android:textSize="@dimen/_9ssp"
+                android:text='@{String.format("Order Number #%s", order.orderNumber.toString())}'
                 app:layout_constraintEnd_toStartOf="@+id/materialButton"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/tv_order_title"
@@ -75,14 +75,14 @@
                 android:fontFamily="@font/gilroy_600"
                 android:text='@{String.format("%s EGP", order.totalPrice.toString())}'
                 android:textColor="@color/black"
-                android:textSize="@dimen/_12ssp"
+                android:textSize="@dimen/_10ssp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tv_order_title"
                 tools:text="215 EGP" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/materialButton"
+                android:id="@+id/btn_reOrder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5sdp"
@@ -113,7 +113,7 @@
                 android:fontFamily="@font/gilroy_600"
                 android:text='@{String.format("Item Details (%s)", String.valueOf(order.subOrders.size()))}'
                 android:textColor="@color/black"
-                android:textSize="@dimen/_12ssp"
+                android:textSize="@dimen/_10ssp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@+id/view4"
                 app:layout_constraintTop_toBottomOf="@+id/view4"

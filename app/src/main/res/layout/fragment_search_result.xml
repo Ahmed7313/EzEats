@@ -235,7 +235,7 @@
                         android:backgroundTint="@color/main_color"
                         app:cornerRadius="@dimen/_100sdp"
                         android:textColor="@color/white"
-                        android:text="@string/explore_our_offers" />
+                        android:text="@string/explore_our_restaurants" />
 
                 </LinearLayout>
             </LinearLayout>

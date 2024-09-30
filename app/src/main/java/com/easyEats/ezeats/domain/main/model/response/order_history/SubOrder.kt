@@ -11,7 +11,10 @@ data class SubOrder(
     @SerializedName("picture")
     val picture: String?,
     @SerializedName("price")
-    val price: Int?,
+    val price: Double?,
     @SerializedName("quantity")
-    val quantity: Int?
+    val quantity: Int?,
+    @SerializedName("subItems")
+    val extras:List<Choices?>?
+
 )

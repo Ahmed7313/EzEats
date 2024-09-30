@@ -32,7 +32,7 @@ class ProfileViewModel @Inject constructor(val mainUseCase: MainUseCase) :
         val flow = createUserInfoResultRequest()
         apply(flow = flow, maxRetries = 2, onError = { error ->
             _userResultMutableLiveData.value =
-                Resource.Error(error.localizedMessage ?: "Unknown error")
+                Resource.Error("No Internet Connection")
         }, onSuccess = { resource ->
             _userResultMutableLiveData.value = resource
         })
@@ -58,7 +58,7 @@ class ProfileViewModel @Inject constructor(val mainUseCase: MainUseCase) :
         val flow = createDeleteUserInfoResultRequest()
         apply(flow = flow, maxRetries = 2, onError = { error ->
             _deleteUserResultMutableLiveData.value =
-                Resource.Error(error.localizedMessage ?: "Unknown error")
+                Resource.Error("No Internet Connection")
         }, onSuccess = { resource ->
             _deleteUserResultMutableLiveData.value = resource
         })
