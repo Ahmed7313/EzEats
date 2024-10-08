@@ -71,6 +71,10 @@ class ProfileScreenFragment : BaseFragment<FragmentProfileScreenBinding>(),
             openBrowser("https://www.ez-eats.com/privacypolicy")
         }
 
+        binding.tvPromoCode.setOnClickListener {
+            findNavController().navigate(R.id.goToVoucherScreen)
+        }
+
         binding.tvContactUs.setOnClickListener {
             contactUs()
         }

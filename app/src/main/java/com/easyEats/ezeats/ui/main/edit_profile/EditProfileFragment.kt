@@ -42,10 +42,6 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>() {
 
     override fun setUpViews() {
         binding.viewModel = editProfileViewModel
-        binding.ivProfile.isEnabled = false
-        binding.tvBirthDate.isEnabled = false
-        binding.mcvEditProfile.isEnabled = false
-        binding.mcvEditProfile.visibility = GONE
         listenToObservers()
 
         binding.mcvEditProfile.setOnClickListener {
@@ -53,17 +49,8 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>() {
         }
 
         binding.ivProfile.setOnClickListener {
-            pickImageFromGallery()
-        }
-
-        binding.tvEdit.setOnClickListener {
-            binding.tvEdit.visibility = GONE
-            binding.tvFullName.isEnabled = true
-            binding.ivProfile.isEnabled = true
-            binding.tvBirthDate.isEnabled = true
-            binding.mcvEditProfile.isEnabled = true
-            binding.btnEditProfile.visibility = VISIBLE
-            binding.mcvEditProfile.visibility = VISIBLE
+            if (editProfileViewModel.isViewsEditable.value == true)
+                pickImageFromGallery()
         }
 
         binding.ivBack.setOnClickListener {

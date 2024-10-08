@@ -94,8 +94,8 @@ class SearchResultViewModel @Inject constructor(
         val flow = createSearchResultRequest(
             SearchRequest(
                 searchKey ?: "", viewType,
-                userLat = userLocationAddressMutableLiveData.value?.lat.toString(),
-                userLon = userLocationAddressMutableLiveData.value?.lng.toString()
+                userLat = userLocationAddressMutableLiveData.value?.lat?:"0.0",
+                userLon = userLocationAddressMutableLiveData.value?.lng?:"0.0"
             )
         )
         apply(flow = flow, maxRetries = 2, onError = { error ->
@@ -135,8 +135,8 @@ class SearchResultViewModel @Inject constructor(
             SearchRequest(
                 searchKey ?: "",
                 viewType,
-                userLat = userLocationAddressMutableLiveData.value?.lat.toString(),
-                userLon = userLocationAddressMutableLiveData.value?.lng.toString()
+                userLat = userLocationAddressMutableLiveData.value?.lat?:"0.0",
+                userLon = userLocationAddressMutableLiveData.value?.lng?:"0.0"
             )
         )
         apply(flow = flow, maxRetries = 2, onError = { error ->

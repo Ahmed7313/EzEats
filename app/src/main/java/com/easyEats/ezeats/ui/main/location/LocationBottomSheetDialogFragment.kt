@@ -14,6 +14,7 @@ import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.databinding.FragmentLocationBottomSheetDialogBinding
@@ -30,6 +31,8 @@ import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.gms.location.Priority
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class LocationBottomSheetDialogFragment : BottomSheetDialogFragment(),
@@ -42,7 +45,6 @@ class LocationBottomSheetDialogFragment : BottomSheetDialogFragment(),
 
     // Register ActivityResultLauncher
     private lateinit var locationSettingsLauncher: ActivityResultLauncher<IntentSenderRequest>
-
 
 
     override fun onCreateView(
@@ -58,7 +60,7 @@ class LocationBottomSheetDialogFragment : BottomSheetDialogFragment(),
         }
         locationAdapter = LocationAdapter(this)
         binding.rvLocation.adapter = locationAdapter
-        binding.tvRefresh.setOnClickListener {  askUserToEnableLocation() }
+        binding.tvRefresh.setOnClickListener { askUserToEnableLocation() }
 
         listenToObservers()
         return binding.root
@@ -75,11 +77,13 @@ class LocationBottomSheetDialogFragment : BottomSheetDialogFragment(),
                 is Resource.Error -> {
 
                 }
+
                 is Resource.Loading -> {
-                    binding.loader.visibility=VISIBLE
+                    binding.loader.visibility = VISIBLE
                 }
+
                 is Resource.Success -> {
-                    binding.loader.visibility= GONE
+                    binding.loader.visibility = GONE
 
                     locationAdapter.submitList(resource.data?.result?.data)
                 }
@@ -87,15 +91,20 @@ class LocationBottomSheetDialogFragment : BottomSheetDialogFragment(),
                 is Resource.UnAuthenticated -> {}
             }
         }
-        mainViewModel.userLocationAddressMutableLiveData.observe(viewLifecycleOwner) {
-            it?.let {
-                binding.tvTitleLocation.text = it.address ?: ""
+        lifecycleScope.launch {
+            mainViewModel.fetchCurrentAddress().collect {
+                it?.let {
+                    binding.tvTitleLocation.text = it.address ?: ""
+                }
             }
         }
     }
 
     override fun onLocationClicked(location: Location) {
+        // Update the location name in the TextView
         binding.tvTitleLocation.text = location.name
+
+        // Call the ViewModel's saveAddress function
         mainViewModel.saveAddress(
             UserLocationAddress(
                 location.name,
@@ -103,7 +112,15 @@ class LocationBottomSheetDialogFragment : BottomSheetDialogFragment(),
                 location.geoPoint?.longitude.toString()
             )
         )
-        dismiss()
+
+        // Observe when the saving is done and then dismiss the dialog
+        mainViewModel.saveAddressResult.observe(viewLifecycleOwner) { isSaved ->
+            if (isSaved) {
+                lifecycleScope.launch {
+                    dismiss() // Dismiss the dialog when save is successful
+                }
+            }
+        }
     }
 
     private fun askUserToEnableLocation() {

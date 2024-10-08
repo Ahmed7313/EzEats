@@ -18,9 +18,11 @@ import com.easyEats.ezeats.ui.main.main.MainViewModel
 import com.easyEats.ezeats.utils.Resource
 import com.easyEats.ezeats.utils.location.LocationUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @HiltViewModel
@@ -91,25 +93,27 @@ class HomeViewModel @Inject constructor(private val mainUseCase: MainUseCase) :
      * If not granted, it requests the user to grant location access and proceeds accordingly.
      */
     fun checkLocationPermission() {
-        if (userLocationAddressMutableLiveData.value?.lat.isNullOrEmpty().not()) {
-            getHomeResult(
-                HomeRequest(
-                    userLat = userLocationAddressMutableLiveData.value?.lat.toString(),
-                    userLon = userLocationAddressMutableLiveData.value?.lng.toString()
-                )
-            )
-            isLocationGranted.value = true
-        } else {
-            locationUtil.askUserForLocationPermission(onPermissionDenied = {
-                isLocationGranted.value = false
-                getHomeResult(HomeRequest("", ""))
-            }, onPermissionGranted = {
-                isLocationGranted.value = true
-                getLocationAndAddress()
-            })
+        viewModelScope.launch {
+            fetchCurrentAddress().collect {
+                if (it?.lat?.isEmpty()?.not() == true) {
+                    getHomeResult(
+                        HomeRequest(
+                            userLat = it.lat,
+                            userLon = it.lng
+                        )
+                    )
+                    isLocationGranted.value = true
+                } else {
+                    locationUtil.askUserForLocationPermission(onPermissionDenied = {
+                        isLocationGranted.value = false
+                        getHomeResult(HomeRequest("", ""))
+                    }, onPermissionGranted = {
+                        isLocationGranted.value = true
+                        getLocationAndAddress()
+                    })
+                }
+            }
         }
-
-
     }
 
     /**
@@ -121,22 +125,29 @@ class HomeViewModel @Inject constructor(private val mainUseCase: MainUseCase) :
             getHomeResult(HomeRequest(latitude.toString(), longitude.toString()))
             locationUtil.reverseGeocode(latitude, longitude, onAddressReceived = { address ->
                 _addressMutableLiveData.value = address
-                saveAddress(
-                    UserLocationAddress(
-                        address, latitude.toString(), longitude.toString()
+
+                viewModelScope.launch {
+                    saveAddress(
+                        UserLocationAddress(
+                            address, latitude.toString(), longitude.toString()
+                        )
+                    )
+                }
+            }, onError = {
+                getHomeResult(
+                    HomeRequest(
+                        userLat = "",
+                        userLon = ""
                     )
                 )
-            }, onError = {
-                getHomeResult(HomeRequest(
-                    userLat = "",
-                    userLon = ""
-                ))
             })
         }, onError = {
-            getHomeResult(HomeRequest(
-                userLat = "",
-                userLon = ""
-            ))
+            getHomeResult(
+                HomeRequest(
+                    userLat = "",
+                    userLon = ""
+                )
+            )
         })
     }
 }

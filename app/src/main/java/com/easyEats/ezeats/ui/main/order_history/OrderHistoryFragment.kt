@@ -4,8 +4,6 @@ package com.easyEats.ezeats.ui.main.order_history
 import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -28,6 +26,7 @@ class OrderHistoryFragment : BaseFragment<FragmentOrderHistoryBinding>(),OrderHi
 
     override fun setUpViews() {
         listenToObservers()
+        binding.viewModel=orderHistoryViewModel
         binding.ivBack.setOnClickListener {
             findNavController().popBackStack()
         }
@@ -43,8 +42,6 @@ class OrderHistoryFragment : BaseFragment<FragmentOrderHistoryBinding>(),OrderHi
 
     private fun listenToObservers() {
         orderHistoryViewModel.orders.observe(viewLifecycleOwner) { orders ->
-            orders.isEmpty().let { binding.llEmptyOrderHistory.visibility= VISIBLE }
-            orders.isNotEmpty().let {  binding.llEmptyOrderHistory.visibility= GONE}
             orderHistoryAdapter.submitList(orders)
         }
     }

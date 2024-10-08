@@ -1,8 +1,7 @@
 package com.easyEats.ezeats.utils.headers
 
 import android.util.Log
-import androidx.datastore.DataStore
-import androidx.datastore.preferences.preferencesKey
+import androidx.datastore.core.DataStore
 import com.easyEats.ezeats.BuildConfig
 import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.data.local.data_store.DataStorePreference

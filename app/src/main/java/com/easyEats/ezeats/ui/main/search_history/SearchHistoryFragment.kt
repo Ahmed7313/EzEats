@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.easyEats.ezeats.R
@@ -18,6 +19,7 @@ import com.easyEats.ezeats.ui.main.search_history.adapter.RecentSearchAdapter
 import com.easyEats.ezeats.ui.main.search_suggestion.SearchFragmentDirections
 import com.easyEats.ezeats.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 /**
  * Fragment class responsible for displaying the search history, including categories,
@@ -119,12 +121,14 @@ class SearchHistoryFragment : BaseBottomSheetFragment<FragmentSearchHistoryBindi
             }
         }
 
-        mainViewModel.userLocationAddressMutableLiveData.observe(viewLifecycleOwner) {
-            it?.let {
-                binding.tvLocation.text =
-                    ("You're at " + it.address) ?: getString(R.string.select_location)
-            }
-        }
+       lifecycleScope.launch {
+           mainViewModel.userLocationAddressMutableLiveData.collect {
+               it?.let {
+                   binding.tvLocation.text =
+                       ("You're at " + it.address) ?: getString(R.string.select_location)
+               }
+           }
+       }
     }
 
     /**

@@ -5,6 +5,12 @@
 
     <data>
 
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.easyEats.ezeats.ui.main.order_history.OrderHistoryViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -43,12 +49,13 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:orientation="vertical"
+            android:visibility="@{viewModel.isHavingOrders ==true ?View.VISIBLE:View.GONE}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            tools:itemCount="3"
             app:layout_constraintTop_toBottomOf="@id/ll_tool_bar"
+            tools:itemCount="3"
             tools:listitem="@layout/item_order_history" />
 
         <LinearLayout
@@ -58,7 +65,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:orientation="vertical"
-            android:visibility="gone"
+            android:visibility="@{viewModel.isHavingOrders ==true ?View.GONE:View.VISIBLE,default=gone}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -74,15 +81,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_15sdp"
                 android:layout_marginTop="@dimen/_10ssp"
                 android:fontFamily="@font/gilroy_700"
                 android:gravity="center"
-                android:layout_marginHorizontal="@dimen/_15sdp"
                 android:text="@string/you_don_t_have_any_orders_yet_make_some_orders_to_see_your_history_here"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_14ssp" />
         </LinearLayout>
-
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

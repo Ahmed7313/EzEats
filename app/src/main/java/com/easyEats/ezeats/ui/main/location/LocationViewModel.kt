@@ -3,6 +3,7 @@ package com.easyEats.ezeats.ui.main.location
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.MyApplication.Companion.baseApplication
 import com.easyEats.ezeats.R
@@ -17,6 +18,7 @@ import com.easyEats.ezeats.utils.location.LocationUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -93,11 +95,11 @@ class LocationViewModel @Inject constructor(private val mainUseCase: MainUseCase
             locationUtil.reverseGeocode(latitude, longitude, onAddressReceived = { address ->
                 _addressMutableLiveData.value = address
                 Log.d(TAG, "getLocationAndAddress:$address ")
-                saveAddress(
+                viewModelScope.launch { saveAddress(
                     UserLocationAddress(
                         address, latitude.toString(), longitude.toString()
                     )
-                )
+                ) }
             }, onError = {
                 Log.d(TAG, "getLocationAndAddress error 1:${it} ")
             })

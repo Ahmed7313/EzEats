@@ -22,6 +22,7 @@ import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.Restaur
 import com.easyEats.ezeats.domain.main.model.response.search_response.Category
 import com.easyEats.ezeats.domain.main.model.response.search_response.SearchScreenResponse
 import com.easyEats.ezeats.domain.main.model.response.user_info.UserInfoResponse
+import com.easyEats.ezeats.domain.main.model.response.voucher.VoucherResponse
 import kotlinx.coroutines.flow.Flow
 import retrofit2.http.Body
 
@@ -65,5 +66,7 @@ interface MainRepository {
     suspend fun getUserPoints(pointsRequest: PointsRequest): BaseResponse<PointsResponse>
 
     fun getToken(): Flow<String>
+
+    suspend fun getUserRewardsMobile(): BaseResponse<VoucherResponse>
 
 }

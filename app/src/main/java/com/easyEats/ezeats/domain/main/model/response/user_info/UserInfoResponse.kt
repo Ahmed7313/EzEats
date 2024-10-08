@@ -11,7 +11,7 @@ data class UserInfoResponse(
     val email: String?,
     val profilePicture: ProfilePicture?,
     val mobileNumber: String?,
-    val birthDate: String?,
+    val birthDate: Date?,
 ) : Parcelable {
     fun getFirstName(fullName: String?): String? {
         return fullName?.split(" ")?.firstOrNull() ?: ""
@@ -37,4 +37,12 @@ data class ProfilePicture(
     val type: String?,
     val name: String?,
     val url: String?
+) : Parcelable
+
+
+@Parcelize
+data class Date(
+    @SerializedName("__type")
+    val type: String?,
+    val iso: String?
 ) : Parcelable

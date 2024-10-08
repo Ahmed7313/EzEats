@@ -21,6 +21,7 @@ import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.Restaur
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.RestaurantInfo
 import com.easyEats.ezeats.domain.main.model.response.search_response.Category
 import com.easyEats.ezeats.domain.main.model.response.user_info.UserInfoResponse
+import com.easyEats.ezeats.domain.main.model.response.voucher.VoucherResponse
 import com.easyEats.ezeats.domain.main.repository.MainRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -104,5 +105,8 @@ class MainResponseImpl @Inject constructor(
     }
 
     override fun getToken() = dataStorePreference.fetchToken()
+    override suspend fun getUserRewardsMobile(): BaseResponse<VoucherResponse> {
+        return mainApiService.getUserRewardsMobile()
+    }
 
 }

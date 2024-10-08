@@ -24,11 +24,13 @@ class RestaurantFragment : BaseBottomSheetFragment<FragmentRestaurantBinding>(),
     private lateinit var specialOfferAdapter: SpecialOfferAdapter
 
 
+
     override fun setUpViews() {
         specialOfferAdapter = SpecialOfferAdapter(this)
         binding.btnDismiss.setOnClickListener {
             openBrowser()
         }
+
         binding.tvShare.setOnClickListener {
             val restaurantId = viewModel.restaurantId
             val shareText =
@@ -51,6 +53,9 @@ class RestaurantFragment : BaseBottomSheetFragment<FragmentRestaurantBinding>(),
                     .show()
             }
         }
+
+
+        viewModel.getSpecialOffers()
 
     }
 

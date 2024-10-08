@@ -1,11 +1,15 @@
 package com.easyEats.ezeats.ui.main.offers
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.easyEats.ezeats.MyApplication
+import com.easyEats.ezeats.MyApplication.Companion
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.base.BaseFragment
 import com.easyEats.ezeats.databinding.FragmentPercentScreenBinding
@@ -16,8 +20,11 @@ import com.easyEats.ezeats.ui.main.offers.adapter.OffersCategoryAdapter
 import com.easyEats.ezeats.ui.main.search_result.adapter.OfferAdapter
 import com.easyEats.ezeats.ui.main.search_result.adapter.RestaurantAdapter
 import com.easyEats.ezeats.utils.Resource
+import com.makeramen.roundedimageview.RoundedImageView.TAG
 import dagger.hilt.android.AndroidEntryPoint
 import es.dmoral.toasty.Toasty
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
@@ -37,59 +44,67 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
     ) = FragmentPercentScreenBinding.inflate(layoutInflater)
 
     override fun setUpViews() {
-        restaurantAdapter = RestaurantAdapter(this, this)
-        cateAdapter = OffersCategoryAdapter(this)
+
+
         with(binding) {
             tvLocation.setOnClickListener { findNavController().navigate(R.id.location_bottom_sheet) }
             ivSearch.setOnClickListener { findNavController().navigate(R.id.goToSearchHistoryFragment) }
         }
 
-        binding.srGetOffers.setOnRefreshListener{
+        binding.srGetOffers.setOnRefreshListener {
             offersViewModel.getRestaurantsResult("")
             offersViewModel.getCategoriesRestaurantResult()
         }
-
         listenToObservers()
     }
 
 
     private fun listenToObservers() {
-        mainViewModel.userLocationAddressMutableLiveData.observe(viewLifecycleOwner) {
-            it?.let {
+        lifecycleScope.launch {
+            mainViewModel.fetchCurrentAddress().collect {
                 binding.tvLocation.text =
-                    ("You're at " + it.address) ?: getString(R.string.select_location)
+                    ("You're at " + it?.address) ?: getString(R.string.select_location)
                 offersViewModel.getRestaurantsResult("")
                 offersViewModel.getCategoriesRestaurantResult()
             }
+
         }
-        offersViewModel.restaurantResultLiveData.observe(viewLifecycleOwner) { resource ->
-            when (resource) {
-                is Resource.Error -> {
-                    hideMainLoading()
-                    Toasty.error(requireContext(),resource.message,Toast.LENGTH_LONG).show()
-                }
+        lifecycleScope.launch {
+            offersViewModel.restaurantResultStateFlow.collect { resource ->
+                when (resource) {
+                    is Resource.Error -> {
+                        hideMainLoading()
+                        Toasty.error(requireContext(), resource.message, Toast.LENGTH_LONG).show()
+                    }
 
-                is Resource.Loading -> {
-                    showMainLoading()
-                }
+                    is Resource.Loading -> {
+                        showMainLoading()
+                    }
 
-                is Resource.Success -> {
-                    binding.srGetOffers.isRefreshing = false
-                    offersViewModel.setRestaurantsData(requireContext(),binding, restaurantAdapter, resource)
-                    hideMainLoading()
+                    is Resource.Success -> {
+                        restaurantAdapter = RestaurantAdapter(this@OffersScreenFragment, this@OffersScreenFragment)
+                        binding.srGetOffers.isRefreshing = false
+                        offersViewModel.setRestaurantsData(
+                            requireContext(),
+                            binding,
+                            restaurantAdapter,
+                            resource
+                        )
+                        hideMainLoading()
+                    }
 
-                }
-
-                is Resource.UnAuthenticated -> {
-                    hideMainLoading()
+                    is Resource.UnAuthenticated -> {
+                        hideMainLoading()
+                    }
                 }
             }
         }
+
 
         offersViewModel.categoryResultLiveData.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Error -> {
-                    Toasty.error(requireContext(),resource.message,Toast.LENGTH_LONG).show()
+                    Toasty.error(requireContext(), resource.message, Toast.LENGTH_LONG).show()
                     hideMainLoading()
                 }
 
@@ -100,6 +115,7 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
 
                 is Resource.Success -> {
                     hideMainLoading()
+                    cateAdapter = OffersCategoryAdapter(this)
                     offersViewModel.setDataOfCategories(binding, cateAdapter, resource)
                 }
 

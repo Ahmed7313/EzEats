@@ -27,6 +27,9 @@ import android.view.animation.AnimationUtils
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearSnapHelper
 import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.domain.main.model.response.home_response.HotDeal
 import com.google.android.gms.common.api.ResolvableApiException
@@ -35,6 +38,11 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.gms.location.Priority
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.makeramen.roundedimageview.RoundedImageView
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import kotlin.math.log
 
 @AndroidEntryPoint
 class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
@@ -48,7 +56,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
     // Adapters for the RecyclerViews
     private val featuredOfferAdapter: FeaturedOfferAdapter by lazy { FeaturedOfferAdapter(this) }
     private val hotDealsOfferAdapter: HotDealsAdapter by lazy { HotDealsAdapter(this) }
-
+    val snapHelper = LinearSnapHelper()
     // Register ActivityResultLauncher
     private lateinit var locationSettingsLauncher: ActivityResultLauncher<IntentSenderRequest>
 
@@ -60,7 +68,12 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         askUserToEnableLocation()
-
+        lifecycleScope.launch {
+            mainViewModel.fetchCurrentAddress().collect {
+                Log.d(TAG, "onCreate: ${it?.lat}")
+                Log.d(TAG, "onCreate: ${it?.lat}")
+            }
+        }
 
         locationSettingsLauncher = registerForActivityResult(
             ActivityResultContracts.StartIntentSenderForResult()
@@ -79,6 +92,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
         binding.mainViewModel = mainViewModel
         binding.homeViewModel = homeViewModel
         binding.featuredAdapter = featuredOfferAdapter
+        snapHelper.attachToRecyclerView(binding.rvFeatured)
         binding.hotDealsAdapter = hotDealsOfferAdapter
 
         // Inject LocationUtil and set it in the ViewModel
@@ -151,11 +165,22 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
             }
         }
 
-        mainViewModel.userLocationAddressMutableLiveData.observe(viewLifecycleOwner) {
-            it?.let {
-                binding.tvLocation.text =
-                    ("You're at " + it.address) ?: getString(R.string.select_location)
-                homeViewModel.checkLocationPermission()
+//        mainViewModel.userLocationAddressMutableLiveData.observe(viewLifecycleOwner) {
+//            it?.let {
+//                binding.tvLocation.text =
+//                    ("You're at " + it.address) ?: getString(R.string.select_location)
+//            }
+//        }
+
+        lifecycleScope.launch {
+            mainViewModel.userLocationAddressMutableLiveData.collect {
+                try {
+                    binding.tvLocation.text =
+                        ("You're at " + it?.address) ?: getString(R.string.select_location)
+//                    homeViewModel.checkLocationPermission()
+                } catch (ex: Exception) {
+                    Log.d(TAG, "observeViewModelData: ${ex.localizedMessage}")
+                }
             }
         }
     }
@@ -195,7 +220,11 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
                         IntentSenderRequest.Builder(exception.resolution).build()
                     locationSettingsLauncher.launch(intentSenderRequest)
                 } catch (sendEx: IntentSender.SendIntentException) {
-                    Toast.makeText(requireContext(), "Error: ${sendEx.message}", Toast.LENGTH_SHORT)
+                    Toast.makeText(
+                        requireContext(),
+                        "Error: ${sendEx.message}",
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                 }
             }

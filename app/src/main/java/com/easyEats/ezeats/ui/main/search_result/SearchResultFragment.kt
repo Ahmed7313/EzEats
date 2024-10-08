@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.easyEats.ezeats.MyApplication.Companion.TAG
@@ -26,6 +27,7 @@ import com.easyEats.ezeats.ui.main.search_suggestion.SearchFragmentDirections
 import com.easyEats.ezeats.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import es.dmoral.toasty.Toasty
+import kotlinx.coroutines.launch
 
 
 /**
@@ -98,11 +100,12 @@ class SearchResultFragment : BaseBottomSheetFragment<FragmentSearchResultBinding
      */
     override fun listenToObservers() {
         // Observe changes in the user's location and update the location text view
-        mainViewModel.userLocationAddressMutableLiveData.observe(viewLifecycleOwner) {
-            it?.let {
-                binding.tvLocation.text =
-                    ("You're at " + it.address) ?: getString(R.string.select_location)
-
+        lifecycleScope.launch {
+            mainViewModel.userLocationAddressMutableLiveData.collect {
+                it?.let {
+                    binding.tvLocation.text =
+                        ("You're at " + it.address) ?: getString(R.string.select_location)
+                }
             }
         }
 

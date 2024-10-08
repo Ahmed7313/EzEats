@@ -6,6 +6,7 @@ import android.view.View.VISIBLE
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.base.BaseResponse
 import com.easyEats.ezeats.databinding.FragmentRestaurantBinding
@@ -19,6 +20,8 @@ import com.easyEats.ezeats.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -33,29 +36,34 @@ class RestaurantViewModel @Inject constructor(
     private val _specialOffers = MutableLiveData<Resource<BaseResponse<RestaurantInfo>>>()
     val specialOffers: LiveData<Resource<BaseResponse<RestaurantInfo>>> = _specialOffers
 
-    init {
-        getSpecialOffers()
-    }
 
-    private fun getSpecialOffers() {
-        val flow = createSpecialOffersRequest(
-            RestaurantRequest(
-                restaurantId!!,
-                userLat = userLocationAddressMutableLiveData.value?.lat ?: "0.0",
-                userLon = userLocationAddressMutableLiveData.value?.lng ?: "0.0"
-            )
-        )
-        apply(
-            flow = flow,
-            maxRetries = 2,
-            onError = { error ->
-                _specialOffers.value =
-                    Resource.Error("No Internet Connection")
-            },
-            onSuccess = { resource ->
-                _specialOffers.value = resource
+    fun getSpecialOffers() {
+        viewModelScope.launch {
+            fetchCurrentAddress().collect {
+                if (it?.lat?.isNullOrEmpty()?.not() == true) {
+                    val flow = createSpecialOffersRequest(
+                        RestaurantRequest(
+                            restaurantId!!,
+                            userLat = it?.lat ?: "",
+                            userLon = it?.lng ?: ""
+                        )
+                    )
+                    apply(
+                        flow = flow,
+                        maxRetries = 2,
+                        onError = { error ->
+                            _specialOffers.value =
+                                Resource.Error("No Internet Connection")
+                        },
+                        onSuccess = { resource ->
+                            _specialOffers.value = resource
+                        }
+                    )
+                }
+
             }
-        )
+
+        }
     }
 
 

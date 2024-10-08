@@ -11,6 +11,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.get
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -20,6 +21,7 @@ import com.easyEats.ezeats.R
 import com.easyEats.ezeats.databinding.ActivityHomeBinding
 import com.google.android.gms.common.internal.Objects
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
@@ -48,6 +50,13 @@ class HomeActivity : AppCompatActivity() {
         setUpBottomNavigationWithNavHostFragment()
         handleIntent(intent)
 
+        lifecycleScope.launch {
+            mainViewModel.userLocationAddressMutableLiveData.collect {
+                Log.d(TAG, "onCreate:a7a ${it?.address}")
+                Log.d(TAG, "onCreate:a7a ${it?.lat}")
+                Log.d(TAG, "onCreate:a7a ${it?.lng}")
+            }
+        }
 
     }
 

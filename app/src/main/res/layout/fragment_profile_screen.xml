@@ -18,6 +18,7 @@
         android:layout_height="match_parent"
         android:background="@color/main_screen_color"
         android:fillViewport="true"
+        android:scrollbars="none"
         android:padding="@dimen/_17sdp"
         tools:context=".ui.main.profile.ProfileScreenFragment">
 
@@ -261,6 +262,18 @@
                    android:text="@string/order_history"
                    app:drawableEndCompat="@drawable/chevron_right_icon"
                    app:drawableStartCompat="@drawable/clock_rewind_icon" />
+
+               <TextView
+                   android:id="@+id/tvPromoCode"
+                   style="@style/TextProfile"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:layout_marginTop="@dimen/_15sdp"
+                   android:drawablePadding="@dimen/_5sdp"
+                   android:gravity="center_vertical"
+                   android:text="@string/promo_code"
+                   app:drawableEndCompat="@drawable/chevron_right_icon"
+                   app:drawableStartCompat="@drawable/promo_code_icon" />
 
                <TextView
                    android:id="@+id/tvDeleteAccount"

@@ -13,6 +13,7 @@ import com.easyEats.ezeats.domain.main.use_case.search_history.SearchHistoryUseC
 import com.easyEats.ezeats.domain.main.use_case.search_suggestions.SearchSuggestionsUseCase
 import com.easyEats.ezeats.domain.main.use_case.search_use_case.SearchUseCase
 import com.easyEats.ezeats.domain.main.use_case.user_info.UserInfoUseCase
+import com.easyEats.ezeats.domain.main.use_case.voucher_use_case.VoucherUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -37,7 +38,8 @@ class MainUseCaseModule {
         offerUseCase: RedeemOfferUseCase,
         userInfoUseCase: UserInfoUseCase,
         orderHistoryUseCase: OrderHistoryUseCase,
-        pointsUseCase: PointsUseCase
+        pointsUseCase: PointsUseCase,
+        voucherUseCase: VoucherUseCase
     ): MainUseCase {
         return MainUseCase(
             mainUseCase,
@@ -51,7 +53,8 @@ class MainUseCaseModule {
             offerUseCase,
             userInfoUseCase,
             orderHistoryUseCase,
-            pointsUseCase
+            pointsUseCase,
+            voucherUseCase
         )
     }
 }

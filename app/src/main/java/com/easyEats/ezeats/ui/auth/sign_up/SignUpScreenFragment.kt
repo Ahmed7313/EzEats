@@ -9,6 +9,7 @@ import com.easyEats.ezeats.R
 import com.easyEats.ezeats.base.BaseFragment
 import com.easyEats.ezeats.databinding.FragmentSignUpScreenBinding
 import com.easyEats.ezeats.utils.Resource
+import com.easyEats.ezeats.utils.tracking.Event.sendEvent
 import com.easyEats.ezeats.utils.validation.ValidateFields
 import com.parse.ParseUser
 import dagger.hilt.android.AndroidEntryPoint
@@ -144,7 +145,6 @@ class SignUpScreenFragment : BaseFragment<FragmentSignUpScreenBinding>() {
         binding.btnSignUp.setOnClickListener {
             binding.btnSignUp.isEnabled=false
             signUpViewModel.register()
-
         }
     }
 

@@ -1,12 +1,16 @@
 package com.easyEats.ezeats.ui.main.offers
 
 import android.content.Context
+import android.util.Log
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.animation.AnimationUtils
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.DefaultItemAnimator
+import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.base.BaseResponse
 import com.easyEats.ezeats.databinding.FragmentPercentScreenBinding
@@ -20,17 +24,22 @@ import com.easyEats.ezeats.ui.main.search_result.adapter.RestaurantAdapter
 import com.easyEats.ezeats.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @HiltViewModel
 class OffersViewModel @Inject constructor(val mainUseCase: MainUseCase) :
     MainViewModel(mainUseCase) {
 
-    // LiveData that holds the search results for Restaurants.
-    private val _restaurantResultMutableLiveData =
-        MutableLiveData<Resource<BaseResponse<List<Restaurant>>>>()
-    val restaurantResultLiveData: LiveData<Resource<BaseResponse<List<Restaurant>>>> get() = _restaurantResultMutableLiveData
+    private val _restaurantResultStateFlow =
+        MutableStateFlow<Resource<BaseResponse<List<Restaurant>>>>(Resource.Loading())
+    val restaurantResultStateFlow: StateFlow<Resource<BaseResponse<List<Restaurant>>>> get() = _restaurantResultStateFlow
 
 
     private val _categoryResultMutableLiveData =
@@ -41,26 +50,38 @@ class OffersViewModel @Inject constructor(val mainUseCase: MainUseCase) :
         getRestaurantsResult("")
         getCategoriesRestaurantResult()
     }
-
     fun getRestaurantsResult(categoryId: String) {
-        val flow = createRestaurantsResultRequest(
-            OffersRequest(
-                categoryId = categoryId,
-                userLat = userLocationAddressMutableLiveData.value?.lat?:"",
-                userLon = userLocationAddressMutableLiveData.value?.lng?:""
-            )
-        )
-        apply(flow = flow, maxRetries = 2, onError = { error ->
-            _restaurantResultMutableLiveData.value =
-                Resource.Error("No Internet Connection")
-        }, onSuccess = { resource ->
-            _restaurantResultMutableLiveData.value = resource
-        })
+        viewModelScope.launch {
+            // Collect the current address once
+            fetchCurrentAddress().collect{
+                if (it?.lat?.isNotEmpty() == true) {
+                    val flow = createRestaurantsResultRequest(
+                        OffersRequest(
+                            categoryId = categoryId,
+                            userLat = it.lat ?: "",
+                            userLon = it.lng ?: ""
+                        )
+                    )
+                    apply(
+                        flow = flow,
+                        maxRetries = 2,
+                        onError = { error ->
+                            _restaurantResultStateFlow.value = Resource.Error("No Internet Connection")
+                        },
+                        onSuccess = { resource ->
+                            _restaurantResultStateFlow.value = resource
+                        }
+                    )
+                }
+            }
+
+        }
     }
 
 
     private fun createRestaurantsResultRequest(offersRequest: OffersRequest): Flow<Resource<BaseResponse<List<Restaurant>>>> =
         channelFlow {
+            Log.d(TAG, "createRestaurantsResultRequest: ${offersRequest.userLat}")
             send(Resource.Loading())
             val result = mainUseCase.offersUserCase.getRestaurantsByCategory(offersRequest)
             result.handleResponse(onSuccess = {
@@ -108,12 +129,13 @@ class OffersViewModel @Inject constructor(val mainUseCase: MainUseCase) :
             binding.tvAllRestaurants.visibility = GONE
             binding.llNoRestaurants.visibility = VISIBLE
         } else {
-            val animationController = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation_fade_in)
+            val animationController =
+                AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation_fade_in)
             binding.rvRestaurant.layoutAnimation = animationController
             binding.rvRestaurant.visibility = VISIBLE
             binding.tvAllRestaurants.visibility = VISIBLE
             binding.llNoRestaurants.visibility = GONE
-            restaurantAdapter.submitList(resource.data?.result?.data){
+            restaurantAdapter.submitList(resource.data?.result?.data) {
                 binding.rvRestaurant.startLayoutAnimation()
             }
         }
@@ -128,7 +150,12 @@ class OffersViewModel @Inject constructor(val mainUseCase: MainUseCase) :
         binding.rvCategories.adapter = categoryAdapter
         val categories = resource.data?.result?.data as MutableList<Category>
         categories.removeIf { it.categoryId == "eqvWcHcHaD" }
-        val itemAll = Category("eqvWcHcHaD", "All", "All", null)
+        val itemAll = Category(
+            "eqvWcHcHaD",
+            "https://jtxlimrcv63uszqdkzh2a9d1r7pd0u.files-sashido.cloud/a259bebbbd74e87ff6ff496312479784_Untitled%20design_20241001_162612_0000.png",
+            "All",
+            null
+        )
         categories.add(0, itemAll)
         categoryAdapter.submitList(categories)
     }

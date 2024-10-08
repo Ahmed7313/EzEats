@@ -21,6 +21,7 @@ import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.Restaur
 import com.easyEats.ezeats.domain.main.model.response.search_response.Category
 import com.easyEats.ezeats.domain.main.model.response.search_response.SearchScreenResponse
 import com.easyEats.ezeats.domain.main.model.response.user_info.UserInfoResponse
+import com.easyEats.ezeats.domain.main.model.response.voucher.VoucherResponse
 import retrofit2.http.Body
 import retrofit2.http.POST
 
@@ -74,4 +75,7 @@ interface MainApiService {
 
     @POST("GetUserPoints")
     suspend fun getUserPoints(@Body pointsRequest: PointsRequest): BaseResponse<PointsResponse>
+
+    @POST("getUserRewardsMobile")
+    suspend fun getUserRewardsMobile(): BaseResponse<VoucherResponse>
 }

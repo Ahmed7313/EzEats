@@ -24,6 +24,8 @@ class RestaurantAdapter @Inject constructor(
 ) :
     ListAdapter<Restaurant, RestaurantAdapter.RestaurantViewHolder>(RestaurantDiffUtil()) {
 
+    private val sharedViewPool = RecyclerView.RecycledViewPool()
+
     interface OnRestaurantClicked {
         fun onRestaurantClickListener(restaurant: Restaurant)
     }
@@ -86,6 +88,7 @@ class RestaurantAdapter @Inject constructor(
     override fun onBindViewHolder(holder: RestaurantViewHolder, position: Int) {
         val restaurant = getItem(position)
         holder.binding.restaurant = restaurant
+        holder.binding.rvExtraOffers.setRecycledViewPool(sharedViewPool)
         offerAdapter = OfferAdapter(onOfferClicked)
 
         handleEmptyData(restaurant, holder)
@@ -93,14 +96,6 @@ class RestaurantAdapter @Inject constructor(
             onRestaurantClicked.onRestaurantClickListener(restaurant)
         }
 
-        // Apply slide-in animation when binding the ViewHolder
-//        holder.itemView.translationY = 100f
-//        holder.itemView.alpha = 0f
-//        holder.itemView.animate()
-//            .translationY(0.5f)
-//            .alpha(1f)
-//            .setDuration(300L)  // Duration of the slide-in animation
-//            .start()
     }
 
 

@@ -18,6 +18,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import java.io.ByteArrayOutputStream
+import java.text.SimpleDateFormat
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -31,7 +34,8 @@ class EditProfileViewModel @Inject constructor(
     var fullName = user?.name
     var email = user?.email
     var mobileNumber = user?.mobileNumber
-    var birthDate = user?.birthDate
+    var birthDate = reformatDate(user?.birthDate?.iso)
+    val isViewsEditable = MutableLiveData(false)
 
     private val _imageBase64 = MutableLiveData<String>()
     val imageBase64: LiveData<String> = _imageBase64
@@ -47,6 +51,10 @@ class EditProfileViewModel @Inject constructor(
             val base64Image = convertToBase64(bitmap)
             _imageBase64.value = base64Image
         }
+    }
+
+    fun makeViewsEditable() {
+        isViewsEditable.value = true
     }
 
     private fun convertToBase64(bitmap: Bitmap): String {
@@ -89,4 +97,12 @@ class EditProfileViewModel @Inject constructor(
             })
         }
 
+    private fun reformatDate(dateString: String?): String? {
+        return if (dateString != null) {
+            val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+            val outputFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            val date = inputFormat.parse(dateString)
+            outputFormat.format(date)
+        } else ""
+    }
 }

@@ -35,6 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/gilroy_600"
+            android:onClick="@{()->viewModel.makeViewsEditable()}"
             android:padding="@dimen/_5sdp"
             android:text="@string/edit"
             android:textColor="@color/main_color"
@@ -60,8 +61,8 @@
                 loadProfileImage="@{viewModel.user.profilePicture.url}"
                 android:layout_width="@dimen/_70sdp"
                 android:layout_height="@dimen/_70sdp"
+                android:saveEnabled="@{viewModel.isViewsEditable==true?true:false}"
                 android:scaleType="fitXY"
-                android:saveEnabled="false"
                 android:src="@drawable/dummy_image"
                 app:riv_corner_radius="1000dp"
                 app:riv_oval="true">
@@ -77,6 +78,7 @@
                 android:backgroundTint="@color/main_color"
                 android:elevation="0dp"
                 android:saveEnabled="false"
+                android:visibility="@{viewModel.isViewsEditable==true?View.VISIBLE:View.GONE}"
                 app:cardCornerRadius="1000dp"
                 app:strokeWidth="0dp">
 
@@ -165,7 +167,7 @@
                     android:layout_height="@dimen/_42sdp"
                     android:drawableStart="@drawable/user_name_icon"
                     android:drawablePadding="10dp"
-                    android:enabled="false"
+                    android:enabled="@{viewModel.isViewsEditable==true?true:false}"
                     android:inputType="text"
                     android:text="@={viewModel.fullName}"
                     android:textSize="@dimen/_13ssp" />
@@ -179,9 +181,9 @@
                 android:layout_marginTop="@dimen/_20sdp"
                 android:hint="@string/email"
                 android:selectAllOnFocus="true"
-                android:visibility="@{viewModel.email!=null ?View.VISIBLE:View.GONE}"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_13ssp"
+                android:visibility="@{viewModel.email!=null ?View.VISIBLE:View.GONE}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/ll_social_media_icons">
@@ -244,7 +246,7 @@
                     android:layout_height="@dimen/_42sdp"
                     android:drawableStart="@drawable/calendar_icon"
                     android:drawablePadding="10dp"
-                    android:enabled="false"
+                    android:enabled="@{viewModel.isViewsEditable==true?true:false}"
                     android:focusable="false"
                     android:inputType="none"
                     android:text="@={viewModel.birthDate}"
@@ -266,7 +268,7 @@
             android:text="@string/save_changes"
             android:textColor="@color/white"
             android:textSize="@dimen/_13ssp"
-            android:visibility="gone"
+            android:visibility="@{viewModel.isViewsEditable==true? View.VISIBLE:View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/linearLayout"
             app:layout_constraintStart_toStartOf="@+id/linearLayout" />

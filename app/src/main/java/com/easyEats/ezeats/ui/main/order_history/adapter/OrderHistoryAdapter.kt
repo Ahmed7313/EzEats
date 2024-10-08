@@ -1,10 +1,8 @@
 package com.easyEats.ezeats.ui.main.order_history.adapter
 
-import android.content.Intent
-import android.net.Uri
+
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -16,6 +14,7 @@ class OrderHistoryAdapter(
     private val onReorderButtonClicked: OnReorderButtonClicked
 ) : ListAdapter<Order, OrderHistoryAdapter.OrderHistoryViewHolder>(OrderHistoryDiffCallback()) {
     private lateinit var subOrderAdapter: SubOrderHistoryAdapter
+    private val sharedViewPool = RecyclerView.RecycledViewPool()
 
 
     interface OnReorderButtonClicked {
@@ -52,6 +51,7 @@ class OrderHistoryAdapter(
     override fun onBindViewHolder(holder: OrderHistoryViewHolder, position: Int) {
         val order = getItem(position)
         subOrderAdapter = SubOrderHistoryAdapter()
+        holder.binding.rvSubOrder.setRecycledViewPool(sharedViewPool)
         holder.binding.rvSubOrder.adapter = subOrderAdapter
         holder.bind(order)
     }

@@ -7,6 +7,7 @@ plugins {
     id("kotlin-kapt")
     id ("kotlin-parcelize")
     id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 android {
@@ -148,15 +149,21 @@ dependencies {
     implementation(libs.toasty)
     //coil
     implementation(libs.coil)
-    implementation("io.coil-kt:coil-svg:2.3.0")
+    implementation(libs.coil.svg)
     //shimmer
     implementation (libs.shimmer)
     implementation (libs.shimmer.recyclerview)
-
     //chucker
-    debugImplementation("com.github.chuckerteam.chucker:library:3.5.2")
-    releaseImplementation("com.github.chuckerteam.chucker:library-no-op:3.5.2")
+    debugImplementation(libs.library)
+    releaseImplementation(libs.library.no.op)
+    //firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.crashlytics)
+    //mixpanel
+    implementation (libs.mixpanel.android)
 
-    implementation(platform("com.google.firebase:firebase-bom:33.2.0"))
-    implementation("com.google.firebase:firebase-analytics")
+    implementation (libs.androidx.lifecycle.livedata.ktx)
+
+
 }

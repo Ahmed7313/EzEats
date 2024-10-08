@@ -12,6 +12,7 @@ import com.easyEats.ezeats.domain.main.use_case.search_history.SearchHistoryUseC
 import com.easyEats.ezeats.domain.main.use_case.search_suggestions.SearchSuggestionsUseCase
 import com.easyEats.ezeats.domain.main.use_case.search_use_case.SearchUseCase
 import com.easyEats.ezeats.domain.main.use_case.user_info.UserInfoUseCase
+import com.easyEats.ezeats.domain.main.use_case.voucher_use_case.VoucherUseCase
 
 data class MainUseCase(
     val mainUseCase: MainActivityUseCase,
@@ -25,5 +26,6 @@ data class MainUseCase(
     val redeemOfferUseCase: RedeemOfferUseCase,
     val userInfoUseCase: UserInfoUseCase,
     val orderHistoryUseCase: OrderHistoryUseCase,
-    val pointsUseCase: PointsUseCase
+    val pointsUseCase: PointsUseCase,
+    val voucherUseCase: VoucherUseCase
 )

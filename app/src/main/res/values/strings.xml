@@ -55,7 +55,7 @@
     <!--    Home Screen-->
     <string name="notification_icon">Notification Icon</string>
     <string name="where_every_meal_comes_with_a_discount">Where Every Meal Comes with a discount</string>
-    <string name="search_for_restaurants_dishes_and_more">Search for restaurants, dishes, and more...</string>
+    <string name="search_for_restaurants_dishes_and_more">Search for restaurants, dishes, and more…</string>
     <string name="featured">Featured</string>
     <string name="view_all">View All</string>
     <string name="check_out_today_s_featured_deals_and_offers_near_you">Check out today’s featured deals and offers Near you</string>
@@ -64,13 +64,13 @@
     <string name="participate_in_challenges_and_earn_points_and_rewards">Participate in challenges, and earn points and rewards</string>
     <string name="redeem">Redeem</string>
     <string name="restaurant_logo">Restaurant Logo</string>
-    ]
     <string name="home">Home</string>
     <string name="percent">Percent</string>
     <string name="qr">QR</string>
     <string name="points">Points</string>
     <string name="profile">Profile</string>
     <string name="press_back_again_to_exit">Press back again to exit</string>
+    <string name="coming_soon">Coming Soon !</string>
 
     <!--    Location Bottom Sheet-->
     <string name="refresh">Refresh</string>
@@ -91,23 +91,37 @@
     <string name="scan_your_table">Scan your table</string>
     <string name="to_create_your_order">to create your order</string>
     <string name="close_icon">close icon</string>
+
+    <!--    Points-->
     <string name="loyalty_points">Loyalty Points</string>
     <string name="you_can_use_your_ezpoints_to_redeem_any_offers_regardless_of_the_restaurant">You can use your EZpoints to redeem any offers, regardless of the restaurant</string>
     <string name="restuarnats_points">Restaurants Points</string>
     <string name="close">Close Icon</string>
-    <string name="what_do_you_want_to_eat">What do you want to eat?</string>
+    <string name="leader_board_image">leader board image</string>
+    <string name="leaderboards">Leaderboards</string>
+    <string name="this_category_has_no_offers_currently_check_again_later">This category has no offers currently, check again later!</string>
+    <string name="redeem_and_pay_in_the_restaurant_and_gain_300_dp_points_to_enjoy_the_next_time_you_are_visiting">Redeem and pay at the restaurant to enjoy the offer on your visit.</string>
+    <string name="keep_collecting_points_and_soon_you_will_be_able_to_redeem_them_in_exchange_for_awesome_deals">Keep collecting points, and soon you will be able to redeem them in exchange for awesome deals!</string>
+
+    <!--    Recent Search-->
     <string name="recent_searches">Recent Searches</string>
     <string name="popular_searches">Popular Searches</string>
+    <string name="what_do_you_want_to_eat">What do you want to eat?</string>
     <string name="clear">Clear</string>
     <string name="offer">image of offer</string>
     <string name="location_access_denied">location Access Denied</string>
     <string name="enable_access">Enable Access</string>
     <string name="for_a_better_user_experience_please_enable_location_access">For a better user experience, please enable location access!</string>
     <string name="category_image">Category Image</string>
-    <string name="all_resturant">All Resturant</string>
+    <string name="all_resturant">All Restaurant</string>
     <string name="current_location">Current Location</string>
     <string name="search_results">Search Results</string>
+
+    <!--    Search Typing-->
     <string name="enter_your_search_keyword">Enter Your Search Keyword</string>
+    <string name="deliciousness_is_just_a_search_away">Deliciousness is \n just a search away</string>
+
+    <!--    Restaurant-->
     <string name="please_check_again_later_for_the_hottest_offers">Please check again later for the hottest offers</string>
     <string name="has_no_offers_right_now">has no offers right now</string>
     <string name="your_search_has_no_results">Your search has no results</string>
@@ -116,20 +130,20 @@
     <string name="empty_offers_image">empty offers image</string>
     <string name="bottom_sheet_top">bottom sheet top</string>
     <string name="leaderboards_are_coming_soon_n_stay_tuned_for_fun_challenges_n_and_rewards">Leaderboards are coming soon,\n stay tuned for fun challenges \n and rewards</string>
-    <string name="leader_board_image">leader board image</string>
-    <string name="leaderboards">Leaderboards</string>
     <string name="featured_image">featured image</string>
     <string name="share_icon">share Icon</string>
     <string name="special_offers">Special Offers</string>
     <string name="enjoy_offers_straight_from_ezeats_in_partnership_with_dominos_pizza_for_your_satisfaction_redeem_now_and_enjoy_the_food_and_the_points">Enjoy Offers straight from EZeats in partnership with dominos pizza for your satisfaction, redeem now and enjoy the food and the points</string>
     <string name="offer_image">offer image</string>
-    <string name="new_">New</string>
     <string name="no_offers_available">No Offers Available</string>
     <string name="there_is_no_offers_going_on_right_now_please_check_again_later_for_all_the_pizza_goodness">You can order your favourite food through our web app now</string>
     <string name="check_other_offers">Order through the web app</string>
-    <string name="this_category_has_no_offers_currently_check_again_later">This category has no offers currently, check again later!</string>
-    <string name="redeem_and_pay_in_the_restaurant_and_gain_300_dp_points_to_enjoy_the_next_time_you_are_visiting">Redeem and pay at the restaurant to enjoy the offer on your visit.</string>
+
+    <!--    Redeem-->
+    <string name="new_">New</string>
     <string name="redeem_pay"><![CDATA[redeem & pay\n]]></string>
+
+    <!--    Profile-->
     <string name="edit_profile">Edit Profile</string>
     <string name="delete_account">Delete Account</string>
     <string name="delete_your_account">Delete your account?</string>
@@ -139,21 +153,26 @@
     <string name="welcome">Welcome</string>
     <string name="guest">Guest</string>
     <string name="login_or_sign_up">Login or sign up</string>
+
+    <!--    Reorder-->
     <string name="reorder">Reorder</string>
+    <string name="extras">Extras</string>
+    <string name="you_don_t_have_any_orders_yet_make_some_orders_to_see_your_history_here">You don\'t have any orders yet, make some orders to see your history here</string>
+
+    <!--    Edit Profile-->
     <string name="edit">Edit</string>
     <string name="phone_number">Phone Number</string>
     <string name="save_changes">Save Changes</string>
     <string name="email">Email</string>
     <string name="full_name">Full Name</string>
-    <string name="deliciousness_is_just_a_search_away">Deliciousness is \n just a search away</string>
-    <string name="keep_collecting_points_and_soon_you_will_be_able_to_redeem_them_in_exchange_for_awesome_deals">Keep collecting points, and soon you will be able to redeem them in exchange for awesome deals!</string>
-    <string name="you_don_t_have_any_orders_yet_make_some_orders_to_see_your_history_here">You don\'t have any orders yet, make some orders to see your history here</string>
-    <string name="coming_soon">Coming Soon !</string>
-    <string name="that_cart_looks_lovely_please_sign_up_or_log_back_in_to_be_able_to_make_an_order">To start collecting and redeeming points, create an account or login</string>
-    <string name="please_sign_up_or_login_to_continue">Please Sign up or login \n to continue</string>
     <string name="log_out">Log Out</string>
-    <string name="extras">Extras</string>
     <string name="birth_date">Date of birth</string>
 
+    <!--    Guest Login-->
+    <string name="that_cart_looks_lovely_please_sign_up_or_log_back_in_to_be_able_to_make_an_order">To start collecting and redeeming points, create an account or login</string>
+    <string name="please_sign_up_or_login_to_continue">Please Sign up or login \n to continue</string>
+    <string name="promo_code">Promo Code</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

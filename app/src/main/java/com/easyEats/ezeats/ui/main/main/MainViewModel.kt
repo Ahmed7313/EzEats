@@ -21,9 +21,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.retryWhen
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 import kotlin.math.pow
 
@@ -35,7 +41,8 @@ open class MainViewModel @Inject constructor(
     // LiveData to expose network connectivity status
     private val _isConnected = MutableLiveData(true)
     val isConnected: LiveData<Boolean> get() = _isConnected
-
+    private val _saveAddressResult = MutableLiveData<Boolean>()
+    val saveAddressResult: LiveData<Boolean> = _saveAddressResult
 
     // LiveData to expose location permission status
     val isLocationGranted = MutableLiveData<Boolean>()
@@ -54,7 +61,7 @@ open class MainViewModel @Inject constructor(
     }
     private val intentFilter_ = IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION)
 
-    val userLocationAddressMutableLiveData = MutableLiveData<UserLocationAddress?>()
+    val userLocationAddressMutableLiveData = MutableStateFlow<UserLocationAddress?>(null)
 
 
     /**
@@ -64,16 +71,17 @@ open class MainViewModel @Inject constructor(
     init {
         baseApplication.registerReceiver(networkChangeReceiver, intentFilter)
         baseApplication.registerReceiver(locationChangeReceiver, intentFilter_)
-        fetchCurrentAddress()
 
     }
 
-    private fun fetchCurrentAddress() {
+    fun fetchCurrentAddress(): StateFlow<UserLocationAddress?> {
         viewModelScope.launch {
-            mainUseCase.mainUseCase.getCurrentAddress().collect { address ->
-                userLocationAddressMutableLiveData.value = address
-            }
+            mainUseCase.mainUseCase.getCurrentAddress()
+                .collect { address ->
+                    userLocationAddressMutableLiveData.value = address
+                }
         }
+        return userLocationAddressMutableLiveData
     }
 
     /**
@@ -115,9 +123,14 @@ open class MainViewModel @Inject constructor(
 
     fun saveAddress(userLocationAddress: UserLocationAddress) {
         viewModelScope.launch {
+            // Perform the save operation (background thread)
             mainUseCase.mainUseCase.saveAddress(userLocationAddress)
+
+            // Once the address is saved, post the result (switch to Main thread automatically)
+            _saveAddressResult.postValue(true)
         }
     }
+
 
     fun saveToke(token: String) {
         viewModelScope.launch(Dispatchers.IO) {
