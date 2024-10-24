@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat.getString
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.R
@@ -24,6 +25,7 @@ import com.easyEats.ezeats.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -91,19 +93,25 @@ class SearchResultViewModel @Inject constructor(
      * @param viewType The type of view for which to fetch results, default is "restaurant".
      */
     private fun getSearchRestaurantResult(viewType: String = "restaurant") {
-        val flow = createSearchResultRequest(
-            SearchRequest(
-                searchKey ?: "", viewType,
-                userLat = userLocationAddressMutableLiveData.value?.lat?:"0.0",
-                userLon = userLocationAddressMutableLiveData.value?.lng?:"0.0"
-            )
-        )
-        apply(flow = flow, maxRetries = 2, onError = { error ->
-            _searchResultMutableLiveData.value =
-                Resource.Error("No Internet Connection")
-        }, onSuccess = { resource ->
-            _searchResultMutableLiveData.value = resource
-        })
+        viewModelScope.launch {
+            fetchCurrentAddress().collect {
+                if (it?.lat?.isNotEmpty() == true) {
+                    val flow = createSearchResultRequest(
+                        SearchRequest(
+                            searchKey ?: "", viewType,
+                            userLat = it.lat ?: "0.0",
+                            userLon =it.lng ?: "0.0"
+                        )
+                    )
+                    apply(flow = flow, maxRetries = 2, onError = { error ->
+                        _searchResultMutableLiveData.value =
+                            Resource.Error("No Internet Connection")
+                    }, onSuccess = { resource ->
+                        _searchResultMutableLiveData.value = resource
+                    })
+                }
+            }
+        }
     }
 
     /**

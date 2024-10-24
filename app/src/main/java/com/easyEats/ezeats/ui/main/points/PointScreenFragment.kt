@@ -27,6 +27,10 @@ class PointScreenFragment : BaseFragment<FragmentPointScreenBinding>() {
         PointsAdapter()
     }
 
+    private val marakezPointsAdapter by lazy {
+        PointsAdapter()
+    }
+
     override fun inflateBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -59,8 +63,9 @@ class PointScreenFragment : BaseFragment<FragmentPointScreenBinding>() {
                     hideMainLoading()
                     binding.pointsResponse = resource.data?.result?.data
                     binding.rvPoints.adapter = pointsAdapter
-                    Log.d(TAG, "listenToObserver: ${resource.data?.result?.data?.eZPoints}")
+                    binding.rvMarakezPoints.adapter=marakezPointsAdapter
                     pointsAdapter.submitList(resource.data?.result?.data?.loyaltyPoints)
+                    marakezPointsAdapter.submitList(resource.data?.result?.data?.marakezPoints)
                 }
 
                 is Resource.UnAuthenticated -> {

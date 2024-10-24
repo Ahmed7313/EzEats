@@ -24,6 +24,7 @@ import es.dmoral.toasty.Toasty
 import android.provider.Settings
 import android.util.Log
 import android.view.animation.AnimationUtils
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -32,6 +33,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearSnapHelper
 import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.domain.main.model.response.home_response.HotDeal
+import com.easyEats.ezeats.utils.tracking.Event.sendEvent
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
@@ -56,7 +58,8 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
     // Adapters for the RecyclerViews
     private val featuredOfferAdapter: FeaturedOfferAdapter by lazy { FeaturedOfferAdapter(this) }
     private val hotDealsOfferAdapter: HotDealsAdapter by lazy { HotDealsAdapter(this) }
-    val snapHelper = LinearSnapHelper()
+    private val snapHelper = LinearSnapHelper()
+
     // Register ActivityResultLauncher
     private lateinit var locationSettingsLauncher: ActivityResultLauncher<IntentSenderRequest>
 
@@ -85,6 +88,13 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
     override fun onResume() {
         super.onResume()
         observeViewModelData()
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    requireActivity().finish()
+                }
+            })
     }
 
     override fun setUpViews() {
@@ -106,6 +116,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
 
         binding.etSearch.setOnClickListener {
             findNavController().navigate(R.id.goToSearchHistoryFragment)
+            sendEvent("Sign Up", "user sign up", "Sign Up")
         }
         binding.swipeToRefresh.setOnRefreshListener {
             homeViewModel.checkLocationPermission()
@@ -165,18 +176,15 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
             }
         }
 
-//        mainViewModel.userLocationAddressMutableLiveData.observe(viewLifecycleOwner) {
-//            it?.let {
-//                binding.tvLocation.text =
-//                    ("You're at " + it.address) ?: getString(R.string.select_location)
-//            }
-//        }
 
         lifecycleScope.launch {
             mainViewModel.userLocationAddressMutableLiveData.collect {
                 try {
-                    binding.tvLocation.text =
-                        ("You're at " + it?.address) ?: getString(R.string.select_location)
+                    binding.tvLocation.text = if (it?.address != null) {
+                        "You're at ${it?.address}"
+                    } else {
+                        getString(R.string.select_location)
+                    }
 //                    homeViewModel.checkLocationPermission()
                 } catch (ex: Exception) {
                     Log.d(TAG, "observeViewModelData: ${ex.localizedMessage}")
@@ -230,4 +238,6 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
             }
         }
     }
+
+
 }

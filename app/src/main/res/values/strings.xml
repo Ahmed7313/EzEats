@@ -174,5 +174,7 @@
     <string name="promo_code">Promo Code</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="marakez_points">Marakez Points</string>
+    <string name="marakez_points_allow_you_to_redeem_offers_from_their_respective_restaurants">Marakez Points allow you to redeem offers from their respective restaurants</string>
 
 </resources>

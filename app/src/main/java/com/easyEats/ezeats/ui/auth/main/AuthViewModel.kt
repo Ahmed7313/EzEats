@@ -42,6 +42,7 @@ open class AuthViewModel : ViewModel() {
 
     var isOtpSent = false
 
+    var sessionToken = MutableLiveData<String>()
 
 
     /**

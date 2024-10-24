@@ -6,5 +6,7 @@ data class PointsResponse(
     @SerializedName("EZPoints")
     val eZPoints: Int?,
     @SerializedName("LoyaltyPoints")
-    val loyaltyPoints: List<RestaurantPoint>
+    val loyaltyPoints: List<RestaurantPoint>,
+    @SerializedName("marakezPoints")
+    val marakezPoints: List<RestaurantPoint>
 )

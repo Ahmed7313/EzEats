@@ -99,6 +99,7 @@
                     android:layout_height="@dimen/_42sdp"
                     android:drawableStart="@drawable/phone_icon"
                     android:drawablePadding="10dp"
+                    android:textSize="@dimen/_11ssp"
                     android:text="@={signInViewModel.phoneNumber}"
                     android:inputType="phone" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -124,7 +125,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:orientation="horizontal"
-                android:layout_marginBottom="@dimen/_15sdp"
+                android:layout_marginBottom="@dimen/_20sdp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/btn_sign_in"
                 app:layout_constraintStart_toStartOf="@+id/btn_sign_in">

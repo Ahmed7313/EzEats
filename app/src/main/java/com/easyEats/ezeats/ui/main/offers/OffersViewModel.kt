@@ -36,6 +36,7 @@ import javax.inject.Inject
 @HiltViewModel
 class OffersViewModel @Inject constructor(val mainUseCase: MainUseCase) :
     MainViewModel(mainUseCase) {
+    var isRequestFired = false
 
     private val _restaurantResultStateFlow =
         MutableStateFlow<Resource<BaseResponse<List<Restaurant>>>>(Resource.Loading())
@@ -50,30 +51,32 @@ class OffersViewModel @Inject constructor(val mainUseCase: MainUseCase) :
         getRestaurantsResult("")
         getCategoriesRestaurantResult()
     }
+
     fun getRestaurantsResult(categoryId: String) {
         viewModelScope.launch {
-            // Collect the current address once
-            fetchCurrentAddress().collect{
-                if (it?.lat?.isNotEmpty() == true) {
-                    val flow = createRestaurantsResultRequest(
-                        OffersRequest(
-                            categoryId = categoryId,
-                            userLat = it.lat ?: "",
-                            userLon = it.lng ?: ""
+            if (!isRequestFired)
+                fetchCurrentAddress().collect {
+                    if (it?.lat?.isNotEmpty() == true) {
+                        val flow = createRestaurantsResultRequest(
+                            OffersRequest(
+                                categoryId = categoryId,
+                                userLat = it.lat ?: "",
+                                userLon = it.lng ?: ""
+                            )
                         )
-                    )
-                    apply(
-                        flow = flow,
-                        maxRetries = 2,
-                        onError = { error ->
-                            _restaurantResultStateFlow.value = Resource.Error("No Internet Connection")
-                        },
-                        onSuccess = { resource ->
-                            _restaurantResultStateFlow.value = resource
-                        }
-                    )
+                        apply(
+                            flow = flow,
+                            maxRetries = 2,
+                            onError = { error ->
+                                _restaurantResultStateFlow.value =
+                                    Resource.Error("No Internet Connection")
+                            },
+                            onSuccess = { resource ->
+                                _restaurantResultStateFlow.value = resource
+                            }
+                        )
+                    }
                 }
-            }
 
         }
     }
@@ -94,13 +97,15 @@ class OffersViewModel @Inject constructor(val mainUseCase: MainUseCase) :
         }
 
     fun getCategoriesRestaurantResult() {
-        val flow = createCategoriesResultRequest()
-        apply(flow = flow, maxRetries = 2, onError = { error ->
-            _categoryResultMutableLiveData.value =
-                Resource.Error("No Internet Connection")
-        }, onSuccess = { resource ->
-            _categoryResultMutableLiveData.value = resource
-        })
+        if (!isRequestFired) {
+            val flow = createCategoriesResultRequest()
+            apply(flow = flow, maxRetries = 2, onError = { error ->
+                _categoryResultMutableLiveData.value =
+                    Resource.Error("No Internet Connection")
+            }, onSuccess = { resource ->
+                _categoryResultMutableLiveData.value = resource
+            })
+        }
     }
 
 
@@ -108,6 +113,7 @@ class OffersViewModel @Inject constructor(val mainUseCase: MainUseCase) :
         channelFlow {
             send(Resource.Loading())
             val result = mainUseCase.offersUserCase.getCategory()
+            isRequestFired = true
             result.handleResponse(onSuccess = {
                 send(Resource.Success(result))
             }, onError = { message, error ->
@@ -158,5 +164,10 @@ class OffersViewModel @Inject constructor(val mainUseCase: MainUseCase) :
         )
         categories.add(0, itemAll)
         categoryAdapter.submitList(categories)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        Log.d(TAG, "onCleared: view model cleared")
     }
 }

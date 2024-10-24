@@ -1,5 +1,6 @@
 package com.easyEats.ezeats.ui.main.offers
 
+import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -23,8 +24,10 @@ import com.easyEats.ezeats.utils.Resource
 import com.makeramen.roundedimageview.RoundedImageView.TAG
 import dagger.hilt.android.AndroidEntryPoint
 import es.dmoral.toasty.Toasty
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlin.math.log
 
 
 @AndroidEntryPoint
@@ -52,6 +55,7 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
         }
 
         binding.srGetOffers.setOnRefreshListener {
+            offersViewModel.isRequestFired=false
             offersViewModel.getRestaurantsResult("")
             offersViewModel.getCategoriesRestaurantResult()
         }
@@ -62,8 +66,11 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
     private fun listenToObservers() {
         lifecycleScope.launch {
             mainViewModel.fetchCurrentAddress().collect {
-                binding.tvLocation.text =
-                    ("You're at " + it?.address) ?: getString(R.string.select_location)
+                binding.tvLocation.text = if (it?.address !=null) {
+                    "You're at ${it?.address}"
+                } else {
+                    getString(R.string.select_location)
+                }
                 offersViewModel.getRestaurantsResult("")
                 offersViewModel.getCategoriesRestaurantResult()
             }
@@ -114,9 +121,9 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
                 }
 
                 is Resource.Success -> {
-                    hideMainLoading()
                     cateAdapter = OffersCategoryAdapter(this)
                     offersViewModel.setDataOfCategories(binding, cateAdapter, resource)
+                    Log.d(TAG, "listenToObservers: setDataOfCategories")
                 }
 
                 is Resource.UnAuthenticated -> {
@@ -128,6 +135,8 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
 
 
     override fun onCategoryClicked(category: Category) {
+        Log.d(TAG, "onCategoryClicked: ${category.categoryId}")
+        offersViewModel.isRequestFired=false
         if (category.categoryId == "eqvWcHcHaD")
             offersViewModel.getRestaurantsResult("")
         else
@@ -145,11 +154,5 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
     override fun onOfferClicked(offerId: String) {
         findNavController().navigate(OffersScreenFragmentDirections.goToRedeemScreen(offerId))
     }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        hideMainLoading()
-    }
-
 
 }

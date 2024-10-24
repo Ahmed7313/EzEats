@@ -135,4 +135,10 @@ class VerificationViewModel @Inject constructor(
             authUseCase.verifyUseCase.setUserVerification(isUserVerified)
         }
     }
+
+    fun saveToken(token: String) {
+        viewModelScope.launch {
+            authUseCase.signInUseCase.saveToken(token)
+        }
+    }
 }

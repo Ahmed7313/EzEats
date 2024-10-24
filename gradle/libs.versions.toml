@@ -5,6 +5,7 @@ circleindicator = "2.1.6"
 coil = "2.7.0"
 coilSvg = "2.3.0"
 core = "3.4.1"
+coreKtxVersion = "1.9.0"
 datastorePreferences = "1.1.1"
 firebaseBom = "33.3.0"
 fragmentKtx = "1.8.2"
@@ -37,10 +38,12 @@ toasty = "1.5.2"
 todkarsShimmerRecyclerview = "0.4.1"
 viewpager2 = "1.0.0"
 zxingAndroidEmbedded = "4.2.0"
+appUpdateKtx = "2.1.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 core = { module = "com.google.zxing:core", version.ref = "core" }
+core-ktx = { module = "com.google.android.play:core-ktx", version.ref = "coreKtxVersion" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -106,6 +109,7 @@ mixpanel-android = { module = "com.mixpanel.android:mixpanel-android", version.r
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
 #lifecycle livedata ktx
 androidx-lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycleLivedataKtx" }
+app-update-ktx = { group = "com.google.android.play", name = "app-update-ktx", version.ref = "appUpdateKtx" }
 
 
 [plugins]

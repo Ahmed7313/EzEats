@@ -145,7 +145,7 @@ open class MainViewModel @Inject constructor(
     }
 
     suspend fun isUserVerified(): Flow<Boolean> {
-        return viewModelScope.async { mainUseCase.mainUseCase.isUserVerified() }.await()
+        return mainUseCase.mainUseCase.isUserVerified()
     }
 
     fun getToken(): Flow<String> {

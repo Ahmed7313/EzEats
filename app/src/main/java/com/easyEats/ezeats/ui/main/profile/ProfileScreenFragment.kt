@@ -56,9 +56,8 @@ class ProfileScreenFragment : BaseFragment<FragmentProfileScreenBinding>(),
             startActivity(intent)
         }
         binding.tvLogout.setOnClickListener {
-            findNavController().navigate(R.id.homeScreenFragment)
             profileViewModel.saveToke("")
-            profileViewModel.setUserVerification(false)
+            findNavController().navigate(R.id.homeScreenFragment)
         }
 
         binding.tvDeleteAccount.setOnClickListener {

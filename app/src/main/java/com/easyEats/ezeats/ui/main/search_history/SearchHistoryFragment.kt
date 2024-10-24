@@ -102,8 +102,15 @@ class SearchHistoryFragment : BaseBottomSheetFragment<FragmentSearchHistoryBindi
                 is Resource.Error -> {}
                 is Resource.Loading -> {}
                 is Resource.Success -> {
-                    searchHistoryViewModel.setData(categoryAdapter, popularSearchAdapter, recentSearchAdapter, binding, resource)
+                    searchHistoryViewModel.setData(
+                        categoryAdapter,
+                        popularSearchAdapter,
+                        recentSearchAdapter,
+                        binding,
+                        resource
+                    )
                 }
+
                 is Resource.UnAuthenticated -> {}
             }
         }
@@ -114,21 +121,25 @@ class SearchHistoryFragment : BaseBottomSheetFragment<FragmentSearchHistoryBindi
                 is Resource.Loading -> {
                     searchHistoryViewModel.getSearchHistory()
                 }
+
                 is Resource.Success -> {
                     searchHistoryViewModel.getSearchHistory()
                 }
+
                 is Resource.UnAuthenticated -> {}
             }
         }
 
-       lifecycleScope.launch {
-           mainViewModel.userLocationAddressMutableLiveData.collect {
-               it?.let {
-                   binding.tvLocation.text =
-                       ("You're at " + it.address) ?: getString(R.string.select_location)
-               }
-           }
-       }
+        lifecycleScope.launch {
+            mainViewModel.userLocationAddressMutableLiveData.collect {
+                binding.tvLocation.text = if (it?.address != null) {
+                    "You're at ${it?.address}"
+                } else {
+                    getString(R.string.select_location)
+                }
+
+            }
+        }
     }
 
     /**

@@ -170,7 +170,7 @@
                     android:enabled="@{viewModel.isViewsEditable==true?true:false}"
                     android:inputType="text"
                     android:text="@={viewModel.fullName}"
-                    android:textSize="@dimen/_13ssp" />
+                    android:textSize="@dimen/_11ssp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -197,7 +197,7 @@
                     android:enabled="false"
                     android:inputType="textEmailAddress"
                     android:text="@={viewModel.email}"
-                    android:textSize="@dimen/_13ssp" />
+                    android:textSize="@dimen/_11ssp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -223,7 +223,7 @@
                     android:enabled="false"
                     android:inputType="phone"
                     android:text="@={viewModel.mobileNumber}"
-                    android:textSize="@dimen/_13ssp" />
+                    android:textSize="@dimen/_11ssp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -250,7 +250,7 @@
                     android:focusable="false"
                     android:inputType="none"
                     android:text="@={viewModel.birthDate}"
-                    android:textSize="@dimen/_13ssp" />
+                    android:textSize="@dimen/_11ssp" />
             </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>

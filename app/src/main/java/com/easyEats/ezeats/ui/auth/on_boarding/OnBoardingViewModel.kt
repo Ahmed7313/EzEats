@@ -73,6 +73,7 @@ class OnBoardingViewModel @Inject constructor(
         viewModelScope.launch {
             authUseCase.onBoardingUseCase.userWatchOnBoardingScreen(isWatched)
         }
+
     }
 
 

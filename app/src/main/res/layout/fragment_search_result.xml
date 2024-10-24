@@ -228,6 +228,7 @@
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_explore"
                         android:layout_width="match_parent"
+                        android:visibility="gone"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/_25sdp"
                         android:layout_marginTop="@dimen/_30sdp"

@@ -11,16 +11,22 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.base.BaseFragment
 import com.easyEats.ezeats.databinding.FragmentVerificationScreenBinding
+import com.easyEats.ezeats.ui.auth.main.AuthViewModel
 import com.easyEats.ezeats.ui.main.main.HomeActivity
 import com.easyEats.ezeats.utils.Resource
 import com.easyEats.ezeats.utils.validation.ValidateFields
 import dagger.hilt.android.AndroidEntryPoint
 import es.dmoral.toasty.Toasty
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 /**
@@ -31,6 +37,7 @@ import es.dmoral.toasty.Toasty
 class VerificationScreenFragment : BaseFragment<FragmentVerificationScreenBinding>() {
 
     private val verificationViewModel: VerificationViewModel by viewModels()
+    private val authViewModel: AuthViewModel by activityViewModels()
 
     /**
      * Inflates the view binding for this fragment.
@@ -79,8 +86,13 @@ class VerificationScreenFragment : BaseFragment<FragmentVerificationScreenBindin
                 }
 
                 is Resource.Success -> {
-                    hideLoading()
-                    goToHomeScreen()
+                    lifecycleScope.launch {
+                        hideLoading()
+                        verificationViewModel.saveToken(authViewModel.sessionToken.value.toString())
+                        withContext(Dispatchers.IO) {
+                            goToHomeScreen()
+                        }
+                    }
                 }
 
                 is Resource.Error -> {
@@ -136,7 +148,8 @@ class VerificationScreenFragment : BaseFragment<FragmentVerificationScreenBindin
                     binding.tvResendOtp.isEnabled = false
 
                     // Update the timer text with proper formatting
-                    binding.tvTimer.text = "00:${if (secondsRemaining < 10) "0$secondsRemaining" else secondsRemaining}"
+                    binding.tvTimer.text =
+                        "00:${if (secondsRemaining < 10) "0$secondsRemaining" else secondsRemaining}"
                 }
 
                 override fun onFinish() {

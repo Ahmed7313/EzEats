@@ -33,6 +33,7 @@ class SignInViewModel @Inject constructor(private val authUseCase: AuthUseCase) 
     private val exceptionHandler = CoroutineExceptionHandler { _, ex ->
         Toasty.error(baseApplication, "No Internet Connection", Toast.LENGTH_LONG).show()
     }
+    var userSessionToken: String? = ""
 
 
     fun findUser() {
@@ -41,7 +42,7 @@ class SignInViewModel @Inject constructor(private val authUseCase: AuthUseCase) 
                 authUseCase.signInUseCase.findUser(FindUserRequest("+2${phoneNumber.value.toString()}"))
             if (findUser.isSuccessful) {
                 if (findUser.body()?.result != null) {
-                    saveToken(findUser.body()?.result.toString())
+                    userSessionToken = findUser.body()?.result
                     sendOtp()
                 } else {
                     Toasty.error(baseApplication, "User Not Found", Toast.LENGTH_LONG).show()
@@ -56,11 +57,6 @@ class SignInViewModel @Inject constructor(private val authUseCase: AuthUseCase) 
         }
     }
 
-    private fun saveToken(token: String) {
-        viewModelScope.launch {
-            authUseCase.signInUseCase.saveToken(token)
-        }
-    }
 
     private fun saveMobileNumber() {
         viewModelScope.launch {

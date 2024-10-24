@@ -19,6 +19,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.databinding.ActivityHomeBinding
+import com.easyEats.ezeats.utils.app_updates.InAppUpdateManager
 import com.google.android.gms.common.internal.Objects
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -35,6 +36,9 @@ class HomeActivity : AppCompatActivity() {
     // ViewModel for the activity, provided by Hilt
     private val mainViewModel: MainViewModel by viewModels()
 
+    private lateinit var inAppUpdateManager: InAppUpdateManager
+    private val REQUEST_CODE_UPDATE = 100
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Initialize the view binding
@@ -49,6 +53,8 @@ class HomeActivity : AppCompatActivity() {
         binding.navView.itemIconTintList = null
         setUpBottomNavigationWithNavHostFragment()
         handleIntent(intent)
+        inAppUpdateManager = InAppUpdateManager(this, REQUEST_CODE_UPDATE)
+        inAppUpdateManager.checkForUpdate()
 
         lifecycleScope.launch {
             mainViewModel.userLocationAddressMutableLiveData.collect {
@@ -100,6 +106,12 @@ class HomeActivity : AppCompatActivity() {
         // Set up the Bottom Navigation View with the NavController
         binding.navView.setupWithNavController(navController)
 
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        // Handle the update result
+        inAppUpdateManager.handleUpdateResult(requestCode, resultCode)
     }
 }
 

@@ -1,5 +1,7 @@
 package com.easyEats.ezeats.ui.main.search_result
 
+import android.content.Intent
+import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View.GONE
@@ -102,9 +104,10 @@ class SearchResultFragment : BaseBottomSheetFragment<FragmentSearchResultBinding
         // Observe changes in the user's location and update the location text view
         lifecycleScope.launch {
             mainViewModel.userLocationAddressMutableLiveData.collect {
-                it?.let {
-                    binding.tvLocation.text =
-                        ("You're at " + it.address) ?: getString(R.string.select_location)
+                binding.tvLocation.text = if (it?.address !=null) {
+                    "You're at ${it.address}"
+                } else {
+                    getString(R.string.select_location)
                 }
             }
         }

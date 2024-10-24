@@ -29,17 +29,18 @@ fun reformatDate(tv: TextView, dateString: String?) {
 @BindingAdapter("setVoucherBackground")
 fun voucherBackground(tv: TextView, voucher: VoucherResponseItem) {
 
-    if (isDateBeforeToday(voucher.promoCodeExpiryDate?.iso)) {
-        tv.setBackgroundResource(R.drawable.redeemed_background)
-        tv.text = "Expired"
-    } else if (voucher.redeemed == true) {
+    if (voucher.redeemed == true) {
         tv.setBackgroundResource(R.drawable.redeemed_background)
         tv.text = "Redeemed"
+    } else if (isDateBeforeToday(voucher.promoCodeExpiryDate?.iso)) {
+        tv.setBackgroundResource(R.drawable.redeemed_background)
+        tv.text = "Expired"
     } else {
         tv.setBackgroundResource(R.drawable.active_voucher_background)
         tv.text = "Active"
     }
 }
+
 fun isDateBeforeToday(dateString: String?): Boolean {
     // Parse the input date string to a ZonedDateTime
     val dateToCheck = ZonedDateTime.parse(dateString, DateTimeFormatter.ISO_DATE_TIME)

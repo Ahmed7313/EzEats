@@ -4,12 +4,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.base.BaseFragment
 import com.easyEats.ezeats.databinding.FragmentSignInScreenBinding
+import com.easyEats.ezeats.ui.auth.main.AuthViewModel
 import com.easyEats.ezeats.utils.Resource
 import com.easyEats.ezeats.utils.validation.ValidateFields
 import com.parse.ParseUser
@@ -20,6 +22,7 @@ import es.dmoral.toasty.Toasty
 class SignInScreenFragment : BaseFragment<FragmentSignInScreenBinding>() {
 
     private val signInViewModel: SignInViewModel by viewModels()
+    private val authViewModel: AuthViewModel by activityViewModels()
 
     override fun inflateBinding(
         inflater: LayoutInflater,
@@ -60,8 +63,9 @@ class SignInScreenFragment : BaseFragment<FragmentSignInScreenBinding>() {
 
                 is Resource.Success -> {
                     hideLoading()
+                    authViewModel.sessionToken.value = signInViewModel.userSessionToken
                     goToVerificationScreen()
-                    binding.btnSignIn.isEnabled=true
+                    binding.btnSignIn.isEnabled = true
                 }
 
                 is Resource.Error -> {
@@ -82,7 +86,6 @@ class SignInScreenFragment : BaseFragment<FragmentSignInScreenBinding>() {
     }
 
 
-
     private fun goToVerificationScreen() {
         val action =
             SignInScreenFragmentDirections.actionSignInScreenFragmentToVerificationScreenFragment(
@@ -97,7 +100,7 @@ class SignInScreenFragment : BaseFragment<FragmentSignInScreenBinding>() {
         }
 
         binding.btnSignIn.setOnClickListener {
-            binding.btnSignIn.isEnabled=false
+            binding.btnSignIn.isEnabled = false
             signInViewModel.findUser()
         }
     }

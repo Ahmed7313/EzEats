@@ -33,4 +33,8 @@ object Constants {
     const val NAME_KEY = "name"
     const val IS_VERIFIED = "isVerified"
 
+
+    // mixpanel token
+    const val MIXPANEL_TOKEN="760acc1615f0fde7a69beb65f3a04146"
+
 }
