@@ -74,13 +74,13 @@ EZeats leverages modern tools and frameworks for a robust and scalable solution:
 ## 📷 Screenshots
 
 <table>
-  <tr>
-    <td><img src="https://github.com/user-attachments/assets/5a40ee2d-c344-4bfa-9080-6b7b45679cc0" alt="Screenshot 1" width="200"></td>
-    <td><img src="https://github.com/user-attachments/assets/0ee45eee-c671-4cbe-9409-2a5e66fde24d" alt="Screenshot 2" width="200"></td>
+   <tr>
+    <td><img src="https://github.com/user-attachments/assets/86d4ba3b-eb94-4cca-a437-e1b9483e2bd9" alt="Screenshot 4" width="200"></td>
+    <td><img src="https://github.com/user-attachments/assets/354120de-0b0d-4cf1-8add-063bd2f02db6" alt="Screenshot 3" width="200"></td>
   </tr>
   <tr>
-    <td><img src="https://github.com/user-attachments/assets/354120de-0b0d-4cf1-8add-063bd2f02db6" alt="Screenshot 3" width="200"></td>
-    <td><img src="https://github.com/user-attachments/assets/86d4ba3b-eb94-4cca-a437-e1b9483e2bd9" alt="Screenshot 4" width="200"></td>
+    <td><img src="https://github.com/user-attachments/assets/0ee45eee-c671-4cbe-9409-2a5e66fde24d" alt="Screenshot 2" width="200"></td>
+    <td><img src="https://github.com/user-attachments/assets/5a40ee2d-c344-4bfa-9080-6b7b45679cc0" alt="Screenshot 1" width="200"></td>
   </tr>
 </table>
 
