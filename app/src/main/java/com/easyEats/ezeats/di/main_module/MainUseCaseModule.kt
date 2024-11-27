@@ -1,6 +1,7 @@
 package com.easyEats.ezeats.di.main_module
 
 import com.easyEats.ezeats.domain.main.use_case.MainUseCase
+import com.easyEats.ezeats.domain.main.use_case.active_order.ActiveOrderUseCase
 import com.easyEats.ezeats.domain.main.use_case.main_use_case.MainActivityUseCase
 import com.easyEats.ezeats.domain.main.use_case.home_use_case.HomeUseCase
 import com.easyEats.ezeats.domain.main.use_case.location_use_case.LocationUseCase
@@ -39,7 +40,8 @@ class MainUseCaseModule {
         userInfoUseCase: UserInfoUseCase,
         orderHistoryUseCase: OrderHistoryUseCase,
         pointsUseCase: PointsUseCase,
-        voucherUseCase: VoucherUseCase
+        voucherUseCase: VoucherUseCase,
+        trackActiveOrderUseCase: ActiveOrderUseCase
     ): MainUseCase {
         return MainUseCase(
             mainUseCase,
@@ -54,7 +56,8 @@ class MainUseCaseModule {
             userInfoUseCase,
             orderHistoryUseCase,
             pointsUseCase,
-            voucherUseCase
+            voucherUseCase,
+            trackActiveOrderUseCase
         )
     }
 }

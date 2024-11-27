@@ -1,7 +1,9 @@
 package com.easyEats.ezeats.ui.main.main
 
+import android.Manifest
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View.GONE
@@ -9,10 +11,12 @@ import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.view.get
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -21,6 +25,7 @@ import com.easyEats.ezeats.R
 import com.easyEats.ezeats.databinding.ActivityHomeBinding
 import com.easyEats.ezeats.utils.app_updates.InAppUpdateManager
 import com.google.android.gms.common.internal.Objects
+import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -63,7 +68,36 @@ class HomeActivity : AppCompatActivity() {
                 Log.d(TAG, "onCreate:a7a ${it?.lng}")
             }
         }
+//        val notificationType = intent.getStringExtra("notificationType")
+//        if (notificationType != null) {
+//            navigateToScreen( notificationType)
+//        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+//            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.POST_NOTIFICATIONS), 101)
+//            pushNotification()
+//        }
 
+    }
+//    private fun navigateToScreen(notification: String?) {
+//        when (notification) {
+//            "OfferScreen" -> {
+//
+//            }
+//            else -> {
+//                Log.d("Navigation Kenawy", "Unknown screen: $notification")
+//            }
+//        }
+//    }
+
+    private fun pushNotification() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val token = task.result
+                Log.d(TAG, "pushNotification: $token")
+            } else {
+                Log.e("FCM", "Fetching FCM token failed", task.exception)
+            }
+        }
     }
 
     override fun onNewIntent(intent: Intent) {

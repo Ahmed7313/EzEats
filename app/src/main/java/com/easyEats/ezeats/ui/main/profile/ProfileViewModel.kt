@@ -27,6 +27,10 @@ class ProfileViewModel @Inject constructor(val mainUseCase: MainUseCase) :
         MutableLiveData<Resource<BaseResponse<Any>>>()
     val deleteUserResultLiveData: LiveData<Resource<BaseResponse<Any>>> get() = _deleteUserResultMutableLiveData
 
+    private val _clearDeviceTokenMutableLiveData =
+        MutableLiveData<Resource<BaseResponse<Any>>>()
+    val clearDeviceTokenLiveData: LiveData<Resource<BaseResponse<Any>>> get() = _clearDeviceTokenMutableLiveData
+
 
     fun getUserInfoResult() {
         val flow = createUserInfoResultRequest()
@@ -69,6 +73,31 @@ class ProfileViewModel @Inject constructor(val mainUseCase: MainUseCase) :
         channelFlow {
             send(Resource.Loading())
             val result = mainUseCase.userInfoUseCase.deleteAccount()
+            result.handleResponse(onSuccess = {
+                send(Resource.Success(result))
+            }, onError = { message, error ->
+                send(Resource.Error(message, error))
+            }, onUnauthenticated = {
+                send(Resource.UnAuthenticated())
+            })
+        }
+
+
+    fun clearDeviceTokenResult() {
+        val flow = createClearDeviceTokenRequest()
+        apply(flow = flow, maxRetries = 2, onError = { error ->
+            _clearDeviceTokenMutableLiveData.value =
+                Resource.Error("No Internet Connection")
+        }, onSuccess = { resource ->
+            _clearDeviceTokenMutableLiveData.value = resource
+        })
+    }
+
+
+    private fun createClearDeviceTokenRequest(): Flow<Resource<BaseResponse<Any>>> =
+        channelFlow {
+            send(Resource.Loading())
+            val result = mainUseCase.userInfoUseCase.clearDeviceToken()
             result.handleResponse(onSuccess = {
                 send(Resource.Success(result))
             }, onError = { message, error ->

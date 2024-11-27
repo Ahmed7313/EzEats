@@ -65,6 +65,11 @@
         <item name="behavior_peekHeight">0dp</item>
     </style>
 
+    <style name="RoundedDialog" parent="Theme.AppCompat.Dialog">
+        <item name="android:background">@drawable/rounded_dialog_background</item>
+    </style>
+
+
 
 
 </resources>

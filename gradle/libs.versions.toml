@@ -39,6 +39,7 @@ todkarsShimmerRecyclerview = "0.4.1"
 viewpager2 = "1.0.0"
 zxingAndroidEmbedded = "4.2.0"
 appUpdateKtx = "2.1.0"
+firebaseMessagingKtx = "24.1.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -103,6 +104,8 @@ coil-svg = { module = "io.coil-kt:coil-svg", version.ref = "coilSvg" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
+firebase-messaging-ktx = { group = "com.google.firebase", name = "firebase-messaging-ktx", version.ref = "firebaseMessagingKtx" }
+
 #mixPanel
 mixpanel-android = { module = "com.mixpanel.android:mixpanel-android", version.ref = "mixpanelAndroid" }
 #datastore

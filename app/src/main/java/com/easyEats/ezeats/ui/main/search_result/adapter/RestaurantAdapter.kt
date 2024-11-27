@@ -106,10 +106,10 @@ class RestaurantAdapter @Inject constructor(
         if (restaurant.offers?.isEmpty() == true) {
             holder.binding.tvRestaurantHasNoOffers.text =
                 restaurant.name + " " + context.getString(R.string.has_no_offers_right_now)
-            holder.binding.llEmptyOffers.visibility = View.VISIBLE
+//            holder.binding.llEmptyOffers.visibility = View.VISIBLE
             holder.binding.rvExtraOffers.visibility = View.GONE
         } else {
-            holder.binding.llEmptyOffers.visibility = View.GONE
+//            holder.binding.llEmptyOffers.visibility = View.GONE
             holder.binding.rvExtraOffers.visibility = View.VISIBLE
             holder.binding.rvExtraOffers.adapter = offerAdapter
             offerAdapter.submitList(restaurant.offers)

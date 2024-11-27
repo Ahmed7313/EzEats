@@ -35,6 +35,6 @@ object Constants {
 
 
     // mixpanel token
-    const val MIXPANEL_TOKEN="760acc1615f0fde7a69beb65f3a04146"
+    const val MIXPANEL_TOKEN="94d10c9a05bb04ac55869d43151b44f0"
 
 }

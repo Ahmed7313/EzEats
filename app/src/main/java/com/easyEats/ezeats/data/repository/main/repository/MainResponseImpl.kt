@@ -4,7 +4,9 @@ import com.easyEats.ezeats.base.BaseResponse
 import com.easyEats.ezeats.data.local.data_store.DataStorePreference
 import com.easyEats.ezeats.data.remote.main.MainApiService
 import com.easyEats.ezeats.domain.main.model.UserLocationAddress
+import com.easyEats.ezeats.domain.main.model.request.complaint_request.ComplaintRequest
 import com.easyEats.ezeats.domain.main.model.request.edit_user_info.UserInfoRequest
+import com.easyEats.ezeats.domain.main.model.request.firebase_token.UpdateTokeRequest
 import com.easyEats.ezeats.domain.main.model.request.home.HomeRequest
 import com.easyEats.ezeats.domain.main.model.request.offer_request.OfferRequest
 import com.easyEats.ezeats.domain.main.model.request.offers.OffersRequest
@@ -13,8 +15,10 @@ import com.easyEats.ezeats.domain.main.model.request.points.PointsRequest
 import com.easyEats.ezeats.domain.main.model.request.restaurant.RestaurantRequest
 import com.easyEats.ezeats.domain.main.model.request.search.SearchRequest
 import com.easyEats.ezeats.domain.main.model.request.search.SearchSuggestionsRequest
+import com.easyEats.ezeats.domain.main.model.response.active_order.ActiveOrderResponse
 import com.easyEats.ezeats.domain.main.model.response.home_response.HotDeal
 import com.easyEats.ezeats.domain.main.model.response.order_history.OrderHistoryResponse
+import com.easyEats.ezeats.domain.main.model.response.partners.PartnersResponse
 import com.easyEats.ezeats.domain.main.model.response.points.PointsResponse
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.Offer
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.Restaurant
@@ -107,6 +111,26 @@ class MainResponseImpl @Inject constructor(
     override fun getToken() = dataStorePreference.fetchToken()
     override suspend fun getUserRewardsMobile(): BaseResponse<VoucherResponse> {
         return mainApiService.getUserRewardsMobile()
+    }
+
+    override suspend fun trackActiveOrder(): BaseResponse<ActiveOrderResponse> {
+        return mainApiService.trackActiveOrder()
+    }
+
+    override suspend fun sendSupportEmail(complaintRequest: ComplaintRequest): BaseResponse<Boolean> {
+        return mainApiService.sendSupportEmail(complaintRequest)
+    }
+
+    override suspend fun getPartners(): BaseResponse<PartnersResponse> {
+        return mainApiService.getPartners()
+    }
+
+    override suspend fun updateDeviceToken(updateTokeRequest: UpdateTokeRequest): BaseResponse<String> {
+        return mainApiService.updateDeviceToken(updateTokeRequest)
+    }
+
+    override suspend fun clearDeviceToken(): BaseResponse<Any> {
+        return mainApiService.clearDeviceToken()
     }
 
 }

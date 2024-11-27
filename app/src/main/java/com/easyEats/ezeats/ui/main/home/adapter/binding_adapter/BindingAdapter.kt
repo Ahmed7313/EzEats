@@ -1,15 +1,25 @@
 package com.easyEats.ezeats.ui.main.home.adapter.binding_adapter
 
+import android.graphics.Color
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import com.easyEats.ezeats.MyApplication
 import com.easyEats.ezeats.R
+import com.easyEats.ezeats.domain.main.model.response.home_response.ActiveOrder
 import com.easyEats.ezeats.domain.main.model.response.home_response.FeaturedOffer
 import com.easyEats.ezeats.domain.main.model.response.home_response.HotDeal
+import com.easyEats.ezeats.domain.main.model.response.partners.PartnersItem
+import com.easyEats.ezeats.domain.main.model.response.voucher.VoucherResponseItem
 import com.easyEats.ezeats.ui.main.home.adapter.featured.FeaturedOfferAdapter
 import com.easyEats.ezeats.ui.main.home.adapter.hot_deals.HotDealsAdapter
+import com.easyEats.ezeats.ui.main.home.adapter.partners.PartnersAdapter
 import com.todkars.shimmer.ShimmerRecyclerView
 import me.relex.circleindicator.CircleIndicator3
 
@@ -34,6 +44,49 @@ fun loadProfileImage(imageView: ImageView, url: String?) {
     }
 }
 
+@BindingAdapter("setOurPartnersText")
+fun setOurPartnersText(tv: TextView, listSize: Int) {
+    val ourPartnersText =
+        "With over $listSize partners of success, you are \nguaranteed to fulfill your cravings with EZeats"
+    val spannable = SpannableString(ourPartnersText)
+
+    // Define the part you want to color in red
+    val startIndex = ourPartnersText.indexOf("$listSize partners of success")
+    val endIndex = startIndex + "$listSize partners of success".length
+
+    // Set the color span for the specified part
+    spannable.setSpan(
+        ForegroundColorSpan(MyApplication.baseApplication.getColor(R.color.main_color)), // Use Color.RED or your preferred color
+        startIndex,
+        endIndex,
+        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+    )
+
+    // Set the spannable text to the TextView
+    tv.text = spannable
+}
+
+@BindingAdapter("setSpinWheelPartnersText")
+fun setSpinWheelPartnersText(tv: TextView, listSize: Int) {
+    val ourPartnersText =
+        "Leave a review and spin the wheel, \nwith over $listSize partners , you are in it to win it! "
+    val spannable = SpannableString(ourPartnersText)
+
+    // Define the part you want to color in red
+    val startIndex = ourPartnersText.indexOf("$listSize partners ")
+    val endIndex = startIndex + "$listSize partners".length
+
+    // Set the color span for the specified part
+    spannable.setSpan(
+        ForegroundColorSpan(MyApplication.baseApplication.getColor(R.color.main_color)), // Use Color.RED or your preferred color
+        startIndex,
+        endIndex,
+        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+    )
+
+    // Set the spannable text to the TextView
+    tv.text = spannable
+}
 
 /**
  * Binding adapter to set data to a RecyclerView using the FeaturedOfferAdapter.
@@ -64,6 +117,17 @@ fun setHotDealsDataToRecyclerView(
     rv: RecyclerView,
     hotDealsAdapter: HotDealsAdapter,
     list: List<HotDeal>?
+) {
+    rv.adapter = hotDealsAdapter
+    hotDealsAdapter.submitList(list ?: emptyList())
+}
+
+
+@BindingAdapter("partnersAdapter", "partners")
+fun setPartnersDataToRecyclerView(
+    rv: RecyclerView,
+    hotDealsAdapter: PartnersAdapter,
+    list: List<PartnersItem>?
 ) {
     rv.adapter = hotDealsAdapter
     hotDealsAdapter.submitList(list ?: emptyList())
@@ -109,6 +173,24 @@ fun showShimmer(shimmerRecyclerView: ShimmerRecyclerView, showShimmer: Boolean) 
         shimmerRecyclerView.hideShimmer() // Hide the shimmer effect.
     }
 }
+
+
+@BindingAdapter("setTitleOfActiveOrder")
+fun setTitleOfActiveOrder(tv: TextView, activeOrder: ActiveOrder?) {
+    val text = "Your Order is"
+    val state = activeOrder?.state
+    val fullText = "$text $state"
+    val spannable = SpannableString(fullText)
+
+    spannable.setSpan(
+        ForegroundColorSpan(Color.RED),
+        14, fullText.length,
+        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+    )
+
+    tv.text = spannable
+}
+
 
 
 

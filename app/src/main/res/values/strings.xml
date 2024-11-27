@@ -176,5 +176,31 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="marakez_points">Marakez Points</string>
     <string name="marakez_points_allow_you_to_redeem_offers_from_their_respective_restaurants">Marakez Points allow you to redeem offers from their respective restaurants</string>
+    <string name="details">Details</string>
+    <string name="pending">Pending</string>
+    <string name="preparing">Preparing</string>
+    <string name="pickup">Pickup</string>
+    <string name="delivered">Delivered</string>
+    <string name="in_delivery">in-Delivery</string>
+    <string name="order_details">Order Details</string>
+    <string name="call_restaurant">Call Restaurant</string>
+    <string name="having_issues">Still Having Issues?</string>
+    <string name="support_ez_eats_com"><u>Support@ez-eats.com</u></string>
+    <string name="item_details">Order Details</string>
+    <string name="call_support">Call Support</string>
+    <string name="send_a_complaint">Send a complaint</string>
+    <string name="type_your_complaint_below_and_we_will_contact_you_shortly">Type your complaint below and we will \ncontact you shortly</string>
+    <string name="write_your_complaint_here">Write your complaint here...</string>
+    <string name="submit_complaint">Submit Complaint</string>
+    <string name="your_complaint_has_been_received_n_we_will_be_in_touch_shortly">Your complaint has been received,\n we will be in touch shortly</string>
+    <string name="sorry_for_any_inconvenience">Sorry for any inconvenience!</string>
+    <string name="confirm">Confirm</string>
+    <string name="our_partners">Our Partners</string>
+    <string name="spin_the_wheel_partners">Spin the wheel Partners</string>
+    <string name="enjoying_ezeats">Enjoying EZeats?</string>
+    <string name="would_you_mind_taking_a_moment_to_n_rate_us_thanks_for_your_support">Would you mind taking a moment to\n rate us? Thanks for your support!</string>
+    <string name="later">Later</string>
+    <string name="rate_us_image">rate us image</string>
+    <string name="partner_image">Partner Image</string>
 
 </resources>

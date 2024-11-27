@@ -56,8 +56,7 @@ class ProfileScreenFragment : BaseFragment<FragmentProfileScreenBinding>(),
             startActivity(intent)
         }
         binding.tvLogout.setOnClickListener {
-            profileViewModel.saveToke("")
-            findNavController().navigate(R.id.homeScreenFragment)
+            profileViewModel.clearDeviceTokenResult()
         }
 
         binding.tvDeleteAccount.setOnClickListener {
@@ -89,6 +88,26 @@ class ProfileScreenFragment : BaseFragment<FragmentProfileScreenBinding>(),
     }
 
     fun listenToObservers() {
+        profileViewModel.clearDeviceTokenLiveData.observe(viewLifecycleOwner) { resource ->
+            when (resource) {
+                is Resource.Error -> {
+                    hideMainLoading()
+                }
+
+                is Resource.Loading -> {
+                    showMainLoading()
+                }
+
+                is Resource.Success -> {
+                    hideMainLoading()
+                    profileViewModel.saveToke("")
+                    findNavController().navigate(R.id.homeScreenFragment)
+                }
+
+                is Resource.UnAuthenticated -> {}
+            }
+
+        }
         profileViewModel.userResultLiveData.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Error -> {
@@ -115,7 +134,6 @@ class ProfileScreenFragment : BaseFragment<FragmentProfileScreenBinding>(),
             }
 
         }
-
         profileViewModel.deleteUserResultLiveData.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Error -> {
@@ -138,7 +156,6 @@ class ProfileScreenFragment : BaseFragment<FragmentProfileScreenBinding>(),
             }
 
         }
-
         lifecycleScope.launch {
             profileViewModel.getToken().asLiveData()
                 .observe(viewLifecycleOwner) { token ->

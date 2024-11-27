@@ -2,7 +2,9 @@ package com.easyEats.ezeats.domain.main.repository
 
 import com.easyEats.ezeats.base.BaseResponse
 import com.easyEats.ezeats.domain.main.model.UserLocationAddress
+import com.easyEats.ezeats.domain.main.model.request.complaint_request.ComplaintRequest
 import com.easyEats.ezeats.domain.main.model.request.edit_user_info.UserInfoRequest
+import com.easyEats.ezeats.domain.main.model.request.firebase_token.UpdateTokeRequest
 import com.easyEats.ezeats.domain.main.model.request.home.HomeRequest
 import com.easyEats.ezeats.domain.main.model.request.offer_request.OfferRequest
 import com.easyEats.ezeats.domain.main.model.request.offers.OffersRequest
@@ -11,10 +13,12 @@ import com.easyEats.ezeats.domain.main.model.request.points.PointsRequest
 import com.easyEats.ezeats.domain.main.model.request.restaurant.RestaurantRequest
 import com.easyEats.ezeats.domain.main.model.request.search.SearchRequest
 import com.easyEats.ezeats.domain.main.model.request.search.SearchSuggestionsRequest
+import com.easyEats.ezeats.domain.main.model.response.active_order.ActiveOrderResponse
 import com.easyEats.ezeats.domain.main.model.response.home_response.HomeResponse
 import com.easyEats.ezeats.domain.main.model.response.home_response.HotDeal
 import com.easyEats.ezeats.domain.main.model.response.location_response.Location
 import com.easyEats.ezeats.domain.main.model.response.order_history.OrderHistoryResponse
+import com.easyEats.ezeats.domain.main.model.response.partners.PartnersResponse
 import com.easyEats.ezeats.domain.main.model.response.points.PointsResponse
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.Offer
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.Restaurant
@@ -68,5 +72,15 @@ interface MainRepository {
     fun getToken(): Flow<String>
 
     suspend fun getUserRewardsMobile(): BaseResponse<VoucherResponse>
+
+    suspend fun trackActiveOrder(): BaseResponse<ActiveOrderResponse>
+
+    suspend fun sendSupportEmail(complaintRequest: ComplaintRequest): BaseResponse<Boolean>
+
+    suspend fun getPartners(): BaseResponse<PartnersResponse>
+
+    suspend fun updateDeviceToken(updateTokeRequest: UpdateTokeRequest): BaseResponse<String>
+    suspend fun clearDeviceToken(): BaseResponse<Any>
+
 
 }

@@ -131,7 +131,9 @@
     <dialog
         android:id="@+id/guestUserBottomSheet"
         android:name="com.easyEats.ezeats.ui.main.guest_user.GuestUserBottomSheet"
-        android:label="GuestUserBottomSheet" />
+        android:label="GuestUserBottomSheet"
+        tools:layout="@layout/fragment_guest_user_bottom_sheet"
+        />
 
     <action
         android:id="@+id/goToUserGuestScreen"
@@ -145,4 +147,14 @@
     <action
         android:id="@+id/goToVoucherScreen"
         app:destination="@+id/voucherFragment" />
+    <fragment
+        android:id="@+id/activeOrderDetailsFragment"
+        android:name="com.easyEats.ezeats.ui.main.active_order_details.ActiveOrderDetailsFragment"
+        android:label="ActiveOrderDetailsFragment"
+        tools:layout="@layout/fragment_active_order_details"
+        />
+
+    <action
+        android:id="@+id/goToActiveOrderDetails"
+        app:destination="@+id/activeOrderDetailsFragment" />
 </navigation>

@@ -75,6 +75,25 @@ class OffersViewModel @Inject constructor(val mainUseCase: MainUseCase) :
                                 _restaurantResultStateFlow.value = resource
                             }
                         )
+                    } else {
+                        val flow = createRestaurantsResultRequest(
+                            OffersRequest(
+                                categoryId = categoryId,
+                                userLat = "0.0",
+                                userLon = "0.0"
+                            )
+                        )
+                        apply(
+                            flow = flow,
+                            maxRetries = 2,
+                            onError = { error ->
+                                _restaurantResultStateFlow.value =
+                                    Resource.Error("No Internet Connection")
+                            },
+                            onSuccess = { resource ->
+                                _restaurantResultStateFlow.value = resource
+                            }
+                        )
                     }
                 }
 

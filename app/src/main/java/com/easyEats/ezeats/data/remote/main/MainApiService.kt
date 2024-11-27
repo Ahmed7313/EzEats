@@ -1,7 +1,9 @@
 package com.easyEats.ezeats.data.remote.main
 
 import com.easyEats.ezeats.base.BaseResponse
+import com.easyEats.ezeats.domain.main.model.request.complaint_request.ComplaintRequest
 import com.easyEats.ezeats.domain.main.model.request.edit_user_info.UserInfoRequest
+import com.easyEats.ezeats.domain.main.model.request.firebase_token.UpdateTokeRequest
 import com.easyEats.ezeats.domain.main.model.request.home.HomeRequest
 import com.easyEats.ezeats.domain.main.model.request.offer_request.OfferRequest
 import com.easyEats.ezeats.domain.main.model.request.offers.OffersRequest
@@ -10,10 +12,13 @@ import com.easyEats.ezeats.domain.main.model.request.points.PointsRequest
 import com.easyEats.ezeats.domain.main.model.request.restaurant.RestaurantRequest
 import com.easyEats.ezeats.domain.main.model.request.search.SearchRequest
 import com.easyEats.ezeats.domain.main.model.request.search.SearchSuggestionsRequest
+import com.easyEats.ezeats.domain.main.model.response.active_order.ActiveOrderResponse
 import com.easyEats.ezeats.domain.main.model.response.home_response.HomeResponse
 import com.easyEats.ezeats.domain.main.model.response.home_response.HotDeal
 import com.easyEats.ezeats.domain.main.model.response.location_response.Location
 import com.easyEats.ezeats.domain.main.model.response.order_history.OrderHistoryResponse
+import com.easyEats.ezeats.domain.main.model.response.partners.Partners
+import com.easyEats.ezeats.domain.main.model.response.partners.PartnersResponse
 import com.easyEats.ezeats.domain.main.model.response.points.PointsResponse
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.Offer
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.Restaurant
@@ -72,10 +77,24 @@ interface MainApiService {
     @POST("getUserOrderHistory")
     suspend fun getUserOrderHistory(@Body orderHistoryRequest: OrderHistoryRequest): BaseResponse<OrderHistoryResponse>
 
-
     @POST("GetUserPoints")
     suspend fun getUserPoints(@Body pointsRequest: PointsRequest): BaseResponse<PointsResponse>
 
     @POST("getUserRewardsMobile")
     suspend fun getUserRewardsMobile(): BaseResponse<VoucherResponse>
+
+    @POST("trackActiveOrder")
+    suspend fun trackActiveOrder(): BaseResponse<ActiveOrderResponse>
+
+    @POST("sendSupportEmail")
+    suspend fun sendSupportEmail(@Body complaintRequest: ComplaintRequest): BaseResponse<Boolean>
+
+    @POST("getEntities")
+    suspend fun getPartners(): BaseResponse<PartnersResponse>
+
+    @POST("updateDeviceToken")
+    suspend fun updateDeviceToken(@Body updateTokeRequest: UpdateTokeRequest): BaseResponse<String>
+
+    @POST("clearDeviceToken")
+    suspend fun clearDeviceToken(): BaseResponse<Any>
 }

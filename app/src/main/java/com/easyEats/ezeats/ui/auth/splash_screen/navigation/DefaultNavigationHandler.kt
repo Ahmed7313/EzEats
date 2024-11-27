@@ -13,7 +13,13 @@ class DefaultNavigationHandler(
     override fun handleNavigation(state: NavigationState) {
         when (state) {
             NavigationState.IS_USER_VERIFIED -> {
-                fragment.startActivity(Intent(fragment.requireContext(), HomeActivity::class.java))
+                val notificationType = fragment.requireActivity().intent.getStringExtra("notificationType")
+                val restaurantId = fragment.requireActivity().intent.getStringExtra("restaurantId")
+                val intent=Intent(fragment.requireContext(),HomeActivity::class.java).apply {
+                    putExtra("notificationType", notificationType)
+                    putExtra("restaurantId", restaurantId)
+                }
+                fragment.startActivity(intent)
                 fragment.requireActivity().finish()
             }
 

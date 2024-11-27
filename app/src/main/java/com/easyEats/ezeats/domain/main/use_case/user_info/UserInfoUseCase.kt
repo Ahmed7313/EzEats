@@ -13,5 +13,6 @@ class UserInfoUseCase @Inject constructor(val mainRepository: MainRepository) {
 
     suspend fun deleteAccount() = mainRepository.deleteAccount()
     fun getToken() = mainRepository.getToken()
+    suspend fun clearDeviceToken() = mainRepository.clearDeviceToken()
 
 }

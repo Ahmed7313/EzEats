@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="activeOrder"
+            type="com.easyEats.ezeats.domain.main.model.response.active_order.ActiveOrderResponse" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:id="@+id/ll_tool_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_10sdp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_5sdp"
+                android:src="@drawable/back_arrow_icon" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/gilroy_700"
+                android:text="@string/order_details"
+                android:textSize="@dimen/_18ssp" />
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ll_tool_bar">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:context=".ui.main.active_order_details.ActiveOrderDetailsFragment">
+
+
+                <TextView
+                    android:id="@+id/textView15"
+                    setOrderStatus="@{activeOrder}"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_16sdp"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/gilroy_600"
+                    android:paddingHorizontal="@dimen/_10ssp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_14ssp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.512"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Your order from  Nude Bakery has been Placed " />
+
+                <View
+                    android:id="@+id/view5"
+                    android:layout_width="@dimen/_200sdp"
+                    android:layout_height="@dimen/_200sdp"
+                    android:layout_marginTop="@dimen/_17sdp"
+                    android:background="@drawable/order_tracking_background"
+                    app:layout_constraintEnd_toEndOf="@+id/textView15"
+                    app:layout_constraintStart_toStartOf="@+id/textView15"
+                    app:layout_constraintTop_toBottomOf="@+id/textView15" />
+
+                <ImageView
+                    setStateImage="@{activeOrder.state}"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:padding="@dimen/_20sdp"
+                    android:src="@drawable/active_order_placed"
+                    app:layout_constraintBottom_toBottomOf="@+id/view5"
+                    app:layout_constraintEnd_toEndOf="@+id/view5"
+                    app:layout_constraintStart_toStartOf="@+id/view5"
+                    app:layout_constraintTop_toTopOf="@+id/view5" />
+
+                <TextView
+                    android:id="@+id/textView16"
+                    setOrderStatusId="@{activeOrder}"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_16sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/gilroy_600"
+                    android:gravity="center"
+                    android:paddingHorizontal="@dimen/_10ssp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_16ssp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view5"
+                    tools:text="Your Order #918\n been Placed Successfully" />
+
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/iv_order_logo"
+                    loadImage="@{activeOrder.logo}"
+                    android:layout_width="@dimen/_35sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_25sdp"
+                    android:scaleType="fitXY"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView16"
+                    app:riv_corner_radius="@dimen/_5sdp" />
+
+                <TextView
+                    android:id="@+id/tv_order_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_7sdp"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/gilroy_600"
+                    android:maxLength="25"
+                    android:text="@{activeOrder.restaurantName}"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12ssp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@+id/tv_order_price"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toEndOf="@+id/iv_order_logo"
+                    app:layout_constraintTop_toTopOf="@+id/iv_order_logo"
+                    tools:text="Buffalo Burger Test Test Test Test Tes" />
+
+                <TextView
+                    android:id="@+id/tv_order_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:layout_marginEnd="@dimen/_6sdp"
+                    android:fontFamily="@font/gilroy_500"
+                    android:text='@{String.format("Order Number # %s", String.valueOf(activeOrder.orderNumber))}'
+                    android:textSize="@dimen/_9ssp"
+                    app:layout_constraintStart_toStartOf="@+id/tv_order_title"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_order_title"
+                    tools:text="Order Number #213113" />
+
+                <TextView
+                    android:id="@+id/tv_order_qty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:fontFamily="@font/gilroy_500"
+                    android:text='@{String.format("%s items", String.valueOf(activeOrder.subOrders.size()))}'
+                    android:textSize="@dimen/_9ssp"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_order_no"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_order_price"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_order_title"
+                    tools:text="2 items" />
+
+                <TextView
+                    android:id="@+id/tv_order_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:fontFamily="@font/gilroy_600"
+                    android:text='@{String.format("%s EGB", String.valueOf(activeOrder.totalPrice))}'
+                    android:textColor="@color/main_color"
+                    android:textSize="@dimen/_10ssp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/tv_order_title"
+                    tools:text="215 EGP" />
+
+
+                <View
+                    android:id="@+id/view4"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_1sdp"
+                    android:layout_marginTop="32dp"
+                    android:background="#1A000000"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_order_price"
+                    app:layout_constraintStart_toStartOf="@+id/iv_order_logo"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_order_logo" />
+
+                <TextView
+                    android:id="@+id/tv_order_items_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:fontFamily="@font/gilroy_600"
+                    android:text="@string/item_details"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13ssp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="@+id/view4"
+                    app:layout_constraintTop_toBottomOf="@+id/view4" />
+
+                <ImageView
+                    android:id="@+id/iv_collapse"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/_5sdp"
+                    android:src="@drawable/arrow_down_icon"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_order_items_count"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/tv_order_items_count"
+                    app:tint="@color/black" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_sub_order"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_collapse"
+                    tools:itemCount="2"
+                    tools:listitem="@layout/item_sub_order_history" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_call_restaurant"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:drawableLeft="@drawable/phone_icon_2" android:fontFamily="@font/gilroy_600"
+                    android:text="@string/call_restaurant"
+                    android:textSize="@dimen/_13ssp"
+                    app:layout_constraintEnd_toEndOf="@+id/rv_sub_order"
+                    app:layout_constraintStart_toStartOf="@+id/rv_sub_order"
+                    app:layout_constraintTop_toBottomOf="@+id/rv_sub_order" />
+
+                <View
+                    android:id="@+id/view6"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_1sdp"
+                    android:layout_marginTop="20dp"
+                    android:background="#1A000000"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_order_price"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="@+id/iv_order_logo"
+                    app:layout_constraintTop_toBottomOf="@+id/btn_call_restaurant" />
+
+                <TextView
+                    android:id="@+id/textView18"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="28dp"
+                    android:fontFamily="@font/gilroy_700"
+                    android:text="@string/having_issues"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintEnd_toEndOf="@+id/btn_call_restaurant"
+                    app:layout_constraintHorizontal_bias="0.501"
+                    app:layout_constraintStart_toStartOf="@+id/btn_call_restaurant"
+                    app:layout_constraintTop_toBottomOf="@+id/view6" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_call_support"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginVertical="@dimen/_10sdp"
+                    android:fontFamily="@font/gilroy_700"
+                    android:text="@string/call_support"
+                    android:textColor="@color/main_color"
+                    app:strokeColor="@color/main_color"
+                    app:strokeWidth="1dp"
+                    android:drawableLeft="@drawable/mail_icon"
+                    android:textSize="@dimen/_12ssp"
+                    app:backgroundTint="@color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/btn_call_restaurant"
+                    app:layout_constraintStart_toStartOf="@+id/btn_call_restaurant"
+                    app:layout_constraintTop_toBottomOf="@+id/textView18" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

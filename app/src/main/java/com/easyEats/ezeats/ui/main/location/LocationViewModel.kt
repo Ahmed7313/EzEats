@@ -105,7 +105,6 @@ class LocationViewModel @Inject constructor(private val mainUseCase: MainUseCase
             })
         }, onError = {
             Log.d(TAG, "getLocationAndAddress error 2:${it} ")
-
         })
     }
 }
