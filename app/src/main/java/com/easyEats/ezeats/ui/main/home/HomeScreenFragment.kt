@@ -54,7 +54,6 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
         super.onCreate(savedInstanceState)
         fetchSavedAddress()
         notification.refreshFirebaseToken()
-        // Register launcher to handle location settings result
         locationSettingsLauncher = registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) {
             homeViewModel.checkLocationPermission()  // Check location permissions after result
         }

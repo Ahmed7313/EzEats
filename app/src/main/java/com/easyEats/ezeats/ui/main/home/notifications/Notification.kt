@@ -1,10 +1,8 @@
 package com.easyEats.ezeats.ui.main.home.notifications
 
 import android.app.Activity
-import android.content.Context
 import android.util.Log
 import androidx.navigation.NavController
-import androidx.navigation.fragment.findNavController
 import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.domain.main.model.request.firebase_token.UpdateTokeRequest
@@ -63,12 +61,11 @@ data class Notification(
                 val token = task.result
                 Log.d(TAG, "Refreshed token: $token")
 
-                // Use the token as needed (e.g., send it to your server)
                 sendTokenToServer(token)
             }
     }
 
-    fun sendTokenToServer(token: String?) {
+    private fun sendTokenToServer(token: String?) {
         homeViewModel.updateDeviceToken(UpdateTokeRequest(token))
     }
 }
