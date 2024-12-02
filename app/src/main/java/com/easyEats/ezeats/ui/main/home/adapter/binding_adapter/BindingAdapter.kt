@@ -178,12 +178,12 @@ fun showShimmer(shimmerRecyclerView: ShimmerRecyclerView, showShimmer: Boolean) 
 @BindingAdapter("setTitleOfActiveOrder")
 fun setTitleOfActiveOrder(tv: TextView, activeOrder: ActiveOrder?) {
     val text = "Your Order is"
-    val state = activeOrder?.state
+    val state = activeOrder?.displayState
     val fullText = "$text $state"
     val spannable = SpannableString(fullText)
 
     spannable.setSpan(
-        ForegroundColorSpan(Color.RED),
+        ForegroundColorSpan(MyApplication.baseApplication.getColor(R.color.main_color)),
         14, fullText.length,
         Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
     )

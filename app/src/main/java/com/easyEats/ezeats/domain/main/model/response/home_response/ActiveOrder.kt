@@ -18,6 +18,8 @@ data class ActiveOrder(
     val restaurantName: String?,
     @SerializedName("state")
     val state: String?,
+    @SerializedName("displayState")
+    val displayState: String?,
     @SerializedName("totalPrice")
     val totalPrice: String?,
     @SerializedName("restaurantImage")

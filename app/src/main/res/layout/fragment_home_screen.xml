@@ -153,14 +153,14 @@
                                     android:fontFamily="@font/gilroy_700"
                                     android:text='@{String.format("Your Order from %s", String.valueOf(homeViewModel.activeOrder.restaurantName))}'
                                     android:textColor="@color/black"
-                                    android:textSize="@dimen/_14ssp"
+                                    android:textSize="@dimen/_13ssp"
                                     tools:text="Your Order from Nude Bakery" />
 
                                 <TextView
                                     android:id="@+id/tvViewAllTrackOrder"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:drawablePadding="5dp"
+                                    android:drawablePadding="3dp"
                                     android:fontFamily="@font/gilroy_500"
                                     android:gravity="end"
                                     android:text="@string/details"

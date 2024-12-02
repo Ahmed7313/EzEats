@@ -29,6 +29,8 @@ data class ActiveOrderResponse(
     val restaurantName: String?,
     @SerializedName("state")
     val state: String?,
+    @SerializedName("displayState")
+    val displayState: String?,
     @SerializedName("totalPrice")
     val totalPrice: Double?,
     @SerializedName("items")

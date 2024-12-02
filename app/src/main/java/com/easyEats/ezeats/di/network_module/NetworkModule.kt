@@ -79,7 +79,7 @@ object NetworkModule {
             .addInterceptor(loggingInterceptor)
             .addInterceptor(headerInterceptor)
             .addInterceptor(ChuckerInterceptor(context))
-//            .addNetworkInterceptor(CacheInterceptor())
+            .addNetworkInterceptor(CacheInterceptor())
             .connectTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
             .build()

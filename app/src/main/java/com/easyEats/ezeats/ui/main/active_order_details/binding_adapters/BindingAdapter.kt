@@ -17,8 +17,8 @@ fun setOrderStatus(tv: TextView, activeOrder: ActiveOrderResponse?) {
     val text = "Your Order from"
     val restaurantName = activeOrder?.restaurantName
     val stateText =
-        if (activeOrder?.state?.toLowerCase(Locale.getDefault()) == "placed") "has been ${activeOrder.state}"
-        else "is ${activeOrder?.state}"
+        if (activeOrder?.state?.toLowerCase(Locale.getDefault()) == "placed") "has been ${activeOrder.state ?: ""}"
+        else "is ${activeOrder?.state ?: ""}"
 
     // Build the full message
     val fullText = "$text $restaurantName\n$stateText"
@@ -53,10 +53,10 @@ fun setStateImage(iv: ImageView, state: String?) {
 @BindingAdapter("setOrderStatusId")
 fun setOrderStatusId(tv: TextView, activeOrder: ActiveOrderResponse?) {
     val text = "Your Order"
-    val orderNo = "#${activeOrder?.orderNumber}"
+    val orderNo = "#${activeOrder?.orderNumber?:""}"
     val stateText =
-        if (activeOrder?.state?.toLowerCase(Locale.getDefault()) == "placed") "has been ${activeOrder.state}"
-        else "is ${activeOrder?.state}"
+        if (activeOrder?.state?.toLowerCase(Locale.getDefault()) == "placed") "has been ${activeOrder.displayState ?: ""}"
+        else "is ${activeOrder?.state?:""}"
 
     // Build the full message
     val fullText = "$text $orderNo\n$stateText"
