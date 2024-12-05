@@ -1,6 +1,7 @@
 package com.easyEats.ezeats
 
 import android.app.Application
+import androidx.appcompat.app.AppCompatDelegate
 import com.easyEats.ezeats.BuildConfig.APPLICATION_ID
 import com.easyEats.ezeats.BuildConfig.CLIENT_KEY
 import com.easyEats.ezeats.BuildConfig.URL
@@ -37,6 +38,7 @@ class MyApplication : Application() {
      */
     override fun onCreate() {
         super.onCreate()
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         baseApplication = this
         TAG = EASY_EATS_LOGS

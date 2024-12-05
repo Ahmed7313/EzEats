@@ -172,4 +172,36 @@
     <string name="please_sign_up_or_login_to_continue">يرجى التسجيل أو تسجيل الدخول \n للمتابعة</string>
 
 
+    <string name="promo_code">كود الخصم</string>
+    <string name="hello_blank_fragment">مرحبًا، شريحة فارغة</string>
+    <string name="marakez_points">نقاط مراكز</string>
+    <string name="marakez_points_allow_you_to_redeem_offers_from_their_respective_restaurants">تتيح لك نقاط مراكز استبدال العروض من المطاعم الخاصة بها</string>
+    <string name="details">التفاصيل</string>
+    <string name="pending">قيد الانتظار</string>
+    <string name="preparing">جاري التحضير</string>
+    <string name="pickup">استلام</string>
+    <string name="delivered">تم التوصيل</string>
+    <string name="in_delivery">جاري التوصيل</string>
+    <string name="order_details">تفاصيل الطلب</string>
+    <string name="call_restaurant">اتصل بالمطعم</string>
+    <string name="having_issues">هل لا تزال تواجه مشكلات؟</string>
+    <string name="support_ez_eats_com"><u>Support@ez-eats.com</u></string>
+    <string name="item_details">تفاصيل الطلب</string>
+    <string name="call_support">اتصل بالدعم</string>
+    <string name="send_a_complaint">إرسال شكوى</string>
+    <string name="type_your_complaint_below_and_we_will_contact_you_shortly">اكتب شكواك أدناه وسنقوم بالاتصال بك قريبًا</string>
+    <string name="write_your_complaint_here">اكتب شكواك هنا...</string>
+    <string name="submit_complaint">إرسال الشكوى</string>
+    <string name="your_complaint_has_been_received_n_we_will_be_in_touch_shortly">تم استلام شكواك، سنقوم بالاتصال بك قريبًا</string>
+    <string name="sorry_for_any_inconvenience">نعتذر عن أي إزعاج!</string>
+    <string name="confirm">تأكيد</string>
+    <string name="our_partners">شركاؤنا</string>
+    <string name="spin_the_wheel_partners">شركاء عجلة الحظ</string>
+    <string name="enjoying_ezeats">هل تستمتع باستخدام EZeats؟</string>
+    <string name="would_you_mind_taking_a_moment_to_n_rate_us_thanks_for_your_support">هل تمانع في أخذ لحظة لتقييمنا؟ شكرًا لدعمك!</string>
+    <string name="later">لاحقًا</string>
+    <string name="rate_us_image">صورة تقييمنا</string>
+    <string name="partner_image">صورة الشريك</string>
+
+
 </resources>

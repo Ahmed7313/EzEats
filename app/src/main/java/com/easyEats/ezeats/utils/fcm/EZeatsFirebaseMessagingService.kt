@@ -25,9 +25,13 @@ class EZeatsFirebaseMessagingService : FirebaseMessagingService() {
         val body = remoteMessage.notification?.body ?: "Default Body"
 
         // Extract data payload
-        val offerId = remoteMessage.data["notificationType"]
-        val restaurantId = remoteMessage.data["restaurantId"]
+        val offerId = remoteMessage.data["type"]
+        val restaurantId = remoteMessage.data["id"]
         Log.d(TAG, "onMessageReceived: $offerId")
+        NotificationHelper.sendNotificationToUI(remoteMessage.data)
+
+        val intent = Intent("com.example.UPDATE_UI")
+        sendBroadcast(intent)
 
         // Show notification
         showNotification(title, body, offerId,restaurantId)
@@ -82,8 +86,8 @@ class EZeatsFirebaseMessagingService : FirebaseMessagingService() {
 
     private fun sendIntent(offerId: String?,restaurantId: String?): PendingIntent? {
         val intent = Intent(this, HomeActivity::class.java).apply {
-            putExtra("notificationType", offerId)
-            putExtra("restaurantId", restaurantId)
+            putExtra("type", offerId)
+            putExtra("id", restaurantId)
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
 

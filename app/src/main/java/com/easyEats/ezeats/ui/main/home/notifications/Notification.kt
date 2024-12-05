@@ -16,10 +16,11 @@ data class Notification(
     private val navController: NavController
 ) {
 
-    fun pushNotification() {
+    fun pushNotification(hasReceivedNotification:()->Unit) {
         FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val token = task.result
+                hasReceivedNotification()
                 Log.d(TAG, "pushNotification: $token")
             } else {
                 Log.e("FCM", "Fetching FCM token failed", task.exception)
@@ -29,10 +30,9 @@ data class Notification(
 
     fun navigateToScreen(notification: String?) {
         when (notification) {
-            "OfferScreen" -> {
-                val restaurantId = context.intent.getStringExtra("restaurantId")
+            "order status update" -> {
                 val action =
-                    HomeScreenFragmentDirections.goToRestaurantFragment(restaurantId.toString())
+                    HomeScreenFragmentDirections.goToActiveOrderDetails()
                 navController.navigate(action)
             }
 

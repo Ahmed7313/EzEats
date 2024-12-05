@@ -1,6 +1,10 @@
 package com.easyEats.ezeats.ui.main.home
 
 import android.Manifest
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.activityViewModels
@@ -19,6 +23,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearSnapHelper
@@ -46,6 +51,14 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
     private val notification by lazy {  Notification(homeViewModel, requireActivity(), findNavController())}
     private val location by lazy { Location(requireActivity(),homeViewModel,locationSettingsLauncher) }
 
+    private val notificationReceiver = object : BroadcastReceiver() { override fun onReceive(context: Context?, intent: Intent?){
+            updateUIWithNotification()
+        } }
+
+    private fun updateUIWithNotification() {
+        homeViewModel.checkLocationPermission()
+    }
+
     override fun inflateBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -55,7 +68,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
         fetchSavedAddress()
         notification.refreshFirebaseToken()
         locationSettingsLauncher = registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) {
-            homeViewModel.checkLocationPermission()  // Check location permissions after result
+            homeViewModel.checkLocationPermission()
         }
         location.askUserToEnableLocation()  // Prompt user to enable location services
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -64,9 +77,11 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
                 arrayOf(Manifest.permission.POST_NOTIFICATIONS),
                 101
             )
-            notification.pushNotification()
+            notification.pushNotification(){
+                homeViewModel.checkLocationPermission()
+            }
         }
-        val notificationType = requireActivity().intent.getStringExtra("notificationType")
+        val notificationType = requireActivity().intent.getStringExtra("type")
         if (notificationType != null) {
             notification.navigateToScreen(notificationType)
         }
@@ -79,6 +94,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
             }
         }
     }
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onResume() {
         super.onResume()
         observeViewModelData()  // Start observing ViewModel data
@@ -90,6 +106,8 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
                     requireActivity().finish()
                 }
             })
+        requireContext().registerReceiver(notificationReceiver, IntentFilter("com.example.UPDATE_UI"), Context.RECEIVER_NOT_EXPORTED)
+
     }
     override fun setUpViews() {
         val bindingUI=BindingUI(binding,mainViewModel,homeViewModel,featuredOfferAdapter,ourPartnersAdapter,spinWheelPartnersAdapter,snapHelper,hotDealsOfferAdapter,findNavController(),requireActivity(),this)
@@ -107,6 +125,11 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
     // Handle the click event for Featured Offers
     override fun onFeatureClicked(offerId: String) {
         // Handle click event for feature
+    }
+
+    override fun onPause() {
+        super.onPause()
+        requireContext().unregisterReceiver(notificationReceiver)
     }
 }
 

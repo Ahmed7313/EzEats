@@ -1,6 +1,5 @@
 package com.easyEats.ezeats.ui.main.home.adapter.binding_adapter
 
-import android.graphics.Color
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
@@ -16,7 +15,6 @@ import com.easyEats.ezeats.domain.main.model.response.home_response.ActiveOrder
 import com.easyEats.ezeats.domain.main.model.response.home_response.FeaturedOffer
 import com.easyEats.ezeats.domain.main.model.response.home_response.HotDeal
 import com.easyEats.ezeats.domain.main.model.response.partners.PartnersItem
-import com.easyEats.ezeats.domain.main.model.response.voucher.VoucherResponseItem
 import com.easyEats.ezeats.ui.main.home.adapter.featured.FeaturedOfferAdapter
 import com.easyEats.ezeats.ui.main.home.adapter.hot_deals.HotDealsAdapter
 import com.easyEats.ezeats.ui.main.home.adapter.partners.PartnersAdapter
