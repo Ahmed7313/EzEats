@@ -54,11 +54,11 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
             ivSearch.setOnClickListener { findNavController().navigate(R.id.goToSearchHistoryFragment) }
         }
 
-        binding.srGetOffers.setOnRefreshListener {
-            offersViewModel.isRequestFired=false
-            offersViewModel.getRestaurantsResult("")
-            offersViewModel.getCategoriesRestaurantResult()
-        }
+//        binding.srGetOffers.setOnRefreshListener {
+//            offersViewModel.isRequestFired=false
+//            offersViewModel.getRestaurantsResult("")
+//            offersViewModel.getCategoriesRestaurantResult()
+//        }
         listenToObservers()
     }
 
@@ -90,7 +90,7 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
 
                     is Resource.Success -> {
                         restaurantAdapter = RestaurantAdapter(this@OffersScreenFragment, this@OffersScreenFragment)
-                        binding.srGetOffers.isRefreshing = false
+//                        binding.srGetOffers.isRefreshing = false
                         offersViewModel.setRestaurantsData(
                             requireContext(),
                             binding,
@@ -116,7 +116,7 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
                 }
 
                 is Resource.Loading -> {
-                    binding.srGetOffers.isRefreshing = false
+//                    binding.srGetOffers.isRefreshing = false
                     showMainLoading()
                 }
 

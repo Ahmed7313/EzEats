@@ -156,12 +156,12 @@ class OffersViewModel @Inject constructor(val mainUseCase: MainUseCase) :
         } else {
             val animationController =
                 AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation_fade_in)
-            binding.rvRestaurant.layoutAnimation = animationController
+//            binding.rvRestaurant.layoutAnimation = animationController
             binding.rvRestaurant.visibility = VISIBLE
             binding.tvAllRestaurants.visibility = VISIBLE
             binding.llNoRestaurants.visibility = GONE
             restaurantAdapter.submitList(resource.data?.result?.data) {
-                binding.rvRestaurant.startLayoutAnimation()
+//                binding.rvRestaurant.startLayoutAnimation()
             }
         }
     }

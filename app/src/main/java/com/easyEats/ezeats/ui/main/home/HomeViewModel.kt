@@ -20,8 +20,11 @@ import com.easyEats.ezeats.ui.main.main.MainViewModel
 import com.easyEats.ezeats.utils.Resource
 import com.easyEats.ezeats.utils.location.LocationUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -244,5 +247,15 @@ class HomeViewModel @Inject constructor(private val mainUseCase: MainUseCase) :
                 }
             )
         }
+
+    suspend fun checkIfUserViewedRatingDialog(): Boolean {
+        return mainUseCase.homeUseCase.checkIfUserViewedRatingDialog().first()
+    }
+
+    suspend fun saveUserRating(isUserRateApp: Boolean) {
+        mainUseCase.homeUseCase.saveUserRating(isUserRateApp)
+    }
+
+
 }
 

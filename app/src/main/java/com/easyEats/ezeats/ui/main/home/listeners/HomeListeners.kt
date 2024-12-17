@@ -13,13 +13,19 @@ import com.easyEats.ezeats.R
 import com.easyEats.ezeats.base.BaseResponse
 import com.easyEats.ezeats.databinding.FragmentHomeScreenBinding
 import com.easyEats.ezeats.domain.main.model.response.home_response.HomeResponse
+import com.easyEats.ezeats.ui.main.complaint.ComplaintFragment
+import com.easyEats.ezeats.ui.main.home.HomeScreenFragment
 import com.easyEats.ezeats.ui.main.home.HomeScreenFragmentDirections
 import com.easyEats.ezeats.ui.main.home.HomeViewModel
 import com.easyEats.ezeats.ui.main.home.acive_order.active_order.ActiveOrder
 import com.easyEats.ezeats.ui.main.main.MainViewModel
 import com.easyEats.ezeats.utils.Resource
 import es.dmoral.toasty.Toasty
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.math.log
 
 
 class HomeListeners(
@@ -29,7 +35,8 @@ class HomeListeners(
     private val context: Activity,
     private val lifecycleScope: LifecycleCoroutineScope,
     private val viewLifecycleOwner: LifecycleOwner,
-    private val navController: NavController
+    private val navController: NavController,
+    private val homeScreenFragment: HomeScreenFragment
 ) {
 
     fun invoke(){
@@ -43,7 +50,21 @@ class HomeListeners(
         partnersListeners()
 
         updateTokenListener()
+
+        checkIfUserRateAppOrNot()
     }
+
+    private fun checkIfUserRateAppOrNot() {
+        GlobalScope.launch {
+            if (homeViewModel.checkIfUserViewedRatingDialog().not()){
+                delay(2*60*1000)
+                homeScreenFragment.displayRatingDialog()
+                homeViewModel.saveUserRating(true)
+            }
+        }
+    }
+
+
 
 
     private fun updateTokenListener() {

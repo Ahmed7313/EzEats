@@ -12,6 +12,7 @@ import com.easyEats.ezeats.utils.Constants.IS_VERIFIED
 import com.easyEats.ezeats.utils.Constants.MOBILE_NUMBER_KEY
 import com.easyEats.ezeats.utils.Constants.NAME_KEY
 import com.easyEats.ezeats.utils.Constants.ONBOARD_KEY
+import com.easyEats.ezeats.utils.Constants.RATING_KEY
 import com.easyEats.ezeats.utils.Constants.TOKEN_KEY
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
@@ -101,6 +102,16 @@ class DataStorePreference @Inject constructor(private val preferences: DataStore
 
     fun fetchName() = preferences.data.map {
         it[stringPreferencesKey(NAME_KEY)] ?: ""
+    }
+
+    suspend fun saveUserRating(isUserViewedRatingDialog: Boolean) {
+        preferences.edit {
+            it[booleanPreferencesKey(RATING_KEY)] = isUserViewedRatingDialog
+        }
+    }
+
+    fun checkIfUserViewedRatingDialog() = preferences.data.map {
+        it[booleanPreferencesKey(RATING_KEY)] ?: false
     }
 
 

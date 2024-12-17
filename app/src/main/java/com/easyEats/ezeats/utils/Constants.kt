@@ -31,6 +31,7 @@ object Constants {
     const val ADDRESS_KEY = "address"
     const val TOKEN_KEY = "token"
     const val NAME_KEY = "name"
+    const val RATING_KEY = "name"
     const val IS_VERIFIED = "isVerified"
 
 

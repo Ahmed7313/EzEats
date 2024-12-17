@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.activityViewModels
@@ -29,16 +30,19 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearSnapHelper
 import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.domain.main.model.response.home_response.HotDeal
+import com.easyEats.ezeats.ui.main.complaint.ComplaintFragment
 import com.easyEats.ezeats.ui.main.home.adapter.partners.PartnersAdapter
 import com.easyEats.ezeats.ui.main.home.binding.BindingUI
 import com.easyEats.ezeats.ui.main.home.listeners.HomeListeners
 import com.easyEats.ezeats.ui.main.home.location.Location
 import com.easyEats.ezeats.ui.main.home.notifications.Notification
+import com.easyEats.ezeats.ui.main.rating.RateUsFragment
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
-    HotDealsAdapter.OnHotDealClicked, FeaturedOfferAdapter.OnFeaturedClicked {
+    HotDealsAdapter.OnHotDealClicked, FeaturedOfferAdapter.OnFeaturedClicked,
+    RateUsFragment.DialogCallback {
 
     val mainViewModel: MainViewModel by activityViewModels()
     private val homeViewModel: HomeViewModel by viewModels()
@@ -48,12 +52,26 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
     private val ourPartnersAdapter by lazy { PartnersAdapter() }
     private val spinWheelPartnersAdapter by lazy { PartnersAdapter() }
     private lateinit var locationSettingsLauncher: ActivityResultLauncher<IntentSenderRequest>
-    private val notification by lazy {  Notification(homeViewModel, requireActivity(), findNavController())}
-    private val location by lazy { Location(requireActivity(),homeViewModel,locationSettingsLauncher) }
+    private val notification by lazy {
+        Notification(
+            homeViewModel,
+            requireActivity(),
+            findNavController()
+        )
+    }
+    private val location by lazy {
+        Location(
+            requireActivity(),
+            homeViewModel,
+            locationSettingsLauncher
+        )
+    }
 
-    private val notificationReceiver = object : BroadcastReceiver() { override fun onReceive(context: Context?, intent: Intent?){
+    private val notificationReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
             updateUIWithNotification()
-        } }
+        }
+    }
 
     private fun updateUIWithNotification() {
         homeViewModel.checkLocationPermission()
@@ -63,13 +81,15 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
         inflater: LayoutInflater,
         container: ViewGroup?
     ) = FragmentHomeScreenBinding.inflate(inflater, container, false)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         fetchSavedAddress()
         notification.refreshFirebaseToken()
-        locationSettingsLauncher = registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) {
-            homeViewModel.checkLocationPermission()
-        }
+        locationSettingsLauncher =
+            registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) {
+                homeViewModel.checkLocationPermission()
+            }
         location.askUserToEnableLocation()  // Prompt user to enable location services
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             ActivityCompat.requestPermissions(
@@ -77,7 +97,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
                 arrayOf(Manifest.permission.POST_NOTIFICATIONS),
                 101
             )
-            notification.pushNotification(){
+            notification.pushNotification() {
                 homeViewModel.checkLocationPermission()
             }
         }
@@ -86,6 +106,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
             notification.navigateToScreen(notificationType)
         }
     }
+
     private fun fetchSavedAddress() {
         lifecycleScope.launch {
             mainViewModel.fetchCurrentAddress().collect {
@@ -94,6 +115,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
             }
         }
     }
+
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onResume() {
         super.onResume()
@@ -106,22 +128,51 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
                     requireActivity().finish()
                 }
             })
-        requireContext().registerReceiver(notificationReceiver, IntentFilter("com.example.UPDATE_UI"), Context.RECEIVER_NOT_EXPORTED)
+        requireContext().registerReceiver(
+            notificationReceiver,
+            IntentFilter("com.example.UPDATE_UI"),
+            Context.RECEIVER_NOT_EXPORTED
+        )
 
     }
+
     override fun setUpViews() {
-        val bindingUI=BindingUI(binding,mainViewModel,homeViewModel,featuredOfferAdapter,ourPartnersAdapter,spinWheelPartnersAdapter,snapHelper,hotDealsOfferAdapter,findNavController(),requireActivity(),this)
+        val bindingUI = BindingUI(
+            binding,
+            mainViewModel,
+            homeViewModel,
+            featuredOfferAdapter,
+            ourPartnersAdapter,
+            spinWheelPartnersAdapter,
+            snapHelper,
+            hotDealsOfferAdapter,
+            findNavController(),
+            requireActivity(),
+            this
+        )
         bindingUI.invoke()
     }
+
     // Observes changes in ViewModel data and updates the UI accordingly
     private fun observeViewModelData() {
-        val listeners = HomeListeners(homeViewModel, mainViewModel, binding, requireActivity(), lifecycleScope, viewLifecycleOwner, findNavController())
+        val listeners = HomeListeners(
+            homeViewModel,
+            mainViewModel,
+            binding,
+            requireActivity(),
+            lifecycleScope,
+            viewLifecycleOwner,
+            findNavController(),
+            this
+        )
         listeners.invoke()
     }
+
     // Handle the click event for Hot Deals
     override fun onHotDealClickListener(offer: HotDeal) {
         findNavController().navigate(HomeScreenFragmentDirections.goToRedeemScreen(offer.id.toString()))
     }
+
     // Handle the click event for Featured Offers
     override fun onFeatureClicked(offerId: String) {
         // Handle click event for feature
@@ -130,6 +181,22 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
     override fun onPause() {
         super.onPause()
         requireContext().unregisterReceiver(notificationReceiver)
+    }
+
+    fun displayRatingDialog() {
+        val rateUsFragment = RateUsFragment()
+        rateUsFragment.setDialogCallback(this)
+        rateUsFragment.show(parentFragmentManager, "CustomDialog")
+    }
+
+    override fun onRateUsClicked() {
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.data = Uri.parse("https://play.google.com/store/apps/details?id=com.easyEats.ezeats")
+        requireActivity().startActivity(intent)
+    }
+
+    override fun onRateLaterClicked() {
+
     }
 }
 

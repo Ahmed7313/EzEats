@@ -11,6 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="@dimen/_10sdp"
+        android:background="@color/white"
+        android:backgroundTint="@color/white"
         app:strokeColor="@color/white"
         tools:context=".ui.main.rating.RateUsFragment">
 
@@ -28,18 +30,18 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
                 android:contentDescription="@string/rate_us_image"
                 android:src="@drawable/rate_us_image" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_7sdp"
+                android:layout_marginTop="@dimen/_12sdp"
                 android:fontFamily="@font/gilroy_700"
                 android:gravity="center"
                 android:text="@string/enjoying_ezeats"
-                android:textSize="@dimen/_16ssp"
-                android:textStyle="bold"
+                android:textSize="@dimen/_18ssp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -51,7 +53,7 @@
                 android:fontFamily="@font/gilroy_500"
                 android:gravity="center"
                 android:text="@string/would_you_mind_taking_a_moment_to_n_rate_us_thanks_for_your_support"
-                android:textColor="#797979"
+                android:textColor="@color/black"
                 android:textSize="@dimen/_13ssp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -60,6 +62,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <com.google.android.material.button.MaterialButton
@@ -67,7 +70,7 @@
                     android:layout_width="0dp"
                     android:layout_height="@dimen/_42sdp"
                     android:layout_marginHorizontal="@dimen/_12sdp"
-                    android:layout_marginVertical="@dimen/_10sdp"
+                    android:layout_marginVertical="@dimen/_15sdp"
                     android:layout_weight="1"
                     android:fontFamily="@font/gilroy_600"
                     android:text="@string/rate_us"

@@ -21,7 +21,7 @@
         android:layout_height="match_parent">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="@drawable/rounded_top_bottom_sheet_white"
             tools:context=".ui.main.restaurant.RestaurantFragment">
 
@@ -29,11 +29,11 @@
                 android:id="@+id/iv_restaurant_cover_image"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_230sdp"
+                android:background="@drawable/rounded_top_bottom_sheet_white"
                 android:elevation="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:background="@drawable/rounded_top_bottom_sheet_white"
                 app:strokeColor="@android:color/transparent">
 
                 <RelativeLayout
@@ -69,9 +69,11 @@
                 android:layout_height="@dimen/_45sdp"
                 android:layout_marginStart="@dimen/_15sdp"
                 android:layout_marginTop="@dimen/_50sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
                 android:background="@drawable/logo_background"
+                app:layout_constraintBottom_toTopOf="@+id/tv_offers_count"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                 />
 
             <ImageView
                 android:id="@+id/iv_restaurant_logo"
@@ -92,9 +94,10 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:fontFamily="@font/gilroy_600"
                 android:textColor="#C9C9C9"
+                android:visibility="gone"
                 android:textSize="@dimen/_18ssp"
+                app:layout_constraintBottom_toTopOf="@+id/textView7"
                 app:layout_constraintStart_toStartOf="@+id/view3"
-                app:layout_constraintTop_toBottomOf="@+id/view3"
                 tools:text="3 offers" />
 
             <TextView
@@ -105,8 +108,9 @@
                 android:text="@{restaurantInfo.restaurantName}"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_24ssp"
+                android:layout_marginBottom="@dimen/_7sdp"
+                app:layout_constraintBottom_toTopOf="@+id/tvReview"
                 app:layout_constraintStart_toStartOf="@+id/view3"
-                app:layout_constraintTop_toBottomOf="@+id/tv_offers_count"
                 tools:text="Dominos Pizza" />
 
             <TextView
@@ -122,8 +126,9 @@
                 android:textSize="@dimen/_12ssp"
                 app:drawableStartCompat="@drawable/star_review_icon"
                 app:drawableTint="#C9C9C9"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@+id/tvMeterAway"
                 app:layout_constraintStart_toStartOf="@+id/textView7"
-                app:layout_constraintTop_toBottomOf="@+id/textView7"
                 tools:text="4.5 Stars (112 Reviews)" />
 
             <TextView
@@ -131,17 +136,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_3sdp"
+                android:layout_marginBottom="@dimen/_15ssp"
                 android:drawablePadding="@dimen/_5sdp"
                 android:fontFamily="@font/gilroy_600"
                 android:gravity="start"
                 android:text='@{String.format("%s", restaurantInfo.distance.toString())}'
-                android:visibility="@{restaurantInfo.distance!=null?View.VISIBLE:View.GONE}"
                 android:textColor="#C9C9C9"
                 android:textSize="@dimen/_12ssp"
+                android:visibility="@{restaurantInfo.distance!=null?View.VISIBLE:View.GONE}"
                 app:drawableStartCompat="@drawable/marker_pin_icon"
                 app:drawableTint="#C9C9C9"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_restaurant_cover_image"
                 app:layout_constraintStart_toStartOf="@+id/tvReview"
-                app:layout_constraintTop_toBottomOf="@+id/tvReview"
                 tools:text="2 KM’s away" />
 
             <ImageView
@@ -153,7 +159,6 @@
                 android:contentDescription="@string/share_icon"
                 android:padding="@dimen/_9sdp"
                 android:src="@drawable/share_icon"
-                app:layout_constraintBottom_toTopOf="@+id/view3"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -164,6 +169,7 @@
                 android:layout_marginTop="@dimen/_16sdp"
                 android:fontFamily="@font/gilroy_600"
                 android:text="@string/special_offers"
+                android:visibility="gone"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_15sdp"
                 app:layout_constraintStart_toStartOf="@+id/tvMeterAway"
@@ -178,6 +184,7 @@
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:fontFamily="@font/gilroy_500"
                 android:lineSpacingExtra="4dp"
+                android:visibility="gone"
                 android:text="@string/enjoy_offers_straight_from_ezeats_in_partnership_with_dominos_pizza_for_your_satisfaction_redeem_now_and_enjoy_the_food_and_the_points"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_9ssp"
@@ -193,7 +200,7 @@
                 android:layout_marginHorizontal="@dimen/_15sdp"
                 android:layout_marginTop="@dimen/_15sdp"
                 android:orientation="vertical"
-                android:visibility="visible"
+                android:visibility="gone"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -208,8 +215,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:visibility="gone"
-                android:layout_marginTop="@dimen/_30sdp"
+                android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -218,7 +224,7 @@
                 <ImageView
                     android:layout_width="@dimen/_200sdp"
                     android:layout_height="@dimen/_190sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_25sdp"
                     android:src="@drawable/empty_restaurant_placeholder" />
 
                 <TextView
@@ -235,8 +241,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_25sdp"
                     android:layout_marginTop="@dimen/_4sdp"
-                    android:fontFamily="@font/gilroy_500"
+                    android:fontFamily="@font/gilroy_600"
                     android:gravity="center"
+                    android:textColor="@color/black"
                     android:lineSpacingExtra="4dp"
                     android:text="@string/there_is_no_offers_going_on_right_now_please_check_again_later_for_all_the_pizza_goodness"
                     android:textSize="@dimen/_12ssp" />
@@ -246,7 +253,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_25sdp"
-                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_80sdp"
                     android:layout_marginBottom="@dimen/_25sdp"
                     android:backgroundTint="@color/main_color"
                     android:paddingVertical="@dimen/_13sdp"

@@ -133,4 +133,11 @@ class MainResponseImpl @Inject constructor(
         return mainApiService.clearDeviceToken()
     }
 
+    override suspend fun saveUserRating(isUserViewedRatingDialog: Boolean) {
+        dataStorePreference.saveUserRating(isUserViewedRatingDialog)
+    }
+
+    override fun checkIfUserViewedRatingDialog(): Flow<Boolean> =
+        dataStorePreference.checkIfUserViewedRatingDialog()
+
 }

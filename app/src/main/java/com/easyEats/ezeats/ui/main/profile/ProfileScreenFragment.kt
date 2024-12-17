@@ -55,7 +55,7 @@ class ProfileScreenFragment : BaseFragment<FragmentProfileScreenBinding>(),
             intent.putExtra("FRAGMENT_ID", R.id.signInScreenFragment)
             startActivity(intent)
         }
-        binding.tvLogout.setOnClickListener {
+        binding.ivLogout.setOnClickListener {
             profileViewModel.clearDeviceTokenResult()
         }
 

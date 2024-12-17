@@ -1,5 +1,8 @@
 package com.easyEats.ezeats.domain.main.repository
 
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
 import com.easyEats.ezeats.base.BaseResponse
 import com.easyEats.ezeats.domain.main.model.UserLocationAddress
 import com.easyEats.ezeats.domain.main.model.request.complaint_request.ComplaintRequest
@@ -27,7 +30,9 @@ import com.easyEats.ezeats.domain.main.model.response.search_response.Category
 import com.easyEats.ezeats.domain.main.model.response.search_response.SearchScreenResponse
 import com.easyEats.ezeats.domain.main.model.response.user_info.UserInfoResponse
 import com.easyEats.ezeats.domain.main.model.response.voucher.VoucherResponse
+import com.easyEats.ezeats.utils.Constants.RATING_KEY
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import retrofit2.http.Body
 
 interface MainRepository {
@@ -81,6 +86,9 @@ interface MainRepository {
 
     suspend fun updateDeviceToken(updateTokeRequest: UpdateTokeRequest): BaseResponse<String>
     suspend fun clearDeviceToken(): BaseResponse<Any>
+
+    suspend fun saveUserRating(isUserViewedRatingDialog: Boolean)
+    fun checkIfUserViewedRatingDialog(): Flow<Boolean>
 
 
 }

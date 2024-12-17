@@ -13,9 +13,6 @@ import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.databinding.FragmentComplaintBinding
 import dagger.hilt.android.AndroidEntryPoint
-
-
-
 /**
  * A DialogFragment to allow users to submit complaints.
  * This fragment captures the user's full name, email, and complaint message.
