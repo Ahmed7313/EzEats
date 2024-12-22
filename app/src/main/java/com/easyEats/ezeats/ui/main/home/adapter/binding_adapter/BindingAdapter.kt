@@ -127,8 +127,21 @@ fun setPartnersDataToRecyclerView(
     hotDealsAdapter: PartnersAdapter,
     list: List<PartnersItem>?
 ) {
-    rv.adapter = hotDealsAdapter
-    hotDealsAdapter.submitList(list ?: emptyList())
+    list?.let {
+        // Create a new list to hold the duplicated items
+        val duplicatedList = mutableListOf<PartnersItem>()
+
+        // Repeat the list multiple times
+        repeat(20) { duplicatedList.addAll(
+            list
+        ) } // Add the whole list each time
+
+        // Set the adapter to the RecyclerView
+        rv.adapter = hotDealsAdapter
+
+        // Submit the duplicated list to the adapter
+        hotDealsAdapter.submitList(duplicatedList)
+    }
 }
 
 /**

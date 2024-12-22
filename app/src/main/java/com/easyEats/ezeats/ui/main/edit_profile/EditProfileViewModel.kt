@@ -38,8 +38,13 @@ class EditProfileViewModel @Inject constructor(
     var mobileNumber = user?.mobileNumber
     var birthDate = reformatDate(user?.birthDate?.iso)
 
+    private val _deleteUserResultMutableLiveData =
+        MutableLiveData<Resource<BaseResponse<Any>>>()
+    val deleteUserResultLiveData: LiveData<Resource<BaseResponse<Any>>> get() = _deleteUserResultMutableLiveData
+
+
     // LiveData to control whether the profile views are editable
-    val isViewsEditable = MutableLiveData(false)
+    val isSavedButtonEnabled = MutableLiveData(false)
 
     // LiveData to store the Base64 encoded profile image string
     private val _imageBase64 = MutableLiveData<String>()
@@ -56,12 +61,6 @@ class EditProfileViewModel @Inject constructor(
         _imageBase64.value = base64Image
     }
 
-    /**
-     * Marks the views as editable, enabling the user to modify their profile information.
-     */
-    fun makeViewsEditable() {
-        isViewsEditable.value = true
-    }
 
     /**
      * Initiates the request to update the user's profile information.
@@ -117,5 +116,29 @@ class EditProfileViewModel @Inject constructor(
             outputFormat.format(date)
         } else ""
     }
+
+    fun deleteUserInfoResult() {
+        val flow = createDeleteUserInfoResultRequest()
+        apply(flow = flow, maxRetries = 2, onError = { error ->
+            _deleteUserResultMutableLiveData.value =
+                Resource.Error("No Internet Connection")
+        }, onSuccess = { resource ->
+            _deleteUserResultMutableLiveData.value = resource
+        })
+    }
+
+
+    private fun createDeleteUserInfoResultRequest(): Flow<Resource<BaseResponse<Any>>> =
+        channelFlow {
+            send(Resource.Loading())
+            val result = mainUseCase.userInfoUseCase.deleteAccount()
+            result.handleResponse(onSuccess = {
+                send(Resource.Success(result))
+            }, onError = { message, error ->
+                send(Resource.Error(message, error))
+            }, onUnauthenticated = {
+                send(Resource.UnAuthenticated())
+            })
+        }
 }
 

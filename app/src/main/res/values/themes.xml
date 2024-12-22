@@ -65,9 +65,28 @@
         <item name="behavior_peekHeight">0dp</item>
     </style>
 
-    <style name="RoundedDialog" parent="Theme.AppCompat.Dialog">
-        <item name="android:background">@drawable/rounded_dialog_background</item>
+
+
+    <style name="RateUsButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:fontFamily">@font/gilroy_600</item>
+        <item name="android:textSize">@dimen/_14ssp</item>
     </style>
+
+    <style name="LaterButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:fontFamily">@font/gilroy_600</item>
+        <item name="android:textColor">@color/main_color</item>
+        <item name="android:textSize">@dimen/_14ssp</item>
+        <item name="strokeColor">@color/main_color</item>
+        <item name="strokeWidth">@dimen/_1sdp</item>
+    </style>
+
+    <style name="RoundedDialog" parent="Theme.MaterialComponents.Light.Dialog">
+        <item name="android:windowBackground">@drawable/rounded_dialog_background</item>
+        <item name="android:windowMinWidthMajor">90%</item>
+        <item name="android:windowMinWidthMinor">90%</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
 
 
 

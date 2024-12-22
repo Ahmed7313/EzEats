@@ -11,7 +11,7 @@ data class Item(
     @SerializedName("picture")
     val picture: Any?,
     @SerializedName("price")
-    val price: Int?,
+    val price: Double?,
     @SerializedName("quantity")
     val quantity: Int?,
     @SerializedName("subItems")

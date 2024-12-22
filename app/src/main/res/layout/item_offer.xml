@@ -71,7 +71,7 @@
                     android:id="@+id/tvType"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_1sdp"
+                    android:layout_marginTop="@dimen/_2sdp"
                     android:fontFamily="@font/gilroy_400"
                     setCategories="@{restaurant.categories}"
                     android:textColor="@color/main_color"
@@ -88,6 +88,7 @@
                     android:drawablePadding="@dimen/_3sdp"
                     android:fontFamily="@font/gilroy_600"
                     android:gravity="center"
+                    android:visibility="gone"
                     android:text='@{String.format("%s Stars (%s Reviews)", restaurant.rating.toString(), restaurant.reviewsCount.toString())}'
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12ssp"

@@ -72,8 +72,10 @@ class DeleteAccountDialogFragment : DialogFragment() {
         super.onStart()
         // Set dialog width to match the parent width, and height to wrap content
         dialog?.window?.setLayout(
-            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
+        dialog?.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
+
     }
 }

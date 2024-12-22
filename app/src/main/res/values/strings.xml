@@ -165,7 +165,7 @@
     <string name="save_changes">Save Changes</string>
     <string name="email">Email</string>
     <string name="full_name">Full Name</string>
-    <string name="log_out">Log Out</string>
+    <string name="log_out">Logout</string>
     <string name="birth_date">Date of birth</string>
 
     <!--    Guest Login-->
@@ -201,5 +201,11 @@
     <string name="later">Later</string>
     <string name="rate_us_image">rate us image</string>
     <string name="partner_image">Partner Image</string>
+    <string name="are_you_sure_you_want_n_to_logout">Are you sure you want\n to logout?</string>
+    <string name="loyalty_center">Loyalty Center</string>
+    <string name="spin_the_wheel_promo_code_image">spin the wheel promo code image</string>
+    <string name="spin_the_wheel_codes">Spin the wheel codes</string>
+    <string name="view_more">View More</string>
+    <string name="vouchers">Vouchers</string>
 
 </resources>

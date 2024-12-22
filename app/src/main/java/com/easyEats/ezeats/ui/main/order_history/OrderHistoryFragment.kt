@@ -14,7 +14,8 @@ import com.easyEats.ezeats.ui.main.order_history.adapter.OrderHistoryAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class OrderHistoryFragment : BaseFragment<FragmentOrderHistoryBinding>(),OrderHistoryAdapter.OnReorderButtonClicked {
+class OrderHistoryFragment : BaseFragment<FragmentOrderHistoryBinding>(),
+    OrderHistoryAdapter.OnReorderButtonClicked {
 
     private val orderHistoryViewModel: OrderHistoryViewModel by viewModels()
 
@@ -26,7 +27,7 @@ class OrderHistoryFragment : BaseFragment<FragmentOrderHistoryBinding>(),OrderHi
 
     override fun setUpViews() {
         listenToObservers()
-        binding.viewModel=orderHistoryViewModel
+        binding.viewModel = orderHistoryViewModel
         binding.ivBack.setOnClickListener {
             findNavController().popBackStack()
         }
@@ -43,6 +44,10 @@ class OrderHistoryFragment : BaseFragment<FragmentOrderHistoryBinding>(),OrderHi
     private fun listenToObservers() {
         orderHistoryViewModel.orders.observe(viewLifecycleOwner) { orders ->
             orderHistoryAdapter.submitList(orders)
+        }
+
+        orderHistoryViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            if (isLoading) showMainLoading() else hideMainLoading()
         }
     }
 

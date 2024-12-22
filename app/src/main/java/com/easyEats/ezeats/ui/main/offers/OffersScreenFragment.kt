@@ -155,4 +155,9 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
         findNavController().navigate(OffersScreenFragmentDirections.goToRedeemScreen(offerId))
     }
 
+    override fun onPause() {
+        super.onPause()
+        hideMainLoading()
+    }
+
 }

@@ -18,6 +18,7 @@ import com.easyEats.ezeats.ui.main.home.HomeScreenFragment
 import com.easyEats.ezeats.ui.main.home.HomeScreenFragmentDirections
 import com.easyEats.ezeats.ui.main.home.HomeViewModel
 import com.easyEats.ezeats.ui.main.home.acive_order.active_order.ActiveOrder
+import com.easyEats.ezeats.ui.main.home.adapter.partners.PartnersAdapter
 import com.easyEats.ezeats.ui.main.main.MainViewModel
 import com.easyEats.ezeats.utils.Resource
 import es.dmoral.toasty.Toasty
@@ -36,7 +37,9 @@ class HomeListeners(
     private val lifecycleScope: LifecycleCoroutineScope,
     private val viewLifecycleOwner: LifecycleOwner,
     private val navController: NavController,
-    private val homeScreenFragment: HomeScreenFragment
+    private val homeScreenFragment: HomeScreenFragment,
+    private val ourPartnersAdapter: PartnersAdapter,
+    private val spinWheelPartnersAdapter: PartnersAdapter,
 ) {
 
     fun invoke(){
@@ -85,6 +88,8 @@ class HomeListeners(
                 is Resource.Loading -> {}
                 is Resource.Success -> {
                     binding.partnerResponse = resource.data?.result?.data
+                    binding.partnersAdapter = ourPartnersAdapter
+                    binding.spinWheelpartnersAdapter = spinWheelPartnersAdapter
                 }
 
                 is Resource.UnAuthenticated -> {}

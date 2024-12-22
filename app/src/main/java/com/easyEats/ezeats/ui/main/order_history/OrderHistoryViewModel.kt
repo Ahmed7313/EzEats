@@ -18,6 +18,7 @@ class OrderHistoryViewModel @Inject constructor(val mainUseCase: MainUseCase) :
     private val _orders = MutableLiveData<List<Order?>>()
     val orders: LiveData<List<Order?>> get() = _orders
     val isHavingOrders = MutableLiveData(true)
+    val isLoading = MutableLiveData(false)
 
     private var currentPage = 1
 
@@ -27,12 +28,14 @@ class OrderHistoryViewModel @Inject constructor(val mainUseCase: MainUseCase) :
 
     fun loadMoreOrders() {
         viewModelScope.launch {
+            isLoading.value = true
             val response = mainUseCase.orderHistoryUseCase.getUserOrderHistory(
                 OrderHistoryRequest(
                     page = currentPage
                 )
             )
             if (response.result.isSuccess()) {
+                isLoading.value = false
                 if (response.result.data?.orders?.isEmpty() == true && currentPage == 1)
                     isHavingOrders.value = false
                 _orders.value =

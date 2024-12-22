@@ -20,6 +20,7 @@ import com.easyEats.ezeats.databinding.FragmentProfileScreenBinding
 import com.easyEats.ezeats.domain.main.model.response.user_info.UserInfoResponse
 import com.easyEats.ezeats.ui.auth.main.AuthActivity
 import com.easyEats.ezeats.ui.main.delete_account.DeleteAccountDialogFragment
+import com.easyEats.ezeats.ui.main.profile.logout.LogOutFragment
 import com.easyEats.ezeats.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Delay
@@ -29,7 +30,7 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ProfileScreenFragment : BaseFragment<FragmentProfileScreenBinding>(),
-    DeleteAccountDialogFragment.DialogCallback {
+   LogOutFragment.DialogCallback{
 
     private val profileViewModel: ProfileViewModel by viewModels()
     private lateinit var user: UserInfoResponse
@@ -56,14 +57,11 @@ class ProfileScreenFragment : BaseFragment<FragmentProfileScreenBinding>(),
             startActivity(intent)
         }
         binding.ivLogout.setOnClickListener {
-            profileViewModel.clearDeviceTokenResult()
-        }
-
-        binding.tvDeleteAccount.setOnClickListener {
-            val dialog = DeleteAccountDialogFragment()
+            val dialog = LogOutFragment()
             dialog.setDialogCallback(this)
             dialog.show(parentFragmentManager, "CustomDialog")
         }
+
 
         binding.tvHelp.setOnClickListener {
             openBrowser("https://www.ez-eats.com/privacypolicy")
@@ -134,28 +132,7 @@ class ProfileScreenFragment : BaseFragment<FragmentProfileScreenBinding>(),
             }
 
         }
-        profileViewModel.deleteUserResultLiveData.observe(viewLifecycleOwner) { resource ->
-            when (resource) {
-                is Resource.Error -> {
 
-                }
-
-                is Resource.Loading -> {
-
-                }
-
-                is Resource.Success -> {
-                    profileViewModel.saveToke("")
-                    profileViewModel.setUserVerification(false)
-                    startActivity(Intent(requireActivity(), AuthActivity::class.java))
-                }
-
-                is Resource.UnAuthenticated -> {
-
-                }
-            }
-
-        }
         lifecycleScope.launch {
             profileViewModel.getToken().asLiveData()
                 .observe(viewLifecycleOwner) { token ->
@@ -168,11 +145,15 @@ class ProfileScreenFragment : BaseFragment<FragmentProfileScreenBinding>(),
         }
     }
 
-    override fun onDeleteClicked() {
-        profileViewModel.deleteUserInfoResult()
+
+
+    override fun onLogOutClicked() {
+        profileViewModel.clearDeviceTokenResult()
     }
 
-    override fun onCancelClicked() {}
+    override fun onCancelClicked() {
+
+    }
 
 
     private fun openBrowser(url: String) {
@@ -189,6 +170,11 @@ class ProfileScreenFragment : BaseFragment<FragmentProfileScreenBinding>(),
 
     override fun onDestroyView() {
         super.onDestroyView()
+        hideMainLoading()
+    }
+
+    override fun onPause() {
+        super.onPause()
         hideMainLoading()
     }
 }

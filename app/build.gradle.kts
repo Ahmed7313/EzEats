@@ -168,4 +168,8 @@ dependencies {
     // in app update
     implementation(libs.app.update.ktx)
 
+    //lottie
+    implementation (libs.lottie)
+
+
 }

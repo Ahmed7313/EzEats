@@ -163,7 +163,10 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
             lifecycleScope,
             viewLifecycleOwner,
             findNavController(),
-            this
+            this,
+            ourPartnersAdapter,
+            spinWheelPartnersAdapter
+
         )
         listeners.invoke()
     }

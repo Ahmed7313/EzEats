@@ -57,20 +57,20 @@ abstract class BaseBottomSheetFragment<VB : ViewDataBinding> : BottomSheetDialog
 
         behavior.state = BottomSheetBehavior.STATE_EXPANDED
         behavior.isDraggable = true
-        behavior.skipCollapsed = true // Skip collapsed state, go directly to hidden
+//        behavior.skipCollapsed = true // Skip collapsed state, go directly to hidden
 
         // Handle bottom sheet dragging and closing in one step
-        behavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                if (newState == BottomSheetBehavior.STATE_DRAGGING) {
-                    behavior.state = BottomSheetBehavior.STATE_HIDDEN
-                }
-            }
-
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                // Optionally handle sliding
-            }
-        })
+//        behavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+//            override fun onStateChanged(bottomSheet: View, newState: Int) {
+//                if (newState == BottomSheetBehavior.STATE_DRAGGING) {
+//                    behavior.state = BottomSheetBehavior.STATE_COLLAPSED
+//                }
+//            }
+//
+//            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+//                // Optionally handle sliding
+//            }
+//        })
     }
 
     private fun getWindowHeight(): Int {

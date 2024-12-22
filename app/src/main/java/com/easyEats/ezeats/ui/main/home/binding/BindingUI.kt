@@ -1,11 +1,16 @@
 package com.easyEats.ezeats.ui.main.home.binding
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
+import android.os.Handler
+import android.os.Looper
 import android.provider.Settings
 import androidx.navigation.NavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.databinding.FragmentHomeScreenBinding
 import com.easyEats.ezeats.ui.main.home.HomeScreenFragment
@@ -36,6 +41,7 @@ data class BindingUI(
         bindingData()
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun bindingData() {
         binding.mainViewModel = mainViewModel
         binding.homeViewModel = homeViewModel
@@ -47,6 +53,10 @@ data class BindingUI(
 
         // Inject LocationUtil and set it in the ViewModel
         homeViewModel.setLocationUtil(LocationUtil(fragment))
+        autoScrollRecyclerView(binding.rvOurPartners)
+        autoScrollRecyclerView(binding.rvSpinWheelPartners)
+//        binding.rvSpinWheelPartners.setOnTouchListener { _, _ -> true }
+
 
         // Set up click listeners for various UI elements
         binding.tvLocation.setOnClickListener {
@@ -88,4 +98,36 @@ data class BindingUI(
         context.startActivity(intent)
         context.finish()
     }
+
+    private fun autoScrollRecyclerView(recyclerView: RecyclerView) {
+        val handler = Handler(Looper.getMainLooper())
+
+        // Disable user interaction
+        recyclerView.setOnTouchListener { _, _ -> true }
+
+        val scrollRunnable = object : Runnable {
+            override fun run() {
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                val lastVisiblePosition = layoutManager.findLastVisibleItemPosition()
+
+                // Smooth scroll to the right until the last item is visible
+                recyclerView.smoothScrollBy(12, 0) // Adjust speed here
+
+                // Check if we've reached the last item and reset to the beginning
+                if (lastVisiblePosition == recyclerView.adapter?.itemCount?.minus(1)) {
+                    // Wait until the scroll ends, then reset to the first item
+                    recyclerView.postDelayed({
+                        recyclerView.scrollToPosition(0) // Jump back to the beginning smoothly
+                    }, 200) // Delay before resetting (adjust the value)
+                }
+
+                handler.postDelayed(this, 50) // Adjust delay for smoothness
+            }
+        }
+
+        handler.post(scrollRunnable)
+    }
+
+
+
 }

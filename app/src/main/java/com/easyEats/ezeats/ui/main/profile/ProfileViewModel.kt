@@ -23,9 +23,6 @@ class ProfileViewModel @Inject constructor(val mainUseCase: MainUseCase) :
     val userResultLiveData: LiveData<Resource<BaseResponse<UserInfoResponse>>> get() = _userResultMutableLiveData
 
 
-    private val _deleteUserResultMutableLiveData =
-        MutableLiveData<Resource<BaseResponse<Any>>>()
-    val deleteUserResultLiveData: LiveData<Resource<BaseResponse<Any>>> get() = _deleteUserResultMutableLiveData
 
     private val _clearDeviceTokenMutableLiveData =
         MutableLiveData<Resource<BaseResponse<Any>>>()
@@ -58,29 +55,7 @@ class ProfileViewModel @Inject constructor(val mainUseCase: MainUseCase) :
 
 
 
-    fun deleteUserInfoResult() {
-        val flow = createDeleteUserInfoResultRequest()
-        apply(flow = flow, maxRetries = 2, onError = { error ->
-            _deleteUserResultMutableLiveData.value =
-                Resource.Error("No Internet Connection")
-        }, onSuccess = { resource ->
-            _deleteUserResultMutableLiveData.value = resource
-        })
-    }
 
-
-    private fun createDeleteUserInfoResultRequest(): Flow<Resource<BaseResponse<Any>>> =
-        channelFlow {
-            send(Resource.Loading())
-            val result = mainUseCase.userInfoUseCase.deleteAccount()
-            result.handleResponse(onSuccess = {
-                send(Resource.Success(result))
-            }, onError = { message, error ->
-                send(Resource.Error(message, error))
-            }, onUnauthenticated = {
-                send(Resource.UnAuthenticated())
-            })
-        }
 
 
     fun clearDeviceTokenResult() {

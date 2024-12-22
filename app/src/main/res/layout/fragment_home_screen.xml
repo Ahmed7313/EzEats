@@ -544,8 +544,8 @@
                             app:ci_drawable="@drawable/indicator_active"
                             app:ci_drawable_unselected="@drawable/indicator_inactive"
                             app:ci_gravity="center"
-                            app:ci_height="8dp"
-                            app:ci_margin="9dp"
+                            app:ci_height="7dp"
+                            app:ci_margin="10dp"
                             app:ci_orientation="horizontal"
                             app:ci_width="36dp"
                             app:data="@{homeViewModel.featuredOffers}"
@@ -784,6 +784,7 @@
                             android:layout_gravity="center"
                             android:layout_marginTop="@dimen/_30sdp"
                             android:fontFamily="@font/gilroy_700"
+                            android:overScrollMode="never"
                             android:text="@string/spin_the_wheel_partners"
                             android:textSize="@dimen/_20ssp"
                             android:textStyle="bold" />

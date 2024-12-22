@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import com.easyEats.ezeats.base.loading.LoadingDialog
 import com.easyEats.ezeats.ui.auth.main.AuthActivity
 import com.easyEats.ezeats.ui.main.main.HomeActivity
 
@@ -23,6 +24,9 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
 
     // Non-nullable property to access the ViewDataBinding instance
     protected val binding get() = _binding!!
+
+    private var loadingDialog: LoadingDialog? = null
+
 
     /**
      * Inflates the binding and sets the root view for this fragment.
@@ -73,24 +77,33 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
      * Shows a loading indicator if the activity is of type MainActivity.
      */
     protected fun showLoading() {
-        (activity as? AuthActivity)?.binding?.loader?.visibility = View.VISIBLE
-        (activity as? AuthActivity)?.binding?.loader?.isEnabled = false
+        if (loadingDialog == null) {
+            loadingDialog = LoadingDialog()
+            loadingDialog?.isCancelable = false
+            loadingDialog?.show(parentFragmentManager, "LoadingDialog")
+        }
     }
 
     protected fun showMainLoading() {
-        (activity as? HomeActivity)?.binding?.loader?.visibility = View.VISIBLE
-        (activity as? HomeActivity)?.binding?.loader?.isEnabled = false
+        if (loadingDialog == null) {
+            loadingDialog = LoadingDialog()
+            loadingDialog?.isCancelable = false
+            loadingDialog?.show(parentFragmentManager, "LoadingDialog")
+        }
     }
 
     protected fun hideMainLoading() {
-        (activity as? HomeActivity)?.binding?.loader?.visibility = View.GONE
+        loadingDialog?.dismiss()
+        loadingDialog = null
     }
+
 
     /**
      * Hides the loading indicator if the activity is of type MainActivity.
      */
     protected fun hideLoading() {
-        (activity as? AuthActivity)?.binding?.loader?.visibility = View.GONE
+        loadingDialog?.dismiss()
+        loadingDialog = null
     }
 
     protected fun authenticateUser() {

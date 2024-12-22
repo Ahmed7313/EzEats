@@ -1,5 +1,6 @@
 package com.easyEats.ezeats.ui.main.home
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -94,6 +95,7 @@ class HomeViewModel @Inject constructor(private val mainUseCase: MainUseCase) :
     private fun getHomeResult(homeRequest: HomeRequest) {
         val flow = createHomeResultRequest(homeRequest)
         apply(flow = flow, maxRetries = 2, onError = { error ->
+            Log.d("TAG", "getHomeResult: ${error.localizedMessage}")
             _homeResultMutableLiveData.value =
                 Resource.Error("No Internet Connection")
         }, onSuccess = { resource ->

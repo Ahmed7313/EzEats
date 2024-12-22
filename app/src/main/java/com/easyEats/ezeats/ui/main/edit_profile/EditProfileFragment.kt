@@ -1,19 +1,25 @@
 package com.easyEats.ezeats.ui.main.edit_profile
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.provider.MediaStore
 import android.util.Base64
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.DatePicker
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.base.BaseFragment
 import com.easyEats.ezeats.databinding.FragmentEditProfileBinding
+import com.easyEats.ezeats.ui.auth.main.AuthActivity
+import com.easyEats.ezeats.ui.main.delete_account.DeleteAccountDialogFragment
 import com.easyEats.ezeats.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import es.dmoral.toasty.Toasty
@@ -30,10 +36,13 @@ import java.util.Locale
  * This fragment includes functionality for selecting an image from the gallery, updating the birthdate, and saving profile changes.
  */
 @AndroidEntryPoint
-class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>() {
+class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), DeleteAccountDialogFragment.DialogCallback {
 
     // ViewModel to manage the data and state related to editing user profile
     private val editProfileViewModel: EditProfileViewModel by viewModels()
+
+    private var initialFullName: String = ""
+
 
     // ActivityResultLauncher to handle image picking from the gallery
     private val pickImageLauncher =
@@ -43,6 +52,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>() {
                 val base64Image = convertUriToBase64(it)
                 editProfileViewModel.setImageBase64(base64Image)
                 binding.ivProfile.setImageURI(uri)
+                editProfileViewModel.isSavedButtonEnabled.value = true
             }
         }
 
@@ -64,8 +74,15 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>() {
         // Opens image picker when profile or edit profile views are clicked
         binding.mcvEditProfile.setOnClickListener { pickImageFromGallery() }
         binding.ivProfile.setOnClickListener {
-            if (editProfileViewModel.isViewsEditable.value == true) pickImageFromGallery()
+            pickImageFromGallery()
         }
+
+        binding.tvDeleteAccount.setOnClickListener {
+            val dialog = DeleteAccountDialogFragment()
+            dialog.setDialogCallback(this)
+            dialog.show(parentFragmentManager, "CustomDialog")
+        }
+
 
         // Navigates back on back button click
         binding.ivBack.setOnClickListener { findNavController().popBackStack() }
@@ -85,10 +102,19 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>() {
                     val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.US)
                     binding.tvBirthDate.setText(dateFormat.format(selectedDate.time))
                     editProfileViewModel.birthDate = dateFormat.format(selectedDate.time)
+                    editProfileViewModel.isSavedButtonEnabled.value = true
                 },
                 year, month, day
             )
             datePickerDialog.show()
+        }
+
+        initialFullName = editProfileViewModel.fullName ?: ""
+        binding.tvFullName.doOnTextChanged { text, _, _, _ ->
+            // Compare the current text with the initial value
+            editProfileViewModel.isSavedButtonEnabled.value = text.toString() != initialFullName
+            Log.d(TAG, "setUpViews: text ${text.toString()}")
+            Log.d(TAG, "setUpViews: initial $initialFullName")
         }
     }
 
@@ -102,13 +128,39 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>() {
                     hideMainLoading()
                     Toasty.error(requireContext(), resource.message, Toast.LENGTH_LONG).show()
                 }
+
                 is Resource.Loading -> showMainLoading()
                 is Resource.Success -> {
                     findNavController().navigateUp()
                     hideMainLoading()
                 }
-                is Resource.UnAuthenticated -> { /* handle unauthenticated state */ }
+
+                is Resource.UnAuthenticated -> { /* handle unauthenticated state */
+                }
             }
+        }
+
+        editProfileViewModel.deleteUserResultLiveData.observe(viewLifecycleOwner) { resource ->
+            when (resource) {
+                is Resource.Error -> {
+
+                }
+
+                is Resource.Loading -> {
+
+                }
+
+                is Resource.Success -> {
+                    editProfileViewModel.saveToke("")
+                    editProfileViewModel.setUserVerification(false)
+                    startActivity(Intent(requireActivity(), AuthActivity::class.java))
+                }
+
+                is Resource.UnAuthenticated -> {
+
+                }
+            }
+
         }
     }
 
@@ -140,5 +192,12 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>() {
     override fun onDestroyView() {
         super.onDestroyView()
         hideMainLoading()
+    }
+
+    override fun onDeleteClicked() {
+        editProfileViewModel.deleteUserInfoResult()
+    }
+
+    override fun onCancelClicked() {
     }
 }

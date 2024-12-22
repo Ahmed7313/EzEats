@@ -29,6 +29,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
@@ -177,7 +178,7 @@ class OffersViewModel @Inject constructor(val mainUseCase: MainUseCase) :
         categories.removeIf { it.categoryId == "eqvWcHcHaD" }
         val itemAll = Category(
             "eqvWcHcHaD",
-            "https://jtxlimrcv63uszqdkzh2a9d1r7pd0u.files-sashido.cloud/a259bebbbd74e87ff6ff496312479784_Untitled%20design_20241001_162612_0000.png",
+            "https://jtxlimrcv63uszqdkzh2a9d1r7pd0u.files-sashido.cloud/945bc1b79e2391ef9b23dc478b192100_Final.png",
             "All",
             null
         )
