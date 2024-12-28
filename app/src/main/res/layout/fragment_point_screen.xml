@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
-        <import type="android.view.View" />
+        <import type="android.view.View"/>
 
         <variable
             name="pointsResponse"
@@ -29,317 +28,196 @@
                 android:layout_height="match_parent"
                 android:visibility="visible">
 
-                <TextView
-                    android:id="@+id/tv_loyalty_center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/_16sdp"
-                    android:layout_marginTop="@dimen/_21sdp"
-                    android:fontFamily="@font/gilroy_700"
-                    android:text="@string/loyalty_center"
-                    android:textSize="@dimen/_18ssp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/cv_spin_wheel_promo_codes"
-                    android:layout_width="0dp"
+                    android:id="@+id/card"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginEnd="@dimen/_15sdp"
-                    android:elevation="0dp"
-                    app:cardCornerRadius="@dimen/_10sdp"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="@dimen/_3sdp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/tv_loyalty_center"
-                    app:layout_constraintTop_toBottomOf="@id/tv_loyalty_center">
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:contentDescription="@string/spin_the_wheel_promo_code_image"
-                            android:src="@drawable/spin_wheel_promo_codes_image"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent" />
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_15sdp">
 
                         <TextView
-                            android:id="@+id/textView17"
+                            android:id="@+id/tvHeader"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/_12sdp"
-                            android:layout_marginTop="@dimen/_10sdp"
-                            android:fontFamily="@font/gilroy_600"
-                            android:text="@string/spin_the_wheel_codes"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_15ssp"
-                            android:textStyle="bold"
+                            android:fontFamily="@font/gilroy_700"
+                            android:gravity="center"
+                            android:text="@string/loyalty_points"
+                            android:textColor="#3A3D42"
+                            android:textSize="@dimen/_18ssp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
-                            android:id="@+id/textView21"
-                            android:layout_width="wrap_content"
+                            android:id="@+id/tvPointsTitle"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/_12sdp"
-                            android:layout_marginTop="@dimen/_3sdp"
-                            android:fontFamily="@font/gilroy_500"
+                            android:layout_marginStart="@dimen/_15sdp"
+                            android:drawablePadding="@dimen/_3sdp"
+                            android:fontFamily="@font/gilroy_700"
+                            android:text="@string/points"
                             android:textColor="#3A3D42"
-                            android:textSize="@dimen/_15ssp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textView17"
-                            tools:text="You have 10 unused promo codes,\nstart using them now! " />
+                            android:textSize="@dimen/_18ssp"
+                            app:drawableStartCompat="@drawable/frame_logo"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/pointsCircle"
+                            app:layout_constraintTop_toTopOf="@id/pointsCircle" />
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btn_spin_wheel_promo_codes"
-                            android:layout_width="@dimen/_105sdp"
+
+                        <TextView
+                            android:id="@+id/tvDescription"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_11sdp"
-                            android:layout_marginBottom="@dimen/_17sdp"
+                            android:layout_marginStart="@dimen/_15sdp"
+                            android:layout_marginTop="@dimen/_5sdp"
                             android:fontFamily="@font/gilroy_600"
-                            android:maxLines="1"
-                            android:paddingHorizontal="@dimen/_27sdp"
-                            android:paddingVertical="@dimen/_5sdp"
-                            android:text="@string/view_more"
+                            android:lineSpacingExtra="5dp"
+                            android:text="@string/you_can_use_your_ezpoints_to_redeem_any_offers_regardless_of_the_restaurant"
+                            android:textColor="#3A3D42"
                             android:textSize="@dimen/_10ssp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="@+id/textView21"
-                            app:layout_constraintTop_toBottomOf="@+id/textView21" />
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/pointsCircle"
+                            app:layout_constraintTop_toBottomOf="@+id/tvPointsTitle" />
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </androidx.cardview.widget.CardView>
-
-                <LinearLayout
-                    android:id="@+id/linearLayout4"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="@id/cv_spin_wheel_promo_codes"
-                    app:layout_constraintStart_toStartOf="@id/cv_spin_wheel_promo_codes"
-                    app:layout_constraintTop_toBottomOf="@id/cv_spin_wheel_promo_codes">
-
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="0dp"
-                        android:layout_height="@dimen/_79sdp"
-                        android:layout_marginVertical="@dimen/_2sdp"
-                        android:layout_marginEnd="@dimen/_15sdp"
-                        android:layout_weight="1"
-                        android:elevation="0dp"
-                        app:cardCornerRadius="@dimen/_10sdp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="@+id/tv_loyalty_center"
-                        app:layout_constraintTop_toBottomOf="@id/tv_loyalty_center">
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:contentDescription="@string/spin_the_wheel_promo_code_image"
-                                android:src="@drawable/vouchers_icon"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent" />
+                        <RelativeLayout
+                            android:id="@+id/pointsCircle"
+                            android:layout_width="@dimen/_100sdp"
+                            android:layout_height="@dimen/_100sdp"
+                            android:layout_marginTop="@dimen/_16sdp"
+                            android:background="@drawable/circle_background_points"
+                            android:gravity="center"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tvHeader">
 
                             <TextView
-                                android:id="@+id/textView18"
+                                android:id="@+id/tvPoints"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/_12sdp"
-                                android:layout_marginTop="@dimen/_10sdp"
-                                android:fontFamily="@font/gilroy_600"
-                                android:text="@string/vouchers"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/_15ssp"
-                                android:textStyle="bold"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <TextView
-                                android:id="@+id/textView22"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/_12sdp"
-                                android:layout_marginTop="@dimen/_3sdp"
-                                android:fontFamily="@font/gilroy_500"
+                                android:layout_centerInParent="true"
+                                android:fontFamily="@font/gilroy_700"
                                 android:textColor="#3A3D42"
-                                android:textSize="@dimen/_10ssp"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/textView18"
-                                tools:text="You have \n10 Unused Vouchers " />
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="0dp"
-                        android:layout_height="@dimen/_79sdp"
-                        android:layout_marginVertical="@dimen/_2sdp"
-                        android:layout_weight="1"
-                        android:elevation="0dp"
-                        app:cardCornerRadius="@dimen/_10sdp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="@+id/tv_loyalty_center"
-                        app:layout_constraintTop_toBottomOf="@id/tv_loyalty_center">
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
-
-                            <ImageView
-                                android:id="@+id/imageView7"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:contentDescription="@string/spin_the_wheel_promo_code_image"
-                                android:src="@drawable/points_icon"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent" />
+                                android:text="@{String.valueOf(pointsResponse.EZPoints)}"
+                                android:textSize="@dimen/_30ssp"
+                                tools:text="300" />
 
                             <TextView
-                                android:id="@+id/textView19"
+                                android:id="@+id/tvPointsLabel"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/_12sdp"
-                                android:layout_marginTop="@dimen/_10sdp"
+                                android:layout_below="@id/tvPoints"
+                                android:layout_centerHorizontal="true"
                                 android:fontFamily="@font/gilroy_600"
                                 android:text="@string/points"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/_15ssp"
-                                android:textStyle="bold"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
+                                android:textColor="@color/main_color"
+                                android:textSize="@dimen/_14ssp" />
+                        </RelativeLayout>
 
-                            <TextView
-                                android:id="@+id/textView23"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/_12sdp"
-                                android:layout_marginTop="@dimen/_3sdp"
-                                android:fontFamily="@font/gilroy_500"
-                                android:textColor="#3A3D42"
-                                android:textSize="@dimen/_10ssp"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/textView19"
-                                tools:text="You have \n10 Unused Vouchers " />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="@dimen/_9sdp"
-                                android:layout_marginBottom="@dimen/_6sdp"
-                                android:fontFamily="@font/gilroy_500"
-                                android:text="@string/view_all"
-                                android:textSize="@dimen/_9ssp"
-                                app:drawableRightCompat="@drawable/arrow_gray_right"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent" />
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-                    </androidx.cardview.widget.CardView>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
-                </LinearLayout>
-
+                </androidx.cardview.widget.CardView>
 
                 <TextView
-                    android:id="@+id/textView24"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_20sdp"
-                    android:fontFamily="@font/gilroy_700"
-                    android:text="@string/spin_the_wheel_codes"
-                    android:textSize="@dimen/_18ssp"
-                    app:layout_constraintStart_toStartOf="@+id/linearLayout4"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
-
-                <TextView
-                    android:id="@+id/textView25"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/gilroy_500"
-                    android:text="@string/view_all"
-                    android:textSize="@dimen/_12ssp"
-                    app:drawableRightCompat="@drawable/arrow_gray_big_icon"
-                    app:layout_constraintBottom_toBottomOf="@+id/textView24"
-                    app:layout_constraintEnd_toEndOf="@+id/linearLayout4"
-                    app:layout_constraintTop_toTopOf="@+id/textView24" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerView"
+                    android:id="@+id/tvMarakezPoint"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_6sdp"
-                    android:orientation="vertical"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintEnd_toEndOf="@+id/textView25"
-                    app:layout_constraintStart_toStartOf="@+id/textView24"
-                    app:layout_constraintTop_toBottomOf="@+id/textView24"
-                    tools:itemCount="3"
-                    tools:listitem="@layout/item_voucher" />
-
-                <TextView
-                    android:id="@+id/textView26"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_margin="@dimen/_15sdp"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:drawablePadding="@dimen/_6sdp"
                     android:fontFamily="@font/gilroy_700"
-                    android:text="@string/vouchers"
+                    android:visibility="@{pointsResponse.marakezPoints.size()!=0?View.VISIBLE:View.GONE}"
+                    android:text="@string/marakez_points"
+                    android:drawableStart="@drawable/marakez_points_icon"
+                    android:textColor="#3A3D42"
                     android:textSize="@dimen/_18ssp"
-                    app:layout_constraintStart_toStartOf="@+id/recyclerView"
-                    app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerView2"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_6sdp"
-                    android:orientation="horizontal"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/textView26"
-                    app:layout_constraintTop_toBottomOf="@+id/textView26"
-                    tools:itemCount="3"
-                    tools:listitem="@layout/item_voucher_loyalty_points"
-                    />
-
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/card" />
 
                 <TextView
-                    android:id="@+id/textView27"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_20sdp"
-                    android:fontFamily="@font/gilroy_700"
-                    android:text="@string/points"
-                    android:textSize="@dimen/_18ssp"
-                    app:layout_constraintStart_toStartOf="@+id/recyclerView2"
-                    app:layout_constraintTop_toBottomOf="@+id/recyclerView2" />
-
-                <TextView
-                    android:id="@+id/textView28"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/gilroy_500"
-                    android:text="@string/view_all"
-                    android:textSize="@dimen/_12ssp"
-                    app:drawableRightCompat="@drawable/arrow_gray_big_icon"
-                    app:layout_constraintBottom_toBottomOf="@+id/textView27"
-                    app:layout_constraintEnd_toEndOf="@+id/recyclerView"
-                    app:layout_constraintTop_toTopOf="@+id/textView27" />
-
-
-                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/tvMarakezDescription"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintEnd_toEndOf="@+id/textView28"
-                    app:layout_constraintStart_toStartOf="@+id/textView27"
-                    app:layout_constraintTop_toBottomOf="@+id/textView27"
-                    tools:itemCount="3"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/gilroy_600"
+                    android:lineSpacingExtra="3dp"
+                    android:visibility="@{pointsResponse.marakezPoints.size()!=0?View.VISIBLE:View.GONE}"
+                    android:text="@string/marakez_points_allow_you_to_redeem_offers_from_their_respective_restaurants"
+                    android:textColor="#3A3D42"
+                    android:textSize="@dimen/_10ssp"
+                    app:layout_constraintEnd_toEndOf="@+id/tvRestaurantPoint"
+                    app:layout_constraintStart_toStartOf="@+id/tvRestaurantPoint"
+                    app:layout_constraintTop_toBottomOf="@+id/tvMarakezPoint" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvMarakezPoints"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_10sdp"
+                    android:paddingBottom="@dimen/_70sdp"
+                    android:visibility="@{pointsResponse.marakezPoints.size()!=0?View.VISIBLE:View.GONE}"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="@+id/tvRestaurantDescription"
+                    app:layout_constraintStart_toStartOf="@+id/tvRestaurantDescription"
+                    app:layout_constraintTop_toBottomOf="@+id/tvMarakezDescription"
+                    tools:itemCount="3"
+                    tools:listitem="@layout/points_item" />
+
+                <TextView
+                    android:id="@+id/tvRestaurantPoint"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_15sdp"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:drawablePadding="@dimen/_6sdp"
+                    android:drawableStart="@drawable/restaurants_points_icon"
+                    android:fontFamily="@font/gilroy_700"
+                    android:visibility="@{pointsResponse.loyaltyPoints.size()!=0?View.VISIBLE:View.GONE}"
+                    android:text="@string/restuarnats_points"
+                    android:textColor="#3A3D42"
+                    android:textSize="@dimen/_18ssp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/rvMarakezPoints" />
+
+                <TextView
+                    android:id="@+id/tvRestaurantDescription"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/gilroy_600"
+                    android:lineSpacingExtra="3dp"
+                    android:visibility="@{pointsResponse.loyaltyPoints.size()!=0?View.VISIBLE:View.GONE}"
+                    android:text="@string/you_can_use_your_ezpoints_to_redeem_any_offers_regardless_of_the_restaurant"
+                    android:textColor="#3A3D42"
+                    android:textSize="@dimen/_10ssp"
+                    app:layout_constraintEnd_toEndOf="@+id/tvRestaurantPoint"
+                    app:layout_constraintStart_toStartOf="@+id/tvRestaurantPoint"
+                    app:layout_constraintTop_toBottomOf="@+id/tvRestaurantPoint" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvPoints"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_5sdp"
+                    android:orientation="vertical"
+                    android:paddingBottom="@dimen/_70sdp"
+                    android:visibility="@{pointsResponse.loyaltyPoints.size()!=0?View.VISIBLE:View.GONE}"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="@+id/tvRestaurantDescription"
+                    app:layout_constraintStart_toStartOf="@+id/tvRestaurantDescription"
+                    app:layout_constraintTop_toBottomOf="@+id/tvRestaurantDescription"
+                    tools:itemCount="3"
                     tools:listitem="@layout/points_item" />
 
                 <LinearLayout
@@ -349,11 +227,12 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:orientation="vertical"
+                    android:layout_marginBottom="@dimen/_70sdp"
                     android:visibility="@{pointsResponse.loyaltyPoints.size()!=0?View.GONE:View.VISIBLE,default=gone}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/rvPoints"
                     tools:ignore="UseCompoundDrawables">
 
                     <ImageView
@@ -365,10 +244,10 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/_25sdp"
                         android:layout_marginTop="@dimen/_10ssp"
                         android:fontFamily="@font/gilroy_600"
                         android:gravity="center"
+                        android:layout_marginHorizontal="@dimen/_25sdp"
                         android:text="@string/keep_collecting_points_and_soon_you_will_be_able_to_redeem_them_in_exchange_for_awesome_deals"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_12ssp" />

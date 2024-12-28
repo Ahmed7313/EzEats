@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.easyEats.ezeats.R
+import com.easyEats.ezeats.domain.main.model.response.loyality_center.SpinWheelVoucher
 import com.easyEats.ezeats.domain.main.model.response.voucher.VoucherResponseItem
 import java.text.SimpleDateFormat
 import java.time.ZonedDateTime
@@ -18,11 +19,11 @@ import java.util.Locale
 fun reformatDate(tv: TextView, dateString: String?) {
     if (dateString.isNullOrEmpty().not()) {
         val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
-        val outputFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
         val date = inputFormat.parse(dateString)
-        tv.text = outputFormat.format(date)
+        tv.text = "Expires ${outputFormat.format(date)}*"
     } else {
-        tv.visibility = View.GONE
+        tv.visibility = View.INVISIBLE
     }
 }
 
@@ -33,6 +34,22 @@ fun voucherBackground(tv: TextView, voucher: VoucherResponseItem) {
         tv.setBackgroundResource(R.drawable.redeemed_background)
         tv.text = "Redeemed"
     } else if (isDateBeforeToday(voucher.promoCodeExpiryDate?.iso)) {
+        tv.setBackgroundResource(R.drawable.redeemed_background)
+        tv.text = "Expired"
+    } else {
+        tv.setBackgroundResource(R.drawable.active_voucher_background)
+        tv.text = "Active"
+    }
+}
+
+
+@BindingAdapter("setSpinWheelVoucherBackground")
+fun setSpinWheelVoucherBackground(tv: TextView, voucher: SpinWheelVoucher) {
+
+    if (voucher.isRedeemed == true) {
+        tv.setBackgroundResource(R.drawable.redeemed_background)
+        tv.text = "Redeemed"
+    } else if (isDateBeforeToday(voucher.expiryDate?.iso)) {
         tv.setBackgroundResource(R.drawable.redeemed_background)
         tv.text = "Expired"
     } else {
@@ -82,5 +99,4 @@ fun setStyledText(tv: TextView, voucher: VoucherResponseItem) {
     // Set the styled text to the TextView
     tv.text = spannable
 }
-
 

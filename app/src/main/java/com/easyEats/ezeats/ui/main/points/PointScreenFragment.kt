@@ -61,15 +61,16 @@ class PointScreenFragment : BaseFragment<FragmentPointScreenBinding>() {
 
                 is Resource.Success -> {
                     hideMainLoading()
-//                    binding.pointsResponse = resource.data?.result?.data
-//                    binding.rvPoints.adapter = pointsAdapter
-//                    binding.rvMarakezPoints.adapter=marakezPointsAdapter
-//                    pointsAdapter.submitList(resource.data?.result?.data?.loyaltyPoints)
-//                    marakezPointsAdapter.submitList(resource.data?.result?.data?.marakezPoints)
+                    binding.pointsResponse = resource.data?.result?.data
+                    binding.rvPoints.adapter = pointsAdapter
+                    binding.rvMarakezPoints.adapter=marakezPointsAdapter
+                    pointsAdapter.submitList(resource.data?.result?.data?.loyaltyPoints)
+                    marakezPointsAdapter.submitList(resource.data?.result?.data?.marakezPoints)
                 }
 
                 is Resource.UnAuthenticated -> {
                     hideMainLoading()
+                    Log.d(TAG, "listenToObserver: .UnAuthenticated ")
 
                 }
             }
@@ -79,11 +80,6 @@ class PointScreenFragment : BaseFragment<FragmentPointScreenBinding>() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        hideMainLoading()
-    }
-
-    override fun onPause() {
-        super.onPause()
         hideMainLoading()
     }
 }

@@ -47,12 +47,12 @@
                     android:fontFamily="@font/gilroy_700"
                     android:maxLines="3"
                     app:styledText="@{voucher}"
-                    android:textColor="@color/black"
+                    android:textColor="@color/main_color"
                     android:textSize="@dimen/_11ssp"
                     app:layout_constraintEnd_toStartOf="@+id/tvPoints"
                     app:layout_constraintStart_toEndOf="@+id/ivLogo"
                     app:layout_constraintTop_toTopOf="@+id/ivLogo"
-                    tools:text="Tradeline" />
+                    tools:text="30NDB" />
 
                 <TextView
                     android:id="@+id/textView13"
@@ -122,35 +122,21 @@
 
                 <TextView
                     android:id="@+id/tv_expired_date"
-                    setDate="@{voucher.promoCodeExpiryDate.iso.toString()}"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_4sdp"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    android:layout_marginBottom="@dimen/_3sdp"
                     android:fontFamily="@font/gilroy_600"
-                    android:layout_marginBottom="@dimen/_4sdp"
                     android:lineSpacingExtra="@dimen/_2sdp"
                     android:paddingVertical="@dimen/_4sdp"
-                    android:textColor="#9C9DA0"
+                    android:textColor="@color/main_color"
                     android:textSize="@dimen/_9ssp"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    setDate="@{voucher.promoCodeExpiryDate.iso.toString()}"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/ivLogo"
                     app:layout_constraintTop_toBottomOf="@+id/tvDescription"
                     tools:text="Expires 25-09-2024*" />
 
-                <TextView
-                    android:id="@+id/tv_promo_code"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/gilroy_700"
-                    android:maxLines="3"
-                    android:textColor="@color/main_color"
-                    android:textSize="@dimen/_11ssp"
-                    app:layout_constraintBottom_toBottomOf="@+id/tv_expired_date"
-                    android:layout_marginEnd="@dimen/_9sdp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/tv_expired_date"
-                    app:styledText="@{voucher}"
-                    tools:text="BRGREZ50" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -6,11 +6,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.easyEats.ezeats.databinding.PointsItemBinding
-import com.easyEats.ezeats.domain.main.model.response.points.RestaurantPoint
+import com.easyEats.ezeats.domain.main.model.response.loyality_center.LoyaltyPoint
 import javax.inject.Inject
 
 class PointsAdapter @Inject constructor() :
-    ListAdapter<RestaurantPoint, PointsAdapter.PointsViewHolder>(PointDiffUtil()) {
+    ListAdapter<LoyaltyPoint, PointsAdapter.PointsViewHolder>(PointDiffUtil()) {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PointsViewHolder {
@@ -28,14 +28,14 @@ class PointsAdapter @Inject constructor() :
     inner class PointsViewHolder(val binding: PointsItemBinding) :
         RecyclerView.ViewHolder(binding.root)
 
-    class PointDiffUtil : DiffUtil.ItemCallback<RestaurantPoint>() {
-        override fun areItemsTheSame(oldItem: RestaurantPoint, newItem: RestaurantPoint): Boolean {
-            return oldItem.restaurantId == newItem.restaurantId
+    class PointDiffUtil : DiffUtil.ItemCallback<LoyaltyPoint>() {
+        override fun areItemsTheSame(oldItem: LoyaltyPoint, newItem: LoyaltyPoint): Boolean {
+            return oldItem.resturantId == newItem.resturantId
         }
 
         override fun areContentsTheSame(
-            oldItem: RestaurantPoint,
-            newItem: RestaurantPoint
+            oldItem: LoyaltyPoint,
+            newItem: LoyaltyPoint
         ): Boolean {
             return oldItem == newItem
         }

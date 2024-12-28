@@ -7,16 +7,17 @@
 
         <variable
             name="voucher"
-            type="com.easyEats.ezeats.domain.main.model.response.voucher.VoucherResponseItem" />
+            type="com.easyEats.ezeats.domain.main.model.response.loyality_center.Promocode" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="@dimen/_130sdp"
-        android:layout_height="wrap_content">
+        android:layout_height="@dimen/_140sdp">
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="@color/white"
             app:cardCornerRadius="@dimen/_7sdp"
             app:cardUseCompatPadding="true"
@@ -24,7 +25,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
 
                 <com.makeramen.roundedimageview.RoundedImageView
                     android:id="@+id/ivLogo"
@@ -49,12 +50,15 @@
                     android:maxLines="3"
                     android:layout_marginEnd="@dimen/_5sdp"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_7ssp"
+                    android:textSize="@dimen/_11ssp"
+
                     app:layout_constraintBottom_toBottomOf="@+id/ivLogo"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/ivLogo"
                     app:layout_constraintTop_toTopOf="@+id/ivLogo"
-                    app:styledText="@{voucher}"
+
+                    android:text="@{voucher.value}"
+
                     tools:text="50% Off your next order from Butchers burger"
                     />
 
@@ -93,12 +97,15 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_9sdp"
                     android:layout_marginEnd="@dimen/_8sdp"
-                    android:fontFamily="@font/gilroy_500"
+                    android:fontFamily="@font/gilroy_600"
                     android:lineSpacingExtra="@dimen/_2sdp"
                     android:paddingVertical="@dimen/_4sdp"
-                    android:text="@{voucher.promoCodeDescription}"
+                    android:text="@{voucher.description}"
                     android:textColor="#3A3D42"
-                    android:textSize="@dimen/_7ssp"
+                    android:maxLines="3"
+                    android:lines="3"
+                    android:ellipsize="end"
+                    android:textSize="@dimen/_11ssp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="@+id/ivLogo"
@@ -112,11 +119,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_2sdp"
                     android:fontFamily="@font/gilroy_600"
-                    android:layout_marginBottom="@dimen/_4sdp"
                     android:lineSpacingExtra="@dimen/_2sdp"
                     android:paddingVertical="@dimen/_4sdp"
                     android:textColor="#9C9DA0"
-                    android:textSize="@dimen/_7ssp"
+                    android:textSize="@dimen/_10ssp"
                     app:layout_constraintStart_toStartOf="@+id/ivLogo"
                     app:layout_constraintTop_toBottomOf="@+id/tvDescription"
                     tools:text="Expires 25-09-2024*" />
@@ -129,8 +135,9 @@
                     android:layout_marginBottom="@dimen/_7sdp"
                     android:fontFamily="@font/gilroy_700"
                     android:maxLines="3"
+                    android:text="@{voucher.code}"
                     android:textColor="@color/main_color"
-                    android:textSize="@dimen/_10ssp"
+                    android:textSize="@dimen/_12ssp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"

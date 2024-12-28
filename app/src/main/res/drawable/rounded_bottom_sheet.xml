@@ -1,5 +1,5 @@
 <!-- res/drawable/rounded_bottom_sheet.xml -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <solid android:color="@color/white" /> <!-- Change this color to match your bottom sheet background -->
-    <corners android:topLeftRadius="16dp" android:topRightRadius="16dp" /> <!-- Adjust radius as needed -->
+    <corners android:topLeftRadius="@dimen/_16sdp" android:topRightRadius="@dimen/_16sdp" /> <!-- Adjust radius as needed -->
 </shape>

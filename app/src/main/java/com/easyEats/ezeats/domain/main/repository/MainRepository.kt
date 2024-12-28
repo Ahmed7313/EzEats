@@ -12,7 +12,6 @@ import com.easyEats.ezeats.domain.main.model.request.home.HomeRequest
 import com.easyEats.ezeats.domain.main.model.request.offer_request.OfferRequest
 import com.easyEats.ezeats.domain.main.model.request.offers.OffersRequest
 import com.easyEats.ezeats.domain.main.model.request.order_history.OrderHistoryRequest
-import com.easyEats.ezeats.domain.main.model.request.points.PointsRequest
 import com.easyEats.ezeats.domain.main.model.request.restaurant.RestaurantRequest
 import com.easyEats.ezeats.domain.main.model.request.search.SearchRequest
 import com.easyEats.ezeats.domain.main.model.request.search.SearchSuggestionsRequest
@@ -20,6 +19,7 @@ import com.easyEats.ezeats.domain.main.model.response.active_order.ActiveOrderRe
 import com.easyEats.ezeats.domain.main.model.response.home_response.HomeResponse
 import com.easyEats.ezeats.domain.main.model.response.home_response.HotDeal
 import com.easyEats.ezeats.domain.main.model.response.location_response.Location
+import com.easyEats.ezeats.domain.main.model.response.loyality_center.LoyaltyCenterResponse
 import com.easyEats.ezeats.domain.main.model.response.order_history.OrderHistoryResponse
 import com.easyEats.ezeats.domain.main.model.response.partners.PartnersResponse
 import com.easyEats.ezeats.domain.main.model.response.points.PointsResponse
@@ -72,7 +72,7 @@ interface MainRepository {
 
     suspend fun getUserOrderHistory(orderHistoryRequest: OrderHistoryRequest): BaseResponse<OrderHistoryResponse>
 
-    suspend fun getUserPoints(pointsRequest: PointsRequest): BaseResponse<PointsResponse>
+    suspend fun getUserPoints(): BaseResponse<LoyaltyCenterResponse>
 
     fun getToken(): Flow<String>
 

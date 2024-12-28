@@ -11,12 +11,12 @@ import com.easyEats.ezeats.domain.main.model.request.home.HomeRequest
 import com.easyEats.ezeats.domain.main.model.request.offer_request.OfferRequest
 import com.easyEats.ezeats.domain.main.model.request.offers.OffersRequest
 import com.easyEats.ezeats.domain.main.model.request.order_history.OrderHistoryRequest
-import com.easyEats.ezeats.domain.main.model.request.points.PointsRequest
 import com.easyEats.ezeats.domain.main.model.request.restaurant.RestaurantRequest
 import com.easyEats.ezeats.domain.main.model.request.search.SearchRequest
 import com.easyEats.ezeats.domain.main.model.request.search.SearchSuggestionsRequest
 import com.easyEats.ezeats.domain.main.model.response.active_order.ActiveOrderResponse
 import com.easyEats.ezeats.domain.main.model.response.home_response.HotDeal
+import com.easyEats.ezeats.domain.main.model.response.loyality_center.LoyaltyCenterResponse
 import com.easyEats.ezeats.domain.main.model.response.order_history.OrderHistoryResponse
 import com.easyEats.ezeats.domain.main.model.response.partners.PartnersResponse
 import com.easyEats.ezeats.domain.main.model.response.points.PointsResponse
@@ -104,8 +104,8 @@ class MainResponseImpl @Inject constructor(
         return mainApiService.getUserOrderHistory(orderHistoryRequest)
     }
 
-    override suspend fun getUserPoints(pointsRequest: PointsRequest): BaseResponse<PointsResponse> {
-        return mainApiService.getUserPoints(pointsRequest)
+    override suspend fun getUserPoints(): BaseResponse<LoyaltyCenterResponse> {
+        return mainApiService.getUserPoints()
     }
 
     override fun getToken() = dataStorePreference.fetchToken()

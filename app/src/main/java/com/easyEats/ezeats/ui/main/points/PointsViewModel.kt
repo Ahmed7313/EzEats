@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.easyEats.ezeats.base.BaseResponse
 import com.easyEats.ezeats.domain.main.model.request.offer_request.OfferRequest
-import com.easyEats.ezeats.domain.main.model.request.points.PointsRequest
 import com.easyEats.ezeats.domain.main.model.response.home_response.HotDeal
+import com.easyEats.ezeats.domain.main.model.response.loyality_center.LoyaltyCenterResponse
 import com.easyEats.ezeats.domain.main.model.response.points.PointsResponse
 import com.easyEats.ezeats.domain.main.use_case.MainUseCase
 import com.easyEats.ezeats.ui.main.main.MainViewModel
@@ -21,8 +21,8 @@ import javax.inject.Inject
 class PointsViewModel @Inject constructor(val mainUseCase: MainUseCase) :
     MainViewModel(mainUseCase) {
     private val _pointsResultMutableLiveData =
-        MutableLiveData<Resource<BaseResponse<PointsResponse>>>()
-    val pointsResultLiveData: LiveData<Resource<BaseResponse<PointsResponse>>> get() = _pointsResultMutableLiveData
+        MutableLiveData<Resource<BaseResponse<LoyaltyCenterResponse>>>()
+    val pointsResultLiveData: LiveData<Resource<BaseResponse<LoyaltyCenterResponse>>> get() = _pointsResultMutableLiveData
 
     init {
         getPointsRestaurantResult()
@@ -30,23 +30,23 @@ class PointsViewModel @Inject constructor(val mainUseCase: MainUseCase) :
 
     private fun getPointsRestaurantResult() {
         viewModelScope.launch {
-            mainUseCase.pointsUseCase.getToken().collect { token ->
-                val flow = createPointsResultRequest(PointsRequest(token))
-                apply(flow = flow, maxRetries = 2, onError = { error ->
-                    _pointsResultMutableLiveData.value =
-                        Resource.Error("No Internet Connection")
-                }, onSuccess = { resource ->
-                    _pointsResultMutableLiveData.value = resource
-                })
-            }
+            val flow = createPointsResultRequest()
+            apply(flow = flow, maxRetries = 2, onError = { error ->
+                _pointsResultMutableLiveData.value =
+                    Resource.Error(error.message.toString())
+            }, onSuccess = { resource ->
+                _pointsResultMutableLiveData.value = resource
+            })
+
         }
     }
-     fun getUserToken():Flow<String> =mainUseCase.pointsUseCase.getToken()
 
-    private fun createPointsResultRequest(pointsRequest: PointsRequest): Flow<Resource<BaseResponse<PointsResponse>>> =
+    fun getUserToken(): Flow<String> = mainUseCase.pointsUseCase.getToken()
+
+    private fun createPointsResultRequest(): Flow<Resource<BaseResponse<LoyaltyCenterResponse>>> =
         channelFlow {
             send(Resource.Loading())
-            val result = mainUseCase.pointsUseCase.getUserPoints(pointsRequest)
+            val result = mainUseCase.pointsUseCase.getUserPoints()
             result.handleResponse(onSuccess = {
                 send(Resource.Success(result))
             }, onError = { message, error ->

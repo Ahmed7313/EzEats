@@ -132,8 +132,7 @@
         android:id="@+id/guestUserBottomSheet"
         android:name="com.easyEats.ezeats.ui.main.guest_user.GuestUserBottomSheet"
         android:label="GuestUserBottomSheet"
-        tools:layout="@layout/fragment_guest_user_bottom_sheet"
-        />
+        tools:layout="@layout/fragment_guest_user_bottom_sheet" />
 
     <action
         android:id="@+id/goToUserGuestScreen"
@@ -151,10 +150,24 @@
         android:id="@+id/activeOrderDetailsFragment"
         android:name="com.easyEats.ezeats.ui.main.active_order_details.ActiveOrderDetailsFragment"
         android:label="ActiveOrderDetailsFragment"
-        tools:layout="@layout/fragment_active_order_details"
-        />
+        tools:layout="@layout/fragment_active_order_details" />
 
     <action
         android:id="@+id/goToActiveOrderDetails"
         app:destination="@+id/activeOrderDetailsFragment" />
+    <dialog
+        android:id="@+id/voucherBottomSheet"
+        android:name="com.easyEats.ezeats.ui.main.points.voucher_bottom_sheet.VoucherBottomSheet"
+        android:label="VoucherBottomSheet"
+        tools:layout="@layout/voucher_bottom_sheet" >
+        <argument
+            android:name="isSpinWheelPoints"
+            app:argType="boolean"
+            android:defaultValue="false" />
+    </dialog>
+
+    <action
+        android:id="@+id/goToVoucherBottomSheet"
+        app:destination="@+id/voucherBottomSheet"
+        />
 </navigation>
