@@ -26,6 +26,7 @@ import com.easyEats.ezeats.domain.main.model.response.points.PointsResponse
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.Offer
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.Restaurant
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.RestaurantInfo
+import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.new_restaurants_reponse.RestaurantsResponseItem
 import com.easyEats.ezeats.domain.main.model.response.search_response.Category
 import com.easyEats.ezeats.domain.main.model.response.search_response.SearchScreenResponse
 import com.easyEats.ezeats.domain.main.model.response.user_info.UserInfoResponse
@@ -49,7 +50,7 @@ interface MainRepository {
 
     suspend fun clearRecentSearches(): BaseResponse<Any>
 
-    suspend fun searchRestaurant(searchRequest: SearchRequest): BaseResponse<List<Restaurant>>
+    suspend fun searchRestaurant(searchRequest: SearchRequest): BaseResponse<List<RestaurantsResponseItem>>
     suspend fun getRestaurantsByCategory(offersRequest: OffersRequest): BaseResponse<List<Restaurant>>
     suspend fun getCategory(): BaseResponse<List<Category>>
     suspend fun searchOffer(searchRequest: SearchRequest): BaseResponse<List<HotDeal>>
@@ -89,6 +90,8 @@ interface MainRepository {
 
     suspend fun saveUserRating(isUserViewedRatingDialog: Boolean)
     fun checkIfUserViewedRatingDialog(): Flow<Boolean>
+
+    suspend fun getRestaurants(restaurantRequest: com.easyEats.ezeats.domain.main.model.request.RestaurantRequest): BaseResponse<List<RestaurantsResponseItem>>
 
 
 }

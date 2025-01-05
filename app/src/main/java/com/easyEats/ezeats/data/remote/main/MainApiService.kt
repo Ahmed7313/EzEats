@@ -17,12 +17,10 @@ import com.easyEats.ezeats.domain.main.model.response.home_response.HotDeal
 import com.easyEats.ezeats.domain.main.model.response.location_response.Location
 import com.easyEats.ezeats.domain.main.model.response.loyality_center.LoyaltyCenterResponse
 import com.easyEats.ezeats.domain.main.model.response.order_history.OrderHistoryResponse
-import com.easyEats.ezeats.domain.main.model.response.partners.Partners
 import com.easyEats.ezeats.domain.main.model.response.partners.PartnersResponse
-import com.easyEats.ezeats.domain.main.model.response.points.PointsResponse
-import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.Offer
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.Restaurant
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.RestaurantInfo
+import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.new_restaurants_reponse.RestaurantsResponseItem
 import com.easyEats.ezeats.domain.main.model.response.search_response.Category
 import com.easyEats.ezeats.domain.main.model.response.search_response.SearchScreenResponse
 import com.easyEats.ezeats.domain.main.model.response.user_info.UserInfoResponse
@@ -48,7 +46,7 @@ interface MainApiService {
     suspend fun clearRecentSearches(): BaseResponse<Any>
 
     @POST("searchMobile")
-    suspend fun searchRestaurant(@Body searchRequest: SearchRequest): BaseResponse<List<Restaurant>>
+    suspend fun searchRestaurant(@Body searchRequest: SearchRequest): BaseResponse<List<RestaurantsResponseItem>>
 
     @POST("searchMobile")
     suspend fun searchOffer(@Body searchRequest: SearchRequest): BaseResponse<List<HotDeal>>
@@ -97,4 +95,7 @@ interface MainApiService {
 
     @POST("clearDeviceToken")
     suspend fun clearDeviceToken(): BaseResponse<Any>
+
+    @POST("getRestaurantsAndOffersByCategory")
+    suspend fun getRestaurants(@Body restaurantRequest: com.easyEats.ezeats.domain.main.model.request.RestaurantRequest): BaseResponse<List<RestaurantsResponseItem>>
 }

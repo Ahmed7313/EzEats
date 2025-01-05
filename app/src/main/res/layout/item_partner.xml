@@ -10,12 +10,12 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
-        android:layout_marginHorizontal="@dimen/_3sdp"
+        android:layout_marginHorizontal="@dimen/_6sdp"
         android:layout_height="wrap_content">
 
         <ImageView
-            android:layout_width="@dimen/_50sdp"
-            android:layout_height="@dimen/_63sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_70sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:contentDescription="@string/partner_image"

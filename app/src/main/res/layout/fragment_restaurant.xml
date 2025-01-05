@@ -48,7 +48,6 @@
                         android:background="@drawable/rounded_top_bottom_sheet_white"
                         android:contentDescription="@string/restaurant_logo"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/test_burger_image"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -253,7 +252,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_25sdp"
-                    android:layout_marginTop="@dimen/_80sdp"
+                    android:layout_marginTop="@dimen/_45sdp"
                     android:layout_marginBottom="@dimen/_25sdp"
                     android:backgroundTint="@color/main_color"
                     android:paddingVertical="@dimen/_13sdp"

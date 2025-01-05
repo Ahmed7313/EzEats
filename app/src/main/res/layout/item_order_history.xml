@@ -62,7 +62,6 @@
                 android:fontFamily="@font/gilroy_400"
                 android:textSize="@dimen/_9ssp"
                 android:text='@{String.format("Order Number #%s", order.orderNumber.toString())}'
-                app:layout_constraintEnd_toStartOf="@+id/materialButton"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/tv_order_title"
                 app:layout_constraintTop_toBottomOf="@+id/tv_order_title"

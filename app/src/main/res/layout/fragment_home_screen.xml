@@ -526,16 +526,6 @@
                             tools:itemCount="2"
                             tools:listitem="@layout/featured_item" />
 
-                        <com.todkars.shimmer.ShimmerRecyclerView
-                            android:id="@+id/featured_shimmer_recycler_view"
-                            showShimmer="@{homeViewModel.showShimmer}"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                            app:shimmer_recycler_layout="@layout/featured_shimmer" />
-
-
                         <me.relex.circleindicator.CircleIndicator3
                             android:id="@+id/indicator"
                             android:layout_width="match_parent"
@@ -616,14 +606,7 @@
                             android:textSize="@dimen/_12ssp"
                             android:visibility="gone" />
 
-                        <com.todkars.shimmer.ShimmerRecyclerView
-                            android:id="@+id/hot_deals_shimmer_recycler_view"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:visibility="gone"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                            app:shimmer_recycler_layout="@layout/shimmer_hot_deals" />
+
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rvHotDeals"
@@ -767,16 +750,35 @@
                             android:textSize="@dimen/_12ssp"
                             tools:text="With over 50 partners of success, you are \nguaranteed to fulfil your cravings with EZeats" />
 
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rv_our_partners"
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_10sdp"
-                            app:partnersAdapter="@{partnersAdapter}"
-                            app:partners="@{partnerResponse.partners}"
-                            android:orientation="horizontal"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                            tools:listitem="@layout/item_partner" />
+                            android:layout_marginTop="@dimen/_15sdp">
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rv_our_partners"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:partners="@{partnerResponse.partners}"
+                                app:partnersAdapter="@{partnersAdapter}"
+                                tools:listitem="@layout/item_partner" />
+                            <View
+                                android:id="@+id/custom_view"
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="@+id/rv_our_partners" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
                         <TextView
                             android:layout_width="wrap_content"

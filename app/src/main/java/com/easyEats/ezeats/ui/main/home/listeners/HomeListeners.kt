@@ -54,7 +54,11 @@ class HomeListeners(
 
         updateTokenListener()
 
+//        restaurantsListeners()
+
         checkIfUserRateAppOrNot()
+
+
     }
 
     private fun checkIfUserRateAppOrNot() {
@@ -96,6 +100,8 @@ class HomeListeners(
             }
         }
     }
+
+
 
     private fun locationListeners() {
         lifecycleScope.launch {

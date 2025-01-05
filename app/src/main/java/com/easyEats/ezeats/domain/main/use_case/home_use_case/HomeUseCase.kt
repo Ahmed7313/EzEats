@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import com.easyEats.ezeats.domain.main.model.UserLocationAddress
 import com.easyEats.ezeats.domain.main.model.request.firebase_token.UpdateTokeRequest
 import com.easyEats.ezeats.domain.main.model.request.home.HomeRequest
+import com.easyEats.ezeats.domain.main.model.request.restaurant.RestaurantRequest
 import com.easyEats.ezeats.domain.main.repository.MainRepository
 import com.easyEats.ezeats.utils.Constants.RATING_KEY
 import kotlinx.coroutines.flow.map
@@ -30,5 +31,8 @@ class HomeUseCase @Inject constructor(private val mainRepository: MainRepository
 
     fun checkIfUserViewedRatingDialog() =
         mainRepository.checkIfUserViewedRatingDialog()
+
+    suspend fun getRestaurants(restaurantRequest: com.easyEats.ezeats.domain.main.model.request.RestaurantRequest) =
+        mainRepository.getRestaurants(restaurantRequest)
 
 }

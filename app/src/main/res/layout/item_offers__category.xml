@@ -25,6 +25,7 @@
             android:layout_height="@dimen/_60sdp"
             android:src="@drawable/test_burger_image"
             loadImage="@{category.categoryLogo}"
+            android:scaleType="fitXY"
             android:contentDescription="@string/category_image" />
 
         <TextView

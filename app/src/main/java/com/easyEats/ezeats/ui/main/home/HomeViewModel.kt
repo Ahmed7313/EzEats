@@ -8,6 +8,7 @@ import com.easyEats.ezeats.MyApplication.Companion.baseApplication
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.base.BaseResponse
 import com.easyEats.ezeats.domain.main.model.UserLocationAddress
+import com.easyEats.ezeats.domain.main.model.request.RestaurantRequest
 import com.easyEats.ezeats.domain.main.model.request.firebase_token.UpdateTokeRequest
 import com.easyEats.ezeats.domain.main.model.request.home.HomeRequest
 import com.easyEats.ezeats.domain.main.model.response.home_response.ActiveOrder
@@ -16,6 +17,7 @@ import com.easyEats.ezeats.domain.main.model.response.home_response.HomeResponse
 import com.easyEats.ezeats.domain.main.model.response.home_response.HotDeal
 import com.easyEats.ezeats.domain.main.model.response.location_response.Location
 import com.easyEats.ezeats.domain.main.model.response.partners.PartnersResponse
+import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.new_restaurants_reponse.RestaurantsResponseItem
 import com.easyEats.ezeats.domain.main.use_case.MainUseCase
 import com.easyEats.ezeats.ui.main.main.MainViewModel
 import com.easyEats.ezeats.utils.Resource
@@ -46,6 +48,14 @@ class HomeViewModel @Inject constructor(private val mainUseCase: MainUseCase) :
     // LiveData for holding the list of featured offers
     private val _featuredOffers = MutableLiveData<List<FeaturedOffer>?>()
     val featuredOffers: LiveData<List<FeaturedOffer>?> = _featuredOffers
+
+
+    private val _restaurants =
+        MutableLiveData<Resource<BaseResponse<List<RestaurantsResponseItem>>>>()
+    val restaurants: LiveData<Resource<BaseResponse<List<RestaurantsResponseItem>>>> = _restaurants
+
+    var userRestaurants = MutableLiveData<List<RestaurantsResponseItem>>()
+
 
     // LiveData for holding the list of hot deals offers
     private val _hotDealsOffers = MutableLiveData<List<HotDeal>?>()
@@ -84,9 +94,6 @@ class HomeViewModel @Inject constructor(private val mainUseCase: MainUseCase) :
         locationUtil = myLocationUtil
     }
 
-    init {
-        getPartners()
-    }
 
     /**
      * Fetches home screen data by making a request to the home API, based on the provided [HomeRequest].
@@ -143,12 +150,14 @@ class HomeViewModel @Inject constructor(private val mainUseCase: MainUseCase) :
                             userLon = it.lng
                         )
                     )
+                    getRestaurants(RestaurantRequest(it.lat, it.lng ?: ""))
                     isLocationGranted.value = true
                 } else {
                     // Request location permission if not granted
                     locationUtil.askUserForLocationPermission(onPermissionDenied = {
                         isLocationGranted.value = false
                         getHomeResult(HomeRequest("", "")) // Proceed with empty location data
+                        getRestaurants(RestaurantRequest("", ""))
                     }, onPermissionGranted = {
                         isLocationGranted.value = true
                         getLocationAndAddress() // Fetch location and address
@@ -166,6 +175,7 @@ class HomeViewModel @Inject constructor(private val mainUseCase: MainUseCase) :
         locationUtil.getCurrentLocation(onLocationReceived = { latitude, longitude ->
             // Fetch home data based on the user's location
             getHomeResult(HomeRequest(latitude.toString(), longitude.toString()))
+            getRestaurants(RestaurantRequest(latitude.toString(), longitude.toString()))
             locationUtil.reverseGeocode(latitude, longitude, onAddressReceived = { address ->
                 // Update the address LiveData and save it locally
                 _addressMutableLiveData.value = address
@@ -179,15 +189,17 @@ class HomeViewModel @Inject constructor(private val mainUseCase: MainUseCase) :
             }, onError = {
                 // Proceed with empty location data if reverse geocoding fails
                 getHomeResult(HomeRequest("", ""))
+                getRestaurants(RestaurantRequest("", ""))
             })
         }, onError = {
             // Proceed with empty location data if location fetch fails
             getHomeResult(HomeRequest("", ""))
+            getRestaurants(RestaurantRequest("", ""))
         })
     }
 
 
-    private fun getPartners() {
+    fun getPartners() {
         val flow = createPartnersResultRequest()
         apply(
             flow = flow,
@@ -209,6 +221,37 @@ class HomeViewModel @Inject constructor(private val mainUseCase: MainUseCase) :
             locationResult.handleResponse(
                 onSuccess = {
                     send(Resource.Success(locationResult))
+                },
+                onError = { message, error ->
+                    send(Resource.Error(message, error))
+                }, onUnauthenticated = {
+                    send(Resource.UnAuthenticated())
+                }
+            )
+        }
+
+    private fun getRestaurants(request: RestaurantRequest) {
+        val flow = createRestaurantsResultRequest(request)
+        apply(
+            flow = flow,
+            maxRetries = 2,
+            onError = { error ->
+                _restaurants.value =
+                    Resource.Error("No Internet Connection")
+            },
+            onSuccess = { resource ->
+                _restaurants.value = resource
+            }
+        )
+    }
+
+    private fun createRestaurantsResultRequest(request: RestaurantRequest): Flow<Resource<BaseResponse<List<RestaurantsResponseItem>>>> =
+        channelFlow {
+            send(Resource.Loading())
+            val restaurants = mainUseCase.homeUseCase.getRestaurants(request)
+            restaurants.handleResponse(
+                onSuccess = {
+                    send(Resource.Success(restaurants))
                 },
                 onError = { message, error ->
                     send(Resource.Error(message, error))

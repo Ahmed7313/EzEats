@@ -47,6 +47,7 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpViews()
+        listenToObservers()
         _binding?.lifecycleOwner = viewLifecycleOwner
     }
 
@@ -110,5 +111,7 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
         requireActivity().startActivity(Intent(requireActivity(), AuthActivity::class.java))
         requireActivity().finish()
     }
+
+    open fun listenToObservers(){}
 }
 

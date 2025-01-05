@@ -18,7 +18,7 @@ import com.easyEats.ezeats.domain.main.model.response.partners.PartnersItem
 import com.easyEats.ezeats.ui.main.home.adapter.featured.FeaturedOfferAdapter
 import com.easyEats.ezeats.ui.main.home.adapter.hot_deals.HotDealsAdapter
 import com.easyEats.ezeats.ui.main.home.adapter.partners.PartnersAdapter
-import com.todkars.shimmer.ShimmerRecyclerView
+//import com.todkars.shimmer.ShimmerRecyclerView
 import me.relex.circleindicator.CircleIndicator3
 
 
@@ -176,14 +176,14 @@ fun bindCircleIndicator(
  * @param shimmerRecyclerView The ShimmerRecyclerView to control the shimmer effect.
  * @param showShimmer A boolean flag indicating whether to show or hide the shimmer effect.
  */
-@BindingAdapter("showShimmer")
-fun showShimmer(shimmerRecyclerView: ShimmerRecyclerView, showShimmer: Boolean) {
-    if (showShimmer) {
-        shimmerRecyclerView.showShimmer() // Show the shimmer effect.
-    } else {
-        shimmerRecyclerView.hideShimmer() // Hide the shimmer effect.
-    }
-}
+//@BindingAdapter("showShimmer")
+//fun showShimmer(shimmerRecyclerView: ShimmerRecyclerView, showShimmer: Boolean) {
+//    if (showShimmer) {
+//        shimmerRecyclerView.showShimmer() // Show the shimmer effect.
+//    } else {
+//        shimmerRecyclerView.hideShimmer() // Hide the shimmer effect.
+//    }
+//}
 
 
 @BindingAdapter("setTitleOfActiveOrder")

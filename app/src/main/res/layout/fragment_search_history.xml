@@ -33,6 +33,7 @@
                 android:layout_alignStart="@+id/tvLocation"
                 android:layout_alignEnd="@+id/ivClose"
                 android:layout_marginTop="@dimen/_5sdp"
+                android:visibility="invisible"
                 android:contentDescription="@string/bottom_sheet_top"
                 android:src="@drawable/botttom_sheet_top"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -99,15 +100,6 @@
                     tools:itemCount="3"
                     tools:listitem="@layout/item_food_offers" />
 
-                <com.todkars.shimmer.ShimmerRecyclerView
-                    showShimmer="@{searchHistoryViewModel.showShimmer}"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/_17sdp"
-                    android:layout_marginTop="@dimen/_7sdp"
-                    android:orientation="horizontal"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:shimmer_recycler_layout="@layout/item_food_offer_shimmer" />
 
 
                 <LinearLayout
@@ -158,16 +150,6 @@
                     tools:itemCount="10"
                     tools:listitem="@layout/item_chip_search" />
 
-                <com.todkars.shimmer.ShimmerRecyclerView
-                    showShimmer="@{searchHistoryViewModel.showShimmer}"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/_17sdp"
-                    android:layout_marginTop="@dimen/_7sdp"
-                    android:orientation="horizontal"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:shimmer_recycler_layout="@layout/item_chip_shimmer" />
-
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -193,15 +175,6 @@
                     tools:itemCount="10"
                     tools:listitem="@layout/item_popular_chip_search" />
 
-                <com.todkars.shimmer.ShimmerRecyclerView
-                    showShimmer="@{searchHistoryViewModel.showShimmer}"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/_17sdp"
-                    android:layout_marginTop="@dimen/_7sdp"
-                    android:orientation="horizontal"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:shimmer_recycler_layout="@layout/item_chip_shimmer" />
 
             </LinearLayout>
 

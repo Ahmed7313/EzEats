@@ -90,6 +90,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignStart="@+id/tvLocation"
                 android:layout_alignEnd="@+id/ivClose"
+                android:visibility="invisible"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:contentDescription="@string/hide_bottom_view_on_scroll_behavior"
                 android:src="@drawable/botttom_sheet_top"

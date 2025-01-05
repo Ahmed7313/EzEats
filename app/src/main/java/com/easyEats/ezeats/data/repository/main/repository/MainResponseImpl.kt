@@ -23,6 +23,7 @@ import com.easyEats.ezeats.domain.main.model.response.points.PointsResponse
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.Offer
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.Restaurant
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.RestaurantInfo
+import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.new_restaurants_reponse.RestaurantsResponseItem
 import com.easyEats.ezeats.domain.main.model.response.search_response.Category
 import com.easyEats.ezeats.domain.main.model.response.user_info.UserInfoResponse
 import com.easyEats.ezeats.domain.main.model.response.voucher.VoucherResponse
@@ -52,7 +53,7 @@ class MainResponseImpl @Inject constructor(
         return mainApiService.clearRecentSearches()
     }
 
-    override suspend fun searchRestaurant(searchRequest: SearchRequest): BaseResponse<List<Restaurant>> {
+    override suspend fun searchRestaurant(searchRequest: SearchRequest): BaseResponse<List<RestaurantsResponseItem>> {
         return mainApiService.searchRestaurant(searchRequest)
     }
 
@@ -139,5 +140,9 @@ class MainResponseImpl @Inject constructor(
 
     override fun checkIfUserViewedRatingDialog(): Flow<Boolean> =
         dataStorePreference.checkIfUserViewedRatingDialog()
+
+    override suspend fun getRestaurants(restaurantRequest: com.easyEats.ezeats.domain.main.model.request.RestaurantRequest): BaseResponse<List<RestaurantsResponseItem>> {
+        return mainApiService.getRestaurants(restaurantRequest)
+    }
 
 }

@@ -41,7 +41,7 @@
         android:label="LocationBottomSheetDialogFragment"
         tools:layout="@layout/fragment_location_bottom_sheet_dialog" />
 
-    <dialog
+    <fragment
         android:id="@+id/searchFragment"
         android:name="com.easyEats.ezeats.ui.main.search_suggestion.SearchFragment"
         android:label="SearchFragment"
@@ -58,7 +58,7 @@
     <action
         android:id="@+id/goToSearchFragment"
         app:destination="@id/searchFragment" />
-    <dialog
+    <fragment
         android:id="@+id/searchResultFragment"
         android:name="com.easyEats.ezeats.ui.main.search_result.SearchResultFragment"
         android:label="SearchResultFragment"
@@ -66,19 +66,21 @@
         <argument
             android:name="searchKey"
             app:argType="string" />
-    </dialog>
+    </fragment>
 
     <action
         android:id="@+id/goToSearchResultFragment"
         app:destination="@id/searchResultFragment" />
-    <dialog
+    <fragment
         android:id="@+id/searchHistoryFragment"
         android:name="com.easyEats.ezeats.ui.main.search_history.SearchHistoryFragment"
         android:label="SearchHistoryFragment"
         tools:layout="@layout/fragment_search_history" />
     <action
         android:id="@+id/goToSearchHistoryFragment"
-        app:destination="@id/searchHistoryFragment" />
+        app:destination="@id/searchHistoryFragment"
+        app:popUpToInclusive="true"
+        />
     <dialog
         android:id="@+id/restaurantFragment"
         android:name="com.easyEats.ezeats.ui.main.restaurant.RestaurantFragment"

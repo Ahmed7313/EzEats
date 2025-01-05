@@ -16,6 +16,7 @@ import com.easyEats.ezeats.base.BaseResponse
 import com.easyEats.ezeats.databinding.FragmentPercentScreenBinding
 import com.easyEats.ezeats.domain.main.model.request.offers.OffersRequest
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.Restaurant
+import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.new_restaurants_reponse.RestaurantsResponseItem
 import com.easyEats.ezeats.domain.main.model.response.search_response.Category
 import com.easyEats.ezeats.domain.main.use_case.MainUseCase
 import com.easyEats.ezeats.ui.main.main.MainViewModel
@@ -147,23 +148,19 @@ class OffersViewModel @Inject constructor(val mainUseCase: MainUseCase) :
         context: Context,
         binding: FragmentPercentScreenBinding,
         restaurantAdapter: RestaurantAdapter,
-        resource: Resource.Success<BaseResponse<List<Restaurant>>>
+        restaurants: List<RestaurantsResponseItem>
     ) {
         binding.rvRestaurant.adapter = restaurantAdapter
-        if (resource.data?.result?.data?.isEmpty() == true) {
+        if (restaurants.isEmpty()) {
             binding.rvRestaurant.visibility = GONE
             binding.tvAllRestaurants.visibility = GONE
             binding.llNoRestaurants.visibility = VISIBLE
         } else {
-            val animationController =
-                AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation_fade_in)
-//            binding.rvRestaurant.layoutAnimation = animationController
+
             binding.rvRestaurant.visibility = VISIBLE
             binding.tvAllRestaurants.visibility = VISIBLE
             binding.llNoRestaurants.visibility = GONE
-            restaurantAdapter.submitList(resource.data?.result?.data) {
-//                binding.rvRestaurant.startLayoutAnimation()
-            }
+            restaurantAdapter.submitList(restaurants)
         }
     }
 

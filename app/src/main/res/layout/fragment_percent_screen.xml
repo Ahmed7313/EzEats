@@ -89,10 +89,11 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_15sdp"
                             android:paddingBottom="@dimen/_60sdp"
+                            tools:itemCount="4"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            tools:listitem="@layout/item_offer" />
+                            tools:listitem="@layout/item_offers_new" />
 
                         <LinearLayout
                             android:id="@+id/ll_no_restaurants"

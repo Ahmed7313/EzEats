@@ -46,7 +46,6 @@ class ProfileScreenFragment : BaseFragment<FragmentProfileScreenBinding>(),
     }
 
     override fun setUpViews() {
-        listenToObservers()
         binding.tvProfile.setOnClickListener {
             if (::user.isInitialized)
                 findNavController().navigate(ProfileScreenFragmentDirections.goToEditProfile(user))
@@ -85,7 +84,7 @@ class ProfileScreenFragment : BaseFragment<FragmentProfileScreenBinding>(),
 
     }
 
-    fun listenToObservers() {
+    override fun listenToObservers() {
         profileViewModel.clearDeviceTokenLiveData.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Error -> {

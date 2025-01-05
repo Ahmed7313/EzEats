@@ -69,7 +69,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), DeleteAc
      */
     override fun setUpViews() {
         binding.viewModel = editProfileViewModel
-        listenToObservers()
+//        listenToObservers()
 
         // Opens image picker when profile or edit profile views are clicked
         binding.mcvEditProfile.setOnClickListener { pickImageFromGallery() }
@@ -121,7 +121,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), DeleteAc
     /**
      * Observes the LiveData from the ViewModel to handle edit user result.
      */
-    private fun listenToObservers() {
+    override fun listenToObservers() {
         editProfileViewModel.editUserResultLiveData.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Error -> {

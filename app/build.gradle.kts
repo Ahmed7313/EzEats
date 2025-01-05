@@ -151,8 +151,8 @@ dependencies {
     implementation(libs.coil)
     implementation(libs.coil.svg)
     //shimmer
-    implementation (libs.shimmer)
-    implementation (libs.shimmer.recyclerview)
+//    implementation (libs.shimmer)
+//    implementation (libs.shimmer.recyclerview)
     //chucker
     debugImplementation(libs.library)
     releaseImplementation(libs.library.no.op)

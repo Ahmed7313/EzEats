@@ -17,6 +17,7 @@ import com.easyEats.ezeats.databinding.FragmentSearchResultBinding
 import com.easyEats.ezeats.domain.main.model.request.search.SearchRequest
 import com.easyEats.ezeats.domain.main.model.response.home_response.HotDeal
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.Restaurant
+import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.new_restaurants_reponse.RestaurantsResponseItem
 import com.easyEats.ezeats.domain.main.use_case.MainUseCase
 import com.easyEats.ezeats.ui.main.home.adapter.hot_deals.HotDealsAdapter
 import com.easyEats.ezeats.ui.main.main.MainViewModel
@@ -49,8 +50,8 @@ class SearchResultViewModel @Inject constructor(
 
     // LiveData that holds the search results for Restaurants.
     private val _searchResultMutableLiveData =
-        MutableLiveData<Resource<BaseResponse<List<Restaurant>>>>()
-    val searchResultLiveData: LiveData<Resource<BaseResponse<List<Restaurant>>>> get() = _searchResultMutableLiveData
+        MutableLiveData<Resource<BaseResponse<List<RestaurantsResponseItem>>>>()
+    val searchResultLiveData: LiveData<Resource<BaseResponse<List<RestaurantsResponseItem>>>> get() = _searchResultMutableLiveData
 
     // LiveData that holds the search results for Hot Deals.
     private val _searchOfferResultMutableLiveData =
@@ -120,7 +121,7 @@ class SearchResultViewModel @Inject constructor(
      * @param searchRequest The request containing search parameters.
      * @return A flow emitting the search result resource.
      */
-    private fun createSearchResultRequest(searchRequest: SearchRequest): Flow<Resource<BaseResponse<List<Restaurant>>>> =
+    private fun createSearchResultRequest(searchRequest: SearchRequest): Flow<Resource<BaseResponse<List<RestaurantsResponseItem>>>> =
         channelFlow {
             send(Resource.Loading())
             val homeResult = mainUseCase.searchUseCase.searchRestaurant(searchRequest)
@@ -210,7 +211,7 @@ class SearchResultViewModel @Inject constructor(
         context: Context,
         binding: FragmentSearchResultBinding,
         restaurantAdapter: RestaurantAdapter,
-        resource: Resource.Success<BaseResponse<List<Restaurant>>>
+        resource: Resource.Success<BaseResponse<List<RestaurantsResponseItem>>>
     ) {
         binding.rvRestaurantSearch.visibility = View.VISIBLE
         binding.rvOfferSearch.visibility = View.GONE

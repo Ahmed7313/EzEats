@@ -8,6 +8,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -16,19 +17,23 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.base.BaseBottomSheetFragment
+import com.easyEats.ezeats.base.BaseFragment
 import com.easyEats.ezeats.base.BaseResponse
 import com.easyEats.ezeats.databinding.FragmentSearchResultBinding
 import com.easyEats.ezeats.domain.main.model.response.home_response.HotDeal
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.Restaurant
+import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.new_restaurants_reponse.RestaurantsResponseItem
 import com.easyEats.ezeats.ui.main.home.HomeScreenFragmentDirections
 import com.easyEats.ezeats.ui.main.home.adapter.hot_deals.HotDealsAdapter
 import com.easyEats.ezeats.ui.main.main.MainViewModel
+import com.easyEats.ezeats.ui.main.offers.OffersScreenFragmentDirections
 import com.easyEats.ezeats.ui.main.search_result.adapter.OfferAdapter
 import com.easyEats.ezeats.ui.main.search_result.adapter.RestaurantAdapter
 import com.easyEats.ezeats.ui.main.search_suggestion.SearchFragmentDirections
 import com.easyEats.ezeats.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import es.dmoral.toasty.Toasty
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
@@ -41,7 +46,7 @@ import kotlinx.coroutines.launch
  * a bottom sheet UI component.
  */
 @AndroidEntryPoint
-class SearchResultFragment : BaseBottomSheetFragment<FragmentSearchResultBinding>(),
+class SearchResultFragment : BaseFragment<FragmentSearchResultBinding>(),
     RestaurantAdapter.OnRestaurantClicked, HotDealsAdapter.OnHotDealClicked,
     OfferAdapter.OnOfferClicked {
 
@@ -80,11 +85,9 @@ class SearchResultFragment : BaseBottomSheetFragment<FragmentSearchResultBinding
         // Bind the restaurant adapter to the RecyclerView in the layout
         binding.rvRestaurantSearch.adapter = restaurantAdapter
 
-        // Bind the ViewModel to the layout
-        binding.searchResultViewModel = searchResultViewModel
 
         // Set up click listener for the search button to dismiss the bottom sheet
-        binding.mcvSearch.setOnClickListener { dismiss() }
+        binding.mcvSearch.setOnClickListener { findNavController().navigateUp() }
 
         // Set up click listener for the location text to navigate to the location selection bottom sheet
         binding.tvLocation.setOnClickListener { findNavController().navigate(R.id.location_bottom_sheet) }
@@ -173,10 +176,16 @@ class SearchResultFragment : BaseBottomSheetFragment<FragmentSearchResultBinding
         }
     }
 
-    override fun onRestaurantClickListener(restaurant: Restaurant) {
-        findNavController().navigate(
-            SearchResultFragmentDirections.goToRestaurantFragment(restaurant.id!!)
-        )
+    override fun onRestaurantClickListener(restaurant: RestaurantsResponseItem,cl:ConstraintLayout) {
+        lifecycleScope.launch {
+            cl.isClickable = false
+            findNavController().navigate(
+                SearchResultFragmentDirections.goToRestaurantFragment(restaurant.id!!)
+            )
+            delay(1000)
+            cl.isClickable = true
+
+        }
     }
 
     override fun onHotDealClickListener(offer: HotDeal) {

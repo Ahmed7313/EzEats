@@ -1,7 +1,6 @@
 package com.easyEats.ezeats.base
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import android.app.Activity
 import android.app.Dialog
 import android.os.Bundle
 import android.util.DisplayMetrics
@@ -12,8 +11,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
-import com.easyEats.ezeats.R
-import com.easyEats.ezeats.ui.main.main.HomeActivity
 
 abstract class BaseBottomSheetFragment<VB : ViewDataBinding> : BottomSheetDialogFragment() {
 
@@ -39,7 +36,7 @@ abstract class BaseBottomSheetFragment<VB : ViewDataBinding> : BottomSheetDialog
             setupFullHeight(bottomSheetDialog)
         }
         dialog.setCancelable(false)
-        dialog.setCanceledOnTouchOutside(false)
+//        dialog.setCanceledOnTouchOutside(false)
         return dialog
     }
 

@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.base.BaseBottomSheetFragment
+import com.easyEats.ezeats.base.BaseFragment
 import com.easyEats.ezeats.databinding.FragmentSearchBinding
 import com.easyEats.ezeats.ui.main.search_suggestion.adapter.SuggestionsAdapter
 import com.easyEats.ezeats.utils.Resource
@@ -24,7 +25,7 @@ import dagger.hilt.android.AndroidEntryPoint
  * The search results are displayed in a RecyclerView using a `SuggestionsAdapter`.
  */
 @AndroidEntryPoint
-class SearchFragment : BaseBottomSheetFragment<FragmentSearchBinding>(),
+class SearchFragment : BaseFragment<FragmentSearchBinding>(),
     SuggestionsAdapter.OnSuggestionClickListener {
 
     // ViewModel for managing search-related data and operations

@@ -5,12 +5,17 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.databinding.ItemOfferBinding
+import com.easyEats.ezeats.databinding.ItemOffersNewBinding
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.Restaurant
+import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.new_restaurants_reponse.RestaurantsResponseItem
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 import javax.inject.Inject
 
 
@@ -22,12 +27,12 @@ import javax.inject.Inject
 class RestaurantAdapter @Inject constructor(
     val onRestaurantClicked: OnRestaurantClicked, val onOfferClicked: OfferAdapter.OnOfferClicked
 ) :
-    ListAdapter<Restaurant, RestaurantAdapter.RestaurantViewHolder>(RestaurantDiffUtil()) {
+    ListAdapter<RestaurantsResponseItem, RestaurantAdapter.RestaurantViewHolder>(RestaurantDiffUtil()) {
 
     private val sharedViewPool = RecyclerView.RecycledViewPool()
 
     interface OnRestaurantClicked {
-        fun onRestaurantClickListener(restaurant: Restaurant)
+        fun onRestaurantClickListener(restaurant: RestaurantsResponseItem,cl:ConstraintLayout)
     }
 
     // Adapter for handling offers within a restaurant
@@ -40,7 +45,7 @@ class RestaurantAdapter @Inject constructor(
      * DiffUtil class for calculating the difference between two lists of Restaurant items.
      * Helps ListAdapter to determine the changes in the list and update the RecyclerView efficiently.
      */
-    class RestaurantDiffUtil : DiffUtil.ItemCallback<Restaurant>() {
+    class RestaurantDiffUtil : DiffUtil.ItemCallback<RestaurantsResponseItem>() {
 
         /**
          * Checks whether two items represent the same Restaurant.
@@ -49,7 +54,7 @@ class RestaurantAdapter @Inject constructor(
          * @param newItem The new item in the list.
          * @return True if the items are the same, false otherwise.
          */
-        override fun areItemsTheSame(oldItem: Restaurant, newItem: Restaurant) = oldItem == newItem
+        override fun areItemsTheSame(oldItem: RestaurantsResponseItem, newItem: RestaurantsResponseItem) = oldItem == newItem
 
         /**
          * Checks whether the contents of two Restaurant items are the same.
@@ -58,7 +63,7 @@ class RestaurantAdapter @Inject constructor(
          * @param newItem The new item in the list.
          * @return True if the contents are the same, false otherwise.
          */
-        override fun areContentsTheSame(oldItem: Restaurant, newItem: Restaurant) =
+        override fun areContentsTheSame(oldItem: RestaurantsResponseItem, newItem: RestaurantsResponseItem) =
             oldItem == newItem
     }
 
@@ -73,7 +78,7 @@ class RestaurantAdapter @Inject constructor(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RestaurantViewHolder {
         context = parent.context
         val layoutInflater = LayoutInflater.from(parent.context)
-        val view = ItemOfferBinding.inflate(layoutInflater, parent, false)
+        val view = ItemOffersNewBinding.inflate(layoutInflater, parent, false)
         return RestaurantViewHolder(view)
     }
 
@@ -88,12 +93,12 @@ class RestaurantAdapter @Inject constructor(
     override fun onBindViewHolder(holder: RestaurantViewHolder, position: Int) {
         val restaurant = getItem(position)
         holder.binding.restaurant = restaurant
-        holder.binding.rvExtraOffers.setRecycledViewPool(sharedViewPool)
-        offerAdapter = OfferAdapter(onOfferClicked)
+//        holder.binding.rvExtraOffers.setRecycledViewPool(sharedViewPool)
+//        offerAdapter = OfferAdapter(onOfferClicked)
 
-        handleEmptyData(restaurant, holder)
+//        handleEmptyData(restaurant, holder)
         holder.binding.clRestaurantDetails.setOnClickListener {
-            onRestaurantClicked.onRestaurantClickListener(restaurant)
+            onRestaurantClicked.onRestaurantClickListener(restaurant,holder.binding.clRestaurantDetails)
         }
 
     }
@@ -103,17 +108,17 @@ class RestaurantAdapter @Inject constructor(
         restaurant: Restaurant,
         holder: RestaurantViewHolder
     ) {
-        if (restaurant.offers?.isEmpty() == true) {
-            holder.binding.tvRestaurantHasNoOffers.text =
-                restaurant.name + " " + context.getString(R.string.has_no_offers_right_now)
+//        if (restaurant.offers?.isEmpty() == true) {
+//            holder.binding.tvRestaurantHasNoOffers.text =
+//                restaurant.name + " " + context.getString(R.string.has_no_offers_right_now)
 //            holder.binding.llEmptyOffers.visibility = View.VISIBLE
-            holder.binding.rvExtraOffers.visibility = View.GONE
-        } else {
+//            holder.binding.rvExtraOffers.visibility = View.GONE
+//        } else {
 //            holder.binding.llEmptyOffers.visibility = View.GONE
-            holder.binding.rvExtraOffers.visibility = View.VISIBLE
-            holder.binding.rvExtraOffers.adapter = offerAdapter
-            offerAdapter.submitList(restaurant.offers)
-        }
+//            holder.binding.rvExtraOffers.visibility = View.VISIBLE
+//            holder.binding.rvExtraOffers.adapter = offerAdapter
+//            offerAdapter.submitList(restaurant.offers)
+//        }
     }
 
     /**
@@ -121,6 +126,6 @@ class RestaurantAdapter @Inject constructor(
      *
      * @property binding The binding object generated for the item layout.
      */
-    inner class RestaurantViewHolder(val binding: ItemOfferBinding) :
+    inner class RestaurantViewHolder(val binding: ItemOffersNewBinding) :
         RecyclerView.ViewHolder(binding.root)
 }

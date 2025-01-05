@@ -37,6 +37,7 @@ import com.easyEats.ezeats.ui.main.home.listeners.HomeListeners
 import com.easyEats.ezeats.ui.main.home.location.Location
 import com.easyEats.ezeats.ui.main.home.notifications.Notification
 import com.easyEats.ezeats.ui.main.rating.RateUsFragment
+import com.easyEats.ezeats.utils.Resource
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -45,7 +46,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
     RateUsFragment.DialogCallback {
 
     val mainViewModel: MainViewModel by activityViewModels()
-    private val homeViewModel: HomeViewModel by viewModels()
+    private val homeViewModel: HomeViewModel by activityViewModels()
     private val featuredOfferAdapter: FeaturedOfferAdapter by lazy { FeaturedOfferAdapter(this) }
     private val hotDealsOfferAdapter: HotDealsAdapter by lazy { HotDealsAdapter(this) }
     private val snapHelper = LinearSnapHelper()
@@ -106,6 +107,20 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
             notification.navigateToScreen(notificationType)
         }
     }
+    private fun restaurantsListeners() {
+        homeViewModel.restaurants.observe(viewLifecycleOwner) { resource ->
+            when (resource) {
+                is Resource.Error -> {}
+                is Resource.Loading -> {}
+                is Resource.Success -> {
+                    homeViewModel.userRestaurants.value=resource.data?.result?.data
+                    Log.d(TAG, "kenawy will test ${homeViewModel.userRestaurants.value?.size}")
+                }
+
+                is Resource.UnAuthenticated -> {}
+            }
+        }
+    }
 
     private fun fetchSavedAddress() {
         lifecycleScope.launch {
@@ -137,6 +152,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
     }
 
     override fun setUpViews() {
+        homeViewModel.getPartners()
         val bindingUI = BindingUI(
             binding,
             mainViewModel,
@@ -152,6 +168,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
         )
         bindingUI.invoke()
     }
+
 
     // Observes changes in ViewModel data and updates the UI accordingly
     private fun observeViewModelData() {
@@ -169,6 +186,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
 
         )
         listeners.invoke()
+        restaurantsListeners()
     }
 
     // Handle the click event for Hot Deals

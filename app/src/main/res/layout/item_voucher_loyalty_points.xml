@@ -8,7 +8,6 @@
         <variable
             name="voucher"
             type="com.easyEats.ezeats.domain.main.model.response.loyality_center.Promocode" />
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -51,7 +50,6 @@
                     android:layout_marginEnd="@dimen/_5sdp"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_11ssp"
-
                     app:layout_constraintBottom_toBottomOf="@+id/ivLogo"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/ivLogo"

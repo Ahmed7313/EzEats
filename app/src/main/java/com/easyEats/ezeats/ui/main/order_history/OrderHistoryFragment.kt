@@ -41,7 +41,7 @@ class OrderHistoryFragment : BaseFragment<FragmentOrderHistoryBinding>(),
         })
     }
 
-    private fun listenToObservers() {
+    override fun listenToObservers() {
         orderHistoryViewModel.orders.observe(viewLifecycleOwner) { orders ->
             orderHistoryAdapter.submitList(orders)
         }

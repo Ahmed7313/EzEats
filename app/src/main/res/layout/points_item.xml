@@ -7,7 +7,7 @@
 
         <variable
             name="restaurantPoint"
-            type="com.easyEats.ezeats.domain.main.model.response.points.RestaurantPoint" />
+            type="com.easyEats.ezeats.domain.main.model.response.loyality_center.LoyaltyPoint" />
 
     </data>
 
@@ -19,7 +19,6 @@
             app:layout_constraintTop_toTopOf="parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardElevation="@dimen/_3sdp"
             app:cardCornerRadius="@dimen/_7sdp"
             android:background="@color/white"
             app:cardUseCompatPadding="true">
@@ -53,7 +52,7 @@
                     android:textColor="#3A3D42"
                     android:textSize="@dimen/_13ssp"
                     android:maxLines="1"
-                    android:fontFamily="@font/gilroy_600"
+                    android:fontFamily="@font/gilroy_700"
                     android:ellipsize="end" />
 
                 <TextView
@@ -65,7 +64,7 @@
                     android:maxLines="1"
                     android:layout_marginEnd="@dimen/_8sdp"
                     tools:text="320pts"
-                    android:text="@{String.valueOf(restaurantPoint.points)}"
+                    android:text='@{String.format("%spts",restaurantPoint.points)}'
                     android:textColor="#EA374A"
                     android:textSize="@dimen/_13ssp"
                     android:fontFamily="@font/gilroy_600"
@@ -82,9 +81,9 @@
                     android:lineSpacingExtra="@dimen/_2sdp"
                     android:paddingVertical="@dimen/_8sdp"
                     android:textColor="#3A3D42"
-                    android:textSize="@dimen/_10ssp"
+                    android:textSize="@dimen/_11ssp"
                     android:text='@{"You can use your " + restaurantPoint.restaurantName + " points to redeem any offer from this restaurant"}'
-                    android:fontFamily="@font/gilroy_500"
+                    android:fontFamily="@font/gilroy_600"
                     android:layout_marginBottom="@dimen/_3sdp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/pointsCircle"
@@ -94,8 +93,8 @@
 
                 <RelativeLayout
                     android:id="@+id/pointsCircle"
-                    android:layout_width="@dimen/_70sdp"
-                    android:layout_height="@dimen/_70sdp"
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="@dimen/_50sdp"
                     android:layout_margin="@dimen/_8sdp"
                     android:background="@drawable/circle_background_points_item"
                     android:gravity="center"
@@ -109,9 +108,10 @@
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         tools:text="300"
+                        android:padding="@dimen/_4sdp"
                         android:text="@{String.valueOf(restaurantPoint.points)}"
                         android:textColor="#3A3D42"
-                        android:textSize="@dimen/_20ssp"
+                        android:textSize="@dimen/_16ssp"
                         android:fontFamily="@font/gilroy_700" />
 
                     <TextView
@@ -122,7 +122,7 @@
                         android:layout_centerHorizontal="true"
                         android:text="@string/points"
                         android:textColor="#EA374A"
-                        android:textSize="@dimen/_10ssp"
+                        android:textSize="@dimen/_9ssp"
                         android:fontFamily="@font/gilroy_600"
                         />
                 </RelativeLayout>

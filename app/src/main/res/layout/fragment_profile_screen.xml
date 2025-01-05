@@ -273,6 +273,7 @@
                    android:drawablePadding="@dimen/_5sdp"
                    android:gravity="center_vertical"
                    android:text="@string/promo_code"
+                   android:visibility="gone"
                    app:drawableEndCompat="@drawable/chevron_right_icon"
                    app:drawableStartCompat="@drawable/promo_code_icon" />
 

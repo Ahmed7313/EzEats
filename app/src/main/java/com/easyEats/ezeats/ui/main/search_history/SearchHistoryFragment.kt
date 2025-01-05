@@ -1,5 +1,9 @@
 package com.easyEats.ezeats.ui.main.search_history
 
+import android.content.DialogInterface
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
@@ -7,8 +11,10 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.base.BaseBottomSheetFragment
+import com.easyEats.ezeats.base.BaseFragment
 import com.easyEats.ezeats.databinding.FragmentSearchHistoryBinding
 import com.easyEats.ezeats.domain.main.model.response.search_response.Category
 import com.easyEats.ezeats.domain.main.model.response.search_response.PopularSearch
@@ -19,6 +25,7 @@ import com.easyEats.ezeats.ui.main.search_history.adapter.RecentSearchAdapter
 import com.easyEats.ezeats.ui.main.search_suggestion.SearchFragmentDirections
 import com.easyEats.ezeats.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 /**
@@ -39,9 +46,11 @@ import kotlinx.coroutines.launch
  * - [AndroidEntryPoint] is used to inject dependencies via Hilt.
  */
 @AndroidEntryPoint
-class SearchHistoryFragment : BaseBottomSheetFragment<FragmentSearchHistoryBinding>(),
+class SearchHistoryFragment : BaseFragment<FragmentSearchHistoryBinding>(),
     CategoryAdapter.OnCategoryClickListener, PopularSearchAdapter.OnPopularSearchClickListener,
     RecentSearchAdapter.OnRecentSearchClickListener {
+
+    private val viewModel: MainViewModel by activityViewModels()
 
     // Shared ViewModel between multiple fragments and activities
     private val mainViewModel: MainViewModel by activityViewModels()
@@ -154,7 +163,8 @@ class SearchHistoryFragment : BaseBottomSheetFragment<FragmentSearchHistoryBindi
      * Handles clicks on category items.
      */
     override fun onCategoryClicked(category: Category) {
-        findNavController().navigate(
+        val navController = findNavController()
+        navController.navigate(
             SearchFragmentDirections.goToSearchResultFragment(category.categoryName ?: "")
         )
     }
@@ -176,4 +186,6 @@ class SearchHistoryFragment : BaseBottomSheetFragment<FragmentSearchHistoryBindi
             SearchFragmentDirections.goToSearchResultFragment(recentSearch ?: "")
         )
     }
+
+
 }

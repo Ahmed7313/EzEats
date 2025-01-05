@@ -14,6 +14,8 @@ import com.easyEats.ezeats.R
 import com.easyEats.ezeats.base.BaseFragment
 import com.easyEats.ezeats.databinding.FragmentPointScreenBinding
 import com.easyEats.ezeats.ui.main.points.adapter.PointsAdapter
+import com.easyEats.ezeats.ui.main.points.adapter.SpinWheelAdapter
+import com.easyEats.ezeats.ui.main.points.adapter.VoucherAdapter
 import com.easyEats.ezeats.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
@@ -23,12 +25,16 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class PointScreenFragment : BaseFragment<FragmentPointScreenBinding>() {
     private val pointsViewModel: PointsViewModel by viewModels()
-    private val pointsAdapter by lazy {
+    private val pointsAdapter by lazy(LazyThreadSafetyMode.NONE) {
         PointsAdapter()
     }
 
-    private val marakezPointsAdapter by lazy {
-        PointsAdapter()
+    private val spinWheelPointsAdapter by lazy(LazyThreadSafetyMode.NONE) {
+        SpinWheelAdapter()
+    }
+
+    private val vouchersAdapter by lazy(LazyThreadSafetyMode.NONE) {
+        VoucherAdapter()
     }
 
     override fun inflateBinding(
@@ -38,6 +44,21 @@ class PointScreenFragment : BaseFragment<FragmentPointScreenBinding>() {
 
     override fun setUpViews() {
         listenToObserver()
+        binding.btnSpinWheelPromoCodes.setOnClickListener {
+            findNavController().navigate(PointScreenFragmentDirections.goToVoucherBottomSheet(true))
+        }
+
+        binding.tvSpinWheelPoints.setOnClickListener {
+            findNavController().navigate(PointScreenFragmentDirections.goToVoucherBottomSheet(true))
+        }
+
+        binding.tvPoints.setOnClickListener {
+            findNavController().navigate(PointScreenFragmentDirections.goToVoucherBottomSheet(false))
+        }
+
+        binding.tvAllPoints.setOnClickListener {
+            findNavController().navigate(PointScreenFragmentDirections.goToVoucherBottomSheet(false))
+        }
     }
 
     private fun listenToObserver() {
@@ -51,8 +72,8 @@ class PointScreenFragment : BaseFragment<FragmentPointScreenBinding>() {
         pointsViewModel.pointsResultLiveData.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Error -> {
-                    Log.d(TAG, "listenToObserver:error ${resource.message.toString()} ")
                     hideMainLoading()
+                    Log.d(TAG, "listenToObserver: ${resource.message}")
                 }
 
                 is Resource.Loading -> {
@@ -61,16 +82,27 @@ class PointScreenFragment : BaseFragment<FragmentPointScreenBinding>() {
 
                 is Resource.Success -> {
                     hideMainLoading()
-                    binding.pointsResponse = resource.data?.result?.data
+                    binding.response = resource.data?.result?.data
                     binding.rvPoints.adapter = pointsAdapter
-                    binding.rvMarakezPoints.adapter=marakezPointsAdapter
-                    pointsAdapter.submitList(resource.data?.result?.data?.loyaltyPoints)
-                    marakezPointsAdapter.submitList(resource.data?.result?.data?.marakezPoints)
+                    pointsAdapter.submitList(
+                        resource.data?.result?.data?.points?.loyaltyPoints?.take(
+                            3
+                        )
+                    )
+
+                    binding.rvSpinWheelPromoCodes.adapter = spinWheelPointsAdapter
+                    spinWheelPointsAdapter.submitList(
+                        resource.data?.result?.data?.rewards?.spinWheelVouchers?.take(
+                            3
+                        )
+                    )
+
+                    binding.rvVouchers.adapter = vouchersAdapter
+                    vouchersAdapter.submitList(resource.data?.result?.data?.rewards?.promocodes)
                 }
 
                 is Resource.UnAuthenticated -> {
                     hideMainLoading()
-                    Log.d(TAG, "listenToObserver: .UnAuthenticated ")
 
                 }
             }
@@ -80,6 +112,11 @@ class PointScreenFragment : BaseFragment<FragmentPointScreenBinding>() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        hideMainLoading()
+    }
+
+    override fun onPause() {
+        super.onPause()
         hideMainLoading()
     }
 }
