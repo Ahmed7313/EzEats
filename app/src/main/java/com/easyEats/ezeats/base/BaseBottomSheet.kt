@@ -36,7 +36,7 @@ abstract class BaseBottomSheetFragment<VB : ViewDataBinding> : BottomSheetDialog
             setupFullHeight(bottomSheetDialog)
         }
         dialog.setCancelable(false)
-//        dialog.setCanceledOnTouchOutside(false)
+        dialog.setCanceledOnTouchOutside(false)
         return dialog
     }
 

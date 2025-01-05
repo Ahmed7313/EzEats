@@ -103,7 +103,6 @@ data class BindingUI(
         val handler = Handler(Looper.getMainLooper())
 
         // Disable user interaction
-        recyclerView.setOnTouchListener { _, _ -> true }
 
         val scrollRunnable = object : Runnable {
             override fun run() {

@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+<<<<<<< HEAD
+    android:layout_width="@dimen/_285sdp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/dialog_background"
+=======
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/dialog_background"
     android:layout_marginHorizontal="@dimen/_25sdp"
+>>>>>>> 0ea0dc73c526e5a7a0e77e2d8352263d3becb069
     android:backgroundTint="@color/white">
 
     <com.google.android.material.card.MaterialCardView
@@ -20,7 +26,12 @@
             android:layout_height="match_parent"
             android:gravity="center_horizontal"
             android:orientation="vertical"
+<<<<<<< HEAD
             android:paddingVertical="@dimen/_13sdp">
+=======
+            android:paddingVertical="@dimen/_13sdp"
+            >
+>>>>>>> 0ea0dc73c526e5a7a0e77e2d8352263d3becb069
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -79,9 +90,6 @@
                     android:textSize="@dimen/_11ssp"
                     app:cornerRadius="@dimen/_30sdp" />
             </LinearLayout>
-            <View
-                android:layout_width="20"
-                android:layout_height="1dp"/>
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 </FrameLayout>

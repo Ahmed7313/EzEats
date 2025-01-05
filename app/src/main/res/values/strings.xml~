@@ -1,0 +1,218 @@
+<resources>
+    <string name="app_name">EZeats</string>
+
+    <!--    Intro Screen-->
+    <string name="easy_eats_logo">easy eats logo</string>
+    <string name="signup">Signup</string>
+    <string name="login">Login</string>
+    <string name="continue_as_a_guest"><u>Continue as a guest</u></string>
+
+    <!--    Sign In Screen-->
+    <string name="welcome_back">Welcome Back</string>
+    <string name="login_and_start_saving">Login and start saving</string>
+    <string name="google_logo">Google logo</string>
+    <string name="facebook_logo">facebook logo</string>
+    <string name="enter_your_phone_number">Enter your phone number</string>
+
+    <!--    Sign Up Screen-->
+    <string name="sign_in">Sign In</string>
+    <string name="don_t_have_an_account">Don’t have an account?</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="hey_there">Hey There!</string>
+    <string name="sign_up_and_join_the_ezeats_community_and_start_saving">Sign up and join the EZeats community, and start saving</string>
+    <string name="already_have_an_account">already have an account?</string>
+    <string name="enter_your_name">Enter Your Name</string>
+
+    <!--    Verification Code-->
+    <string name="otp_verification">OTP Verification</string>
+    <string name="enter_the_verification_code_we_just_sent_on_your_email_address">Enter the verification code we just sent on your email address</string>
+    <string name="didn_t_receive_code">Didn’t receive code?</string>
+    <string name="resend"><u>Resend</u></string>
+    <string name="verify_code">Verify Code</string>
+
+    <!-- OnBoarding Screen -->
+    <string name="skip"><u>Skip</u></string>
+    <string name="next">Next</string>
+    <string name="description">Description</string>
+    <string name="welcome_to_ezeats">Welcome to EZeats</string>
+    <string name="ezeats_is_your_destination_to_saving_on_your_favorite_restaurants">EZeats is your destination to saving on your\nfavorite restaurants</string>
+    <string name="save_money_earn_rewards">Save Money, Earn rewards</string>
+    <string name="with_ezeats_you_can_save_money_get_special_offers_get_points_that_you_can_redeem_and_much_more">With EZeats, you can save money, get special \noffers, get points that you can redeem, and\nmuch more !</string>
+    <string name="location_access">Location Access</string>
+    <string name="we_would_like_to_get_access_to_your_location_so_we_can_always_notify_you_about_the_best_near_deals">We would like to get access to your location,\nso we can always notify you about the best\nnear deals</string>
+    <string name="allow_finish"><![CDATA[Allow & Finish]]></string>
+    <string name="location_permission_required">Location Permission Required</string>
+    <string name="location_permission_is_required_to_use_this_feature_please_grant_the_permission_in_the_app_settings">Location permission is required to use this feature. Please grant the permission in the app settings.</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">cancel</string>
+
+    <!--    No Internet Connection Screen-->
+    <string name="no_internet_connection">No Internet Connection, Please Check Your Internet Connection And <u><b>Try Again</b></u></string>
+    <string name="oops">Oops!</string>
+    <string name="please_make_sure_you_are_connected_to_the_internet_and_try_again">Please make sure you are connected to the internet and try again</string>
+    <string name="try_again">Try Again</string>
+
+    <!--    Home Screen-->
+    <string name="notification_icon">Notification Icon</string>
+    <string name="where_every_meal_comes_with_a_discount">Where Every Meal Comes with a discount</string>
+    <string name="search_for_restaurants_dishes_and_more">Search for restaurants, dishes, and more…</string>
+    <string name="featured">Featured</string>
+    <string name="view_all">View All</string>
+    <string name="check_out_today_s_featured_deals_and_offers_near_you">Check out today’s featured deals and offers Near you</string>
+    <string name="challenges_for_you">Challenges for you</string>
+    <string name="hot_deals_near_you">Hot Deals Near You</string>
+    <string name="participate_in_challenges_and_earn_points_and_rewards">Participate in challenges, and earn points and rewards</string>
+    <string name="redeem">Redeem</string>
+    <string name="restaurant_logo">Restaurant Logo</string>
+    <string name="home">Home</string>
+    <string name="percent">Percent</string>
+    <string name="qr">QR</string>
+    <string name="points">Points</string>
+    <string name="profile">Profile</string>
+    <string name="press_back_again_to_exit">Press back again to exit</string>
+    <string name="coming_soon">Coming Soon !</string>
+
+    <!--    Location Bottom Sheet-->
+    <string name="refresh">Refresh</string>
+    <string name="select_location">Select Location</string>
+
+    <!--    Profile Screen -->
+    <string name="account">Account</string>
+    <string name="notifications">Notifications</string>
+    <string name="cards">Cards</string>
+    <string name="order_history">Order History</string>
+    <string name="about_us">About Us</string>
+    <string name="help_faq"><![CDATA[Help & FAQ]]></string>
+    <string name="rate_us">Rate Us</string>
+    <string name="follow_us_on_instagram">Follow us on Instagram</string>
+    <string name="contact_us">Contact Us</string>
+
+    <!--    QR Screen-->
+    <string name="scan_your_table">Scan your table</string>
+    <string name="to_create_your_order">to create your order</string>
+    <string name="close_icon">close icon</string>
+
+    <!--    Points-->
+    <string name="loyalty_points">Loyalty Points</string>
+    <string name="you_can_use_your_ezpoints_to_redeem_any_offers_regardless_of_the_restaurant">You can use your EZpoints to redeem any offers, regardless of the restaurant</string>
+    <string name="restuarnats_points">Restaurants Points</string>
+    <string name="close">Close Icon</string>
+    <string name="leader_board_image">leader board image</string>
+    <string name="leaderboards">Leaderboards</string>
+    <string name="this_category_has_no_offers_currently_check_again_later">This category has no Restaurants currently, check again later!</string>
+    <string name="redeem_and_pay_in_the_restaurant_and_gain_300_dp_points_to_enjoy_the_next_time_you_are_visiting">Redeem and pay at the restaurant to enjoy the offer on your visit.</string>
+    <string name="keep_collecting_points_and_soon_you_will_be_able_to_redeem_them_in_exchange_for_awesome_deals">Keep collecting points, and soon you will be able to redeem them in exchange for awesome deals!</string>
+
+    <!--    Recent Search-->
+    <string name="recent_searches">Recent Searches</string>
+    <string name="popular_searches">Popular Searches</string>
+    <string name="what_do_you_want_to_eat">What do you want to eat?</string>
+    <string name="clear">Clear</string>
+    <string name="offer">image of offer</string>
+    <string name="location_access_denied">location Access Denied</string>
+    <string name="enable_access">Enable Access</string>
+    <string name="for_a_better_user_experience_please_enable_location_access">For a better user experience, please enable location access!</string>
+    <string name="category_image">Category Image</string>
+    <string name="all_resturant">All Restaurant</string>
+    <string name="current_location">Current Location</string>
+    <string name="search_results">Search Results</string>
+
+    <!--    Search Typing-->
+    <string name="enter_your_search_keyword">Enter Your Search Keyword</string>
+    <string name="deliciousness_is_just_a_search_away">Deliciousness is \n just a search away</string>
+
+    <!--    Restaurant-->
+    <string name="please_check_again_later_for_the_hottest_offers">Please check again later for the hottest offers</string>
+    <string name="has_no_offers_right_now">has no offers right now</string>
+    <string name="your_search_has_no_results">Your search has no results</string>
+    <string name="explore_our_offers">Explore Our Offers</string>
+    <string name="explore_our_restaurants">Explore Our Restaurans</string>
+    <string name="empty_offers_image">empty offers image</string>
+    <string name="bottom_sheet_top">bottom sheet top</string>
+    <string name="leaderboards_are_coming_soon_n_stay_tuned_for_fun_challenges_n_and_rewards">Leaderboards are coming soon,\n stay tuned for fun challenges \n and rewards</string>
+    <string name="featured_image">featured image</string>
+    <string name="share_icon">share Icon</string>
+    <string name="special_offers">Special Offers</string>
+    <string name="enjoy_offers_straight_from_ezeats_in_partnership_with_dominos_pizza_for_your_satisfaction_redeem_now_and_enjoy_the_food_and_the_points">Enjoy Offers straight from EZeats in partnership with dominos pizza for your satisfaction, redeem now and enjoy the food and the points</string>
+    <string name="offer_image">offer image</string>
+    <string name="no_offers_available">No Offers Available</string>
+    <string name="there_is_no_offers_going_on_right_now_please_check_again_later_for_all_the_pizza_goodness">You can order your favourite food through our web app now</string>
+    <string name="check_other_offers">Order through the web app</string>
+
+    <!--    Redeem-->
+    <string name="new_">New</string>
+    <string name="redeem_pay"><![CDATA[redeem & pay\n]]></string>
+
+    <!--    Profile-->
+    <string name="edit_profile">Edit Profile</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="delete_your_account">Delete your account?</string>
+    <string name="are_you_sure_you_want_to_delete_your_account_you_will_lose_all_your_data_this_action_is_irreversible">Are you sure you want to delete your account? You will lose all your data, this action is irreversible</string>
+    <string name="delete">Delete</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="welcome">Welcome</string>
+    <string name="guest">Guest</string>
+    <string name="login_or_sign_up">Login or sign up</string>
+
+    <!--    Reorder-->
+    <string name="reorder">Reorder</string>
+    <string name="extras">Extras</string>
+    <string name="you_don_t_have_any_orders_yet_make_some_orders_to_see_your_history_here">You don\'t have any orders yet, make some orders to see your history here</string>
+
+    <!--    Edit Profile-->
+    <string name="edit">Edit</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="save_changes">Save Changes</string>
+    <string name="email">Email</string>
+    <string name="full_name">Full Name</string>
+    <string name="log_out">Logout</string>
+    <string name="birth_date">Date of birth</string>
+
+    <!--    Guest Login-->
+    <string name="that_cart_looks_lovely_please_sign_up_or_log_back_in_to_be_able_to_make_an_order">To start collecting and redeeming points, create an account or login</string>
+    <string name="please_sign_up_or_login_to_continue">Please Sign up or login \n to continue</string>
+    <string name="promo_code">Promo Code</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="marakez_points">Marakez Points</string>
+    <string name="marakez_points_allow_you_to_redeem_offers_from_their_respective_restaurants">Marakez Points allow you to redeem offers from their respective restaurants</string>
+    <string name="details">Details</string>
+    <string name="pending">Pending</string>
+    <string name="preparing">Preparing</string>
+    <string name="pickup">Pickup</string>
+    <string name="delivered">Delivered</string>
+    <string name="in_delivery">in-Delivery</string>
+    <string name="order_details">Order Details</string>
+    <string name="call_restaurant">Call Restaurant</string>
+    <string name="having_issues">Still Having Issues?</string>
+    <string name="support_ez_eats_com"><u>Support@ez-eats.com</u></string>
+    <string name="item_details">Order Details</string>
+    <string name="call_support">Call Support</string>
+    <string name="send_a_complaint">Send a complaint</string>
+    <string name="type_your_complaint_below_and_we_will_contact_you_shortly">Type your complaint below and we will \ncontact you shortly</string>
+    <string name="write_your_complaint_here">Write your complaint here...</string>
+    <string name="submit_complaint">Submit Complaint</string>
+    <string name="your_complaint_has_been_received_n_we_will_be_in_touch_shortly">Your complaint has been received,\n we will be in touch shortly</string>
+    <string name="sorry_for_any_inconvenience">Sorry for any inconvenience!</string>
+    <string name="confirm">Confirm</string>
+    <string name="our_partners">Our Partners</string>
+    <string name="spin_the_wheel_partners">Spin the wheel Partners</string>
+    <string name="enjoying_ezeats">Enjoying EZeats?</string>
+    <string name="would_you_mind_taking_a_moment_to_n_rate_us_thanks_for_your_support">Would you mind taking a moment to\n rate us? Thanks for your support!</string>
+    <string name="later">Later</string>
+    <string name="rate_us_image">rate us image</string>
+    <string name="partner_image">Partner Image</string>
+<<<<<<< HEAD
+    <string name="are_you_sure_you_want_n_to_logout" translatable="false">Are you sure you want\n to logout?</string>
+=======
+    <string name="are_you_sure_you_want_n_to_logout">Are you sure you want\n to logout?</string>
+>>>>>>> 0ea0dc73c526e5a7a0e77e2d8352263d3becb069
+    <string name="loyalty_center">Loyalty Center</string>
+    <string name="spin_the_wheel_promo_code_image">spin the wheel promo code image</string>
+    <string name="spin_the_wheel_codes">Spin the wheel codes</string>
+    <string name="view_more">View More</string>
+    <string name="vouchers">Vouchers</string>
+    <string name="busy">Busy</string>
+    <string name="closed">Closed</string>
+    <string name="free_delivery">Free Delivery</string>
+
+</resources>

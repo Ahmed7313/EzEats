@@ -54,9 +54,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/ivLogo"
                     app:layout_constraintTop_toTopOf="@+id/ivLogo"
-
                     android:text="@{voucher.value}"
-
                     tools:text="50% Off your next order from Butchers burger"
                     />
 
@@ -69,7 +67,6 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/_10ssp"
                     android:visibility="gone"
-                    android:text='@{String.format("next order from %s",voucher.restaurantName)}'
                     app:layout_constraintStart_toStartOf="@+id/tvName"
                     app:layout_constraintTop_toBottomOf="@+id/tvName"
                     tools:text="next order from Nude Bakery" />
