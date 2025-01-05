@@ -207,5 +207,8 @@
     <string name="spin_the_wheel_codes">Spin the wheel codes</string>
     <string name="view_more">View More</string>
     <string name="vouchers">Vouchers</string>
+    <string name="busy">Busy</string>
+    <string name="closed">Closed</string>
+    <string name="free_delivery">Free Delivery</string>
 
 </resources>
