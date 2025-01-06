@@ -56,18 +56,42 @@ abstract class BaseBottomSheetFragment<VB : ViewDataBinding> : BottomSheetDialog
         behavior.isDraggable = true
 //        behavior.skipCollapsed = true // Skip collapsed state, go directly to hidden
 
-        // Handle bottom sheet dragging and closing in one step
-//        behavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-//            override fun onStateChanged(bottomSheet: View, newState: Int) {
-//                if (newState == BottomSheetBehavior.STATE_DRAGGING) {
-//                    behavior.state = BottomSheetBehavior.STATE_COLLAPSED
-//                }
-//            }
-//
-//            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-//                // Optionally handle sliding
-//            }
-//        })
+//         Handle bottom sheet dragging and closing in one step
+        behavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                when (newState) {
+                    BottomSheetBehavior.STATE_DRAGGING -> {
+                        // Optional: Prevent the quick flickering movement
+//                        behavior.state = BottomSheetBehavior.STATE_HIDDEN
+                    }
+                    BottomSheetBehavior.STATE_SETTLING -> {
+                        // Optionally handle settling state
+                    }
+                    BottomSheetBehavior.STATE_EXPANDED -> {
+                        // Fully expanded
+                    }
+                    BottomSheetBehavior.STATE_COLLAPSED -> {
+                        // Fully collapsed
+//                        behavior.state = BottomSheetBehavior.STATE_HIDDEN
+                    }
+                    BottomSheetBehavior.STATE_HALF_EXPANDED -> {
+                        // Fully collapsed
+//                        behavior.state = BottomSheetBehavior.STATE_HIDDEN
+                    }
+                    BottomSheetBehavior.STATE_HIDDEN -> {
+                        // Dismiss the dialog if hidden
+                        dismiss()
+                    }
+                }
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                // Optionally handle sliding
+                    // Fully collapsed
+//                    behavior.state = BottomSheetBehavior.STATE_HIDDEN
+
+            }
+        })
     }
 
     private fun getWindowHeight(): Int {

@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -59,6 +60,16 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
             ivSearch.setOnClickListener { findNavController().navigate(R.id.goToSearchHistoryFragment) }
         }
 
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // Handle the back press event
+                Log.d(TAG, "handleOnBackPressed: ")
+                findNavController().navigate(R.id.homeScreenFragment)
+            }
+        }
+
+        // Add the callback to the OnBackPressedDispatcher
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
     }
 
 

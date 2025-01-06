@@ -74,6 +74,7 @@ class ComplaintFragment : DialogFragment() {
                     binding.tvEmail.text.toString(),
                     binding.tvComplaint.text.toString()
                 ) { isComplaintSentSuccessfully ->
+                    Log.d(TAG, "onViewCreated: Test")
                     if (isComplaintSentSuccessfully) {
                         binding.llEnterComplaint.visibility = GONE
                         binding.llComplainSuccess.visibility = VISIBLE

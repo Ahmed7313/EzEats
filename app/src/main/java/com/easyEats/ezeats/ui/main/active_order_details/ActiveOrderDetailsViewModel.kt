@@ -36,8 +36,8 @@ class ActiveOrderDetailsViewModel @Inject constructor(
 
     // LiveData for tracking the result of sending a support email
     private val _sendSupportEmailResultMutableLiveData =
-        MutableLiveData<Resource<BaseResponse<Boolean>>>()
-    val sendSupportEmailResultLiveData: LiveData<Resource<BaseResponse<Boolean>>> get() = _sendSupportEmailResultMutableLiveData
+        MutableLiveData<Resource<BaseResponse<Any>>>()
+    val sendSupportEmailResultLiveData: LiveData<Resource<BaseResponse<Any>>> get() = _sendSupportEmailResultMutableLiveData
 
     init {
         getActiveOrdersRestaurantResult() // Automatically fetch active orders on initialization
@@ -104,7 +104,7 @@ class ActiveOrderDetailsViewModel @Inject constructor(
      * @param complaintRequest Complaint request data to be sent.
      * @return Flow emitting the current resource state for the support email request.
      */
-    private fun createSupportEmailResultRequest(complaintRequest: ComplaintRequest): Flow<Resource<BaseResponse<Boolean>>> =
+    private fun createSupportEmailResultRequest(complaintRequest: ComplaintRequest): Flow<Resource<BaseResponse<Any>>> =
         channelFlow {
             send(Resource.Loading()) // Emit loading state
             val result = mainUseCase.trackActiveOrderUseCase.senSupportEmail(complaintRequest)

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">EZeats</string>
+    <string name="app_name" translatable="false">EZeats</string>
 
     <!--    Intro Screen-->
     <string name="easy_eats_logo">easy eats logo</string>
@@ -201,11 +201,7 @@
     <string name="later">Later</string>
     <string name="rate_us_image">rate us image</string>
     <string name="partner_image">Partner Image</string>
-<<<<<<< HEAD
-    <string name="are_you_sure_you_want_n_to_logout" translatable="false">Are you sure you want\n to logout?</string>
-=======
     <string name="are_you_sure_you_want_n_to_logout">Are you sure you want\n to logout?</string>
->>>>>>> 0ea0dc73c526e5a7a0e77e2d8352263d3becb069
     <string name="loyalty_center">Loyalty Center</string>
     <string name="spin_the_wheel_promo_code_image">spin the wheel promo code image</string>
     <string name="spin_the_wheel_codes">Spin the wheel codes</string>
@@ -214,5 +210,5 @@
     <string name="busy">Busy</string>
     <string name="closed">Closed</string>
     <string name="free_delivery">Free Delivery</string>
-
 </resources>
+

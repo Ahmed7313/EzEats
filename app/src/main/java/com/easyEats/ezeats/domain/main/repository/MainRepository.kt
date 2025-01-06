@@ -81,7 +81,7 @@ interface MainRepository {
 
     suspend fun trackActiveOrder(): BaseResponse<ActiveOrderResponse>
 
-    suspend fun sendSupportEmail(complaintRequest: ComplaintRequest): BaseResponse<Boolean>
+    suspend fun sendSupportEmail(complaintRequest: ComplaintRequest): BaseResponse<Any>
 
     suspend fun getPartners(): BaseResponse<PartnersResponse>
 

@@ -118,7 +118,7 @@ class MainResponseImpl @Inject constructor(
         return mainApiService.trackActiveOrder()
     }
 
-    override suspend fun sendSupportEmail(complaintRequest: ComplaintRequest): BaseResponse<Boolean> {
+    override suspend fun sendSupportEmail(complaintRequest: ComplaintRequest): BaseResponse<Any> {
         return mainApiService.sendSupportEmail(complaintRequest)
     }
 

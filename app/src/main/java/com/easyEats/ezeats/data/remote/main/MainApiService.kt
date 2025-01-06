@@ -85,7 +85,7 @@ interface MainApiService {
     suspend fun trackActiveOrder(): BaseResponse<ActiveOrderResponse>
 
     @POST("sendSupportEmail")
-    suspend fun sendSupportEmail(@Body complaintRequest: ComplaintRequest): BaseResponse<Boolean>
+    suspend fun sendSupportEmail(@Body complaintRequest: ComplaintRequest): BaseResponse<Any>
 
     @POST("getEntities")
     suspend fun getPartners(): BaseResponse<PartnersResponse>
