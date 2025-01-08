@@ -18,6 +18,7 @@ import com.easyEats.ezeats.ui.main.points.adapter.SpinWheelAdapter
 import com.easyEats.ezeats.ui.main.points.adapter.VoucherAdapter
 import com.easyEats.ezeats.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
@@ -45,19 +46,40 @@ class PointScreenFragment : BaseFragment<FragmentPointScreenBinding>() {
     override fun setUpViews() {
         listenToObserver()
         binding.btnSpinWheelPromoCodes.setOnClickListener {
-            findNavController().navigate(PointScreenFragmentDirections.goToVoucherBottomSheet(true))
+            lifecycleScope.launch {
+                binding.btnSpinWheelPromoCodes.isClickable=false
+                findNavController().navigate(PointScreenFragmentDirections.goToVoucherBottomSheet(true))
+                delay(1000)
+                binding.btnSpinWheelPromoCodes.isClickable=true
+            }
         }
 
         binding.tvSpinWheelPoints.setOnClickListener {
-            findNavController().navigate(PointScreenFragmentDirections.goToVoucherBottomSheet(true))
+            lifecycleScope.launch {
+                binding.tvSpinWheelPoints.isClickable=false
+                delay(1000)
+                findNavController().navigate(PointScreenFragmentDirections.goToVoucherBottomSheet(true))
+                binding.tvSpinWheelPoints.isClickable=true
+            }
         }
 
         binding.tvPoints.setOnClickListener {
-            findNavController().navigate(PointScreenFragmentDirections.goToVoucherBottomSheet(false))
+            lifecycleScope.launch {
+                binding.tvPoints.isClickable=false
+                delay(1000)
+                findNavController().navigate(PointScreenFragmentDirections.goToVoucherBottomSheet(false))
+                binding.tvPoints.isClickable=true
+            }
         }
 
         binding.tvAllPoints.setOnClickListener {
-            findNavController().navigate(PointScreenFragmentDirections.goToVoucherBottomSheet(false))
+            lifecycleScope.launch {
+                binding.tvAllPoints.isClickable=false
+                delay(1000)
+                findNavController().navigate(PointScreenFragmentDirections.goToVoucherBottomSheet(false))
+                binding.tvAllPoints.isClickable=true
+            }
+
         }
     }
 

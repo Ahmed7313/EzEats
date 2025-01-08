@@ -107,20 +107,20 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
             notification.navigateToScreen(notificationType)
         }
     }
-    private fun restaurantsListeners() {
-        homeViewModel.restaurants.observe(viewLifecycleOwner) { resource ->
-            when (resource) {
-                is Resource.Error -> {}
-                is Resource.Loading -> {}
-                is Resource.Success -> {
-                    homeViewModel.userRestaurants.value=resource.data?.result?.data
-                    Log.d(TAG, "kenawy will test ${homeViewModel.userRestaurants.value?.size}")
-                }
-
-                is Resource.UnAuthenticated -> {}
-            }
-        }
-    }
+//    private fun restaurantsListeners() {
+//        homeViewModel.restaurants.observe(viewLifecycleOwner) { resource ->
+//            when (resource) {
+//                is Resource.Error -> {}
+//                is Resource.Loading -> {}
+//                is Resource.Success -> {
+//                    homeViewModel.userRestaurants.value=resource.data?.result?.data
+//                    Log.d(TAG, "kenawy will test ${homeViewModel.userRestaurants.value?.size}")
+//                }
+//
+//                is Resource.UnAuthenticated -> {}
+//            }
+//        }
+//    }
 
     private fun fetchSavedAddress() {
         lifecycleScope.launch {
@@ -164,7 +164,8 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
             hotDealsOfferAdapter,
             findNavController(),
             requireActivity(),
-            this
+            this,
+            lifecycleScope
         )
         bindingUI.invoke()
     }
@@ -186,7 +187,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
 
         )
         listeners.invoke()
-        restaurantsListeners()
+//        restaurantsListeners()
     }
 
     // Handle the click event for Hot Deals

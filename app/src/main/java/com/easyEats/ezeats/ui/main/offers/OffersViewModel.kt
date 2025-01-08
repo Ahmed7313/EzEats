@@ -14,6 +14,7 @@ import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.base.BaseResponse
 import com.easyEats.ezeats.databinding.FragmentPercentScreenBinding
+import com.easyEats.ezeats.domain.main.model.request.RestaurantRequest
 import com.easyEats.ezeats.domain.main.model.request.offers.OffersRequest
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.Restaurant
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.new_restaurants_reponse.RestaurantsResponseItem
@@ -41,13 +42,15 @@ class OffersViewModel @Inject constructor(val mainUseCase: MainUseCase) :
     var isRequestFired = false
 
     private val _restaurantResultStateFlow =
-        MutableStateFlow<Resource<BaseResponse<List<Restaurant>>>>(Resource.Loading())
-    val restaurantResultStateFlow: StateFlow<Resource<BaseResponse<List<Restaurant>>>> get() = _restaurantResultStateFlow
+        MutableStateFlow<Resource<BaseResponse<List<RestaurantsResponseItem>>>>(Resource.Loading())
+    val restaurantResultStateFlow: StateFlow<Resource<BaseResponse<List<RestaurantsResponseItem>>>> get() = _restaurantResultStateFlow
 
 
     private val _categoryResultMutableLiveData =
         MutableLiveData<Resource<BaseResponse<List<Category>>>>()
     val categoryResultLiveData: LiveData<Resource<BaseResponse<List<Category>>>> get() = _categoryResultMutableLiveData
+
+
 
     init {
         getRestaurantsResult("")
@@ -60,7 +63,7 @@ class OffersViewModel @Inject constructor(val mainUseCase: MainUseCase) :
                 fetchCurrentAddress().collect {
                     if (it?.lat?.isNotEmpty() == true) {
                         val flow = createRestaurantsResultRequest(
-                            OffersRequest(
+                            RestaurantRequest(
                                 categoryId = categoryId,
                                 userLat = it.lat ?: "",
                                 userLon = it.lng ?: ""
@@ -79,7 +82,7 @@ class OffersViewModel @Inject constructor(val mainUseCase: MainUseCase) :
                         )
                     } else {
                         val flow = createRestaurantsResultRequest(
-                            OffersRequest(
+                            RestaurantRequest(
                                 categoryId = categoryId,
                                 userLat = "0.0",
                                 userLon = "0.0"
@@ -103,18 +106,20 @@ class OffersViewModel @Inject constructor(val mainUseCase: MainUseCase) :
     }
 
 
-    private fun createRestaurantsResultRequest(offersRequest: OffersRequest): Flow<Resource<BaseResponse<List<Restaurant>>>> =
+    private fun createRestaurantsResultRequest(request:  RestaurantRequest): Flow<Resource<BaseResponse<List<RestaurantsResponseItem>>>> =
         channelFlow {
-            Log.d(TAG, "createRestaurantsResultRequest: ${offersRequest.userLat}")
             send(Resource.Loading())
-            val result = mainUseCase.offersUserCase.getRestaurantsByCategory(offersRequest)
-            result.handleResponse(onSuccess = {
-                send(Resource.Success(result))
-            }, onError = { message, error ->
-                send(Resource.Error(message, error))
-            }, onUnauthenticated = {
-                send(Resource.UnAuthenticated())
-            })
+            val restaurants = mainUseCase.homeUseCase.getRestaurants(request)
+            restaurants.handleResponse(
+                onSuccess = {
+                    send(Resource.Success(restaurants))
+                },
+                onError = { message, error ->
+                    send(Resource.Error(message, error))
+                }, onUnauthenticated = {
+                    send(Resource.UnAuthenticated())
+                }
+            )
         }
 
     fun getCategoriesRestaurantResult() {
@@ -175,7 +180,7 @@ class OffersViewModel @Inject constructor(val mainUseCase: MainUseCase) :
         categories.removeIf { it.categoryId == "eqvWcHcHaD" }
         val itemAll = Category(
             "eqvWcHcHaD",
-            "https://jtxlimrcv63uszqdkzh2a9d1r7pd0u.files-sashido.cloud/945bc1b79e2391ef9b23dc478b192100_Final.png",
+            "https://jtxlimrcv63uszqdkzh2a9d1r7pd0u.files-sashido.cloud/feedbf971af02fcc87b5c2f80f76e5fa_Artboard%201%20copy%2019.png",
             "All",
             null
         )

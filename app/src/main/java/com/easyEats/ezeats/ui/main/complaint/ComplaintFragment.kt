@@ -13,6 +13,7 @@ import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.databinding.FragmentComplaintBinding
 import dagger.hilt.android.AndroidEntryPoint
+
 /**
  * A DialogFragment to allow users to submit complaints.
  * This fragment captures the user's full name, email, and complaint message.
@@ -74,7 +75,7 @@ class ComplaintFragment : DialogFragment() {
                     binding.tvEmail.text.toString(),
                     binding.tvComplaint.text.toString()
                 ) { isComplaintSentSuccessfully ->
-                    Log.d(TAG, "onViewCreated: Test")
+                    Log.d(TAG, "onViewCreated: success")
                     if (isComplaintSentSuccessfully) {
                         binding.llEnterComplaint.visibility = GONE
                         binding.llComplainSuccess.visibility = VISIBLE

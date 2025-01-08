@@ -15,19 +15,19 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_100sdp"
+        android:layout_height="@dimen/_120sdp"
         android:layout_marginBottom="@dimen/_15sdp"
         app:cardCornerRadius="@dimen/_4sdp"
         app:cardElevation="5dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_restaurant_details"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -46,13 +46,13 @@
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="@dimen/_95sdp"
-                        android:layout_height="@dimen/_100sdp">
+                        android:layout_height="@dimen/_120sdp">
 
                         <ImageView
                             android:id="@+id/imageView8"
                             loadImage="@{restaurant.logo}"
                             android:layout_width="@dimen/_95sdp"
-                            android:layout_height="@dimen/_100sdp"
+                            android:layout_height="0dp"
                             android:contentDescription="@string/restaurant_logo"
                             android:scaleType="fitXY"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -78,7 +78,7 @@
                                 android:gravity="center"
                                 android:text="@string/closed"
                                 android:textSize="@dimen/_12ssp"
-                                android:visibility="gone"
+                                android:visibility="@{restaurant.available? View.GONE:View.VISIBLE,default=gone}"
                                 android:textColor="@color/white"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -110,13 +110,12 @@
                     android:layout_marginHorizontal="@dimen/_7sdp"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:ellipsize="end"
-                    android:layout_marginEnd="@dimen/_10sdp"
                     android:fontFamily="@font/gilroy_700"
                     android:maxLines="2"
                     android:text="@{restaurant.name}"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_16ssp"
-                    app:layout_constraintEnd_toStartOf="@+id/tv_pickUp"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/imageFood"
                     app:layout_constraintTop_toTopOf="@+id/imageFood"
                     tools:text="Dominate Pizza" />
@@ -173,107 +172,110 @@
                     android:id="@+id/tv_pickUp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/pick_up_bg"
                     android:drawablePadding="@dimen/_3sdp"
                     android:fontFamily="@font/gilroy_600"
                     android:gravity="start"
-                    android:text='@{String.format("%s", restaurant.distance.toString())}'
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:paddingVertical="@dimen/_4sdp"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:text="@string/pickup"
                     android:textColor="#006491"
                     android:textSize="@dimen/_10ssp"
-                    android:background="@drawable/pick_up_bg"
-                    android:paddingVertical="@dimen/_4sdp"
-                    android:paddingHorizontal="@dimen/_10sdp"
-                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:visibility="@{restaurant.isPickUp? View.VISIBLE:View.GONE,default=gone}"
                     app:drawableStartCompat="@drawable/ic_pick_up"
                     app:drawableTint="#006491"
-                    android:visibility="@{restaurant.isPickUp? View.VISIBLE:View.GONE}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/tvName"
+                    app:layout_constraintStart_toStartOf="@+id/tvMeterAway"
+                    app:layout_constraintTop_toBottomOf="@+id/tvMeterAway"
                     tools:text="PickUp" />
 
                 <TextView
                     android:id="@+id/tv_distance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/pick_up_bg"
                     android:drawablePadding="@dimen/_3sdp"
                     android:fontFamily="@font/gilroy_600"
                     android:gravity="start"
-                    android:text='@{String.format("%s", restaurant.distance.toString())}'
-                    android:textColor="#006491"
-                    android:visibility="gone"
-                    android:textSize="@dimen/_10ssp"
-                    android:background="@drawable/pick_up_bg"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:paddingHorizontal="@dimen/_5sdp"
                     android:paddingVertical="@dimen/_4sdp"
-                    android:paddingHorizontal="@dimen/_10sdp"
-                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:text='@{String.format("%sM", restaurant.estimateDelivery.toString())}'
+                    android:textColor="#006491"
+                    android:visibility="@{restaurant.isDelivery? View.VISIBLE:View.GONE,default=gone}"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:textSize="@dimen/_10ssp"
                     app:drawableStartCompat="@drawable/ic_pick_up"
                     app:drawableTint="#006491"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/tvName"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_pickUp"
+                    app:layout_constraintStart_toEndOf="@+id/tv_pickUp"
+                    app:layout_constraintTop_toBottomOf="@+id/tvMeterAway"
                     tools:text="30M" />
 
                 <HorizontalScrollView
                     android:layout_width="0dp"
-                    android:layout_height="0dp"
+                    android:layout_height="wrap_content"
                     android:scrollbars="none"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginTop="@dimen/_4sdp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/tvReview"
-                    app:layout_constraintTop_toBottomOf="@+id/tvMeterAway">
+                    app:layout_constraintTop_toBottomOf="@+id/tv_pickUp">
+
                     <LinearLayout
-                        android:layout_gravity="center_vertical"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-
+                        android:layout_gravity="center_vertical"
                         android:orientation="horizontal">
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingVertical="@dimen/_4sdp"
-                            android:textSize="@dimen/_10ssp"
-                            android:paddingStart="@dimen/_5sdp"
-                            android:gravity="center"
-                            android:paddingHorizontal="@dimen/_10sdp"
-                            android:visibility="@{restaurant.isPickUp? View.VISIBLE:View.GONE}"
+                            android:layout_marginEnd="@dimen/_4sdp"
                             android:background="@drawable/gift_bg"
                             android:fontFamily="@font/gilroy_500"
+                            android:gravity="center"
+                            android:paddingHorizontal="@dimen/_10sdp"
+                            android:paddingVertical="@dimen/_4sdp"
+                            android:paddingStart="@dimen/_5sdp"
                             android:textColor="#48C75A"
+                            android:textSize="@dimen/_10ssp"
+                            android:visibility="gone"
                             app:drawableStartCompat="@drawable/ic_gift"
-                            android:layout_marginEnd="@dimen/_4sdp"
-                            tools:text="20% off"/>
+                            tools:text="20% off" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingVertical="@dimen/_4sdp"
-                            android:textSize="@dimen/_10ssp"
-                            android:paddingStart="@dimen/_5sdp"
-                            android:gravity="center"
-                            android:paddingHorizontal="@dimen/_10sdp"
+                            android:layout_marginEnd="@dimen/_4sdp"
                             android:background="@drawable/free_delivery_bg"
-                            android:fontFamily="@font/gilroy_500"
-                            android:textColor="#EA374A"
                             android:drawablePadding="@dimen/_4sdp"
-                            android:visibility="@{restaurant.hasFreeDelivery? View.VISIBLE:View.GONE}"
-                            app:drawableStartCompat="@drawable/ic_free_delivery"
-                            android:layout_marginEnd="@dimen/_4sdp"
-                            android:text="@string/free_delivery"/>
+                            android:fontFamily="@font/gilroy_500"
+                            android:gravity="center"
+                            android:paddingHorizontal="@dimen/_10sdp"
+                            android:paddingVertical="@dimen/_4sdp"
+                            android:paddingStart="@dimen/_5sdp"
+                            android:text="@string/free_delivery"
+                            android:textColor="#EA374A"
+                            android:textSize="@dimen/_10ssp"
+                            android:visibility="@{restaurant.hasFreeDelivery? View.VISIBLE:View.GONE,default=gone}"
+                            app:drawableStartCompat="@drawable/ic_free_delivery" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingVertical="@dimen/_4sdp"
-                            android:textSize="@dimen/_10ssp"
-                            android:paddingStart="@dimen/_5sdp"
+                            android:layout_marginEnd="@dimen/_4sdp"
+                            android:background="@drawable/offers_bg"
+                            android:drawablePadding="@dimen/_4sdp"
+                            android:fontFamily="@font/gilroy_500"
                             android:gravity="center"
                             android:paddingHorizontal="@dimen/_10sdp"
-                            android:background="@drawable/offers_bg"
-                            android:fontFamily="@font/gilroy_500"
-                            android:visibility="@{restaurant.hasOffers? View.VISIBLE:View.GONE}"
+                            android:paddingVertical="@dimen/_4sdp"
+                            android:paddingStart="@dimen/_5sdp"
                             android:textColor="#F98B64"
-                            android:drawablePadding="@dimen/_4sdp"
+                            android:textSize="@dimen/_10ssp"
+                            android:visibility="@{restaurant.hasOffers? View.VISIBLE:View.GONE,default=gone}"
                             app:drawableStartCompat="@drawable/ic_offes"
-                            android:layout_marginEnd="@dimen/_4sdp"
-                            tools:text="Offers"/>
+                            tools:text="Offers" />
 
 
                     </LinearLayout>

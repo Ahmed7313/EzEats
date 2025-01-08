@@ -50,13 +50,6 @@ class HomeViewModel @Inject constructor(private val mainUseCase: MainUseCase) :
     val featuredOffers: LiveData<List<FeaturedOffer>?> = _featuredOffers
 
 
-    private val _restaurants =
-        MutableLiveData<Resource<BaseResponse<List<RestaurantsResponseItem>>>>()
-    val restaurants: LiveData<Resource<BaseResponse<List<RestaurantsResponseItem>>>> = _restaurants
-
-    var userRestaurants = MutableLiveData<List<RestaurantsResponseItem>>()
-
-
     // LiveData for holding the list of hot deals offers
     private val _hotDealsOffers = MutableLiveData<List<HotDeal>?>()
     val hotDealsOffers: LiveData<List<HotDeal>?> = _hotDealsOffers
@@ -150,14 +143,12 @@ class HomeViewModel @Inject constructor(private val mainUseCase: MainUseCase) :
                             userLon = it.lng
                         )
                     )
-                    getRestaurants(RestaurantRequest(it.lat, it.lng ?: ""))
                     isLocationGranted.value = true
                 } else {
                     // Request location permission if not granted
                     locationUtil.askUserForLocationPermission(onPermissionDenied = {
                         isLocationGranted.value = false
                         getHomeResult(HomeRequest("", "")) // Proceed with empty location data
-                        getRestaurants(RestaurantRequest("", ""))
                     }, onPermissionGranted = {
                         isLocationGranted.value = true
                         getLocationAndAddress() // Fetch location and address
@@ -175,7 +166,6 @@ class HomeViewModel @Inject constructor(private val mainUseCase: MainUseCase) :
         locationUtil.getCurrentLocation(onLocationReceived = { latitude, longitude ->
             // Fetch home data based on the user's location
             getHomeResult(HomeRequest(latitude.toString(), longitude.toString()))
-            getRestaurants(RestaurantRequest(latitude.toString(), longitude.toString()))
             locationUtil.reverseGeocode(latitude, longitude, onAddressReceived = { address ->
                 // Update the address LiveData and save it locally
                 _addressMutableLiveData.value = address
@@ -189,12 +179,10 @@ class HomeViewModel @Inject constructor(private val mainUseCase: MainUseCase) :
             }, onError = {
                 // Proceed with empty location data if reverse geocoding fails
                 getHomeResult(HomeRequest("", ""))
-                getRestaurants(RestaurantRequest("", ""))
             })
         }, onError = {
             // Proceed with empty location data if location fetch fails
             getHomeResult(HomeRequest("", ""))
-            getRestaurants(RestaurantRequest("", ""))
         })
     }
 
@@ -230,36 +218,7 @@ class HomeViewModel @Inject constructor(private val mainUseCase: MainUseCase) :
             )
         }
 
-    private fun getRestaurants(request: RestaurantRequest) {
-        val flow = createRestaurantsResultRequest(request)
-        apply(
-            flow = flow,
-            maxRetries = 2,
-            onError = { error ->
-                _restaurants.value =
-                    Resource.Error("No Internet Connection")
-            },
-            onSuccess = { resource ->
-                _restaurants.value = resource
-            }
-        )
-    }
 
-    private fun createRestaurantsResultRequest(request: RestaurantRequest): Flow<Resource<BaseResponse<List<RestaurantsResponseItem>>>> =
-        channelFlow {
-            send(Resource.Loading())
-            val restaurants = mainUseCase.homeUseCase.getRestaurants(request)
-            restaurants.handleResponse(
-                onSuccess = {
-                    send(Resource.Success(restaurants))
-                },
-                onError = { message, error ->
-                    send(Resource.Error(message, error))
-                }, onUnauthenticated = {
-                    send(Resource.UnAuthenticated())
-                }
-            )
-        }
 
 
     fun updateDeviceToken(updateTokeRequest: UpdateTokeRequest) {

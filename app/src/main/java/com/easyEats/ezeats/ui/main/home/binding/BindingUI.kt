@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
+import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
@@ -22,6 +23,8 @@ import com.easyEats.ezeats.ui.main.main.MainViewModel
 import com.easyEats.ezeats.utils.location.LocationUtil
 import com.easyEats.ezeats.utils.tracking.Event.sendEvent
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 data class BindingUI(
     private val binding: FragmentHomeScreenBinding,
@@ -34,10 +37,10 @@ data class BindingUI(
     private val hotDealsOfferAdapter: HotDealsAdapter,
     private val navController: NavController,
     private val context: Activity,
-    private val fragment: HomeScreenFragment
-
+    private val fragment: HomeScreenFragment,
+    private val lifecycleScope: LifecycleCoroutineScope,
 ) {
-    fun invoke(){
+    fun invoke() {
         bindingData()
     }
 
@@ -60,19 +63,36 @@ data class BindingUI(
 
         // Set up click listeners for various UI elements
         binding.tvLocation.setOnClickListener {
-            navController.navigate(R.id.location_bottom_sheet)
+            lifecycleScope.launch {
+                binding.tvLocation.isClickable = false
+                navController.navigate(R.id.location_bottom_sheet)
+                delay(1000)
+                binding.tvLocation.isClickable = true
+            }
+
         }
 
         binding.tvViewAllTrackOrder.setOnClickListener {
-            navController.navigate(R.id.goToActiveOrderDetails)
+            lifecycleScope.launch {
+                binding.tvLocation.isClickable = false
+                navController.navigate(R.id.goToActiveOrderDetails)
+                delay(1000)
+                binding.tvLocation.isClickable = true
+            }
         }
 
         binding.etSearch.setOnClickListener {
-            navController.navigate(R.id.goToSearchHistoryFragment)
+            lifecycleScope.launch {
+                binding.tvLocation.isClickable = false
+                navController.navigate(R.id.goToSearchHistoryFragment)
+                delay(1000)
+                binding.tvLocation.isClickable = true
+            }
             sendEvent("SignIn", "SignIn", "SignIn")  // Send event for sign-up action
         }
 
         binding.swipeToRefresh.setOnRefreshListener {
+
             homeViewModel.checkLocationPermission()  // Refresh the location permissions
         }
 
@@ -81,9 +101,15 @@ data class BindingUI(
         }
 
         binding.tvViewAllFeatured.setOnClickListener {
-            val bottomNavigationView = context.findViewById<BottomNavigationView>(R.id.nav_view)
-            bottomNavigationView?.selectedItemId = R.id.percentScreenFragment
-            navController.navigate(R.id.offers_fragment)
+            lifecycleScope.launch {
+                binding.tvLocation.isClickable = false
+                val bottomNavigationView = context.findViewById<BottomNavigationView>(R.id.nav_view)
+                bottomNavigationView?.selectedItemId = R.id.percentScreenFragment
+                navController.navigate(R.id.offers_fragment)
+                delay(1000)
+                binding.tvLocation.isClickable = true
+            }
+
         }
 
         binding.tvViewAllHotDeals.setOnClickListener {
@@ -126,7 +152,6 @@ data class BindingUI(
 
         handler.post(scrollRunnable)
     }
-
 
 
 }

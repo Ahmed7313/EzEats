@@ -41,7 +41,6 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
     OfferAdapter.OnOfferClicked {
 
     private val mainViewModel: MainViewModel by activityViewModels()
-    private val homeViewModel: HomeViewModel by activityViewModels()
     private val offersViewModel: OffersViewModel by viewModels()
     private lateinit var restaurantAdapter: RestaurantAdapter
     private lateinit var cateAdapter: OffersCategoryAdapter
@@ -86,15 +85,7 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
             }
 
         }
-        homeViewModel.userRestaurants.observe(viewLifecycleOwner){
-            restaurantAdapter = RestaurantAdapter(this@OffersScreenFragment, this@OffersScreenFragment)
-            offersViewModel.setRestaurantsData(
-                requireContext(),
-                binding,
-                restaurantAdapter,
-                it
-            )
-        }
+
 
         lifecycleScope.launch {
             offersViewModel.restaurantResultStateFlow.collect { resource ->
@@ -109,14 +100,16 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
                     }
 
                     is Resource.Success -> {
-//                        restaurantAdapter = RestaurantAdapter(this@OffersScreenFragment, this@OffersScreenFragment)
-//                        binding.srGetOffers.isRefreshing = false
-//                        offersViewModel.setRestaurantsData(
-//                            requireContext(),
-//                            binding,
-//                            restaurantAdapter,
-//                            resource
-//                        )
+                      restaurantAdapter =
+                          RestaurantAdapter(this@OffersScreenFragment, this@OffersScreenFragment)
+                        resource.data?.result?.data?.let {
+                            offersViewModel.setRestaurantsData(
+                                requireContext(),
+                                binding,
+                                restaurantAdapter,
+                                it
+                            )
+                        }
                         hideMainLoading()
                     }
 
@@ -166,14 +159,14 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
     override fun onRestaurantClickListener(restaurant: RestaurantsResponseItem,cl:ConstraintLayout) {
         lifecycleScope.launch {
             cl.isClickable = false
+            delay(1000)
             findNavController().navigate(
                 OffersScreenFragmentDirections.goToRestaurantFragment(
                     restaurant.id!!
                 )
             )
-            delay(1000)
+            delay(500)
             cl.isClickable = true
-
         }
 
     }

@@ -201,7 +201,7 @@
     <string name="later">Later</string>
     <string name="rate_us_image">rate us image</string>
     <string name="partner_image">Partner Image</string>
-    <string name="are_you_sure_you_want_n_to_logout">Are you sure you want\n to logout?</string>
+    <string name="are_you_sure_you_want_n_to_logout" translatable="false">Are you sure you want\n to logout?</string>
     <string name="loyalty_center">Loyalty Center</string>
     <string name="spin_the_wheel_promo_code_image">spin the wheel promo code image</string>
     <string name="spin_the_wheel_codes">Spin the wheel codes</string>
@@ -210,5 +210,5 @@
     <string name="busy">Busy</string>
     <string name="closed">Closed</string>
     <string name="free_delivery">Free Delivery</string>
-</resources>
 
+</resources>

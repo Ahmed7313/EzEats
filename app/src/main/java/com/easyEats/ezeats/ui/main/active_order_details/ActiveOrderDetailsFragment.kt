@@ -19,7 +19,6 @@ import com.easyEats.ezeats.ui.main.order_history.adapter.SubOrderHistoryAdapter
 import com.easyEats.ezeats.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import es.dmoral.toasty.Toasty
-
 /**
  * Fragment to display active order details, including support for complaints and viewing sub-orders.
  * This fragment uses `ActiveOrderDetailsViewModel` to manage the data and supports interaction with
