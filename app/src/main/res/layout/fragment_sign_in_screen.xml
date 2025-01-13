@@ -52,6 +52,29 @@
                 app:layout_constraintStart_toStartOf="@id/tv_welcome_back"
                 app:layout_constraintTop_toBottomOf="@id/tv_welcome_back" />
 
+            <ImageView
+                android:id="@+id/btn_gmail"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:src="@drawable/google_ic"
+                android:visibility="gone"
+                android:layout_marginTop="@dimen/_30sdp"
+                android:contentDescription="@string/login_with_google"
+                app:layout_constraintStart_toStartOf="@+id/tv_start_saving"
+                app:layout_constraintTop_toBottomOf="@+id/tv_start_saving" />
+
+            <ImageView
+                android:id="@+id/btn_facebook"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:src="@drawable/facebook_ic"
+                android:visibility="gone"
+                android:contentDescription="@string/login_with_facebook"
+                android:layout_marginStart="@dimen/_22sdp"
+                app:layout_constraintBottom_toBottomOf="@+id/btn_gmail"
+                app:layout_constraintStart_toEndOf="@+id/btn_gmail"
+                app:layout_constraintTop_toTopOf="@+id/btn_gmail" />
+
             <LinearLayout
                 android:id="@+id/ll_social_media_icons"
                 android:layout_width="wrap_content"
@@ -82,15 +105,15 @@
                 style="@style/defaultInputText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_25sdp"
                 android:hint="@string/enter_your_phone_number"
                 android:selectAllOnFocus="true"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_13ssp"
+                android:layout_marginTop="@dimen/_20sdp"
                 app:layout_constraintBottom_toTopOf="@+id/btn_sign_in"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/ll_social_media_icons"
+                app:layout_constraintTop_toBottomOf="@+id/btn_gmail"
                 app:layout_constraintVertical_bias="0.032">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -99,9 +122,9 @@
                     android:layout_height="@dimen/_42sdp"
                     android:drawableStart="@drawable/phone_icon"
                     android:drawablePadding="10dp"
-                    android:textSize="@dimen/_11ssp"
+                    android:inputType="phone"
                     android:text="@={signInViewModel.phoneNumber}"
-                    android:inputType="phone" />
+                    android:textSize="@dimen/_11ssp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton

@@ -62,11 +62,11 @@ class HomeListeners(
     }
 
     private fun checkIfUserRateAppOrNot() {
-        GlobalScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             if (homeViewModel.checkIfUserViewedRatingDialog().not()){
-                delay(2*60*1000)
-                homeScreenFragment.displayRatingDialog()
+                delay(60*1000)
                 homeViewModel.saveUserRating(true)
+                homeScreenFragment.displayRatingDialog()
             }
         }
     }

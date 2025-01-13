@@ -210,5 +210,9 @@
     <string name="busy">Busy</string>
     <string name="closed">Closed</string>
     <string name="free_delivery">Free Delivery</string>
+    <string name="default_web_client_id">937200415823-hloueibohv4jo7635kmj8odovt3s7krd.apps.googleusercontent.com</string>
+    <string name="login_with_google">loggin with google</string>
+    <string name="login_with_facebook">login with facebook</string>
+    <string name="facebook_app_id">577943048465854</string>
 
 </resources>

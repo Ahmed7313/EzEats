@@ -628,7 +628,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_15sdp"
                             android:layout_marginBottom="@dimen/_20sdp"
-                            android:visibility="@{homeViewModel.isLocationGranted ? View.GONE :View.VISIBLE}"
+                            android:visibility="@{homeViewModel.isLocationGranted ? View.GONE :View.VISIBLE,default=gone}"
                             app:cardCornerRadius="@dimen/_10sdp">
 
                             <LinearLayout
@@ -727,110 +727,126 @@
                             tools:listitem="@layout/challenge_item" />
 
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:fontFamily="@font/gilroy_700"
-                            android:text="@string/our_partners"
-                            android:textSize="@dimen/_20ssp"
-                            android:layout_marginTop="@dimen/_15sdp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            setOurPartnersText="@{partnerResponse.partners.size()}"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_3sdp"
-                            android:fontFamily="@font/gilroy_600"
-                            android:gravity="center"
-                            android:lineSpacingExtra="4dp"
-                            android:textColor="#898883"
-                            android:textSize="@dimen/_12ssp"
-                            tools:text="With over 50 partners of success, you are \nguaranteed to fulfil your cravings with EZeats" />
-
-
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_15sdp">
+                            android:layout_height="wrap_content">
 
-                            <androidx.recyclerview.widget.RecyclerView
-                                android:id="@+id/rv_our_partners"
+                            <LinearLayout
+                                android:id="@+id/linearLayout5"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                                android:orientation="vertical"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:partners="@{partnerResponse.partners}"
-                                app:partnersAdapter="@{partnersAdapter}"
-                                tools:listitem="@layout/item_partner" />
-                            <View
-                                android:id="@+id/custom_view"
-                                android:layout_width="0dp"
-                                android:layout_height="0dp"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="@+id/rv_our_partners" />
-                        </androidx.constraintlayout.widget.ConstraintLayout>
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:fontFamily="@font/gilroy_700"
+                                    android:text="@string/our_partners"
+                                    android:textSize="@dimen/_20ssp"
+                                    android:layout_marginTop="@dimen/_15sdp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    setOurPartnersText="@{partnerResponse.partners.size()}"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="@dimen/_3sdp"
+                                    android:fontFamily="@font/gilroy_600"
+                                    android:gravity="center"
+                                    android:lineSpacingExtra="4dp"
+                                    android:textColor="#898883"
+                                    android:textSize="@dimen/_12ssp"
+                                    tools:text="With over 50 partners of success, you are \nguaranteed to fulfil your cravings with EZeats" />
 
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_30sdp"
-                            android:fontFamily="@font/gilroy_700"
-                            android:overScrollMode="never"
-                            android:text="@string/spin_the_wheel_partners"
-                            android:textSize="@dimen/_20ssp"
-                            android:textStyle="bold" />
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_15sdp">
 
-                        <TextView
-                            setSpinWheelPartnersText="@{partnerResponse.entities.size()}"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_3sdp"
-                            android:fontFamily="@font/gilroy_600"
-                            android:gravity="center"
-                            android:lineSpacingExtra="4dp"
-                            android:textColor="#898883"
-                            android:textSize="@dimen/_12ssp"
-                            tools:text="With over 50 partners of success, you are \nguaranteed to fulfil your cravings with EZeats" />
+                                    <androidx.recyclerview.widget.RecyclerView
+                                        android:id="@+id/rv_our_partners"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal"
+                                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent"
+                                        app:partners="@{partnerResponse.partners}"
+                                        app:partnersAdapter="@{partnersAdapter}"
+                                        tools:listitem="@layout/item_partner" />
+                                    <View
+                                        android:id="@+id/custom_view"
+                                        android:layout_width="0dp"
+                                        android:layout_height="0dp"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="@+id/rv_our_partners" />
+                                </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:paddingVertical="@dimen/_15sdp"
-                            android:layout_marginTop="@dimen/_10sdp"
-                            android:orientation="vertical">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="@dimen/_30sdp"
+                                    android:fontFamily="@font/gilroy_700"
+                                    android:overScrollMode="never"
+                                    android:text="@string/spin_the_wheel_partners"
+                                    android:textSize="@dimen/_20ssp"
+                                    android:textStyle="bold" />
 
-                            <ImageView
-                                android:id="@+id/imageView6"
-                                android:layout_width="@dimen/_100sdp"
-                                android:layout_height="@dimen/_100sdp"
-                                android:src="@drawable/spin_wheel_image"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent" />
+                                <TextView
+                                    setSpinWheelPartnersText="@{partnerResponse.entities.size()}"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="@dimen/_3sdp"
+                                    android:fontFamily="@font/gilroy_600"
+                                    android:gravity="center"
+                                    android:lineSpacingExtra="4dp"
+                                    android:textColor="#898883"
+                                    android:textSize="@dimen/_12ssp"
+                                    tools:text="With over 50 partners of success, you are \nguaranteed to fulfil your cravings with EZeats" />
 
-                            <androidx.recyclerview.widget.RecyclerView
-                                android:id="@+id/rv_spin_wheel_partners"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:partners="@{partnerResponse.entities}"
-                                app:partnersAdapter="@{spinWheelpartnersAdapter}"
-                                tools:listitem="@layout/item_partner" />
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_10sdp"
+                                    android:orientation="vertical"
+                                    android:paddingVertical="@dimen/_15sdp">
+
+                                    <ImageView
+                                        android:id="@+id/imageView6"
+                                        android:layout_width="@dimen/_100sdp"
+                                        android:layout_height="@dimen/_100sdp"
+                                        android:src="@drawable/spin_wheel_image"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintEnd_toEndOf="parent" />
+
+                                    <androidx.recyclerview.widget.RecyclerView
+                                        android:id="@+id/rv_spin_wheel_partners"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal"
+                                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent"
+                                        app:partners="@{partnerResponse.entities}"
+                                        app:partnersAdapter="@{spinWheelpartnersAdapter}" />
+
+
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+                            </LinearLayout>
                         </androidx.constraintlayout.widget.ConstraintLayout>
                     </LinearLayout>
 

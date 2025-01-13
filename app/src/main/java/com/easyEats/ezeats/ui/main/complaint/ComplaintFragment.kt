@@ -118,10 +118,23 @@ class ComplaintFragment : DialogFragment() {
      * @return True if the email is filled, false otherwise.
      */
     private fun isEmailNotEmpty(): Boolean {
-        if (binding.tvEmail.text?.isEmpty() == true)
+        val email = binding.tvEmail.text?.toString() ?: ""
+
+        // Check if the email is empty
+        if (email.isEmpty()) {
             Toast.makeText(requireContext(), "Email is required", Toast.LENGTH_LONG).show()
-        return binding.tvEmail.text?.isNotEmpty() ?: false
+            return false
+        }
+
+        // Check if the email is valid
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            Toast.makeText(requireContext(), "Invalid Email", Toast.LENGTH_LONG).show()
+            return false
+        }
+
+        return true
     }
+
 
     /**
      * Validates if the complaint message field is not empty.

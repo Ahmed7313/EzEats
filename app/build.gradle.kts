@@ -5,7 +5,7 @@ plugins {
     alias(libs.plugins.hilt)
     id("androidx.navigation.safeargs.kotlin")
     id("kotlin-kapt")
-    id ("kotlin-parcelize")
+    id("kotlin-parcelize")
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
 }
@@ -150,9 +150,6 @@ dependencies {
     //coil
     implementation(libs.coil)
     implementation(libs.coil.svg)
-    //shimmer
-//    implementation (libs.shimmer)
-//    implementation (libs.shimmer.recyclerview)
     //chucker
     debugImplementation(libs.library)
     releaseImplementation(libs.library.no.op)
@@ -162,14 +159,16 @@ dependencies {
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.messaging.ktx)
     //mixpanel
-    implementation (libs.mixpanel.android)
-
-    implementation (libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.mixpanel.android)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
     // in app update
     implementation(libs.app.update.ktx)
-
     //lottie
-    implementation (libs.lottie)
-
+    implementation(libs.lottie)
+    // Google Sign-In
+    implementation(libs.androidx.credentials)
+    implementation(libs.play.services.auth)
+    // Facebook Login
+    implementation(libs.facebook.login)
 
 }

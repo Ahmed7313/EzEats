@@ -6,6 +6,8 @@ import com.easyEats.ezeats.BuildConfig.APPLICATION_ID
 import com.easyEats.ezeats.BuildConfig.CLIENT_KEY
 import com.easyEats.ezeats.BuildConfig.URL
 import com.easyEats.ezeats.utils.Constants.EASY_EATS_LOGS
+import com.facebook.FacebookSdk
+import com.facebook.appevents.AppEventsLogger
 import com.parse.Parse
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.runBlocking
@@ -42,6 +44,12 @@ class MyApplication : Application() {
 
         baseApplication = this
         TAG = EASY_EATS_LOGS
+        // Initialize Facebook SDK
+//        FacebookSdk.sdkInitialize(applicationContext)
+//        FacebookSdk.setApplicationId("577943048465854")
+
+        // Initialize AppEventsLogger
+//        AppEventsLogger.activateApp(this)
 
         // Initialize Parse with the necessary configuration
         Parse.initialize(Parse.Configuration.Builder(this)

@@ -1,5 +1,7 @@
 package com.easyEats.ezeats.ui.auth.sign_in
 
+import android.content.Intent
+import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -12,6 +14,9 @@ import com.easyEats.ezeats.R
 import com.easyEats.ezeats.base.BaseFragment
 import com.easyEats.ezeats.databinding.FragmentSignInScreenBinding
 import com.easyEats.ezeats.ui.auth.main.AuthViewModel
+import com.easyEats.ezeats.ui.auth.sign_in.google_facebook_login.FacebookLoginHelper
+import com.easyEats.ezeats.ui.auth.sign_in.google_facebook_login.GoogleLoginHelper
+import com.easyEats.ezeats.ui.auth.sign_in.google_facebook_login.SocialLoginCallback
 import com.easyEats.ezeats.utils.Resource
 import com.easyEats.ezeats.utils.validation.ValidateFields
 import com.parse.ParseUser
@@ -23,6 +28,45 @@ class SignInScreenFragment : BaseFragment<FragmentSignInScreenBinding>() {
 
     private val signInViewModel: SignInViewModel by viewModels()
     private val authViewModel: AuthViewModel by activityViewModels()
+
+    private lateinit var googleLoginHelper: GoogleLoginHelper
+    private lateinit var facebookLoginHelper: FacebookLoginHelper
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        googleLoginHelper = GoogleLoginHelper(this, object : SocialLoginCallback {
+            override fun onLoginSuccess(phoneOrEmail: String) {
+                Log.d("LoginFragment", "Google Login Success: $phoneOrEmail")
+                Toasty.success(requireContext(), "Google Login Success", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onLoginError(errorMessage: String) {
+                Log.e("LoginFragment", "Google Login Error: $errorMessage")
+                Toasty.error(requireContext(), "Google Login Error: $errorMessage", Toast.LENGTH_SHORT).show()
+            }
+        })
+
+        facebookLoginHelper = FacebookLoginHelper(this, object : SocialLoginCallback {
+            override fun onLoginSuccess(phoneOrEmail: String) {
+                Log.d("LoginFragment", "Facebook Login Success: $phoneOrEmail")
+            }
+
+            override fun onLoginError(errorMessage: String) {
+                Log.e("LoginFragment", "Facebook Login Error: $errorMessage")
+            }
+        })
+    }
+
+
+    private fun onGoogleLoginClick() {
+        googleLoginHelper.signIn()
+    }
+
+    fun onFacebookLoginClick() {
+//        facebookLoginHelper.signIn()
+    }
+
 
     override fun inflateBinding(
         inflater: LayoutInflater,
@@ -103,6 +147,13 @@ class SignInScreenFragment : BaseFragment<FragmentSignInScreenBinding>() {
             binding.btnSignIn.isEnabled = false
             signInViewModel.findUser()
         }
+
+        binding.btnGmail.setOnClickListener {
+            onGoogleLoginClick()
+        }
+        binding.btnFacebook.setOnClickListener {
+            onFacebookLoginClick()
+        }
     }
 
     override fun onDestroyView() {
@@ -111,5 +162,13 @@ class SignInScreenFragment : BaseFragment<FragmentSignInScreenBinding>() {
         super.onDestroyView()
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == GoogleLoginHelper.GOOGLE_SIGN_IN_REQUEST_CODE) {
+            googleLoginHelper.handleSignInResult(data)
+        } else {
+//            facebookLoginHelper.handleActivityResult(requestCode, resultCode, data)
+        }
+    }
 }
 

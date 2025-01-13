@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
+import android.view.MotionEvent
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -115,6 +116,7 @@ data class BindingUI(
         binding.tvViewAllHotDeals.setOnClickListener {
             // Handle action for Hot Deals View All
         }
+
     }
 
     // Function to open the app's location settings
@@ -128,22 +130,21 @@ data class BindingUI(
     private fun autoScrollRecyclerView(recyclerView: RecyclerView) {
         val handler = Handler(Looper.getMainLooper())
 
-        // Disable user interaction
-
         val scrollRunnable = object : Runnable {
             override fun run() {
+                if (!recyclerView.canScrollVertically(1) && !recyclerView.canScrollVertically(-1)) {
+                    // Only auto-scroll horizontally when the user is not scrolling vertically
+                    recyclerView.smoothScrollBy(12, 0) // Adjust speed here
+                }
+
                 val layoutManager = recyclerView.layoutManager as LinearLayoutManager
                 val lastVisiblePosition = layoutManager.findLastVisibleItemPosition()
 
-                // Smooth scroll to the right until the last item is visible
-                recyclerView.smoothScrollBy(12, 0) // Adjust speed here
-
-                // Check if we've reached the last item and reset to the beginning
+                // Reset to the beginning when reaching the end
                 if (lastVisiblePosition == recyclerView.adapter?.itemCount?.minus(1)) {
-                    // Wait until the scroll ends, then reset to the first item
                     recyclerView.postDelayed({
-                        recyclerView.scrollToPosition(0) // Jump back to the beginning smoothly
-                    }, 200) // Delay before resetting (adjust the value)
+                        recyclerView.scrollToPosition(0)
+                    }, 200)
                 }
 
                 handler.postDelayed(this, 50) // Adjust delay for smoothness

@@ -52,7 +52,7 @@ class OnBoardingViewModel @Inject constructor(
             IntroSlide(
                 baseApplication.getString(R.string.save_money_earn_rewards),
                 baseApplication.getString(R.string.with_ezeats_you_can_save_money_get_special_offers_get_points_that_you_can_redeem_and_much_more),
-                R.drawable.gift_icon
+                R.drawable.rewards_on_boarding
             ),
             IntroSlide(
                 baseApplication.getString(R.string.location_access),

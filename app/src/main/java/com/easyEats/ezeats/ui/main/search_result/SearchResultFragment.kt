@@ -97,6 +97,7 @@ class SearchResultFragment : BaseFragment<FragmentSearchResultBinding>(),
 //            searchResultViewModel.changeViewType()
 
         }
+        binding.etSearch.text=searchResultViewModel.searchKey
     }
 
     /**

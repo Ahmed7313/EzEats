@@ -6,11 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.easyEats.ezeats.R
+import com.easyEats.ezeats.databinding.FragmentRateUsBinding
 import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class RateUsFragment : DialogFragment() {
+    private lateinit var binding: FragmentRateUsBinding
 
     interface DialogCallback {
         fun onRateUsClicked()
@@ -27,33 +29,28 @@ class RateUsFragment : DialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        setStyle(STYLE_NORMAL, R.style.RoundedDialog)
-        return inflater.inflate(R.layout.fragment_rate_us, container, false)
+        binding= FragmentRateUsBinding.inflate(layoutInflater)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val btnRate: MaterialButton = view.findViewById(R.id.btn_rate_us)
-        val btnLater: MaterialButton = view.findViewById(R.id.btn_later)
 
-        btnRate.setOnClickListener {
+        binding.btnRateUs.setOnClickListener {
             callback?.onRateUsClicked()
         }
 
-        btnLater.setOnClickListener {
-            callback?.onRateLaterClicked()
+        binding.btnLater.setOnClickListener {
             dismiss()
         }
     }
 
     override fun onStart() {
         super.onStart()
-        dialog?.window?.setLayout(
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-        dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        dialog?.window?.setBackgroundDrawableResource(R.drawable.rounded_dialog_background)
+
+
     }
 
 }
