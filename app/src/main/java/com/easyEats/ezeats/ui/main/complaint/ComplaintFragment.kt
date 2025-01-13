@@ -107,21 +107,20 @@ class ComplaintFragment : DialogFragment() {
      * @return True if the full name is filled, false otherwise.
      */
     private fun isFullNameNotEmpty(): Boolean {
-        if (binding.tvFullName.text?.isEmpty() == true)
+        val fullName = binding.tvFullName.text?.trim().toString()
+        return if (fullName.isBlank()) {
             Toast.makeText(requireContext(), "Full Name is required", Toast.LENGTH_LONG).show()
-        return binding.tvFullName.text?.isNotEmpty() ?: false
+            false
+        } else {
+            true
+        }
     }
 
-    /**
-     * Validates if the email field is not empty.
-     *
-     * @return True if the email is filled, false otherwise.
-     */
     private fun isEmailNotEmpty(): Boolean {
-        val email = binding.tvEmail.text?.toString() ?: ""
+        val email = binding.tvEmail.text?.trim().toString()
 
-        // Check if the email is empty
-        if (email.isEmpty()) {
+        // Check if the email is empty or only spaces
+        if (email.isBlank()) {
             Toast.makeText(requireContext(), "Email is required", Toast.LENGTH_LONG).show()
             return false
         }
@@ -135,15 +134,14 @@ class ComplaintFragment : DialogFragment() {
         return true
     }
 
-
-    /**
-     * Validates if the complaint message field is not empty.
-     *
-     * @return True if the complaint message is filled, false otherwise.
-     */
     private fun isComplaintNotEmpty(): Boolean {
-        if (binding.tvComplaint.text?.isEmpty() == true)
-            Toast.makeText(requireContext(), "Complain Field is required", Toast.LENGTH_LONG).show()
-        return binding.tvComplaint.text?.isNotEmpty() ?: false
+        val complaint = binding.tvComplaint.text?.trim().toString()
+        return if (complaint.isBlank()) {
+            Toast.makeText(requireContext(), "Complaint Field is required", Toast.LENGTH_LONG).show()
+            false
+        } else {
+            true
+        }
     }
+
 }
