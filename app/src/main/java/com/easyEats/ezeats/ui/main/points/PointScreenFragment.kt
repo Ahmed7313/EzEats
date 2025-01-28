@@ -44,6 +44,7 @@ class PointScreenFragment : BaseFragment<FragmentPointScreenBinding>() {
     ) = FragmentPointScreenBinding.inflate(layoutInflater)
 
     override fun setUpViews() {
+        pointsViewModel.getPointsRestaurantResult()
         listenToObserver()
         binding.btnSpinWheelPromoCodes.setOnClickListener {
             lifecycleScope.launch {

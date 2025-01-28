@@ -96,6 +96,7 @@ class RestaurantFragment : BaseBottomSheetFragment<FragmentRestaurantBinding>(),
     private fun openBrowser() {
         val intent = Intent(Intent.ACTION_VIEW)
         intent.data = Uri.parse("https://ezeats.app/${viewModel.restaurantId}-1")
+
         requireActivity().startActivity(intent)
     }
 }

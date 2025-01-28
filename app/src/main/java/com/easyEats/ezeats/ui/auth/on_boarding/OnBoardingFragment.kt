@@ -34,7 +34,7 @@ class OnBoardingFragment : BaseFragment<FragmentOnBoardingBinding>() {
     private lateinit var introSliderAdapter: IntroSliderAdapter
 
     // Utility class for handling location permission requests
-    private lateinit var locationUtil: LocationUtil
+    private var locationUtil: LocationUtil?=null
 
     /**
      * Inflates the layout for this fragment.
@@ -92,7 +92,7 @@ class OnBoardingFragment : BaseFragment<FragmentOnBoardingBinding>() {
      */
     private fun setupSkipButton() {
         binding.tvSkip.setOnClickListener {
-            locationUtil.askUserForLocationPermission(
+            locationUtil?.askUserForLocationPermission(
                 onPermissionGranted = { onLocationPermissionGranted() },
                 onPermissionDenied = {  }
             )
@@ -123,7 +123,7 @@ class OnBoardingFragment : BaseFragment<FragmentOnBoardingBinding>() {
         if (position == introSliderAdapter.itemCount - 1) {
             binding.buttonNext.text = getString(R.string.allow_finish)
             binding.buttonNext.setOnClickListener {
-                locationUtil.askUserForLocationPermission(
+                locationUtil?.askUserForLocationPermission(
                     onPermissionGranted = { onLocationPermissionGranted() },
                     onPermissionDenied = {  }
                 )
@@ -146,9 +146,9 @@ class OnBoardingFragment : BaseFragment<FragmentOnBoardingBinding>() {
     }
 
     private fun getLocationAndAddress() {
-        locationUtil.getCurrentLocation(
+        locationUtil?.getCurrentLocation(
             onLocationReceived = { latitude, longitude ->
-                locationUtil.reverseGeocode(latitude, longitude,
+                locationUtil?.reverseGeocode(latitude, longitude,
                     onAddressReceived = { address ->
                         viewModel.saveAddress(UserLocationAddress(address,latitude.toString(),longitude.toString()))
                     },

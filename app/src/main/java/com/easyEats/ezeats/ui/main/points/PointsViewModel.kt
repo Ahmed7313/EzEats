@@ -24,11 +24,8 @@ class PointsViewModel @Inject constructor(val mainUseCase: MainUseCase) :
         MutableLiveData<Resource<BaseResponse<LoyaltyCenterResponse>>>()
     val pointsResultLiveData: LiveData<Resource<BaseResponse<LoyaltyCenterResponse>>> get() = _pointsResultMutableLiveData
 
-    init {
-        getPointsRestaurantResult()
-    }
 
-    private fun getPointsRestaurantResult() {
+     fun getPointsRestaurantResult() {
         viewModelScope.launch {
             val flow = createPointsResultRequest()
             apply(flow = flow, maxRetries = 2, onError = { error ->

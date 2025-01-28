@@ -25,6 +25,7 @@ import com.easyEats.ezeats.ui.main.main.MainViewModel
 import com.easyEats.ezeats.ui.main.offers.adapter.OffersCategoryAdapter
 import com.easyEats.ezeats.ui.main.search_result.adapter.OfferAdapter
 import com.easyEats.ezeats.ui.main.search_result.adapter.RestaurantAdapter
+import com.easyEats.ezeats.utils.Constants
 import com.easyEats.ezeats.utils.Resource
 import com.makeramen.roundedimageview.RoundedImageView.TAG
 import dagger.hilt.android.AndroidEntryPoint
@@ -54,36 +55,50 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
     override fun setUpViews() {
         with(binding) {
             tvLocation.setOnClickListener {
-                android.util.Log.d(TAG, "setUpViews: test")
-                findNavController().navigate(R.id.location_bottom_sheet) }
+                findNavController().navigate(R.id.location_bottom_sheet)
+            }
             ivSearch.setOnClickListener { findNavController().navigate(R.id.goToSearchHistoryFragment) }
         }
+        getCategoriesAndRestaurants()
 
+        handleBackDirection()
+    }
+
+    private fun getCategoriesAndRestaurants() {
+        offersViewModel.getCategoriesRestaurantResult()
+        offersViewModel.getRestaurantsResult(
+            "",
+            mainViewModel.userLocationAddressMutableLiveData.value?.lat,
+            mainViewModel.userLocationAddressMutableLiveData.value?.lng
+        )
+    }
+
+    /*
+    this code has writen because in some devices the back button is not working correctly(like Redmi Devices)
+    so i forced the system to handle the back button to go to the home screen
+     */
+    private fun handleBackDirection() {
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 // Handle the back press event
-                Log.d(TAG, "handleOnBackPressed: ")
                 findNavController().navigate(R.id.homeScreenFragment)
             }
         }
 
-        // Add the callback to the OnBackPressedDispatcher
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
     }
 
 
     override fun listenToObservers() {
         lifecycleScope.launch {
-            mainViewModel.fetchCurrentAddress().collect {
-                binding.tvLocation.text = if (it?.address !=null) {
-                    "You're at ${it?.address}"
+            mainViewModel.userLocationAddressMutableLiveData.collect {
+                binding.tvLocation.text = if (it?.address != null) {
+                    "You're at ${it.address}"
                 } else {
                     getString(R.string.select_location)
                 }
-                offersViewModel.getRestaurantsResult("")
-                offersViewModel.getCategoriesRestaurantResult()
+                offersViewModel.getRestaurantsResult("", it?.lat, it?.lng)
             }
-
         }
 
 
@@ -100,8 +115,8 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
                     }
 
                     is Resource.Success -> {
-                      restaurantAdapter =
-                          RestaurantAdapter(this@OffersScreenFragment, this@OffersScreenFragment)
+                        restaurantAdapter =
+                            RestaurantAdapter(this@OffersScreenFragment, this@OffersScreenFragment)
                         resource.data?.result?.data?.let {
                             offersViewModel.setRestaurantsData(
                                 requireContext(),
@@ -129,14 +144,12 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
                 }
 
                 is Resource.Loading -> {
-//                    binding.srGetOffers.isRefreshing = false
                     showMainLoading()
                 }
 
                 is Resource.Success -> {
                     cateAdapter = OffersCategoryAdapter(this)
                     offersViewModel.setDataOfCategories(binding, cateAdapter, resource)
-                    Log.d(TAG, "listenToObservers: setDataOfCategories")
                 }
 
                 is Resource.UnAuthenticated -> {
@@ -148,15 +161,23 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
 
 
     override fun onCategoryClicked(category: Category) {
-        Log.d(TAG, "onCategoryClicked: ${category.categoryId}")
-        offersViewModel.isRequestFired=false
-        if (category.categoryId == "eqvWcHcHaD")
-            offersViewModel.getRestaurantsResult("")
+        if (category.categoryId == Constants.CATEGORY_ID_ALL)
+            offersViewModel.getRestaurantsResult(
+                "", mainViewModel.userLocationAddressMutableLiveData.value?.lat,
+                mainViewModel.userLocationAddressMutableLiveData.value?.lng
+            )
         else
-            offersViewModel.getRestaurantsResult(category.categoryId!!)
+            offersViewModel.getRestaurantsResult(
+                category.categoryId!!,
+                mainViewModel.userLocationAddressMutableLiveData.value?.lat,
+                mainViewModel.userLocationAddressMutableLiveData.value?.lng
+            )
     }
 
-    override fun onRestaurantClickListener(restaurant: RestaurantsResponseItem,cl:ConstraintLayout) {
+    override fun onRestaurantClickListener(
+        restaurant: RestaurantsResponseItem,
+        cl: ConstraintLayout
+    ) {
         lifecycleScope.launch {
             cl.isClickable = false
             delay(1000)

@@ -84,7 +84,7 @@ fun setVoucherText(tv: TextView, vouchers: Int?) {
 @BindingAdapter("setPointsText")
 fun setPointsText(tv: TextView, vouchers: Int?) {
     val voucherCount = vouchers ?: 0 // Handle null vouchers with a default value
-    val fullText = "You have\n$voucherCount Unused Vouchers"
+    val fullText = "You have\n$voucherCount EZeats Points"
 
     val spannable = SpannableString(fullText)
 

@@ -25,6 +25,7 @@ import com.easyEats.ezeats.ui.main.offers.adapter.OffersCategoryAdapter
 import com.easyEats.ezeats.ui.main.search_result.adapter.RestaurantAdapter
 import com.easyEats.ezeats.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -39,7 +40,6 @@ import javax.inject.Inject
 @HiltViewModel
 class OffersViewModel @Inject constructor(val mainUseCase: MainUseCase) :
     MainViewModel(mainUseCase) {
-    var isRequestFired = false
 
     private val _restaurantResultStateFlow =
         MutableStateFlow<Resource<BaseResponse<List<RestaurantsResponseItem>>>>(Resource.Loading())
@@ -52,61 +52,26 @@ class OffersViewModel @Inject constructor(val mainUseCase: MainUseCase) :
 
 
 
-    init {
-        getRestaurantsResult("")
-        getCategoriesRestaurantResult()
-    }
-
-    fun getRestaurantsResult(categoryId: String) {
+    fun getRestaurantsResult(categoryId: String,userLat:String?,userLong:String?) {
         viewModelScope.launch {
-            if (!isRequestFired)
-                fetchCurrentAddress().collect {
-                    if (it?.lat?.isNotEmpty() == true) {
-                        val flow = createRestaurantsResultRequest(
-                            RestaurantRequest(
-                                categoryId = categoryId,
-                                userLat = it.lat ?: "",
-                                userLon = it.lng ?: ""
-                            )
-                        )
-                        apply(
-                            flow = flow,
-                            maxRetries = 2,
-                            onError = { error ->
-                                _restaurantResultStateFlow.value =
-                                    Resource.Error("No Internet Connection")
-                            },
-                            onSuccess = { resource ->
-                                _restaurantResultStateFlow.value = resource
-                            }
-                        )
-                    } else {
-                        val flow = createRestaurantsResultRequest(
-                            RestaurantRequest(
-                                categoryId = categoryId,
-                                userLat = "0.0",
-                                userLon = "0.0"
-                            )
-                        )
-                        apply(
-                            flow = flow,
-                            maxRetries = 2,
-                            onError = { error ->
-                                _restaurantResultStateFlow.value =
-                                    Resource.Error("No Internet Connection")
-                            },
-                            onSuccess = { resource ->
-                                _restaurantResultStateFlow.value = resource
-                            }
-                        )
-                    }
-                }
 
+                val flow = createRestaurantsResultRequest(RestaurantRequest(categoryId = categoryId, userLat = userLat ?: "0.0", userLon = userLong ?: "0.0"))
+                apply(
+                    flow = flow,
+                    maxRetries = 2,
+                    onError = {
+                        _restaurantResultStateFlow.value =
+                            Resource.Error("No Internet Connection")
+                    },
+                    onSuccess = { resource ->
+                        _restaurantResultStateFlow.value = resource
+                    }
+                )
         }
     }
 
 
-    private fun createRestaurantsResultRequest(request:  RestaurantRequest): Flow<Resource<BaseResponse<List<RestaurantsResponseItem>>>> =
+    private fun createRestaurantsResultRequest(request: RestaurantRequest): Flow<Resource<BaseResponse<List<RestaurantsResponseItem>>>> =
         channelFlow {
             send(Resource.Loading())
             val restaurants = mainUseCase.homeUseCase.getRestaurants(request)
@@ -123,7 +88,6 @@ class OffersViewModel @Inject constructor(val mainUseCase: MainUseCase) :
         }
 
     fun getCategoriesRestaurantResult() {
-        if (!isRequestFired) {
             val flow = createCategoriesResultRequest()
             apply(flow = flow, maxRetries = 2, onError = { error ->
                 _categoryResultMutableLiveData.value =
@@ -131,7 +95,6 @@ class OffersViewModel @Inject constructor(val mainUseCase: MainUseCase) :
             }, onSuccess = { resource ->
                 _categoryResultMutableLiveData.value = resource
             })
-        }
     }
 
 
@@ -139,7 +102,6 @@ class OffersViewModel @Inject constructor(val mainUseCase: MainUseCase) :
         channelFlow {
             send(Resource.Loading())
             val result = mainUseCase.offersUserCase.getCategory()
-            isRequestFired = true
             result.handleResponse(onSuccess = {
                 send(Resource.Success(result))
             }, onError = { message, error ->

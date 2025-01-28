@@ -69,6 +69,7 @@
         android:fontFamily="@font/gilroy_700"
         android:layout_height="@dimen/_50sdp"
         android:layout_marginTop="@dimen/_40sdp"
+        android:clickable="false"
         android:layout_width="@dimen/_153sdp"
         android:text="@string/try_again"
         android:textColor="@color/white"

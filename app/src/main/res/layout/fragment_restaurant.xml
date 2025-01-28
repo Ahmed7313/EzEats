@@ -252,7 +252,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_25sdp"
-                    android:layout_marginTop="@dimen/_45sdp"
+                    android:layout_marginTop="@dimen/_35sdp"
                     android:layout_marginBottom="@dimen/_25sdp"
                     android:backgroundTint="@color/main_color"
                     android:paddingVertical="@dimen/_13sdp"

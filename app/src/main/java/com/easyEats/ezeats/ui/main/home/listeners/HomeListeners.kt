@@ -41,6 +41,7 @@ class HomeListeners(
     private val ourPartnersAdapter: PartnersAdapter,
     private val spinWheelPartnersAdapter: PartnersAdapter,
 ) {
+    private var isImagesAdded = false
 
     fun invoke(){
         // Observe isOpenShareLink for navigation and sharing logic
@@ -63,11 +64,17 @@ class HomeListeners(
 
     private fun checkIfUserRateAppOrNot() {
         viewLifecycleOwner.lifecycleScope.launch {
-            if (homeViewModel.checkIfUserViewedRatingDialog().not()){
-                delay(60*1000)
-                homeViewModel.saveUserRating(true)
-                homeScreenFragment.displayRatingDialog()
-            }
+            try {
+                val isUserViewedRatingDialog= homeViewModel.checkIfUserViewedRatingDialog().not()
+                if (isUserViewedRatingDialog){
+                    delay(60*1000)
+                    homeViewModel.saveUserRating(true)
+                    homeScreenFragment.displayRatingDialog()
+                }
+            }catch (ex:Exception){
+                Log.d(TAG, "checkIfUserRateAppOrNot: ")
+            } //catch
+           
         }
     }
 
@@ -129,6 +136,11 @@ class HomeListeners(
 
                 is Resource.Success -> {
                     binding.swipeToRefresh.isRefreshing = false  // Stop swipe refresh
+                    if (!isImagesAdded){
+                        isImagesAdded=true
+                        resource.data?.result?.data?.featuredOffers?.take(5)
+                            ?.let { binding.customImageSlider.setImages(it) }
+                    }
                     setActiveOrderTrackingIfExist(resource)
                 }
 

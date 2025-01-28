@@ -93,8 +93,8 @@
 
                 <RelativeLayout
                     android:id="@+id/pointsCircle"
-                    android:layout_width="@dimen/_50sdp"
-                    android:layout_height="@dimen/_50sdp"
+                    android:layout_width="@dimen/_60sdp"
+                    android:layout_height="@dimen/_60sdp"
                     android:layout_margin="@dimen/_8sdp"
                     android:background="@drawable/circle_background_points_item"
                     android:gravity="center"
@@ -107,11 +107,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        tools:text="300"
+                        tools:text="300000"
                         android:padding="@dimen/_4sdp"
                         android:text="@{String.valueOf(restaurantPoint.points)}"
                         android:textColor="#3A3D42"
-                        android:textSize="@dimen/_16ssp"
+                        android:textSize="@dimen/_14ssp"
                         android:fontFamily="@font/gilroy_700" />
 
                     <TextView

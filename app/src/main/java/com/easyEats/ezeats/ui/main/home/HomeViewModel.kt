@@ -76,7 +76,7 @@ class HomeViewModel @Inject constructor(private val mainUseCase: MainUseCase) :
     val addressLiveData: LiveData<String> = _addressMutableLiveData
 
     // Location utility instance for handling location-related tasks
-    private lateinit var locationUtil: LocationUtil
+    private var locationUtil: LocationUtil?=null
 
     /**
      * Sets the LocationUtil instance used for location operations.
@@ -146,7 +146,7 @@ class HomeViewModel @Inject constructor(private val mainUseCase: MainUseCase) :
                     isLocationGranted.value = true
                 } else {
                     // Request location permission if not granted
-                    locationUtil.askUserForLocationPermission(onPermissionDenied = {
+                    locationUtil?.askUserForLocationPermission(onPermissionDenied = {
                         isLocationGranted.value = false
                         getHomeResult(HomeRequest("", "")) // Proceed with empty location data
                     }, onPermissionGranted = {
@@ -163,10 +163,10 @@ class HomeViewModel @Inject constructor(private val mainUseCase: MainUseCase) :
      * Updates the address LiveData and saves the location address in local storage.
      */
     private fun getLocationAndAddress() {
-        locationUtil.getCurrentLocation(onLocationReceived = { latitude, longitude ->
+        locationUtil?.getCurrentLocation(onLocationReceived = { latitude, longitude ->
             // Fetch home data based on the user's location
             getHomeResult(HomeRequest(latitude.toString(), longitude.toString()))
-            locationUtil.reverseGeocode(latitude, longitude, onAddressReceived = { address ->
+            locationUtil?.reverseGeocode(latitude, longitude, onAddressReceived = { address ->
                 // Update the address LiveData and save it locally
                 _addressMutableLiveData.value = address
                 viewModelScope.launch {

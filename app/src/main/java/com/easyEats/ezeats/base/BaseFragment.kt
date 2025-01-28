@@ -23,7 +23,8 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
     private var _binding: VB? = null
 
     // Non-nullable property to access the ViewDataBinding instance
-    protected val binding get() = _binding!!
+    protected val binding get() = _binding ?: throw IllegalStateException("View binding is only valid between onCreateView and onDestroyView.")
+
 
     private var loadingDialog: LoadingDialog? = null
 
@@ -48,7 +49,9 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setUpViews()
         listenToObservers()
-        _binding?.lifecycleOwner = viewLifecycleOwner
+        _binding?.apply {
+            lifecycleOwner = viewLifecycleOwner
+        }
     }
 
 

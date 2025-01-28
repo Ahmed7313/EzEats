@@ -1,6 +1,7 @@
 package com.easyEats.ezeats.utils
 
 object Constants {
+
     // log tag
     const val EASY_EATS_LOGS = "EASY EATS LOGS"
 
@@ -31,8 +32,12 @@ object Constants {
     const val ADDRESS_KEY = "address"
     const val TOKEN_KEY = "token"
     const val NAME_KEY = "name"
-    const val RATING_KEY = "name"
+    const val RATING_KEY = "rating_key"
     const val IS_VERIFIED = "isVerified"
+
+
+    const val CATEGORY_ID_ALL: String="eqvWcHcHaD"
+
 
 
     // mixpanel token
