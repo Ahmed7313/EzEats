@@ -15,6 +15,12 @@ import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
+
+/**
+ * Custom BindingAdapter for formatting and displaying the date in a specific format.
+ * It takes a date string, reformats it, and sets the formatted date in the TextView.
+ * If the date string is null or empty, it hides the TextView.
+ */
 @BindingAdapter("setDate")
 fun reformatDate(tv: TextView, dateString: String?) {
     if (dateString.isNullOrEmpty().not()) {
@@ -27,9 +33,12 @@ fun reformatDate(tv: TextView, dateString: String?) {
     }
 }
 
+/**
+ * Custom BindingAdapter for setting the background and text based on the voucher's state.
+ * The background and text of the TextView are updated based on whether the voucher is redeemed, expired, or active.
+ */
 @BindingAdapter("setVoucherBackground")
 fun voucherBackground(tv: TextView, voucher: VoucherResponseItem) {
-
     if (voucher.redeemed == true) {
         tv.setBackgroundResource(R.drawable.redeemed_background)
         tv.text = "Redeemed"
@@ -42,10 +51,12 @@ fun voucherBackground(tv: TextView, voucher: VoucherResponseItem) {
     }
 }
 
-
+/**
+ * Custom BindingAdapter for setting the background and text based on the state of a SpinWheelVoucher.
+ * Similar to `setVoucherBackground`, but for SpinWheelVoucher objects.
+ */
 @BindingAdapter("setSpinWheelVoucherBackground")
 fun setSpinWheelVoucherBackground(tv: TextView, voucher: SpinWheelVoucher) {
-
     if (voucher.isRedeemed == true) {
         tv.setBackgroundResource(R.drawable.redeemed_background)
         tv.text = "Redeemed"
@@ -58,18 +69,24 @@ fun setSpinWheelVoucherBackground(tv: TextView, voucher: SpinWheelVoucher) {
     }
 }
 
+/**
+ * Helper function to check if a given date is before the current date.
+ * It parses the date string into a ZonedDateTime and compares it with the current date.
+ *
+ * @param dateString The date string to be checked.
+ * @return `true` if the date is before today, `false` otherwise.
+ */
 fun isDateBeforeToday(dateString: String?): Boolean {
-    // Parse the input date string to a ZonedDateTime
     val dateToCheck = ZonedDateTime.parse(dateString, DateTimeFormatter.ISO_DATE_TIME)
-
-    // Get the current date and time in the same time zone
     val currentDate = ZonedDateTime.now()
-
-    // Compare the date to check if it's before today
     return dateToCheck.isBefore(currentDate)
 }
 
-
+/**
+ * Custom BindingAdapter for styling and displaying the voucher information in a TextView.
+ * It applies a color style to parts of the voucher's text. The promo code is highlighted in red,
+ * while the other parts of the text remain black.
+ */
 @BindingAdapter("styledText")
 fun setStyledText(tv: TextView, voucher: VoucherResponseItem) {
     val promoCode = voucher.promoCode
@@ -99,4 +116,5 @@ fun setStyledText(tv: TextView, voucher: VoucherResponseItem) {
     // Set the styled text to the TextView
     tv.text = spannable
 }
+
 

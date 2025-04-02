@@ -31,7 +31,7 @@ import me.relex.circleindicator.CircleIndicator3
 @BindingAdapter("loadImage")
 fun loadImage(imageView: ImageView, url: String?) {
     imageView.load(url) {
-        error(R.drawable.ez_logo) // Placeholder image to show in case of an error.
+        error(R.drawable.restaurant_place_holder_image) // Placeholder image to show in case of an error.
     }
 }
 

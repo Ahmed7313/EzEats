@@ -23,24 +23,32 @@ import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
+/**
+ * ViewModel responsible for managing the restaurant data, including fetching special offers for the restaurant.
+ * It interacts with the use case layer to fetch the special offers and exposes them as LiveData.
+ */
 @HiltViewModel
 class RestaurantViewModel @Inject constructor(
     private val mainUseCase: MainUseCase,
     savedStateHandle: SavedStateHandle
-) :
-    MainViewModel(mainUseCase) {
+) : MainViewModel(mainUseCase) {
 
+    // The restaurant ID, obtained from the SavedStateHandle.
     val restaurantId: String? = savedStateHandle["restaurantId"]
 
+    // LiveData that holds the resource of special offers.
     private val _specialOffers = MutableLiveData<Resource<BaseResponse<RestaurantInfo>>>()
     val specialOffers: LiveData<Resource<BaseResponse<RestaurantInfo>>> = _specialOffers
 
-
+    /**
+     * Fetches special offers for the restaurant by retrieving the current user's location.
+     * If the location is available, it creates a request and fetches the special offers for the restaurant.
+     */
     fun getSpecialOffers() {
         viewModelScope.launch {
             fetchCurrentAddress().collect {
                 if (it?.lat?.isNullOrEmpty()?.not() == true) {
+                    // Create a request to get special offers for the restaurant.
                     val flow = createSpecialOffersRequest(
                         RestaurantRequest(
                             restaurantId!!,
@@ -48,51 +56,73 @@ class RestaurantViewModel @Inject constructor(
                             userLon = it?.lng ?: ""
                         )
                     )
+                    // Apply the request with retry logic.
                     apply(
                         flow = flow,
                         maxRetries = 2,
                         onError = { error ->
-                            _specialOffers.value =
-                                Resource.Error("No Internet Connection")
+                            // Update the LiveData with an error state if there's an issue.
+                            _specialOffers.value = Resource.Error("No Internet Connection")
                         },
                         onSuccess = { resource ->
+                            // Update the LiveData with the fetched special offers.
                             _specialOffers.value = resource
                         }
                     )
                 }
-
             }
-
         }
     }
 
-
+    /**
+     * Creates a Flow that makes the request for special offers by restaurant ID.
+     * Sends the appropriate response (loading, success, error, or unauthenticated).
+     *
+     * @param restaurantRequest The request object containing the restaurant ID and user's location.
+     */
     private fun createSpecialOffersRequest(restaurantRequest: RestaurantRequest): Flow<Resource<BaseResponse<RestaurantInfo>>> =
         channelFlow {
-            send(Resource.Loading())
+            send(Resource.Loading()) // Emit loading state.
             val result = mainUseCase.restaurantUseCase.getOffersByRestaurantId(restaurantRequest)
+            // Handle the response and send the result back to the Flow.
             result.handleResponse(
                 onSuccess = {
-                    send(Resource.Success(result))
+                    send(Resource.Success(result)) // Emit success state with the result.
                 },
                 onError = { message, error ->
-                    send(Resource.Error(message, error))
-                }, onUnauthenticated = {
-                    send(Resource.UnAuthenticated())
+                    send(Resource.Error(message, error)) // Emit error state with the message and error.
+                },
+                onUnauthenticated = {
+                    send(Resource.UnAuthenticated()) // Emit unauthenticated state if the user is not authenticated.
                 }
             )
         }
 
+    /**
+     * Sets the restaurant data into the UI, including the special offers count, special offers list, and visibility
+     * of various UI elements depending on whether the restaurant has offers or not.
+     *
+     * @param binding The binding for the fragment's layout.
+     * @param specialOfferAdapter The adapter used to display the special offers in the RecyclerView.
+     * @param offersCount The count of available offers.
+     * @param offers The list of special offers to display.
+     */
     fun setRestaurantData(
         binding: FragmentRestaurantBinding,
         specialOfferAdapter: SpecialOfferAdapter,
         offersCount: Int,
         offers: List<HotDeal?>?
     ) {
-        binding.tvOffersCount.text =
-            offersCount.toString() + " Offers"
+        // Set the offers count text.
+        binding.tvOffersCount.text = offersCount.toString() + " Offers"
+
+        // Set the adapter for the RecyclerView.
         binding.rvSpecialOffers.adapter = specialOfferAdapter
+
+        // Submit the list of special offers to the adapter.
         specialOfferAdapter.submitList(offers)
+
+        // Show or hide views based on whether there are offers.
         if (offers.isNullOrEmpty()) {
             binding.tvOffersCount.visibility = GONE
             binding.rvSpecialOffers.visibility = GONE

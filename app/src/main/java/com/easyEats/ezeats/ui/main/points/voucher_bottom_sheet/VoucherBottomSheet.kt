@@ -13,6 +13,7 @@ import com.easyEats.ezeats.ui.main.points.PointsViewModel
 import com.easyEats.ezeats.ui.main.points.adapter.PointsAdapter
 import com.easyEats.ezeats.ui.main.points.adapter.SpinWheelAdapter
 import com.easyEats.ezeats.utils.Resource
+import kotlin.math.log
 
 class VoucherBottomSheet : BaseBottomSheetFragment<VoucherBottomSheetBinding>() {
 
@@ -28,10 +29,15 @@ class VoucherBottomSheet : BaseBottomSheetFragment<VoucherBottomSheetBinding>() 
     }
 
     override fun listenToObservers() {
+        Log.d("TAG", "listenToObservers: ")
         pointsViewModel.pointsResultLiveData.observe(viewLifecycleOwner) { resource ->
             when (resource) {
-                is Resource.Error -> {}
-                is Resource.Loading -> {}
+                is Resource.Error -> {
+                    Log.d("TAG", "listenToObservers: Error ${resource.message}")
+                }
+                is Resource.Loading -> {
+                    Log.d("TAG", "listenToObservers: loading")
+                }
                 is Resource.Success -> {
                     when (args.isSpinWheelPoints) {
                         true -> {
@@ -40,6 +46,7 @@ class VoucherBottomSheet : BaseBottomSheetFragment<VoucherBottomSheetBinding>() 
                             spinWheelPointsAdapter.submitList(
                                 resource.data?.result?.data?.rewards?.spinWheelVouchers
                             )
+                            Log.d("TAG", "listenToObservers: Spin the wheel codes ${args.isSpinWheelPoints}")
                         }
 
                         false -> {
@@ -48,6 +55,8 @@ class VoucherBottomSheet : BaseBottomSheetFragment<VoucherBottomSheetBinding>() 
                             pointsAdapter.submitList(
                                 resource.data?.result?.data?.points?.loyaltyPoints
                             )
+                            Log.d("TAG", "listenToObservers: ")
+                            Log.d("TAG", "listenToObservers: Points ${args.isSpinWheelPoints}")
                         }
                     }
                 }

@@ -29,6 +29,7 @@ import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+
 /**
  * ViewModel responsible for managing the search results for Restaurants and Hot Deals.
  * This ViewModel handles the data flow and UI state changes based on the search key
