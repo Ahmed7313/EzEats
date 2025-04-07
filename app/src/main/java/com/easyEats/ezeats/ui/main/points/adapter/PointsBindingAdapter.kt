@@ -9,16 +9,23 @@ import androidx.databinding.BindingAdapter
 import com.easyEats.ezeats.MyApplication
 import com.easyEats.ezeats.R
 
+/**
+ * BindingAdapter to set points text with dynamic styling.
+ *
+ * @param tv The TextView to display the styled text.
+ * @param points The number of points to be displayed. Defaults to 0 if null.
+ */
 @BindingAdapter("setPoints")
 fun setPoints(tv: TextView, points: Int?) {
-    val pointsValue = points ?: 0 // Handle null points with a default value
+    val pointsValue = points ?: 0 // Default to 0 if points is null
     val fullText = "You have $pointsValue unused promo codes,\nstart using them now!"
 
     val spannable = SpannableString(fullText)
 
-    // Set the color for the entire text to black
+    // Set the entire text color to main color
+    val mainColor = MyApplication.baseApplication.getColor(R.color.main_color)
     spannable.setSpan(
-        MyApplication.baseApplication.getColor(R.color.main_color),
+        ForegroundColorSpan(mainColor),
         0,
         fullText.length,
         Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
@@ -35,7 +42,7 @@ fun setPoints(tv: TextView, points: Int?) {
         )
     }
 
-    // Highlight "unused" in red
+    // Highlight the word "unused" in red
     val unusedStartIndex = fullText.indexOf("unused")
     if (unusedStartIndex != -1) {
         spannable.setSpan(
@@ -49,10 +56,15 @@ fun setPoints(tv: TextView, points: Int?) {
     tv.text = spannable
 }
 
-
+/**
+ * BindingAdapter to set voucher count text with dynamic styling.
+ *
+ * @param tv The TextView to display the styled text.
+ * @param vouchers The number of vouchers to be displayed. Defaults to 0 if null.
+ */
 @BindingAdapter("setVoucherText")
 fun setVoucherText(tv: TextView, vouchers: Int?) {
-    val voucherCount = vouchers ?: 0 // Handle null vouchers with a default value
+    val voucherCount = vouchers ?: 0 // Default to 0 if vouchers is null
     val fullText = "You have\n$voucherCount Unused Vouchers"
 
     val spannable = SpannableString(fullText)
@@ -65,12 +77,12 @@ fun setVoucherText(tv: TextView, vouchers: Int?) {
         Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
     )
 
-    // Highlight the voucher count (e.g., "10") in red (or your custom color)
+    // Highlight the voucher count in the main color
     val countStartIndex = fullText.indexOf(voucherCount.toString())
     if (countStartIndex != -1) {
-        val color = MyApplication.baseApplication.getColor(R.color.main_color) // Get color resource
+        val mainColor = MyApplication.baseApplication.getColor(R.color.main_color)
         spannable.setSpan(
-            ForegroundColorSpan(color), // Use ForegroundColorSpan with the resolved color
+            ForegroundColorSpan(mainColor),
             countStartIndex,
             countStartIndex + voucherCount.toString().length,
             Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
@@ -80,10 +92,15 @@ fun setVoucherText(tv: TextView, vouchers: Int?) {
     tv.text = spannable
 }
 
-
+/**
+ * BindingAdapter to set points text for EZeats with dynamic styling.
+ *
+ * @param tv The TextView to display the styled text.
+ * @param vouchers The number of points to be displayed. Defaults to 0 if null.
+ */
 @BindingAdapter("setPointsText")
 fun setPointsText(tv: TextView, vouchers: Int?) {
-    val voucherCount = vouchers ?: 0 // Handle null vouchers with a default value
+    val voucherCount = vouchers ?: 0 // Default to 0 if vouchers is null
     val fullText = "You have\n$voucherCount EZeats Points"
 
     val spannable = SpannableString(fullText)
@@ -96,12 +113,12 @@ fun setPointsText(tv: TextView, vouchers: Int?) {
         Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
     )
 
-    // Highlight the voucher count (e.g., "10") in red (or your custom color)
+    // Highlight the points count in the main color
     val countStartIndex = fullText.indexOf(voucherCount.toString())
     if (countStartIndex != -1) {
-        val color = MyApplication.baseApplication.getColor(R.color.main_color) // Get color resource
+        val mainColor = MyApplication.baseApplication.getColor(R.color.main_color)
         spannable.setSpan(
-            ForegroundColorSpan(color), // Use ForegroundColorSpan with the resolved color
+            ForegroundColorSpan(mainColor),
             countStartIndex,
             countStartIndex + voucherCount.toString().length,
             Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
@@ -110,4 +127,5 @@ fun setPointsText(tv: TextView, vouchers: Int?) {
 
     tv.text = spannable
 }
+
 

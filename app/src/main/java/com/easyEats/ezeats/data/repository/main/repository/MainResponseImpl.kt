@@ -11,6 +11,7 @@ import com.easyEats.ezeats.domain.main.model.request.home.HomeRequest
 import com.easyEats.ezeats.domain.main.model.request.offer_request.OfferRequest
 import com.easyEats.ezeats.domain.main.model.request.offers.OffersRequest
 import com.easyEats.ezeats.domain.main.model.request.order_history.OrderHistoryRequest
+import com.easyEats.ezeats.domain.main.model.request.restaurant.RestaurantMenuRequest
 import com.easyEats.ezeats.domain.main.model.request.restaurant.RestaurantRequest
 import com.easyEats.ezeats.domain.main.model.request.search.SearchRequest
 import com.easyEats.ezeats.domain.main.model.request.search.SearchSuggestionsRequest
@@ -20,6 +21,7 @@ import com.easyEats.ezeats.domain.main.model.response.loyality_center.LoyaltyCen
 import com.easyEats.ezeats.domain.main.model.response.order_history.OrderHistoryResponse
 import com.easyEats.ezeats.domain.main.model.response.partners.PartnersResponse
 import com.easyEats.ezeats.domain.main.model.response.points.PointsResponse
+import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.RestaurantMenuResponse
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.Offer
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.Restaurant
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.RestaurantInfo
@@ -71,6 +73,10 @@ class MainResponseImpl @Inject constructor(
 
     override suspend fun getOffersByRestaurantId(restaurantRequest: RestaurantRequest): BaseResponse<RestaurantInfo> {
         return mainApiService.getOffersByRestaurantId(restaurantRequest)
+    }
+
+    override suspend fun getRestaurantMenu(restaurantMenuRequest: RestaurantMenuRequest):BaseResponse<RestaurantMenuResponse> {
+        return mainApiService.getRestaurantMenu(restaurantMenuRequest)
     }
 
     override suspend fun getOfferById(offerRequest: OfferRequest): BaseResponse<HotDeal> {

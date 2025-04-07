@@ -42,7 +42,7 @@
                     android:layout_height="@dimen/_70sdp"
                     android:scaleType="fitXY"
                     android:background="@drawable/circle_background"
-                    android:src="@drawable/dummy_image"
+                    android:src="@drawable/dummy_menu_image"
                     app:riv_oval="true">
 
                 </com.makeramen.roundedimageview.RoundedImageView>

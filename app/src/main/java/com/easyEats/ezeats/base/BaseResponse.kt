@@ -3,13 +3,14 @@ package com.easyEats.ezeats.base
 // Define the Result class with generics
 data class Result<T>(
     val code: Int,
+    val success: Boolean,
     val data: T?,
     val message: String?,
     val error: Error?
 ) {
     // Check if the response is successful
     fun isSuccess(): Boolean {
-        return code in 200..299
+        return code in 200..299 || success
     }
 
     // Check if there is an error
@@ -40,13 +41,14 @@ data class BaseResponse<T>(
     ) {
         when {
             result.isSuccess() -> {
-                if (result.data!=null){
+                if (result.data != null) {
                     result.data.let { onSuccess(it) }
-                }else{
+                } else {
                     onSuccess(null)
                 }
 
             }
+
             result.isUnauthenticated() -> onUnauthenticated()
             else -> onError(result.message.toString(), result.error)
         }

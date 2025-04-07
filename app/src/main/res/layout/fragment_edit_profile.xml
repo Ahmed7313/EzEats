@@ -62,7 +62,7 @@
                 android:layout_width="@dimen/_70sdp"
                 android:layout_height="@dimen/_70sdp"
                 android:scaleType="fitXY"
-                android:src="@drawable/dummy_image"
+                android:src="@drawable/dummy_menu_image"
                 app:riv_corner_radius="1000dp"
                 app:riv_oval="true">
 

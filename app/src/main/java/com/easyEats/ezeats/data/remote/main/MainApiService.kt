@@ -8,6 +8,7 @@ import com.easyEats.ezeats.domain.main.model.request.home.HomeRequest
 import com.easyEats.ezeats.domain.main.model.request.offer_request.OfferRequest
 import com.easyEats.ezeats.domain.main.model.request.offers.OffersRequest
 import com.easyEats.ezeats.domain.main.model.request.order_history.OrderHistoryRequest
+import com.easyEats.ezeats.domain.main.model.request.restaurant.RestaurantMenuRequest
 import com.easyEats.ezeats.domain.main.model.request.restaurant.RestaurantRequest
 import com.easyEats.ezeats.domain.main.model.request.search.SearchRequest
 import com.easyEats.ezeats.domain.main.model.request.search.SearchSuggestionsRequest
@@ -18,6 +19,7 @@ import com.easyEats.ezeats.domain.main.model.response.location_response.Location
 import com.easyEats.ezeats.domain.main.model.response.loyality_center.LoyaltyCenterResponse
 import com.easyEats.ezeats.domain.main.model.response.order_history.OrderHistoryResponse
 import com.easyEats.ezeats.domain.main.model.response.partners.PartnersResponse
+import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.RestaurantMenuResponse
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.Restaurant
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.RestaurantInfo
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.new_restaurants_reponse.RestaurantsResponseItem
@@ -59,6 +61,9 @@ interface MainApiService {
 
     @POST("getOffersByRestaurantId")
     suspend fun getOffersByRestaurantId(@Body restaurantRequest: RestaurantRequest): BaseResponse<RestaurantInfo>
+
+    @POST("getRestaurantMenu")
+    suspend fun getRestaurantMenu(@Body restaurantMenuRequest: RestaurantMenuRequest): BaseResponse<RestaurantMenuResponse>
 
     @POST("getOfferById")
     suspend fun getOfferById(@Body offerRequest: OfferRequest): BaseResponse<HotDeal>

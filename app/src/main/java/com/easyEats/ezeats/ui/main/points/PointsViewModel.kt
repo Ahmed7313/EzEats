@@ -16,42 +16,63 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+@HiltViewModel // Annotation for Hilt to inject dependencies into this ViewModel
+class PointsViewModel @Inject constructor(
+    val mainUseCase: MainUseCase // Dependency injected using Hilt
+) : MainViewModel(mainUseCase) { // Inherits from MainViewModel
 
-@HiltViewModel
-class PointsViewModel @Inject constructor(val mainUseCase: MainUseCase) :
-    MainViewModel(mainUseCase) {
+    // Backing property for MutableLiveData to manage the points result state
     private val _pointsResultMutableLiveData =
         MutableLiveData<Resource<BaseResponse<LoyaltyCenterResponse>>>()
-    val pointsResultLiveData: LiveData<Resource<BaseResponse<LoyaltyCenterResponse>>> get() = _pointsResultMutableLiveData
 
+    // Public LiveData to expose the points result to observers
+    val pointsResultLiveData: LiveData<Resource<BaseResponse<LoyaltyCenterResponse>>>
+        get() = _pointsResultMutableLiveData
 
-     fun getPointsRestaurantResult() {
+    // Fetches points for the restaurant and handles API response
+    fun getPointsRestaurantResult() {
         viewModelScope.launch {
+            // Creates a Flow for the API request
             val flow = createPointsResultRequest()
-            apply(flow = flow, maxRetries = 2, onError = { error ->
-                _pointsResultMutableLiveData.value =
-                    Resource.Error(error.message.toString())
-            }, onSuccess = { resource ->
-                _pointsResultMutableLiveData.value = resource
-            })
 
+            // Applies retry logic and handles success and error states
+            apply(
+                flow = flow,
+                maxRetries = 2, // Maximum number of retries for the request
+                onError = { error ->
+                    _pointsResultMutableLiveData.value =
+                        Resource.Error(error.message.toString()) // Updates LiveData with the error message
+                },
+                onSuccess = { resource ->
+                    _pointsResultMutableLiveData.value = resource // Updates LiveData with the success result
+                }
+            )
         }
     }
 
+    // Retrieves the user token as a Flow
     fun getUserToken(): Flow<String> = mainUseCase.pointsUseCase.getToken()
 
+    // Creates a Flow to manage the API request and handle its response
     private fun createPointsResultRequest(): Flow<Resource<BaseResponse<LoyaltyCenterResponse>>> =
         channelFlow {
+            // Emit a loading state before starting the request
             send(Resource.Loading())
+
+            // Make the API call to fetch user points
             val result = mainUseCase.pointsUseCase.getUserPoints()
-            result.handleResponse(onSuccess = {
-                send(Resource.Success(result))
-            }, onError = { message, error ->
-                send(Resource.Error(message, error))
-            }, onUnauthenticated = {
-                send(Resource.UnAuthenticated())
-            })
+
+            // Handle the API response with the appropriate Resource state
+            result.handleResponse(
+                onSuccess = {
+                    send(Resource.Success(result)) // Emit a success state with the result
+                },
+                onError = { message, error ->
+                    send(Resource.Error(message, error)) // Emit an error state with details
+                },
+                onUnauthenticated = {
+                    send(Resource.UnAuthenticated()) // Emit an unauthenticated state
+                }
+            )
         }
-
-
 }

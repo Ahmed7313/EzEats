@@ -38,7 +38,7 @@ fun loadImage(imageView: ImageView, url: String?) {
 @BindingAdapter("loadProfileImage")
 fun loadProfileImage(imageView: ImageView, url: String?) {
     imageView.load(url) {
-        error(R.drawable.dummy_image) // Placeholder image to show in case of an error.
+        error(R.drawable.dummy_menu_image) // Placeholder image to show in case of an error.
     }
 }
 

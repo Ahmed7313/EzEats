@@ -10,8 +10,10 @@ import androidx.lifecycle.viewModelScope
 import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.base.BaseResponse
 import com.easyEats.ezeats.databinding.FragmentRestaurantBinding
+import com.easyEats.ezeats.domain.main.model.request.restaurant.RestaurantMenuRequest
 import com.easyEats.ezeats.domain.main.model.request.restaurant.RestaurantRequest
 import com.easyEats.ezeats.domain.main.model.response.home_response.HotDeal
+import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.RestaurantMenuResponse
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.RestaurantInfo
 import com.easyEats.ezeats.domain.main.use_case.MainUseCase
 import com.easyEats.ezeats.ui.main.main.MainViewModel
@@ -23,6 +25,7 @@ import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 /**
  * ViewModel responsible for managing the restaurant data, including fetching special offers for the restaurant.
  * It interacts with the use case layer to fetch the special offers and exposes them as LiveData.
@@ -40,11 +43,14 @@ class RestaurantViewModel @Inject constructor(
     private val _specialOffers = MutableLiveData<Resource<BaseResponse<RestaurantInfo>>>()
     val specialOffers: LiveData<Resource<BaseResponse<RestaurantInfo>>> = _specialOffers
 
+    private val _restaurantMenu = MutableLiveData<Resource<BaseResponse<RestaurantMenuResponse>>>()
+    val restaurantMenu: LiveData<Resource<BaseResponse<RestaurantMenuResponse>>> = _restaurantMenu
+
     /**
      * Fetches special offers for the restaurant by retrieving the current user's location.
      * If the location is available, it creates a request and fetches the special offers for the restaurant.
      */
-    fun getSpecialOffers() {
+    fun getSpecialOffers(restaurantId: String?) {
         viewModelScope.launch {
             fetchCurrentAddress().collect {
                 if (it?.lat?.isNullOrEmpty()?.not() == true) {
@@ -52,8 +58,8 @@ class RestaurantViewModel @Inject constructor(
                     val flow = createSpecialOffersRequest(
                         RestaurantRequest(
                             restaurantId!!,
-                            userLat = it?.lat ?: "",
-                            userLon = it?.lng ?: ""
+                            userLat = it.lat ?: "",
+                            userLon = it.lng ?: ""
                         )
                     )
                     // Apply the request with retry logic.
@@ -74,6 +80,31 @@ class RestaurantViewModel @Inject constructor(
         }
     }
 
+    fun getRestaurantMenu(restaurantId: String?) {
+        viewModelScope.launch {
+            // Create a request to get special offers for the restaurant.
+            val flow = createRestaurantMenuRequest(
+                RestaurantMenuRequest(
+                    restaurantId!!
+                )
+            )
+            // Apply the request with retry logic.
+            apply(
+                flow = flow,
+                maxRetries = 2,
+                onError = { error ->
+                    // Update the LiveData with an error state if there's an issue.
+                    _restaurantMenu.value = Resource.Error("No Internet Connection")
+                },
+                onSuccess = { resource ->
+                    // Update the LiveData with the fetched special offers.
+                    _restaurantMenu.value = resource
+                }
+            )
+
+        }
+    }
+
     /**
      * Creates a Flow that makes the request for special offers by restaurant ID.
      * Sends the appropriate response (loading, success, error, or unauthenticated).
@@ -90,7 +121,35 @@ class RestaurantViewModel @Inject constructor(
                     send(Resource.Success(result)) // Emit success state with the result.
                 },
                 onError = { message, error ->
-                    send(Resource.Error(message, error)) // Emit error state with the message and error.
+                    send(
+                        Resource.Error(
+                            message,
+                            error
+                        )
+                    ) // Emit error state with the message and error.
+                },
+                onUnauthenticated = {
+                    send(Resource.UnAuthenticated()) // Emit unauthenticated state if the user is not authenticated.
+                }
+            )
+        }
+
+    private fun createRestaurantMenuRequest(restaurantMenuRequest: RestaurantMenuRequest): Flow<Resource<BaseResponse<RestaurantMenuResponse>>> =
+        channelFlow {
+            send(Resource.Loading()) // Emit loading state.
+            val result = mainUseCase.restaurantUseCase.getRestaurantMenu(restaurantMenuRequest)
+            // Handle the response and send the result back to the Flow.
+            result.handleResponse(
+                onSuccess = {
+                    send(Resource.Success(result)) // Emit success state with the result.
+                },
+                onError = { message, error ->
+                    send(
+                        Resource.Error(
+                            message,
+                            error
+                        )
+                    ) // Emit error state with the message and error.
                 },
                 onUnauthenticated = {
                     send(Resource.UnAuthenticated()) // Emit unauthenticated state if the user is not authenticated.
@@ -117,7 +176,7 @@ class RestaurantViewModel @Inject constructor(
         binding.tvOffersCount.text = offersCount.toString() + " Offers"
 
         // Set the adapter for the RecyclerView.
-        binding.rvSpecialOffers.adapter = specialOfferAdapter
+//        binding.rvSpecialOffers.adapter = specialOfferAdapter
 
         // Submit the list of special offers to the adapter.
         specialOfferAdapter.submitList(offers)
@@ -125,15 +184,16 @@ class RestaurantViewModel @Inject constructor(
         // Show or hide views based on whether there are offers.
         if (offers.isNullOrEmpty()) {
             binding.tvOffersCount.visibility = GONE
-            binding.rvSpecialOffers.visibility = GONE
-            binding.llNoOffers.visibility = VISIBLE
+//            binding.rvSpecialOffers.visibility = GONE
+//            binding.llNoOffers.visibility = VISIBLE
             binding.tvSpecialOffers.visibility = GONE
             binding.tvDescription.visibility = GONE
         } else {
-            binding.rvSpecialOffers.visibility = VISIBLE
+//            binding.rvSpecialOffers.visibility = VISIBLE
             binding.llNoOffers.visibility = GONE
             binding.tvSpecialOffers.visibility = VISIBLE
             binding.tvDescription.visibility = VISIBLE
         }
     }
+
 }

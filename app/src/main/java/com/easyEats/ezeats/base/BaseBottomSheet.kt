@@ -48,7 +48,7 @@ abstract class BaseBottomSheetFragment<VB : ViewDataBinding> : BottomSheetDialog
         val windowHeight = getWindowHeight()
 
         if (layoutParams != null) {
-            layoutParams.height = windowHeight - 200
+            layoutParams.height = windowHeight - 20
         }
         bottomSheet.layoutParams = layoutParams
 

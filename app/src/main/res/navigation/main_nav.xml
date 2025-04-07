@@ -81,7 +81,7 @@
         app:destination="@id/searchHistoryFragment"
         app:popUpToInclusive="true"
         />
-    <dialog
+    <fragment
         android:id="@+id/restaurantFragment"
         android:name="com.easyEats.ezeats.ui.main.restaurant.RestaurantFragment"
         android:label="RestaurantFragment"
@@ -90,7 +90,7 @@
             android:name="restaurantId"
             app:argType="string" />
 
-    </dialog>
+    </fragment>
 
     <action
         android:id="@+id/goToRestaurantFragment"
@@ -172,4 +172,8 @@
         android:id="@+id/goToVoucherBottomSheet"
         app:destination="@+id/voucherBottomSheet"
         />
+    <fragment
+        android:id="@+id/ordersFragment"
+        android:name="com.easyEats.ezeats.ui.main.restaurant.OrdersFragment"
+        android:label="OrdersFragment" />
 </navigation>

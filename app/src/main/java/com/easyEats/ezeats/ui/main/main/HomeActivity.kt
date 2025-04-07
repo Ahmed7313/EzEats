@@ -63,9 +63,9 @@ class HomeActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             mainViewModel.userLocationAddressMutableLiveData.collect {
-                Log.d(TAG, "onCreate:a7a ${it?.address}")
-                Log.d(TAG, "onCreate:a7a ${it?.lat}")
-                Log.d(TAG, "onCreate:a7a ${it?.lng}")
+                Log.d(TAG, "onCreate: ${it?.address}")
+                Log.d(TAG, "onCreate: ${it?.lat}")
+                Log.d(TAG, "onCreate: ${it?.lng}")
             }
         }
 //        val notificationType = intent.getStringExtra("notificationType")
