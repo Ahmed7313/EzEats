@@ -5,9 +5,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.easyEats.ezeats.R
+import com.easyEats.ezeats.databinding.MenuItemBinding
+import com.easyEats.ezeats.databinding.SubMenuHeaderBinding
 import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.SubMenu
 
 class VerticalMenuAdapter(
@@ -31,14 +34,22 @@ class VerticalMenuAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             TYPE_HEADER -> {
-                val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.sub_menu_header, parent, false)
-                HeaderViewHolder(view)
+                val binding = DataBindingUtil.inflate<SubMenuHeaderBinding>(
+                    LayoutInflater.from(parent.context),
+                    R.layout.sub_menu_header,
+                    parent,
+                    false
+                )
+                HeaderViewHolder(binding)
             }
             TYPE_SUB_ITEM -> {
-                val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.menu_item, parent, false)
-                SubItemViewHolder(view)
+                val binding = DataBindingUtil.inflate<MenuItemBinding>(
+                    LayoutInflater.from(parent.context),
+                    R.layout.menu_item,
+                    parent,
+                    false
+                )
+                SubItemViewHolder(binding)
             }
             else -> throw IllegalArgumentException("Invalid view type")
         }
@@ -51,27 +62,17 @@ class VerticalMenuAdapter(
         }
     }
 
-    inner class HeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val tvHeader: TextView = itemView.findViewById(R.id.tv_sub_menu_header)
-
+    inner class HeaderViewHolder(private val binding: SubMenuHeaderBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: VerticalItem.Header) {
-            tvHeader.text = item.name
+            binding.item = item
+            binding.executePendingBindings() // Executes any pending bindings immediately
         }
     }
 
-    inner class SubItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val title: TextView = itemView.findViewById(R.id.tv_title_menu_item)
-        private val description: TextView = itemView.findViewById(R.id.tv_description_menu_item)
-        private val price: TextView = itemView.findViewById(R.id.tv_price_menu_item)
-        private val image: ImageView = itemView.findViewById(R.id.iv_menu_item)
-
+    inner class SubItemViewHolder(private val binding: MenuItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(subMenu: SubMenu) {
-            title.text = subMenu.name ?: ""
-            description.text = subMenu.description ?: ""
-            price.text = "EGP ${subMenu.price ?: "0"}"
-            image.load(subMenu.coverPhoto?.url)
-            // If using image loading library like Glide or Coil:
-            // Glide.with(image.context).load(subMenu.imageUrl).into(image)
+            binding.subMenu = subMenu
+            binding.executePendingBindings() // Executes any pending bindings immediately
         }
     }
 }

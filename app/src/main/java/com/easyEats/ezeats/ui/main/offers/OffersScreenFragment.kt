@@ -75,12 +75,12 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
      * Fetches categories and restaurant data from the ViewModel.
      */
     private fun getCategoriesAndRestaurants() {
-        offersViewModel.getCategoriesRestaurantResult()
-        offersViewModel.getRestaurantsResult(
-            "",
-            mainViewModel.userLocationAddressMutableLiveData.value?.lat,
-            mainViewModel.userLocationAddressMutableLiveData.value?.lng
-        )
+            offersViewModel.getCategoriesRestaurantResult()
+            offersViewModel.getRestaurantsResult(
+                "",
+                mainViewModel.userLocationAddressMutableLiveData.value?.lat,
+                mainViewModel.userLocationAddressMutableLiveData.value?.lng
+            )
     }
 
     /**

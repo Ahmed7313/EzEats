@@ -16,146 +16,48 @@
         android:layout_height="match_parent"
         android:background="@drawable/rounded_top_bottom_sheet_white">
 
-        <ImageView
-            android:id="@+id/ivBackground"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:src="@drawable/botttom_sheet_top"
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/imageOffer"
+            android:layout_width="match_parent"
+            android:layout_height="280dp"
+            android:scaleType="fitXY"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-        </ImageView>
-
-        <RelativeLayout
-            android:id="@+id/parent"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_margin="20dp"
-            app:layout_constraintTop_toTopOf="@+id/ivBackground">
-
-            <com.makeramen.roundedimageview.RoundedImageView
-                android:id="@+id/imageOffer"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="fitXY"
-                loadImage="@{offer.isFeaturedLogo!=null ?offer.isFeaturedLogo :offer.offerLogo}"
-                app:riv_corner_radius="10dp" />
-
-            <TextView
-                android:id="@+id/tvNew"
-                android:layout_width="100dp"
-                android:layout_height="35dp"
-                android:layout_alignParentEnd="true"
-                android:background="@drawable/rounded_text_new_offer"
-                android:gravity="center"
-                android:text="@string/new_"
-                android:visibility="@{offer.isNew? View.VISIBLE:View.GONE}"
-                android:fontFamily="@font/gilroy_600"
-                android:textAlignment="center"
-                android:textColor="@color/white" />
-
-            <com.makeramen.roundedimageview.RoundedImageView
-                android:id="@+id/ivLogo"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_alignParentBottom="true"
-                android:layout_marginStart="10dp"
-                android:layout_marginBottom="10dp"
-                loadImage="@{offer.restaurantLogo}"
-                android:padding="10dp"
-                app:riv_oval="true" />
-
-        </RelativeLayout>
+            app:layout_constraintTop_toTopOf="parent"
+            app:riv_corner_radius="10dp" />
 
         <TextView
             android:id="@+id/tvTitleOffer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:textColor="#3A3D42"
-            android:textSize="32sp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="25dp"
             android:fontFamily="@font/gilroy_700"
+            android:textColor="#3A3D42"
+            android:textSize="24sp"
             android:textStyle="bold"
-            android:text="@{offer.name}"
             app:layout_constraintEnd_toEndOf="@+id/parent"
-            app:layout_constraintStart_toStartOf="@+id/parent"
-            app:layout_constraintTop_toBottomOf="@+id/parent"
-            tools:text="Buy one get one free" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageOffer"
+            tools:text="Pretzel Dog" />
 
         <TextView
             android:id="@+id/tvDescriptionOffer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:fontFamily="@font/gilroy_500"
             android:lineSpacingExtra="4dp"
             android:textColor="#3A3D42"
             android:textSize="@dimen/_12ssp"
-            android:fontFamily="@font/gilroy_500"
             android:textStyle="normal"
-            android:text="@{offer.description}"
-            app:layout_constraintEnd_toEndOf="@+id/parent"
-            app:layout_constraintStart_toStartOf="@+id/parent"
+            app:layout_constraintStart_toStartOf="@+id/tvTitleOffer"
             app:layout_constraintTop_toBottomOf="@+id/tvTitleOffer"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="25dp"
             tools:text="Get one free Pizza of the same size when you buy any pizza, this valid is only redeemable via EZeats" />
 
-        <RadioGroup
-            android:id="@+id/groupCheck"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_7sdp"
-            app:layout_constraintEnd_toEndOf="@+id/parent"
-            app:layout_constraintStart_toStartOf="@+id/parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvDescriptionOffer">
-
-            <com.google.android.material.radiobutton.MaterialRadioButton
-                android:id="@+id/radioRedeem"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:fontFamily="@font/gilroy_500"
-                android:paddingTop="@dimen/_8sdp"
-                android:text="@string/redeem_pay"
-                android:textSize="@dimen/_12ssp"
-                android:textStyle="bold"
-                app:buttonTint="@color/main_color">
-
-            </com.google.android.material.radiobutton.MaterialRadioButton>
-
-            <TextView
-                android:id="@+id/tvRedeemDescription"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="38dp"
-                android:layout_marginTop="-10dp"
-                android:fontFamily="@font/gilroy_500"
-                android:lineSpacingExtra="3dp"
-                android:text="@string/redeem_and_pay_in_the_restaurant_and_gain_300_dp_points_to_enjoy_the_next_time_you_are_visiting"
-                android:textColor="#9F9F9F"
-                android:textSize="@dimen/_12ssp" />
-
-
-        </RadioGroup>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_200sdp"
-            app:layout_constraintBottom_toTopOf="@+id/btRedeemOffer"
-            app:layout_constraintTop_toBottomOf="@+id/groupCheck" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btRedeemOffer"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:text="@string/redeem"
-            android:paddingVertical="@dimen/_10sdp"
-            android:textColor="@color/white"
-            app:backgroundTint="@color/main_color"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/parent"
-            app:layout_constraintStart_toStartOf="@+id/parent" />
 
         <include
             android:id="@+id/loader"

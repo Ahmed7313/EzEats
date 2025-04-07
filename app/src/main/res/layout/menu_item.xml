@@ -1,69 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/_90sdp"
-    android:layout_marginBottom="@dimen/_13sdp">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <com.makeramen.roundedimageview.RoundedImageView
-        android:id="@+id/iv_menu_item"
-        android:layout_width="@dimen/_54sdp"
-        android:layout_height="@dimen/_54sdp"
-        android:contentDescription="@string/restaurant_logo"
-        android:scaleType="centerCrop"
-        android:src="@drawable/dummy_menu_image"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <data>
 
-    <TextView
-        android:id="@+id/tv_title_menu_item"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_11sdp"
-        android:fontFamily="@font/gilroy_700"
-        android:textSize="@dimen/_13ssp"
-        app:layout_constraintStart_toEndOf="@+id/iv_menu_item"
-        app:layout_constraintTop_toTopOf="@+id/iv_menu_item"
-        tools:text="Box of 8 Bombs" />
+        <variable
+            name="subMenu"
+            type="com.easyEats.ezeats.domain.main.model.response.restaurant_menu.SubMenu" />
+    </data>
 
-    <TextView
-        android:id="@+id/tv_description_menu_item"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_11sdp"
-        android:layout_marginTop="@dimen/_8sdp"
-        android:layout_marginEnd="@dimen/_15sdp"
-        android:fontFamily="@font/gilroy_600"
-        android:textSize="@dimen/_11ssp"
-        android:maxLines="2"
-        android:ellipsize="end"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/iv_menu_item"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title_menu_item"
-        tools:text="Your selection of 8 bollllllklllmbs from our signature collection. Your selection of 8 bombs from our signature collection. " />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_90sdp"
+        android:layout_marginBottom="@dimen/_13sdp">
 
-    <TextView
-        android:id="@+id/tv_price_menu_item"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_11sdp"
-        android:layout_marginTop="@dimen/_8sdp"
-        android:fontFamily="@font/gilroy_700"
-        android:textSize="@dimen/_13ssp"
-        android:layout_marginBottom="@dimen/_8sdp"
-        app:layout_constraintStart_toEndOf="@+id/iv_menu_item"
-        app:layout_constraintTop_toBottomOf="@+id/tv_description_menu_item"
-        tools:text="EGP 500" />
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/iv_menu_item"
+            android:layout_width="@dimen/_54sdp"
+            android:layout_height="@dimen/_54sdp"
+            android:contentDescription="@string/restaurant_logo"
+            android:scaleType="centerCrop"
+            loadImage="@{subMenu.coverPhoto.url}"
+            android:src="@drawable/dummy_menu_image"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <View
-        android:layout_width="0dp"
-        android:layout_height="@dimen/_1sdp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:background="#1F000000"
-        android:layout_marginHorizontal="@dimen/_20sdp"
-        app:layout_constraintStart_toStartOf="parent" />
+        <TextView
+            android:id="@+id/tv_title_menu_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_11sdp"
+            android:fontFamily="@font/gilroy_700"
+            android:textSize="@dimen/_13ssp"
+            android:text="@{subMenu.name}"
+            app:layout_constraintStart_toEndOf="@+id/iv_menu_item"
+            app:layout_constraintTop_toTopOf="@+id/iv_menu_item"
+            tools:text="Box of 8 Bombs" />
+
+        <TextView
+            android:id="@+id/tv_description_menu_item"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_11sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:ellipsize="end"
+            android:text="@{subMenu.description}"
+            android:fontFamily="@font/gilroy_600"
+            android:maxLines="2"
+            android:textSize="@dimen/_11ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/iv_menu_item"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title_menu_item"
+            tools:text="Your selection of 8 bollllllklllmbs from our signature collection. Your selection of 8 bombs from our signature collection. " />
+
+        <TextView
+            android:id="@+id/tv_price_menu_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_11sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginBottom="@dimen/_8sdp"
+            android:fontFamily="@font/gilroy_700"
+            android:textSize="@dimen/_13ssp"
+            android:text="@{`EGP ` + subMenu.price}"
+            app:layout_constraintStart_toEndOf="@+id/iv_menu_item"
+            app:layout_constraintTop_toBottomOf="@+id/tv_description_menu_item"
+            tools:text="EGP 500" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_1sdp"
+            android:layout_marginHorizontal="@dimen/_20sdp"
+            android:background="#1F000000"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
