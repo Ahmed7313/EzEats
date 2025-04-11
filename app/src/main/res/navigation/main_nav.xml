@@ -79,8 +79,7 @@
     <action
         android:id="@+id/goToSearchHistoryFragment"
         app:destination="@id/searchHistoryFragment"
-        app:popUpToInclusive="true"
-        />
+        app:popUpToInclusive="true" />
     <fragment
         android:id="@+id/restaurantFragment"
         android:name="com.easyEats.ezeats.ui.main.restaurant.RestaurantFragment"
@@ -98,21 +97,23 @@
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/slide_out_left"
         app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right"
-        />
-    <dialog
-        android:id="@+id/redeemFragment"
-        android:name="com.easyEats.ezeats.ui.main.redeem.RedeemFragment"
-        android:label="RedeemFragment"
-        tools:layout="@layout/fragment_redeem">
-
+        app:popExitAnim="@anim/slide_out_right" />
+    <fragment
+        android:id="@+id/menuItemDetailsFragment"
+        android:name="com.easyEats.ezeats.ui.main.restaurant.menu_item_details.MenuItemDetailsFragment"
+        android:label="MenuItemDetailsFragment"
+        tools:layout="@layout/fragment_menu_item_details">
         <argument
-            android:name="offerId"
-            app:argType="string" />
-    </dialog>
+            android:name="MenuItem"
+            app:argType="com.easyEats.ezeats.domain.main.model.response.restaurant_menu.SubMenu" />
+    </fragment>
     <action
-        android:id="@+id/goToRedeemScreen"
-        app:destination="@+id/redeemFragment" />
+        android:id="@+id/goToMenuItemDetailsFragment"
+        app:destination="@+id/menuItemDetailsFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
     <fragment
         android:id="@+id/editProfileFragment"
         android:name="com.easyEats.ezeats.ui.main.edit_profile.EditProfileFragment"
@@ -166,19 +167,14 @@
         android:id="@+id/voucherBottomSheet"
         android:name="com.easyEats.ezeats.ui.main.points.voucher_bottom_sheet.VoucherBottomSheet"
         android:label="VoucherBottomSheet"
-        tools:layout="@layout/voucher_bottom_sheet" >
+        tools:layout="@layout/voucher_bottom_sheet">
         <argument
             android:name="isSpinWheelPoints"
-            app:argType="boolean"
-            android:defaultValue="false" />
+            android:defaultValue="false"
+            app:argType="boolean" />
     </dialog>
 
     <action
         android:id="@+id/goToVoucherBottomSheet"
-        app:destination="@+id/voucherBottomSheet"
-        />
-    <fragment
-        android:id="@+id/ordersFragment"
-        android:name="com.easyEats.ezeats.ui.main.restaurant.OrdersFragment"
-        android:label="OrdersFragment" />
+        app:destination="@+id/voucherBottomSheet" />
 </navigation>

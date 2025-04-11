@@ -211,7 +211,7 @@ class SearchResultViewModel @Inject constructor(
         context: Context,
         binding: FragmentSearchResultBinding,
         restaurantAdapter: RestaurantAdapter,
-        resource: Resource.Success<BaseResponse<List<Restaurant>>>
+        resource: Resource.Success<BaseResponse<List<RestaurantsResponseItem>>>
     ) {
         binding.rvRestaurantSearch.visibility = View.VISIBLE
         binding.rvOfferSearch.visibility = View.GONE

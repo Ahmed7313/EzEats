@@ -2,6 +2,7 @@ package com.easyEats.ezeats.ui.main.restaurant
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -26,6 +27,7 @@ import com.easyEats.ezeats.base.BaseResponse
 import com.easyEats.ezeats.databinding.FragmentRestaurantBinding
 import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.Menu
 import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.RestaurantMenuResponse
+import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.SubMenu
 import com.easyEats.ezeats.ui.main.restaurant.adapter.MenuTabAdapter
 import com.easyEats.ezeats.ui.main.restaurant.adapter.SpecialOfferAdapter
 import com.easyEats.ezeats.ui.main.restaurant.adapter.VerticalItem
@@ -42,7 +44,10 @@ import dagger.hilt.android.AndroidEntryPoint
  * information or dismiss the fragment. It also handles navigating to the redeem screen when a special offer is clicked.
  */
 @AndroidEntryPoint
-class RestaurantFragment : BaseFragment<FragmentRestaurantBinding>(), SpecialOfferAdapter.OnSpecialOfferClicked {
+class RestaurantFragment : BaseFragment<FragmentRestaurantBinding>(),
+    SpecialOfferAdapter.OnSpecialOfferClicked {
+
+    override val shouldRetainView: Boolean = true
 
     // ViewModel to manage the restaurant data and special offers.
     private val viewModel: RestaurantViewModel by activityViewModels()
@@ -52,6 +57,12 @@ class RestaurantFragment : BaseFragment<FragmentRestaurantBinding>(), SpecialOff
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var specialOfferAdapter: SpecialOfferAdapter
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        // Request the special offers data from the ViewModel.
+        viewModel.getSpecialOffers(args.restaurantId)
+        viewModel.getRestaurantMenu(args.restaurantId)
+    }
     /**
      * Sets up the views and their corresponding actions for the fragment.
      */
@@ -73,9 +84,6 @@ class RestaurantFragment : BaseFragment<FragmentRestaurantBinding>(), SpecialOff
         }
 
 
-        // Request the special offers data from the ViewModel.
-        viewModel.getSpecialOffers(args.restaurantId)
-        viewModel.getRestaurantMenu(args.restaurantId)
     }
 
     /**
@@ -153,10 +161,19 @@ class RestaurantFragment : BaseFragment<FragmentRestaurantBinding>(), SpecialOff
 
         // Flatten the nested menu structure into a single list for vertical display.
         val subMenu = flattenMenu(resources.data?.result?.data?.menu)
-        verticalMenuAdapter = VerticalMenuAdapter(subMenu)
+        verticalMenuAdapter = VerticalMenuAdapter(subMenu, ::onMenuItemClicked)
         binding.rvSubMenu.adapter = verticalMenuAdapter
-        binding.rvSubMenu.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        binding.rvSubMenu.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         layoutManager = binding.rvSubMenu.layoutManager as LinearLayoutManager
+    }
+
+    private fun onMenuItemClicked(subMenu: SubMenu) {
+        findNavController().navigate(
+            RestaurantFragmentDirections.goToMenuItemDetailsFragment(
+                subMenu
+            )
+        )
     }
 
     /**
@@ -167,8 +184,9 @@ class RestaurantFragment : BaseFragment<FragmentRestaurantBinding>(), SpecialOff
         binding.rvSubMenu.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(rv: RecyclerView, dx: Int, dy: Int) {
                 // Determine the first visible item in the vertical RecyclerView.
-                val firstVisiblePosition = (rv.layoutManager as? LinearLayoutManager)?.findFirstVisibleItemPosition()
-                    ?: return
+                val firstVisiblePosition =
+                    (rv.layoutManager as? LinearLayoutManager)?.findFirstVisibleItemPosition()
+                        ?: return
 
                 // Check if the first visible item is a header.
                 val item = verticalMenuAdapter.items[firstVisiblePosition]
@@ -207,7 +225,8 @@ class RestaurantFragment : BaseFragment<FragmentRestaurantBinding>(), SpecialOff
      */
     private fun shareRestaurantLink() {
         val restaurantId = viewModel.restaurantId
-        val shareText = "Check out this restaurant on Ezeats: https://www.ezeats.app/restaurant/$restaurantId"
+        val shareText =
+            "Check out this restaurant on Ezeats: https://www.ezeats.app/restaurant/$restaurantId"
 
         val shareIntent = Intent().apply {
             action = Intent.ACTION_SEND
@@ -219,7 +238,8 @@ class RestaurantFragment : BaseFragment<FragmentRestaurantBinding>(), SpecialOff
         if (shareIntent.resolveActivity(requireContext().packageManager) != null) {
             startActivity(chooser)
         } else {
-            Toast.makeText(requireContext(), "No apps available to share", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "No apps available to share", Toast.LENGTH_SHORT)
+                .show()
         }
     }
 
@@ -239,7 +259,7 @@ class RestaurantFragment : BaseFragment<FragmentRestaurantBinding>(), SpecialOff
      * @param offerId The ID of the selected offer.
      */
     override fun onSpecialOfferClickListener(offerId: String) {
-        findNavController().navigate(RestaurantFragmentDirections.goToRedeemScreen(offerId))
+//        findNavController().navigate(RestaurantFragmentDirections.goToRedeemScreen(offerId))
     }
 
     /**

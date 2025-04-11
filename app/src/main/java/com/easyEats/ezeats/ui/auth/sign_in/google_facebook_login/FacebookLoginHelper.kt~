@@ -1,0 +1,68 @@
+package com.easyEats.ezeats.ui.auth.sign_in.google_facebook_login
+
+import android.content.Intent
+import android.os.Bundle
+import androidx.fragment.app.Fragment
+import com.facebook.AccessToken
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.GraphRequest
+import com.facebook.login.LoginManager
+import com.facebook.login.LoginResult
+
+class FacebookLoginHelper(
+    private val fragment: Fragment,
+    private val callback: SocialLoginCallback
+) {
+
+    private val callbackManager = CallbackManager.Factory.create()
+
+    fun signIn() {
+        LoginManager.getInstance().logInWithReadPermissions(
+            fragment,
+            listOf("email", "public_profile")
+        )
+        LoginManager.getInstance().registerCallback(callbackManager, object :
+            FacebookCallback<LoginResult> {
+            override fun onCancel() {
+                callback.onLoginError("Facebook login canceled.")
+            }
+
+            override fun onError(error: FacebookException) {
+                callback.onLoginError("Facebook login failed: ${error?.message}")
+            }
+
+            override fun onSuccess(result: LoginResult) {
+                getUserProfile(result.accessToken)
+            }
+
+        })
+    }
+
+    fun handleActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        callbackManager.onActivityResult(requestCode, resultCode, data)
+    }
+
+    private fun getUserProfile(accessToken: AccessToken?) {
+        accessToken?.let {
+            val request = GraphRequest.newMeRequest(it) { jsonObject, _ ->
+                val phone = jsonObject?.optString("phone")
+                val email = jsonObject?.optString("email")
+
+                if (phone?.isNotEmpty() == true) {
+                    callback.onLoginSuccess(phone)
+                } else if (email?.isNotEmpty() == true) {
+                    callback.onLoginSuccess(email)
+                } else {
+                    callback.onLoginError("Phone number and email are not available.")
+                }
+            }
+
+            val parameters = Bundle()
+            parameters.putString("fields", "id,name,email,phone")
+            request.parameters = parameters
+            request.executeAsync()
+        }
+    }
+}

@@ -1,8 +1,11 @@
 package com.easyEats.ezeats.domain.main.model.response.restaurant_menu
 
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class Choice(
     @SerializedName("id")
     val id: String?,
@@ -12,4 +15,4 @@ data class Choice(
     val name: String?,
     @SerializedName("price")
     val price: Int?
-)
+) : Parcelable

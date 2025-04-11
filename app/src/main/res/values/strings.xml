@@ -215,5 +215,6 @@
     <string name="login_with_facebook">login with facebook</string>
     <string name="facebook_app_id">577943048465854</string>
     <string name="EZeats_Phone_Number">tel:+201040302211</string>
+    <string name="add_item">Add item</string>
 
 </resources>

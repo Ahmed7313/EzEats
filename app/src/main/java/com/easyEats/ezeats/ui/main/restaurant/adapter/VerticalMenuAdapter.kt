@@ -11,10 +11,12 @@ import coil.load
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.databinding.MenuItemBinding
 import com.easyEats.ezeats.databinding.SubMenuHeaderBinding
+import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.Menu
 import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.SubMenu
 
 class VerticalMenuAdapter(
-    val items: List<VerticalItem>
+    val items: List<VerticalItem>,
+    private val onMenuItemClicked: (SubMenu) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
@@ -72,7 +74,10 @@ class VerticalMenuAdapter(
     inner class SubItemViewHolder(private val binding: MenuItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(subMenu: SubMenu) {
             binding.subMenu = subMenu
-            binding.executePendingBindings() // Executes any pending bindings immediately
+            binding.executePendingBindings()
+            binding.root.setOnClickListener {
+                onMenuItemClicked(subMenu)
+            }
         }
     }
 }

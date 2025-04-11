@@ -190,10 +190,10 @@ class SearchResultFragment : BaseFragment<FragmentSearchResultBinding>(),
     }
 
     override fun onHotDealClickListener(offer: HotDeal) {
-        findNavController().navigate(SearchResultFragmentDirections.goToRedeemScreen(offer.id.toString()))
+//        findNavController().navigate(SearchResultFragmentDirections.goToRedeemScreen(offer.id.toString()))
     }
 
     override fun onOfferClicked(offerId: String) {
-        findNavController().navigate(SearchResultFragmentDirections.goToRedeemScreen(offerId))
+//        findNavController().navigate(SearchResultFragmentDirections.goToRedeemScreen(offerId))
     }
 }

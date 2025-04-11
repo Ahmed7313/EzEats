@@ -203,7 +203,6 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
 
     // Handle click event for Hot Deals
     override fun onHotDealClickListener(offer: HotDeal) {
-        findNavController().navigate(HomeScreenFragmentDirections.goToRedeemScreen(offer.id.toString()))
     }
 
     // Handle click event for Featured Offers

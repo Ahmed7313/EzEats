@@ -1,15 +1,19 @@
 package com.easyEats.ezeats.domain.main.model.response.restaurant_menu
 
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
+import kotlinx.parcelize.RawValue
 
+@Parcelize
 data class SubMenu(
     @SerializedName("available")
     val available: Boolean?,
     @SerializedName("coverPhoto")
     val coverPhoto: CoverPhoto?,
     @SerializedName("days")
-    val days: List<Any?>?,
+    val days: @RawValue List<Any>?,
     @SerializedName("defaultService")
     val defaultService: Int?,
     @SerializedName("description")
@@ -34,4 +38,4 @@ data class SubMenu(
     val subOptions: List<SubOption?>?,
     @SerializedName("type")
     val type: String?
-)
+) : Parcelable

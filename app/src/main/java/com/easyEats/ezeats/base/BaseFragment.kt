@@ -28,6 +28,9 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
 
     private var loadingDialog: LoadingDialog? = null
 
+    protected open val shouldRetainView: Boolean = false  // <-- Add this flag
+
+
 
     /**
      * Inflates the binding and sets the root view for this fragment.
@@ -41,7 +44,9 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = inflateBinding(inflater, container)
+        if (_binding == null || !shouldRetainView) {
+            _binding = inflateBinding(inflater, container)
+        }
         return binding.root
     }
 
@@ -74,7 +79,9 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
      */
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        if (!shouldRetainView) {
+            _binding = null
+        }
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.easyEats.ezeats.ui.main.offers
 
+import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -35,6 +36,7 @@ import kotlinx.coroutines.launch
 class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
     OffersCategoryAdapter.OnCategoryClickListener, RestaurantAdapter.OnRestaurantClicked,
     OfferAdapter.OnOfferClicked {
+    override val shouldRetainView: Boolean = true
 
     // ViewModels for managing data
     private val mainViewModel: MainViewModel by activityViewModels()
@@ -43,6 +45,11 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
     // Adapters for RecyclerViews
     private lateinit var restaurantAdapter: RestaurantAdapter
     private lateinit var cateAdapter: OffersCategoryAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        getCategoriesAndRestaurants()
+    }
 
     /**
      * Inflates the binding for the fragment.
@@ -227,7 +234,7 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
      * Handles offer click events.
      */
     override fun onOfferClicked(offerId: String) {
-        findNavController().navigate(OffersScreenFragmentDirections.goToRedeemScreen(offerId))
+//        findNavController().navigate(OffersScreenFragmentDirections.goToRedeemScreen(offerId))
     }
 
     /**
