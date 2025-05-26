@@ -59,7 +59,7 @@ interface MainApiService {
     @POST("getCategory")
     suspend fun getCategory(): BaseResponse<List<Category>>
 
-    @POST("getOffersByRestaurantId")
+    @POST("getRestaurants")
     suspend fun getOffersByRestaurantId(@Body restaurantRequest: RestaurantRequest): BaseResponse<RestaurantInfo>
 
     @POST("getRestaurantMenu")

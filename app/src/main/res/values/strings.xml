@@ -216,5 +216,6 @@
     <string name="facebook_app_id">577943048465854</string>
     <string name="EZeats_Phone_Number">tel:+201040302211</string>
     <string name="add_item">Add item</string>
+    <string name="all_restaurant">All resturants\n</string>
 
 </resources>

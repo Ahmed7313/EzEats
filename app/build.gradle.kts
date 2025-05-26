@@ -91,10 +91,42 @@ android {
     buildFeatures {
         dataBinding = true
         buildConfig = true
+        compose = true
+    }
+
+    // Tell the Android plugin which Compose compiler to use:
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.2"
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+        freeCompilerArgs += listOf(
+            "-Xopt-in=androidx.compose.material3.ExperimentalMaterial3Api",
+            "-Xopt-in=kotlin.RequiresOptIn"
+        )
     }
 }
 
 dependencies {
+
+    // Compose dependencies
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.activity.compose)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.graphics)
+    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.material3)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
+    implementation(libs.compose.icons)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -150,6 +182,7 @@ dependencies {
     //coil
     implementation(libs.coil)
     implementation(libs.coil.svg)
+    implementation(libs.coil.compose)
     //chucker
     debugImplementation(libs.library)
     releaseImplementation(libs.library.no.op)
@@ -170,5 +203,8 @@ dependencies {
     implementation(libs.play.services.auth)
     // Facebook Login
     implementation(libs.facebook.login)
+
+    //Lottie
+    implementation(libs.lottie.compose)
 
 }

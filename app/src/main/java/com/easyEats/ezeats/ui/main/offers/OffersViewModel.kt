@@ -144,24 +144,24 @@ class OffersViewModel @Inject constructor(val mainUseCase: MainUseCase) :
      * Sets the restaurant data in the UI.
      * It updates the visibility and content of the restaurant RecyclerView.
      */
-    fun setRestaurantsData(
-        context: Context,
-        binding: FragmentPercentScreenBinding,
-        restaurantAdapter: RestaurantAdapter,
-        restaurants: List<RestaurantsResponseItem>
-    ) {
-        binding.rvRestaurant.adapter = restaurantAdapter
-        if (restaurants.isEmpty()) {
-            binding.rvRestaurant.visibility = GONE
-            binding.tvAllRestaurants.visibility = GONE
-            binding.llNoRestaurants.visibility = VISIBLE
-        } else {
-            binding.rvRestaurant.visibility = VISIBLE
-            binding.tvAllRestaurants.visibility = VISIBLE
-            binding.llNoRestaurants.visibility = GONE
-            restaurantAdapter.submitList(restaurants)
-        }
-    }
+//    fun setRestaurantsData(
+//        context: Context,
+//        binding: FragmentPercentScreenBinding,
+//        restaurantAdapter: RestaurantAdapter,
+//        restaurants: List<RestaurantsResponseItem>
+//    ) {
+//        binding.rvRestaurant.adapter = restaurantAdapter
+//        if (restaurants.isEmpty()) {
+//            binding.rvRestaurant.visibility = GONE
+//            binding.tvAllRestaurants.visibility = GONE
+//            binding.llNoRestaurants.visibility = VISIBLE
+//        } else {
+//            binding.rvRestaurant.visibility = VISIBLE
+//            binding.tvAllRestaurants.visibility = VISIBLE
+//            binding.llNoRestaurants.visibility = GONE
+//            restaurantAdapter.submitList(restaurants)
+//        }
+//    }
 
     /**
      * Sets the category data in the UI.
