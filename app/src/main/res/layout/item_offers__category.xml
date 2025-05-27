@@ -14,8 +14,8 @@
     </data>
 
     <LinearLayout
-        android:layout_width="@dimen/_80sdp"
-        android:layout_height="@dimen/_85sdp"
+        android:layout_width="@dimen/_93sdp"
+        android:layout_height="@dimen/_97sdp"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         tools:ignore="UseCompoundDrawables">
