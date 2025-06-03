@@ -58,8 +58,8 @@ class RestaurantViewModel @Inject constructor(
                     val flow = createSpecialOffersRequest(
                         RestaurantRequest(
                             restaurantId!!,
-                            userLat = it.lat ?: "",
-                            userLon = it.lng ?: ""
+                            userLat = "30.0145125310423", //it.lat ?: "" ,
+                            userLon = "30.975965400415998" //it.lng ?: ""
                         )
                     )
                     // Apply the request with retry logic.

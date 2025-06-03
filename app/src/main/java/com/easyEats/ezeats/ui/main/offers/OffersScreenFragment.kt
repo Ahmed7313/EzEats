@@ -217,8 +217,10 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
                     ?: getString(R.string.select_location)
                 offersViewModel.getRestaurantsResult(
                     "",
-                    loc?.lat,
-                    loc?.lng
+                    //loc?.lat,
+                    //loc?.lng
+                    30.0145125310423.toString(),
+                    30.975965400415998.toString()
                 )
             }
         }
