@@ -6,14 +6,6 @@
         <entry key="Firebase Crashlytics">
           <value>
             <InsightsFilterSettings>
-              <option name="connection">
-                <ConnectionSetting>
-                  <option name="appId" value="com.easyEats.ezeats" />
-                  <option name="mobileSdkAppId" value="1:509302173444:android:1fde11e4de7e7c9decaa51" />
-                  <option name="projectId" value="ezeats-app-6d275" />
-                  <option name="projectNumber" value="509302173444" />
-                </ConnectionSetting>
-              </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
               <option name="timeIntervalDays" value="THIRTY_DAYS" />
               <option name="visibilityType" value="ALL" />

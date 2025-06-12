@@ -22,9 +22,6 @@
             android:contentDescription="@string/restaurant_logo"
             android:scaleType="centerCrop"
             loadImage="@{subMenu.coverPhoto.url}"
-            app:riv_corner_radius="15dp"
-            app:riv_oval="false"
-            app:riv_border_width="0dp"
             android:src="@drawable/dummy_menu_image"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
