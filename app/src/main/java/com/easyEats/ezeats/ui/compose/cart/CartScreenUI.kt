@@ -2,15 +2,12 @@ package com.easyEats.ezeats.ui.compose.cart
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -21,6 +18,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.ui.navigateUp
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.ui.compose.cart.summary.PaymentSummary
 import com.easyEats.ezeats.ui.compose.components.AppButtonPrimary
@@ -29,7 +28,7 @@ import com.easyEats.ezeats.ui.compose.theme.AppColor.BlackColor2
 import com.easyEats.ezeats.ui.compose.theme.AppColor.GreyColor
 
 @Composable
-fun CartScreenUI(modifier: Modifier = Modifier){
+fun CartScreenUI(modifier: Modifier = Modifier, navigate: NavController){
 
     LazyColumn (
         modifier = modifier.fillMaxWidth().padding(8.dp),
@@ -73,7 +72,9 @@ fun CartScreenUI(modifier: Modifier = Modifier){
             Row(modifier = Modifier.fillMaxWidth()) {
                 AppButtonPrimary(
                     modifier = Modifier.weight(1f).padding(horizontal = 6.dp),
-                    text = stringResource(R.string.checkout)) { }
+                    text = stringResource(R.string.checkout)) {
+                    navigate.navigate(R.id.paymentSummaryFragment)
+                }
                 AppButtonStroke(
                     modifier = Modifier.weight(1f).padding(horizontal = 6.dp),
                     text = stringResource(R.string.add_items)) { }

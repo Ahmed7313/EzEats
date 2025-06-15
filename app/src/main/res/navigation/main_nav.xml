@@ -184,5 +184,13 @@
     <fragment
         android:id="@+id/cartFragment"
         android:name="com.easyEats.ezeats.ui.main.cart.CartFragment"
-        android:label="CartFragment" />
+        android:label="CartFragment" >
+        <action
+            android:id="@+id/action_cartFragment_to_paymentSummaryFragment"
+            app:destination="@id/paymentSummaryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/paymentSummaryFragment"
+        android:name="com.easyEats.ezeats.ui.main.cart.paymentSummary.PaymentSummaryFragment"
+        android:label="PaymentSummaryFragment" />
 </navigation>
