@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="offer"
+            type="com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.Offer" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="@dimen/_90sdp"
+        android:layout_height="@dimen/_90sdp"
+        android:layout_marginEnd="@dimen/_7sdp"
+        app:cardCornerRadius="@dimen/_13sdp"
+        app:cardElevation="0dp">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_2sdp">
+
+
+            <ImageView
+                android:id="@+id/ivLogo"
+                android:contentDescription="@string/restaurant_logo"
+                loadImage="@{offer.logo}"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                app:riv_corner_radius="@dimen/_7sdp">
+
+            </ImageView>
+
+
+            <TextView
+                android:id="@+id/tvOffer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/linearBottom"
+                android:layout_marginHorizontal="5dp"
+                android:layout_marginBottom="5dp"
+                android:fontFamily="@font/gilroy_700"
+                android:gravity="start"
+                android:text="@{offer.name}"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_10ssp"
+                app:drawableTint="@color/black"
+                tools:text="Buy 1 get 1 free" />
+
+            <LinearLayout
+                android:id="@+id/linearBottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginHorizontal="5dp"
+                android:orientation="horizontal"
+                android:paddingBottom="5dp">
+
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/ivLogoSponsor"
+                    loadImage="@{offer.logo}"
+                    android:layout_width="@dimen/_19sdp"
+                    android:layout_height="@dimen/_19sdp"
+                    android:layout_gravity="center"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/circle_background"
+                    android:backgroundTint="@color/white"
+                    android:padding="@dimen/_3sdp"
+                    android:scaleType="centerInside" />
+
+                <TextView
+                    android:id="@+id/tvDetails"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="5dp"
+                    android:layout_marginStart="5dp"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/gilroy_500"
+                    android:gravity="start"
+                    android:lineSpacingExtra="3dp"
+                    android:maxLines="3"
+                    android:text="@{offer.points.toString()}"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_7ssp" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+
+    </androidx.cardview.widget.CardView>
+</layout>

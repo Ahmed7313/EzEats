@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="com.easyEats.ezeats.ui.main.search_result.ViewType" />
+
+        <variable
+            name="searchResultViewModel"
+            type="com.easyEats.ezeats.ui.main.search_result.SearchResultViewModel" />
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:background="@drawable/rounded_top_bottom_sheet_background"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/SearchContainer"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <EditText
+                android:id="@+id/etRealSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:autofillHints=""
+                android:background="@drawable/rounded_search_background"
+                android:clickable="true"
+                android:drawableLeft="@drawable/search_icon"
+                android:drawablePadding="@dimen/_7sdp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:hint="@string/enter_your_search_keyword"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                android:lines="1"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:paddingVertical="@dimen/_10ssp"
+                android:textColor="@color/black"
+                app:hintTextColor="@color/black"
+                app:iconifiedByDefault="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/SearchContainer"
+                app:queryBackground="@drawable/rounded_search_background"
+                app:searchIcon="@drawable/search_icon" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvSuggestionResult"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/etRealSearch"
+                tools:itemCount="30"
+                tools:listitem="@layout/item_suggestion" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/reTop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_top_bottom_sheet_background"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/tvLocation"
+                android:layout_alignEnd="@+id/ivClose"
+                android:visibility="invisible"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:contentDescription="@string/hide_bottom_view_on_scroll_behavior"
+                android:src="@drawable/botttom_sheet_top"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/tvLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="@dimen/_17sdp"
+                android:layout_marginVertical="@dimen/_28sdp"
+                android:drawablePadding="@dimen/_5sdp"
+                android:maxLength="25"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:fontFamily="@font/gilroy_600"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_12ssp"
+                app:drawableEndCompat="@drawable/arrow_down_icon"
+                app:drawableStartCompat="@drawable/marker_pin_icon"
+                tools:ignore="RelativeOverlap"
+                tools:text="You're at Maadi" />
+
+
+            <ImageView
+                android:id="@+id/ivClose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginHorizontal="@dimen/_17sdp"
+                android:layout_marginVertical="@dimen/_25sdp"
+                android:contentDescription="@string/close"
+                android:visibility="invisible"
+                app:srcCompat="@drawable/x_circle_icon" />
+
+            <LinearLayout
+                android:id="@+id/linearContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/ivClose"
+                android:layout_marginTop="@dimen/_18sdp"
+                android:background="@drawable/home_rounded_layout"
+                android:orientation="vertical">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_17sdp"
+                    android:layout_marginTop="@dimen/_40sdp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/gilroy_700"
+                        android:lines="1"
+                        android:text="@string/search_results"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_18ssp" />
+
+                    <ImageView
+                        android:id="@+id/iv_restaurant_type"
+                        android:layout_width="@dimen/_28sdp"
+                        android:layout_height="@dimen/_28sdp"
+                        android:background="@{searchResultViewModel.viewType==ViewType.Restaurant?@drawable/selected_button_background:@drawable/unselected_button_background}"
+                        android:contentDescription="@string/all_resturant"
+                        android:onClick="@{()->searchResultViewModel.setRestaurantViewType()}"
+                        android:padding="@dimen/_6sdp"
+                        android:src="@drawable/restaurant_icon" />
+
+                    <View
+                        android:layout_width="@dimen/_10sdp"
+                        android:layout_height="@dimen/_1sdp" />
+
+                    <ImageView
+                        android:id="@+id/iv_offer_type"
+                        android:layout_width="@dimen/_28sdp"
+                        android:layout_height="@dimen/_28sdp"
+                        android:background="@{searchResultViewModel.viewType==ViewType.Offer?@drawable/selected_button_background:@drawable/unselected_button_background}"
+                        android:contentDescription="@string/offer"
+                        android:onClick="@{()->searchResultViewModel.setOfferViewType()}"
+                        android:padding="@dimen/_3sdp"
+                        android:visibility="gone"
+                        android:src="@drawable/offer_icon" />
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvRestaurantSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_16sdp"
+                    android:clipToPadding="false"
+                    android:visibility="visible"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_offer" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvOfferSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_16sdp"
+                    android:clipToPadding="false"
+                    android:visibility="gone"
+                    tools:listitem="@layout/hot_deals_item" />
+
+                <LinearLayout
+                    android:id="@+id/ll_explore"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/empty_offers_image"
+                        android:src="@drawable/empty_offers_image" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:fontFamily="@font/gilroy_600"
+                        android:text="@string/your_search_has_no_results" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_explore"
+                        android:layout_width="match_parent"
+                        android:visibility="gone"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_25sdp"
+                        android:layout_marginTop="@dimen/_30sdp"
+                        android:paddingVertical="@dimen/_12sdp"
+                        android:backgroundTint="@color/main_color"
+                        app:cornerRadius="@dimen/_100sdp"
+                        android:textColor="@color/white"
+                        android:text="@string/explore_our_restaurants" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/mcvSearch"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvLocation"
+                android:layout_alignStart="@+id/tvLocation"
+                android:layout_alignEnd="@+id/ivClose"
+                android:backgroundTint="@color/white"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardCornerRadius="@dimen/_100sdp"
+                app:cardElevation="@dimen/_5sdp"
+                app:strokeWidth="0dp">
+
+                <TextView
+                    android:id="@+id/etSearch"
+                    style="@style/defaultInputText"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginHorizontal="@dimen/_17sdp"
+                    android:background="@drawable/rounded_search_background"
+                    android:drawablePadding="10dp"
+                    android:ellipsize="end"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:hint="@string/search_for_restaurants_dishes_and_more"
+                    android:maxLines="1"
+                    android:text="@{searchResultViewModel.searchKey}"
+                    tools:text="Burger"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_11ssp"
+                    app:drawableStartCompat="@drawable/search_icon"
+                    app:hintTextColor="@color/white" />
+            </com.google.android.material.card.MaterialCardView>
+
+
+        </RelativeLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

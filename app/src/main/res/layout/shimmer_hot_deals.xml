@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="@dimen/_150sdp"
+        android:layout_height="@dimen/_190sdp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="15dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="@dimen/_10sdp"
+        app:cardElevation="@dimen/_2sdp"
+        app:strokeWidth="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+
+                <ImageView
+                    android:id="@+id/ivLogo"
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_marginStart="@dimen/_40sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:contentDescription="@string/restaurant_logo"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ez_eats_icon"
+                    app:tint="@color/main_color">
+
+                </ImageView>
+
+                <TextView
+                    android:id="@+id/tvNew"
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_alignParentEnd="true"
+                    android:background="#80EA374A"
+                    android:gravity="center"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    tools:ignore="RelativeOverlap">
+
+                </TextView>
+
+                <View
+                    android:id="@+id/tvItem"
+                    android:layout_width="@dimen/_100sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="#80EA374A"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/gilroy_700"
+                    android:gravity="center"
+                    android:maxLines="2"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_15ssp"
+                    tools:text="Burger King">
+
+                </View>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <View
+                    android:id="@+id/tvOffer"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginVertical="5dp"
+                    android:background="#80EA374A"
+                    android:fontFamily="@font/gilroy_700"
+                    android:gravity="start"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_11ssp"
+                    app:drawableEndCompat="@drawable/arrow_right"
+                    app:drawableTint="@color/black"
+                    tools:text="Buy one, get one free" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:orientation="vertical">
+
+                    <View
+                        android:id="@+id/tvMeterAway"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_10sdp"
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        android:layout_weight="1"
+                        android:background="#80EA374A"
+                        android:fontFamily="@font/gilroy_600"
+                        android:gravity="start"
+                        android:textColor="@color/main_color"
+                        android:textSize="@dimen/_10ssp"
+                        app:drawableStartCompat="@drawable/marker_pin_icon"
+                        app:drawableTint="@color/main_color" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_10sdp"
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        android:layout_weight="1"
+                        android:background="#80EA374A"
+                        android:fontFamily="@font/gilroy_600"
+                        android:gravity="start"
+                        android:textColor="@color/main_color"
+                        android:textSize="@dimen/_10ssp"
+                        app:drawableStartCompat="@drawable/marker_pin_icon"
+                        app:drawableTint="@color/main_color" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_10sdp"
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        android:layout_weight="1"
+                        android:background="#80EA374A"
+                        android:fontFamily="@font/gilroy_600"
+                        android:gravity="start"
+                        android:textColor="@color/main_color"
+                        android:textSize="@dimen/_10ssp"
+                        app:drawableStartCompat="@drawable/marker_pin_icon"
+                        app:drawableTint="@color/main_color" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>

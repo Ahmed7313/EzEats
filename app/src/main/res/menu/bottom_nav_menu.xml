@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/homeScreenFragment"
+        android:icon="@drawable/selector_home"
+        android:title="@string/home" />
+
+    <item
+        android:id="@+id/percentScreenFragment"
+        android:icon="@drawable/selector_percent"
+        android:title="@string/percent" />
+
+
+    <item
+        android:id="@+id/qrScreenFragment"
+        android:icon="@drawable/qr_code"
+        android:title="" />
+
+    <item
+        android:id="@+id/pointScreenFragment"
+        android:icon="@drawable/selector_trophy"
+        android:title="@string/points" />
+
+    <item
+        android:id="@+id/profileScreenFragment"
+        android:icon="@drawable/selector_user"
+        android:title="@string/profile" />
+
+</menu>

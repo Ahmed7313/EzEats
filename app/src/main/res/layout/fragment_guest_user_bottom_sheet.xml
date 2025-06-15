@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:paddingHorizontal="@dimen/_20sdp"
+        tools:context=".ui.main.guest_user.GuestUserBottomSheet">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/gilroy_700"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:gravity="center"
+            android:text="@string/please_sign_up_or_login_to_continue"
+            android:textSize="@dimen/_16ssp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:fontFamily="@font/gilroy_500"
+            android:gravity="center"
+            android:text="@string/that_cart_looks_lovely_please_sign_up_or_log_back_in_to_be_able_to_make_an_order"
+            android:textColor="#898883"
+            android:textSize="@dimen/_12ssp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_sign_up"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:backgroundTint="@color/white"
+            android:fontFamily="@font/gilroy_700"
+            android:paddingVertical="@dimen/_15sdp"
+            android:text="@string/sign_up"
+            android:textColor="@color/main_color"
+            android:textSize="@dimen/_12ssp"
+            app:strokeColor="@color/main_color"
+            app:strokeWidth="@dimen/_1sdp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_sign_in"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:backgroundTint="@color/main_color"
+            android:fontFamily="@font/gilroy_700"
+            android:paddingVertical="@dimen/_15sdp"
+            android:text="@string/sign_in"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12ssp"
+            android:layout_marginBottom="@dimen/_15sdp" />
+    </LinearLayout>
+</layout>

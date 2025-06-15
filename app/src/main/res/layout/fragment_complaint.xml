@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".ui.main.complaint.ComplaintFragment">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ll_enter_complaint"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/textView19"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:fontFamily="@font/gilroy_700"
+                android:text="@string/send_a_complaint"
+                android:textSize="@dimen/_15ssp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView20"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_7sdp"
+                android:fontFamily="@font/gilroy_500"
+                android:gravity="center"
+                android:text="@string/type_your_complaint_below_and_we_will_contact_you_shortly"
+                android:textColor="#797979"
+                android:textSize="@dimen/_13ssp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView19" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/tv_full_name"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_43sdp"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_14sdp"
+                android:background="@drawable/complaint_edit_text_background"
+                android:drawableStart="@drawable/complaint_profile_icon"
+                android:drawablePadding="@dimen/_7sdp"
+                android:fontFamily="@font/gilroy_600"
+                android:hint="@string/full_name"
+                android:paddingHorizontal="@dimen/_7sdp"
+                android:textColor="#80000000" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/tv_email"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_43sdp"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_14sdp"
+                android:background="@drawable/complaint_edit_text_background"
+                android:drawableStart="@drawable/mail_icon"
+                android:drawablePadding="@dimen/_7sdp"
+                android:drawableTint="#797979"
+                android:fontFamily="@font/gilroy_600"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress"
+                android:paddingHorizontal="@dimen/_7sdp"
+                android:textColor="#80000000" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/tv_complaint"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_114sdp"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_14sdp"
+                android:background="@drawable/complaint_edit_text_background"
+                android:drawableStart="@drawable/complain_icon"
+                android:drawablePadding="@dimen/_7sdp"
+                android:drawableTint="@color/black"
+                android:fontFamily="@font/gilroy_600"
+                android:hint="@string/write_your_complaint_here"
+                android:paddingHorizontal="@dimen/_7sdp"
+                android:textColor="#80000000" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_submit_complaint"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_45sdp"
+                android:layout_marginVertical="@dimen/_15sdp"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:fontFamily="@font/gilroy_600"
+                android:text="@string/submit_complaint"
+                android:textSize="@dimen/_14ssp" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <LinearLayout
+            android:id="@+id/ll_complain_success"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingVertical="@dimen/_10sdp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/complaint_success_icon" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_7sdp"
+                android:fontFamily="@font/gilroy_700"
+                android:gravity="center"
+                android:text="@string/your_complaint_has_been_received_n_we_will_be_in_touch_shortly"
+                android:textSize="@dimen/_13ssp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_7sdp"
+                android:fontFamily="@font/gilroy_500"
+                android:gravity="center"
+                android:text="@string/sorry_for_any_inconvenience"
+                android:textColor="#797979"
+                android:textSize="@dimen/_13ssp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView19" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_confirm"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_45sdp"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:layout_marginVertical="@dimen/_10sdp"
+                android:fontFamily="@font/gilroy_600"
+                android:text="@string/confirm"
+                android:textSize="@dimen/_14ssp" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

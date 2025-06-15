@@ -1,0 +1,6 @@
+package com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.new_restaurants_reponse
+
+
+import com.google.gson.annotations.SerializedName
+
+class RestauranseResponse : ArrayList<RestauranseResponseItem>()

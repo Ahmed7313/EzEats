@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="locationClicked"
+            type="com.easyEats.ezeats.ui.main.location.adapter.LocationAdapter.OnLocationListener" />
+
+        <variable
+            name="location"
+            type="com.easyEats.ezeats.domain.main.model.response.location_response.Location" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="@{()->locationClicked.onLocationClicked(location)}"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:fontFamily="@font/gilroy_500"
+            android:padding="@dimen/_3sdp"
+            android:text="@{location.name}"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_15ssp"
+            tools:text="Zamalek" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#EAEAEA" />
+
+    </LinearLayout>
+</layout>

@@ -1,0 +1,174 @@
+package com.easyEats.ezeats.ui.main.home.listeners
+
+import android.app.Activity
+import android.util.Log
+import android.widget.Toast
+import androidx.lifecycle.LifecycleCoroutineScope
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
+import com.easyEats.ezeats.MyApplication.Companion.TAG
+import com.easyEats.ezeats.R
+import com.easyEats.ezeats.base.BaseResponse
+import com.easyEats.ezeats.databinding.FragmentHomeScreenBinding
+import com.easyEats.ezeats.domain.main.model.response.home_response.HomeResponse
+import com.easyEats.ezeats.ui.main.complaint.ComplaintFragment
+import com.easyEats.ezeats.ui.main.home.HomeScreenFragment
+import com.easyEats.ezeats.ui.main.home.HomeScreenFragmentDirections
+import com.easyEats.ezeats.ui.main.home.HomeViewModel
+import com.easyEats.ezeats.ui.main.home.acive_order.active_order.ActiveOrder
+import com.easyEats.ezeats.ui.main.home.adapter.partners.PartnersAdapter
+import com.easyEats.ezeats.ui.main.main.MainViewModel
+import com.easyEats.ezeats.utils.Resource
+import es.dmoral.toasty.Toasty
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlin.math.log
+
+
+class HomeListeners(
+    private val homeViewModel: HomeViewModel,
+    private val mainViewModel: MainViewModel,
+    private val binding:FragmentHomeScreenBinding,
+    private val context: Activity,
+    private val lifecycleScope: LifecycleCoroutineScope,
+    private val viewLifecycleOwner: LifecycleOwner,
+    private val navController: NavController,
+    private val homeScreenFragment: HomeScreenFragment,
+    private val ourPartnersAdapter: PartnersAdapter,
+    private val spinWheelPartnersAdapter: PartnersAdapter,
+) {
+    private var isImagesAdded = false
+
+    fun invoke(){
+        // Observe isOpenShareLink for navigation and sharing logic
+        sharedRestaurantListener()
+        // Observe homeResultLiveData for location-based and order data updates
+        homeResponseListeners()
+        // Collect user location data and update the location text
+        locationListeners()
+        // Collect partners listeners
+        partnersListeners()
+
+        updateTokenListener()
+
+//        restaurantsListeners()
+
+        checkIfUserRateAppOrNot()
+
+
+    }
+
+    private fun checkIfUserRateAppOrNot() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            try {
+                val isUserViewedRatingDialog= homeViewModel.checkIfUserViewedRatingDialog().not()
+                if (isUserViewedRatingDialog){
+                    delay(60*1000)
+                    homeViewModel.saveUserRating(true)
+                    homeScreenFragment.displayRatingDialog()
+                }
+            }catch (ex:Exception){
+                Log.d(TAG, "checkIfUserRateAppOrNot: ")
+            } //catch
+           
+        }
+    }
+
+
+
+
+    private fun updateTokenListener() {
+        homeViewModel.updateDeviceToken.observe(viewLifecycleOwner) { resource ->
+            when (resource) {
+                is Resource.Error -> {}
+                is Resource.Loading -> {}
+                is Resource.Success -> {}
+                is Resource.UnAuthenticated -> {}
+            }
+        }
+    }
+
+    private fun partnersListeners() {
+        homeViewModel.partners.observe(viewLifecycleOwner) { resource ->
+            when (resource) {
+                is Resource.Error -> {}
+                is Resource.Loading -> {}
+                is Resource.Success -> {
+                    binding.partnerResponse = resource.data?.result?.data
+                    binding.partnersAdapter = ourPartnersAdapter
+                    binding.spinWheelpartnersAdapter = spinWheelPartnersAdapter
+                }
+
+                is Resource.UnAuthenticated -> {}
+            }
+        }
+    }
+
+
+
+    private fun locationListeners() {
+        lifecycleScope.launch {
+            mainViewModel.userLocationAddressMutableLiveData.collect {
+                try {
+                    binding.tvLocation.text = if (it?.address != null) {
+                        "You're at ${it.address}"  // Show user location if available
+                    } else {
+                        context.getString(R.string.select_location)  // Prompt user to select location
+                    }
+                } catch (ex: Exception) {
+                    Log.d(TAG, "observeViewModelData: ${ex.localizedMessage}")
+                }
+            }
+        }
+    }
+
+    private fun homeResponseListeners() {
+        homeViewModel.homeResultLiveData.observe(viewLifecycleOwner) { resource ->
+            when (resource) {
+                is Resource.Loading -> {}
+                is Resource.Error -> {
+                    Toasty.error(context, resource.message, Toast.LENGTH_LONG).show()
+                }
+
+                is Resource.Success -> {
+                    binding.swipeToRefresh.isRefreshing = false  // Stop swipe refresh
+                    if (!isImagesAdded){
+                        isImagesAdded=true
+                        resource.data?.result?.data?.featuredOffers?.take(5)
+                            ?.let { binding.customImageSlider.setImages(it) }
+                    }
+                    setActiveOrderTrackingIfExist(resource)
+                }
+
+                is Resource.UnAuthenticated -> {
+//                    authenticateUser()
+                }
+            }
+        }
+    }
+
+    private fun sharedRestaurantListener() {
+        mainViewModel.isOpenShareLink.observe(viewLifecycleOwner) { data ->
+            if (data?.get("isOpenShareLink") == true) {
+                Log.d(TAG, "observeViewModelData: ${data["restaurantId"].toString()}")
+                navController.navigate(
+                    HomeScreenFragmentDirections.goToRestaurantFragment(
+                        data["restaurantId"].toString()
+                    )
+                )
+                mainViewModel.isOpenShareLink.value = null  // Reset the state after navigating
+            }
+        }
+    }
+
+    private fun setActiveOrderTrackingIfExist(resource: Resource.Success<BaseResponse<HomeResponse>>) {
+        ActiveOrder()
+            .getOrderType(resource.data?.result?.data?.activeOrder?.isPickup) //pickup
+            .getOrderState(resource.data?.result?.data?.activeOrder?.state)
+            .updateUI(binding)
+    }
+}

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/auth_nav"
+    app:startDestination="@id/splashScreenFragment">
+
+    <fragment
+        android:id="@+id/introScreenFragment"
+        android:name="com.easyEats.ezeats.ui.auth.intro_screen.IntroScreenFragment"
+        android:label="fragment_splash_screen"
+        tools:layout="@layout/fragment_intro_screen" />
+    <fragment
+        android:id="@+id/splashScreenFragment"
+        android:name="com.easyEats.ezeats.ui.auth.splash_screen.SplashScreenFragment"
+        android:label="fragment_splash_screen"
+        tools:layout="@layout/fragment_splash_screen" />
+    <fragment
+        android:id="@+id/signInScreenFragment"
+        android:name="com.easyEats.ezeats.ui.auth.sign_in.SignInScreenFragment"
+        android:label="fragment_sign_in_screen"
+        tools:layout="@layout/fragment_sign_in_screen" />
+    <fragment
+        android:id="@+id/signUpScreenFragment"
+        android:name="com.easyEats.ezeats.ui.auth.sign_up.SignUpScreenFragment"
+        android:label="SignUpScreenFragment"
+        tools:layout="@layout/fragment_sign_up_screen" />
+
+    <fragment
+        android:id="@+id/verificationScreenFragment"
+        android:name="com.easyEats.ezeats.ui.auth.otp_verification.VerificationScreenFragment"
+        android:label="VerificationScreenFragment"
+        tools:layout="@layout/fragment_verification_screen">
+        <argument
+            android:name="phoneNumber"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/onBoardingFragment"
+        android:name="com.easyEats.ezeats.ui.auth.on_boarding.OnBoardingFragment"
+        android:label="OnBoardingFragment"
+        tools:layout="@layout/fragment_on_boarding" />
+    <action
+        android:id="@+id/action_splashScreenFragment_to_onBoardingFragment"
+        app:destination="@id/onBoardingFragment"
+        app:enterAnim="@android:anim/fade_in"
+        app:exitAnim="@android:anim/fade_out"
+        app:popEnterAnim="@android:anim/fade_in"
+        app:popExitAnim="@android:anim/fade_out"
+        app:popUpTo="@id/splashScreenFragment"
+        app:popUpToInclusive="true" />
+
+    <action
+        android:id="@+id/action_onBoardingFragment_to_introScreenFragment"
+        app:destination="@id/introScreenFragment"
+        app:enterAnim="@android:anim/fade_in"
+        app:exitAnim="@android:anim/fade_out"
+        app:popEnterAnim="@android:anim/fade_in"
+        app:popExitAnim="@android:anim/fade_out"
+        app:popUpTo="@id/onBoardingFragment"
+        app:popUpToInclusive="true" />
+    <action
+        android:id="@+id/action_signUpScreenFragment_to_verificationScreenFragment"
+        app:destination="@id/verificationScreenFragment"
+        app:enterAnim="@android:anim/fade_in"
+        app:exitAnim="@android:anim/fade_out"
+        app:popEnterAnim="@android:anim/fade_in"
+        app:popExitAnim="@android:anim/fade_out" />
+    <action
+        android:id="@+id/action_splashScreenFragment_to_introScreenFragment"
+        app:destination="@id/introScreenFragment" />
+
+    <action
+        android:id="@+id/action_introScreenFragment_to_signInScreenFragment"
+        app:destination="@id/signInScreenFragment"
+        app:enterAnim="@android:anim/fade_in"
+        app:exitAnim="@android:anim/fade_out"
+        app:popEnterAnim="@android:anim/fade_in"
+        app:popExitAnim="@android:anim/fade_out" />
+
+    <action
+        android:id="@+id/action_introScreenFragment_to_signUpScreenFragment"
+        app:destination="@id/signUpScreenFragment"
+        app:enterAnim="@android:anim/fade_in"
+        app:exitAnim="@android:anim/fade_out"
+        app:popEnterAnim="@android:anim/fade_in"
+        app:popExitAnim="@android:anim/fade_out" />
+    <action
+        android:id="@+id/action_signUpScreenFragment_to_signInScreenFragment"
+        app:destination="@id/signInScreenFragment"
+        app:enterAnim="@android:anim/fade_in"
+        app:exitAnim="@android:anim/fade_out"
+        app:popEnterAnim="@android:anim/fade_in"
+        app:popExitAnim="@android:anim/fade_out"
+        app:popUpTo="@id/introScreenFragment"
+        app:popUpToInclusive="false" />
+
+    <action
+        android:id="@+id/action_signInScreenFragment_to_signUpScreenFragment"
+        app:destination="@id/signUpScreenFragment"
+        app:enterAnim="@android:anim/fade_in"
+        app:exitAnim="@android:anim/fade_out"
+        app:popEnterAnim="@android:anim/fade_in"
+        app:popExitAnim="@android:anim/fade_out"
+        app:popUpTo="@id/introScreenFragment"
+        app:popUpToInclusive="false" />
+
+    <action
+        android:id="@+id/action_signInScreenFragment_to_verificationScreenFragment"
+        app:destination="@id/verificationScreenFragment"
+        app:enterAnim="@android:anim/fade_in"
+        app:exitAnim="@android:anim/fade_out"
+        app:popEnterAnim="@android:anim/fade_in"
+        app:popExitAnim="@android:anim/fade_out" />
+</navigation>

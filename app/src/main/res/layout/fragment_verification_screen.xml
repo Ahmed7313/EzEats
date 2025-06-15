@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="verificationViewModel"
+            type="com.easyEats.ezeats.ui.auth.otp_verification.VerificationViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/main_color"
+        tools:context=".ui.auth.sign_in.SignInScreenFragment">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/_70sdp"
+            android:background="@drawable/rounded_layouts"
+            android:paddingHorizontal="@dimen/_20sdp"
+            android:paddingVertical="@dimen/_23sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tv_welcome_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/gilroy_700"
+                android:text="@string/otp_verification"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_25ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_start_saving"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/gilroy_600"
+                android:text="@string/enter_the_verification_code_we_just_sent_on_your_email_address"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintStart_toStartOf="@id/tv_welcome_back"
+                app:layout_constraintTop_toBottomOf="@id/tv_welcome_back" />
+
+            <com.chaos.view.PinView
+                android:id="@+id/etOTP"
+                style="@style/PinWidget.PinView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_23sdp"
+                android:cursorVisible="false"
+                android:digits="1234567890"
+                android:gravity="center_horizontal"
+                android:imeOptions="actionDone"
+                android:inputType="number"
+                android:itemBackground="@drawable/otp_background"
+                android:maxLength="4"
+                android:text="@={verificationViewModel.otp}"
+                android:textIsSelectable="false"
+                app:hideLineWhenFilled="false"
+                app:itemCount="4"
+                app:itemHeight="@dimen/_46sdp"
+                app:itemRadius="@dimen/_8sdp"
+                app:itemSpacing="@dimen/_12sdp"
+                app:itemWidth="@dimen/_46sdp"
+                app:layout_constraintEnd_toEndOf="@+id/tv_start_saving"
+                app:layout_constraintStart_toStartOf="@+id/tv_start_saving"
+                app:layout_constraintTop_toBottomOf="@+id/tv_start_saving"
+                app:lineColor="@android:color/transparent" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="@+id/etOTP"
+                app:layout_constraintStart_toStartOf="@+id/etOTP"
+                app:layout_constraintTop_toBottomOf="@+id/tv_timer">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/gilroy_600"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="@dimen/_5sdp"
+                    android:text="@string/didn_t_receive_code"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_11ssp" />
+
+                <TextView
+                    android:id="@+id/tv_resend_otp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/gilroy_600"
+                    android:text="@string/resend"
+                    android:textColor="@color/main_color"
+                    android:textSize="@dimen/_11ssp" />
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/tv_timer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/gilroy_700"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_30ssp"
+                android:layout_marginTop="@dimen/_30sdp"
+                app:layout_constraintEnd_toEndOf="@+id/linearLayout3"
+                app:layout_constraintStart_toStartOf="@+id/linearLayout3"
+                app:layout_constraintTop_toBottomOf="@+id/etOTP"
+                tools:text="00:00" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_verify"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_50sdp"
+                android:layout_marginBottom="60dp"
+                android:backgroundTint="@color/light_gray"
+                android:enabled="false"
+                android:fontFamily="@font/gilroy_600"
+                android:onClick="@{()->verificationViewModel.verifyOtp()}"
+                android:text="@string/verify_code"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_15ssp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav"
+    app:startDestination="@id/homeScreenFragment">
+
+    <fragment
+        android:id="@+id/homeScreenFragment"
+        android:name="com.easyEats.ezeats.ui.main.home.HomeScreenFragment"
+        android:label="HomeScreenFragment"
+        tools:layout="@layout/fragment_home_screen" />
+
+    <dialog
+        android:id="@+id/qrScreenFragment"
+        android:name="com.easyEats.ezeats.ui.main.qr.QRScreenFragment"
+        android:label="fragment_q_r_screen"
+        tools:layout="@layout/fragment_q_r_screen" />
+
+    <fragment
+        android:id="@+id/pointScreenFragment"
+        android:name="com.easyEats.ezeats.ui.main.points.PointScreenFragment"
+        android:label="fragment_point_screen"
+        tools:layout="@layout/fragment_point_screen" />
+
+    <fragment
+        android:id="@+id/percentScreenFragment"
+        android:name="com.easyEats.ezeats.ui.main.offers.OffersScreenFragment"
+        android:label="fragment_percent_screen"
+        tools:layout="@layout/fragment_percent_screen" />
+
+    <fragment
+        android:id="@+id/profileScreenFragment"
+        android:name="com.easyEats.ezeats.ui.main.profile.ProfileScreenFragment"
+        android:label="fragment_profile_screen"
+        tools:layout="@layout/fragment_profile_screen" />
+
+    <dialog
+        android:id="@+id/locationBottomSheetDialogFragment"
+        android:name="com.easyEats.ezeats.ui.main.location.LocationBottomSheetDialogFragment"
+        android:label="LocationBottomSheetDialogFragment"
+        tools:layout="@layout/fragment_location_bottom_sheet_dialog" />
+
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.easyEats.ezeats.ui.main.search_suggestion.SearchFragment"
+        android:label="SearchFragment"
+        tools:layout="@layout/fragment_search" />
+
+    <action
+        android:id="@+id/location_bottom_sheet"
+        app:destination="@id/locationBottomSheetDialogFragment" />
+
+    <action
+        android:id="@+id/offers_fragment"
+        app:destination="@id/percentScreenFragment" />
+
+    <action
+        android:id="@+id/goToSearchFragment"
+        app:destination="@id/searchFragment" />
+    <fragment
+        android:id="@+id/searchResultFragment"
+        android:name="com.easyEats.ezeats.ui.main.search_result.SearchResultFragment"
+        android:label="SearchResultFragment"
+        tools:layout="@layout/fragment_search_result">
+        <argument
+            android:name="searchKey"
+            app:argType="string" />
+    </fragment>
+
+    <action
+        android:id="@+id/goToSearchResultFragment"
+        app:destination="@id/searchResultFragment" />
+    <fragment
+        android:id="@+id/searchHistoryFragment"
+        android:name="com.easyEats.ezeats.ui.main.search_history.SearchHistoryFragment"
+        android:label="SearchHistoryFragment"
+        tools:layout="@layout/fragment_search_history" />
+    <action
+        android:id="@+id/goToSearchHistoryFragment"
+        app:destination="@id/searchHistoryFragment"
+        app:popUpToInclusive="true" />
+    <fragment
+        android:id="@+id/restaurantFragment"
+        android:name="com.easyEats.ezeats.ui.main.restaurant.RestaurantFragment"
+        android:label="RestaurantFragment"
+        tools:layout="@layout/fragment_restaurant">
+        <argument
+            android:name="restaurantId"
+            app:argType="string" />
+
+    </fragment>
+
+    <action
+        android:id="@+id/goToRestaurantFragment"
+        app:destination="@+id/restaurantFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
+    <fragment
+        android:id="@+id/menuItemDetailsFragment"
+        android:name="com.easyEats.ezeats.ui.main.restaurant.menu_item_details.MenuItemDetailsFragment"
+        android:label="MenuItemDetailsFragment"
+        tools:layout="@layout/fragment_menu_item_details">
+        <argument
+            android:name="MenuItem"
+            app:argType="com.easyEats.ezeats.domain.main.model.response.restaurant_menu.SubMenu" />
+    </fragment>
+    <action
+        android:id="@+id/goToMenuItemDetailsFragment"
+        app:destination="@+id/menuItemDetailsFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="com.easyEats.ezeats.ui.main.edit_profile.EditProfileFragment"
+        android:label="EditProfileFragment"
+        tools:layout="@layout/fragment_edit_profile">
+        <argument
+            android:name="userInfo"
+            app:argType="com.easyEats.ezeats.domain.main.model.response.user_info.UserInfoResponse" />
+    </fragment>
+
+    <action
+        android:id="@+id/goToEditProfile"
+        app:destination="@+id/editProfileFragment" />
+    <fragment
+        android:id="@+id/orderHistoryFragment"
+        android:name="com.easyEats.ezeats.ui.main.order_history.OrderHistoryFragment"
+        android:label="OrderHistoryFragment"
+        tools:layout="@layout/fragment_order_history" />
+
+    <action
+        android:id="@+id/goToOrderHistoryScreen"
+        app:destination="@+id/orderHistoryFragment" />
+    <dialog
+        android:id="@+id/guestUserBottomSheet"
+        android:name="com.easyEats.ezeats.ui.main.guest_user.GuestUserBottomSheet"
+        android:label="GuestUserBottomSheet"
+        tools:layout="@layout/fragment_guest_user_bottom_sheet" />
+
+    <action
+        android:id="@+id/goToUserGuestScreen"
+        app:destination="@+id/guestUserBottomSheet" />
+    <fragment
+        android:id="@+id/voucherFragment"
+        android:name="com.easyEats.ezeats.ui.main.voucher.VoucherFragment"
+        android:label="VoucherFragment"
+        tools:layout="@layout/fragment_voucher" />
+
+    <action
+        android:id="@+id/goToVoucherScreen"
+        app:destination="@+id/voucherFragment" />
+
+    <action
+        android:id="@+id/goToCartScreen"
+        app:destination="@+id/cartFragment" />
+    <fragment
+        android:id="@+id/activeOrderDetailsFragment"
+        android:name="com.easyEats.ezeats.ui.main.active_order_details.ActiveOrderDetailsFragment"
+        android:label="ActiveOrderDetailsFragment"
+        tools:layout="@layout/fragment_active_order_details" />
+
+    <action
+        android:id="@+id/goToActiveOrderDetails"
+        app:destination="@+id/activeOrderDetailsFragment" />
+    <dialog
+        android:id="@+id/voucherBottomSheet"
+        android:name="com.easyEats.ezeats.ui.main.points.voucher_bottom_sheet.VoucherBottomSheet"
+        android:label="VoucherBottomSheet"
+        tools:layout="@layout/voucher_bottom_sheet">
+        <argument
+            android:name="isSpinWheelPoints"
+            android:defaultValue="false"
+            app:argType="boolean" />
+    </dialog>
+
+    <action
+        android:id="@+id/goToVoucherBottomSheet"
+        app:destination="@+id/voucherBottomSheet" />
+    <fragment
+        android:id="@+id/cartFragment"
+        android:name="com.easyEats.ezeats.ui.main.cart.CartFragment"
+        android:label="CartFragment" />
+</navigation>

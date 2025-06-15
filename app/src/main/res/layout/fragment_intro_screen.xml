@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/main_color"
+            tools:context=".ui.auth.intro_screen.IntroScreenFragment">
+
+            <ImageView
+                android:id="@+id/iv_logo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/easy_eats_logo"
+                android:src="@drawable/ez_eats_icon"
+                app:layout_constraintBottom_toTopOf="@+id/btn_sign_up"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_sign_up"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_42sdp"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:layout_marginBottom="8dp"
+                android:backgroundTint="@color/white"
+                android:fontFamily="@font/gilroy_700"
+                android:text="@string/signup"
+                android:textColor="@color/main_color"
+                android:textSize="@dimen/_15ssp"
+                app:layout_constraintBottom_toTopOf="@+id/btn_sign_in"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_sign_in"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_42sdp"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:layout_marginBottom="8dp"
+                android:backgroundTint="@color/white"
+                android:fontFamily="@font/gilroy_700"
+                android:text="@string/login"
+                android:textColor="@color/main_color"
+                android:textSize="@dimen/_15ssp"
+                app:layout_constraintBottom_toTopOf="@+id/btn_continue_as_guest"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_continue_as_guest"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_42sdp"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:layout_marginBottom="@dimen/_33sdp"
+                android:backgroundTint="@android:color/transparent"
+                android:fontFamily="@font/gilroy_700"
+                android:text="@string/continue_as_a_guest"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_15ssp"
+                app:layout_constraintBottom_toBottomOf="@id/btn_test"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:strokeColor="@color/border_color"
+                app:strokeWidth="@dimen/_2sdp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_test"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_42sdp"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:layout_marginBottom="@dimen/_33sdp"
+                android:backgroundTint="@android:color/transparent"
+                android:fontFamily="@font/gilroy_700"
+                android:text="@string/continue_as_a_guest"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_15ssp"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_continue_as_guest"
+                app:strokeColor="@color/border_color"
+                app:strokeWidth="@dimen/_2sdp" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>

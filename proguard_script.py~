@@ -1,0 +1,48 @@
+import os
+
+# Define your Android project directory and ProGuard rules file path
+project_directory = r'C:/Users/pc/AndroidStudioProjects/JetWeatherForecast'  # Adjust this to your project path
+proguard_file_path = os.path.join(project_directory, 'app', 'proguard-rules.pro')
+
+# List of common ProGuard rules for Android (you can customize this)
+common_proguard_rules = [
+    "# Keep Android classes",
+    "-keep class android.** { *; }",
+    "-keep class androidx.** { *; }",
+    "-keep class com.google.** { *; }",  # For Google libraries like Firebase, etc.
+    "-keep class com.squareup.** { *; }",  # For Square libraries like Retrofit, OkHttp
+    "-keep class com.bumptech.glide.** { *; }",  # For Glide
+    "-keep class com.facebook.drawee.** { *; }",  # For Fresco
+    "-keep class org.jetbrains.** { *; }",  # For Kotlin classes
+    "-dontwarn org.jetbrains.**",  # Suppress warnings for Kotlin
+    "-keep class kotlin.** { *; }",  # Keep Kotlin classes
+    "# Keep model classes and other sensitive objects from being obfuscated",
+    "-keep class com.yourpackage.model.** { *; }",  # Keep your model package
+    "-keep class com.yourpackage.network.** { *; }",  # Keep network-related classes
+    "-keep class com.yourpackage.ui.** { *; }",  # Keep UI-related classes
+    "# Prevent obfuscation for specific classes (Example)",
+    "-keep class com.yourpackage.ui.MainActivity { *; }",  # Keep MainActivity from obfuscation
+    "-keep class com.yourpackage.viewmodel.** { *; }",  # Keep ViewModel classes
+    "-keep class com.yourpackage.util.** { *; }",  # Keep utility classes
+    "# Keep third-party libraries from being obfuscated",
+    "-keep class com.parse.** { *; }",  # Parse SDK example
+    "-keep class com.google.firebase.** { *; }",  # Firebase
+    "-keep class com.squareup.okhttp3.** { *; }",  # OkHttp3
+    "-keep class com.squareup.retrofit2.** { *; }",  # Retrofit
+    "# General optimization and debugging settings",
+    "-dontoptimize",  # Prevent ProGuard from optimizing code (if needed)
+    "-dontwarn **",  # Suppress all warnings (if needed)
+]
+
+# Function to generate the ProGuard rules file
+def generate_proguard_rules():
+    # Create or overwrite the ProGuard rules file
+    with open(proguard_file_path, 'w') as file:
+        for rule in common_proguard_rules:
+            file.write(rule + '\n')
+
+    print(f"ProGuard rules have been written to: {proguard_file_path}")
+
+# Run the function to generate the ProGuard rules file
+if __name__ == "__main__":
+    generate_proguard_rules()

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/dialog_background"
+    android:layout_marginHorizontal="@dimen/_25sdp"
+    android:backgroundTint="@color/white">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="@dimen/_265sdp"
+        android:layout_height="@dimen/_225sdp"
+        android:background="@drawable/dialog_background"
+        android:backgroundTint="@color/white"
+        android:layout_marginVertical="@dimen/_10sdp"
+        app:strokeColor="@color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingVertical="@dimen/_10sdp">
+
+            <ImageView
+                android:layout_width="@dimen/_90sdp"
+                android:layout_height="@dimen/_90sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:padding="@dimen/_15sdp"
+                android:background="@drawable/order_tracking_background"
+                android:contentDescription="@string/rate_us_image"
+                android:src="@drawable/dialog_log_out_icon" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:fontFamily="@font/gilroy_700"
+                android:gravity="center"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:text="@string/are_you_sure_you_want_n_to_logout"
+                android:textSize="@dimen/_15ssp" />
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                app:cardCornerRadius="@dimen/_10sdp"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_log_out"
+                    style="@style/RateUsButton"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_45sdp"
+                    android:layout_weight="1"
+                    android:text="@string/log_out"
+                    android:textSize="@dimen/_11ssp"
+                    app:cornerRadius="@dimen/_100sdp" />
+                <View
+                    android:layout_width="@dimen/_7sdp"
+                    android:layout_height="@dimen/_1sdp"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_cancel"
+                    style="@style/LaterButton"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_45sdp"
+                    android:layout_weight="1"
+                    android:text="@string/cancel"
+                    app:strokeColor="@color/black"
+                    android:textSize="@dimen/_11ssp"
+                    android:textColor="@color/black"
+                    app:cornerRadius="@dimen/_30sdp" />
+            </LinearLayout>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+</FrameLayout>

@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- شاشة المقدمة -->
+    <string name="easy_eats_logo">شعار إيزي إيتس</string>
+    <string name="signup">التسجيل</string>
+    <string name="login">تسجيل الدخول</string>
+    <string name="continue_as_a_guest"><u>الاستمرار كضيف</u></string>
+
+    <!-- شاشة تسجيل الدخول -->
+    <string name="welcome_back">مرحبًا بعودتك</string>
+    <string name="login_and_start_saving">سجل الدخول وابدأ التوفير</string>
+    <string name="google_logo">شعار جوجل</string>
+    <string name="facebook_logo">شعار فيسبوك</string>
+    <string name="enter_your_phone_number">أدخل رقم هاتفك</string>
+
+    <!-- شاشة التسجيل -->
+    <string name="sign_in">تسجيل الدخول</string>
+    <string name="don_t_have_an_account">لا تملك حسابًا؟</string>
+    <string name="sign_up">التسجيل</string>
+    <string name="hey_there">مرحبًا!</string>
+    <string name="sign_up_and_join_the_ezeats_community_and_start_saving">سجل وانضم إلى مجتمع إيزي إيتس وابدأ التوفير</string>
+    <string name="already_have_an_account">لديك حساب بالفعل؟</string>
+    <string name="enter_your_name">أدخل اسمك</string>
+
+    <!-- شاشة التحقق بالكود -->
+    <string name="otp_verification">التحقق برمز OTP</string>
+    <string name="enter_the_verification_code_we_just_sent_on_your_email_address">أدخل رمز التحقق الذي أرسلناه إلى بريدك الإلكتروني</string>
+    <string name="didn_t_receive_code">لم تستلم الرمز؟</string>
+    <string name="resend"><u>إعادة الإرسال</u></string>
+    <string name="verify_code">تحقق من الرمز</string>
+
+    <!-- شاشة الإرشاد -->
+    <string name="skip"><u>تخطي</u></string>
+    <string name="next">التالي</string>
+    <string name="description">الوصف</string>
+    <string name="welcome_to_ezeats">مرحبًا بك في Eazy Eats</string>
+    <string name="ezeats_is_your_destination_to_saving_on_your_favorite_restaurants">إيزي إيتس هو وجهتك للتوفير في مطاعمك المفضلة</string>
+    <string name="save_money_earn_rewards">وفر المال واكسب المكافآت</string>
+    <string name="with_ezeats_you_can_save_money_get_special_offers_get_points_that_you_can_redeem_and_much_more">مع إيزي إيتس، يمكنك توفير المال والحصول على عروض خاصة، وجمع نقاط لاستبدالها والمزيد!</string>
+    <string name="location_access">الوصول إلى الموقع</string>
+    <string name="we_would_like_to_get_access_to_your_location_so_we_can_always_notify_you_about_the_best_near_deals">نود الوصول إلى موقعك لإخطارك دائمًا بأفضل العروض القريبة</string>
+    <string name="allow_finish"><![CDATA[السماح والإنهاء]]></string>
+    <string name="location_permission_required">مطلوب إذن الموقع</string>
+    <string name="location_permission_is_required_to_use_this_feature_please_grant_the_permission_in_the_app_settings">يتطلب إذن الموقع لاستخدام هذه الميزة. يرجى منح الإذن في إعدادات التطبيق.</string>
+    <string name="ok">موافق</string>
+    <string name="cancel">إلغاء</string>
+
+    <!-- شاشة انقطاع الاتصال بالإنترنت -->
+    <string name="no_internet_connection">لا يوجد اتصال بالإنترنت. يرجى التحقق من اتصالك <u><b>وإعادة المحاولة</b></u></string>
+    <string name="oops">عذرًا!</string>
+    <string name="please_make_sure_you_are_connected_to_the_internet_and_try_again">يرجى التأكد من أنك متصل بالإنترنت وإعادة المحاولة</string>
+    <string name="try_again">إعادة المحاولة</string>
+
+    <!-- الشاشة الرئيسية -->
+    <string name="notification_icon">رمز الإشعار</string>
+    <string name="where_every_meal_comes_with_a_discount">حيث تأتي كل وجبة بخصم</string>
+    <string name="search_for_restaurants_dishes_and_more">ابحث عن المطاعم، الأطباق والمزيد…</string>
+    <string name="featured">المميز</string>
+    <string name="view_all">عرض الكل</string>
+    <string name="check_out_today_s_featured_deals_and_offers_near_you">اكتشف عروض اليوم المميزة بالقرب منك</string>
+    <string name="challenges_for_you">التحديات من أجلك</string>
+    <string name="hot_deals_near_you">عروض ساخنة بالقرب منك</string>
+    <string name="participate_in_challenges_and_earn_points_and_rewards">شارك في التحديات واكسب النقاط والمكافآت</string>
+    <string name="redeem">استبدال</string>
+    <string name="restaurant_logo">شعار المطعم</string>
+    <string name="home">الصفحة الرئيسية</string>
+    <string name="percent">نسبة مئوية</string>
+    <string name="qr">QR</string>
+    <string name="points">النقاط</string>
+    <string name="profile">الملف الشخصي</string>
+    <string name="press_back_again_to_exit">اضغط مرة أخرى للخروج</string>
+    <string name="coming_soon">قريبًا!</string>
+
+    <!-- شاشة أسفل الموقع -->
+    <string name="refresh">تحديث</string>
+    <string name="select_location">اختر الموقع</string>
+
+    <!-- شاشة الملف الشخصي -->
+    <string name="account">الحساب</string>
+    <string name="notifications">الإشعارات</string>
+    <string name="cards">البطاقات</string>
+    <string name="order_history">تاريخ الطلبات</string>
+    <string name="about_us">من نحن</string>
+    <string name="help_faq"><![CDATA[المساعدة والأسئلة الشائعة]]></string>
+    <string name="rate_us">قيمنا</string>
+    <string name="follow_us_on_instagram">تابعنا على إنستجرام</string>
+    <string name="contact_us">اتصل بنا</string>
+
+    <!-- شاشة QR -->
+    <string name="scan_your_table">امسح الطاولة</string>
+    <string name="to_create_your_order">لإنشاء طلبك</string>
+    <string name="close_icon">رمز الإغلاق</string>
+
+    <!-- النقاط -->
+    <string name="loyalty_points">نقاط الولاء</string>
+    <string name="you_can_use_your_ezpoints_to_redeem_any_offers_regardless_of_the_restaurant">يمكنك استخدام نقاط إيزي إيتس لاستبدال أي عرض بغض النظر عن المطعم</string>
+    <string name="restuarnats_points">نقاط المطاعم</string>
+    <string name="close">رمز الإغلاق</string>
+    <string name="leader_board_image">صورة لوحة الصدارة</string>
+    <string name="leaderboards">لوحات الصدارة</string>
+    <string name="this_category_has_no_offers_currently_check_again_later">هذه الفئة لا تحتوي على مطاعم حاليًا. تحقق مرة أخرى لاحقًا!</string>
+    <string name="redeem_and_pay_in_the_restaurant_and_gain_300_dp_points_to_enjoy_the_next_time_you_are_visiting">استبدل وادفع في المطعم للحصول على العرض في زيارتك القادمة.</string>
+    <string name="keep_collecting_points_and_soon_you_will_be_able_to_redeem_them_in_exchange_for_awesome_deals">استمر في جمع النقاط، وسرعان ما ستتمكن من استبدالها بصفقات رائعة!</string>
+
+    <!-- البحث الأخير -->
+    <string name="recent_searches">عمليات البحث الأخيرة</string>
+    <string name="popular_searches">عمليات البحث الشائعة</string>
+    <string name="what_do_you_want_to_eat">ماذا تريد أن تأكل؟</string>
+    <string name="clear">مسح</string>
+    <string name="offer">صورة العرض</string>
+    <string name="location_access_denied">تم رفض الوصول إلى الموقع</string>
+    <string name="enable_access">تمكين الوصول</string>
+    <string name="for_a_better_user_experience_please_enable_location_access">لتحسين تجربة المستخدم، يرجى تمكين الوصول إلى الموقع!</string>
+    <string name="category_image">صورة الفئة</string>
+    <string name="all_resturant">كل المطاعم</string>
+    <string name="current_location">الموقع الحالي</string>
+    <string name="search_results">نتائج البحث</string>
+
+    <!-- كتابة البحث -->
+    <string name="enter_your_search_keyword">أدخل كلمة البحث الخاصة بك</string>
+    <string name="deliciousness_is_just_a_search_away">اللذة على بعد بحث منك</string>
+
+    <!-- المطعم -->
+    <string name="please_check_again_later_for_the_hottest_offers">يرجى التحقق لاحقًا لأحدث العروض</string>
+    <string name="has_no_offers_right_now">لا توجد عروض حاليًا</string>
+    <string name="your_search_has_no_results">بحثك لم يخرج بنتائج</string>
+    <string name="explore_our_offers">استكشف عروضنا</string>
+    <string name="explore_our_restaurants">استكشف مطاعمنا</string>
+    <string name="empty_offers_image">صورة العروض الفارغة</string>
+    <string name="bottom_sheet_top">قمة ورقة الأسفل</string>
+    <string name="leaderboards_are_coming_soon_n_stay_tuned_for_fun_challenges_n_and_rewards">لوحات الصدارة قادمة قريبًا، ترقب التحديات الممتعة والمكافآت</string>
+    <string name="featured_image">صورة مميزة</string>
+    <string name="share_icon">أيقونة المشاركة</string>
+    <string name="special_offers">عروض خاصة</string>
+    <string name="enjoy_offers_straight_from_ezeats_in_partnership_with_dominos_pizza_for_your_satisfaction_redeem_now_and_enjoy_the_food_and_the_points">استمتع بالعروض مباشرة من إيزي إيتس بالتعاون مع دومينوز بيتزا لرضاك، استبدل الآن واستمتع بالطعام والنقاط</string>
+    <string name="offer_image">صورة العرض</string>
+    <string name="no_offers_available">لا توجد عروض متاحة</string>
+    <string name="there_is_no_offers_going_on_right_now_please_check_again_later_for_all_the_pizza_goodness">يمكنك طلب طعامك المفضل الآن عبر تطبيق الويب الخاص بنا</string>
+    <string name="check_other_offers">اطلب عبر تطبيق الويب</string>
+
+    <!-- استبدال -->
+    <string name="new_">جديد</string>
+    <string name="redeem_pay"><![CDATA[استبدل وادفع\n]]></string>
+
+    <!-- الملف الشخصي -->
+    <string name="edit_profile">تعديل الملف الشخصي</string>
+    <string name="delete_account">حذف الحساب</string>
+    <string name="delete_your_account">هل تريد حذف حسابك؟</string>
+    <string name="are_you_sure_you_want_to_delete_your_account_you_will_lose_all_your_data_this_action_is_irreversible">هل أنت متأكد أنك تريد حذف حسابك؟ ستفقد جميع بياناتك، هذه العملية لا رجعة فيها</string>
+    <string name="delete">حذف</string>
+    <string name="privacy_policy">سياسة الخصوصية</string>
+    <string name="welcome">مرحبًا</string>
+    <string name="guest">ضيف</string>
+    <string name="login_or_sign_up">تسجيل الدخول أو الاشتراك</string>
+
+    <!-- إعادة الطلب -->
+    <string name="reorder">إعادة الطلب</string>
+    <string name="extras">إضافات</string>
+    <string name="you_don_t_have_any_orders_yet_make_some_orders_to_see_your_history_here">ليس لديك أي طلبات حتى الآن، قم بطلبات لتراها هنا</string>
+
+    <!-- تعديل الملف الشخصي -->
+    <string name="edit">تعديل</string>
+    <string name="phone_number">رقم الهاتف</string>
+    <string name="save_changes">حفظ التغييرات</string>
+    <string name="email">البريد الإلكتروني</string>
+    <string name="full_name">الاسم الكامل</string>
+    <string name="log_out">تسجيل الخروج</string>
+    <string name="birth_date">تاريخ الميلاد</string>
+
+    <!-- تسجيل دخول الضيف -->
+    <string name="that_cart_looks_lovely_please_sign_up_or_log_back_in_to_be_able_to_make_an_order">للبدء في جمع واستبدال النقاط، قم بإنشاء حساب أو تسجيل الدخول</string>
+    <string name="please_sign_up_or_login_to_continue">يرجى التسجيل أو تسجيل الدخول \n للمتابعة</string>
+
+
+    <string name="promo_code">كود الخصم</string>
+    <string name="hello_blank_fragment">مرحبًا، شريحة فارغة</string>
+    <string name="marakez_points">نقاط مراكز</string>
+    <string name="marakez_points_allow_you_to_redeem_offers_from_their_respective_restaurants">تتيح لك نقاط مراكز استبدال العروض من المطاعم الخاصة بها</string>
+    <string name="details">التفاصيل</string>
+    <string name="pending">قيد الانتظار</string>
+    <string name="preparing">جاري التحضير</string>
+    <string name="pickup">استلام</string>
+    <string name="delivered">تم التوصيل</string>
+    <string name="in_delivery">جاري التوصيل</string>
+    <string name="order_details">تفاصيل الطلب</string>
+    <string name="call_restaurant">اتصل بالمطعم</string>
+    <string name="having_issues">هل لا تزال تواجه مشكلات؟</string>
+    <string name="support_ez_eats_com"><u>Support@ez-eats.com</u></string>
+    <string name="item_details">تفاصيل الطلب</string>
+    <string name="call_support">اتصل بالدعم</string>
+    <string name="send_a_complaint">إرسال شكوى</string>
+    <string name="type_your_complaint_below_and_we_will_contact_you_shortly">اكتب شكواك أدناه وسنقوم بالاتصال بك قريبًا</string>
+    <string name="write_your_complaint_here">اكتب شكواك هنا...</string>
+    <string name="submit_complaint">إرسال الشكوى</string>
+    <string name="your_complaint_has_been_received_n_we_will_be_in_touch_shortly">تم استلام شكواك، سنقوم بالاتصال بك قريبًا</string>
+    <string name="sorry_for_any_inconvenience">نعتذر عن أي إزعاج!</string>
+    <string name="confirm">تأكيد</string>
+    <string name="our_partners">شركاؤنا</string>
+    <string name="spin_the_wheel_partners">شركاء عجلة الحظ</string>
+    <string name="enjoying_ezeats">هل تستمتع باستخدام EZeats؟</string>
+    <string name="would_you_mind_taking_a_moment_to_n_rate_us_thanks_for_your_support">هل تمانع في أخذ لحظة لتقييمنا؟ شكرًا لدعمك!</string>
+    <string name="later">لاحقًا</string>
+    <string name="rate_us_image">صورة تقييمنا</string>
+    <string name="partner_image">صورة الشريك</string>
+    <string name="all_restaurant">All resturants\n</string>
+    <string name="delivery">توصيل</string>
+    <string name="cart">السلة</string>
+    <string name="special_comments">Special Comments</string>
+    <string name="got_any_extra_comments">Got any extra comments?</string>
+    <string name="type_them_we_there_help_you">Type them here so we can help you</string>
+    <string name="enter_your_comment">Enter your comment...</string>
+    <string name="please_make_sure_the_pretezel">Please make sure the pretzel is warm!</string>
+    <string name="vouchers_or_promo">Vouchers or promos</string>
+    <string name="apply">Apply</string>
+    <string name="payment_summary">Payment summary</string>
+    <string name="sub_total">Sub Total</string>
+    <string name="delivery_fee">Delivery Fee</string>
+    <string name="total_amount">Total Amount</string>
+    <string name="checkout">Checkout</string>
+    <string name="add_items">Add Items</string>
+
+
+</resources>

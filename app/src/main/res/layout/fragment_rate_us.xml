@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/dialog_background"
+        android:backgroundTint="@color/white"
+        app:cardCornerRadius="@dimen/_10sdp"
+        app:strokeColor="@color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingVertical="@dimen/_13sdp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:contentDescription="@string/rate_us_image"
+                android:src="@drawable/rate_us_image" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:fontFamily="@font/gilroy_700"
+                android:gravity="center"
+                android:text="@string/enjoying_ezeats"
+                android:textSize="@dimen/_18ssp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_7sdp"
+                android:fontFamily="@font/gilroy_500"
+                android:gravity="center"
+                android:text="@string/would_you_mind_taking_a_moment_to_n_rate_us_thanks_for_your_support"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_13ssp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_14sdp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_rate_us"
+                    style="@style/RateUsButton"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_45sdp"
+                    android:layout_weight="1"
+                    android:text="@string/rate_us"
+                    android:textSize="@dimen/_11ssp"
+                    app:cornerRadius="@dimen/_100sdp" />
+
+                <View
+                    android:layout_width="@dimen/_7sdp"
+                    android:layout_height="@dimen/_1sdp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_later"
+                    style="@style/LaterButton"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_45sdp"
+                    android:layout_weight="1"
+                    android:text="@string/later"
+                    android:textSize="@dimen/_11ssp"
+                    app:cornerRadius="@dimen/_30sdp" />
+            </LinearLayout>
+            <View
+                android:layout_width="@dimen/_260sdp"
+                android:layout_height="@dimen/_1sdp"/>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>

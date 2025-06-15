@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/rounded_layouts"
+        android:orientation="vertical"
+        android:padding="@dimen/_18sdp">
+
+        <TextView
+            android:id="@+id/tvLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/_5sdp"
+            android:fontFamily="@font/gilroy_700"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_18ssp"
+            android:text="@string/current_location"
+            app:drawableEndCompat="@drawable/arrow_down"
+            app:drawableStartCompat="@drawable/icon_location" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvTitleLocation"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLength="25"
+                android:fontFamily="@font/gilroy_600"
+                android:textColor="@color/main_color"
+                android:textSize="@dimen/_15ssp" />
+
+            <TextView
+                android:id="@+id/tvRefresh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="?android:selectableItemBackground"
+                android:clickable="true"
+                android:drawablePadding="@dimen/_3sdp"
+                android:focusable="true"
+                android:fontFamily="@font/gilroy_500"
+                android:gravity="end"
+                android:text="@string/refresh"
+                android:textAlignment="viewEnd"
+                android:textColor="@color/main_color"
+                android:textSize="@dimen/_11ssp"
+                app:drawableStartCompat="@drawable/refresh_location" />
+
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:background="#DADADA" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:fontFamily="@font/gilroy_700"
+            android:text="@string/select_location"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_18ssp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:orientation="vertical"
+            android:visibility="visible"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_location" />
+
+        <LinearLayout
+            android:id="@+id/loader"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_80sdp"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/_10sdp">
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

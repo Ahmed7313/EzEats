@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+
+    </data>
+
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#F7F7F7"
+            android:backgroundTint="#F7F7F7">
+
+
+            <RelativeLayout
+                android:id="@+id/reTop"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/home_top_background"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+
+                <TextView
+                    android:id="@+id/tvLocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="@dimen/_16sdp"
+                    android:layout_marginTop="@dimen/_26sdp"
+                    android:drawablePadding="5dp"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/gilroy_600"
+                    android:maxLength="25"
+                    android:maxLines="1"
+                    android:text="@string/select_location"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12ssp"
+                    app:drawableEndCompat="@drawable/arrow_down_icon"
+                    app:drawableStartCompat="@drawable/marker_pin_icon" />
+
+                <ImageView
+                    android:id="@+id/iv_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@id/linearContainer"
+                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="@dimen/_16sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:background="@drawable/rounded_search_background"
+                    android:contentDescription="@string/search_results"
+                    android:fontFamily="@font/gilroy_600"
+                    android:padding="@dimen/_4sdp"
+                    android:src="@drawable/search_ic"
+                    android:textSize="@dimen/_12ssp" />
+
+                <LinearLayout
+                    android:id="@+id/linearContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/tvLocation"
+                    android:layout_marginTop="@dimen/_50sdp"
+                    android:background="@drawable/home_rounded_layout"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="@dimen/_17sdp">
+
+
+
+                    <androidx.compose.ui.platform.ComposeView
+                        android:id="@+id/compose_restaurant_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="90dp" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_no_restaurants"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_150sdp"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/empty_restaurants_placeholder" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/_30sdp"
+                            android:layout_marginTop="@dimen/_15sdp"
+                            android:fontFamily="@font/gilroy_600"
+                            android:gravity="center"
+                            android:text="@string/this_category_has_no_offers_currently_check_again_later"
+                            android:textSize="@dimen/_13ssp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_Categories"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_55sdp"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:listitem="@layout/item_offers__category" />
+
+
+            </RelativeLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
