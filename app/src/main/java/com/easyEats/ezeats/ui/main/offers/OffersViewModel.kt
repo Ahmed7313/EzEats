@@ -49,8 +49,18 @@ class OffersViewModel @Inject constructor(val mainUseCase: MainUseCase) :
      * This is exposed as a StateFlow to the UI layer.
      */
     private val _restaurantResultStateFlow =
-        MutableStateFlow<Resource<BaseResponse<List<RestaurantsResponseItem>>>>(Resource.Loading())
-    val restaurantResultStateFlow: StateFlow<Resource<BaseResponse<List<RestaurantsResponseItem>>>> get() = _restaurantResultStateFlow
+        MutableStateFlow<
+            Resource<
+                BaseResponse<
+                    com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.restaurants_result.RestaurantsResult>
+                >
+            >(Resource.Loading())
+    val restaurantResultStateFlow: StateFlow<
+        Resource<
+            BaseResponse<
+                com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.restaurants_result.RestaurantsResult>
+            >
+        > get() = _restaurantResultStateFlow
 
     /**
      * Mutable live data for holding category results.
@@ -64,9 +74,17 @@ class OffersViewModel @Inject constructor(val mainUseCase: MainUseCase) :
      * Fetches restaurant data for a given category.
      * It constructs a request with category ID and optional user latitude and longitude.
      */
-    fun getRestaurantsResult(categoryId: String, userLat: String?, userLong: String?) {
+    fun getRestaurantsResult(userLat: String?, userLong: String?, cmpoundId: String? = null) {
         viewModelScope.launch {
-            val flow = createRestaurantsResultRequest(RestaurantRequest(categoryId = categoryId, userLat = userLat ?: "0.0", userLon = userLong ?: "0.0"))
+            val flow = createRestaurantsResultRequest(
+                RestaurantRequest(
+                    page = 1,
+                    limit = 100,
+                    userLat = userLat,
+                    userLon = userLong,
+                    cmpoundId = cmpoundId
+                )
+            )
             apply(
                 flow = flow,
                 maxRetries = 2,
@@ -84,7 +102,7 @@ class OffersViewModel @Inject constructor(val mainUseCase: MainUseCase) :
      * Creates a flow that makes a request to get restaurant data.
      * It uses the `homeUseCase.getRestaurants()` method and handles different response states.
      */
-    private fun createRestaurantsResultRequest(request: RestaurantRequest): Flow<Resource<BaseResponse<List<RestaurantsResponseItem>>>> =
+    private fun createRestaurantsResultRequest(request: RestaurantRequest): Flow<Resource<BaseResponse<com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.restaurants_result.RestaurantsResult>>> =
         channelFlow {
             send(Resource.Loading())
             val restaurants = mainUseCase.homeUseCase.getRestaurants(request)

@@ -94,7 +94,9 @@ interface MainRepository {
     suspend fun saveUserRating(isUserViewedRatingDialog: Boolean)
     fun checkIfUserViewedRatingDialog(): Flow<Boolean>
 
-    suspend fun getRestaurants(restaurantRequest: com.easyEats.ezeats.domain.main.model.request.RestaurantRequest): BaseResponse<List<RestaurantsResponseItem>>
+    suspend fun getRestaurants(
+        restaurantRequest: com.easyEats.ezeats.domain.main.model.request.RestaurantRequest
+    ): BaseResponse<com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.restaurants_result.RestaurantsResult>
 
 
 }
