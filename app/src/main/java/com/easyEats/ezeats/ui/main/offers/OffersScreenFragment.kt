@@ -143,15 +143,15 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
                             hideMainLoading()
                             val list = buildList {
                                 addAll(
-                                    resource.data?.result?.restaurants?.pickupRestaurants
+                                    resource.data?.result?.data?.restaurants?.pickupRestaurants
                                         ?: emptyList()
                                 )
                                 addAll(
-                                    resource.data?.result?.restaurants?.deliveryRestaurants
+                                    resource.data?.result?.data?.restaurants?.deliveryRestaurants
                                         ?: emptyList()
                                 )
                                 addAll(
-                                    resource.data?.result?.restaurants?.dineinRestaurants
+                                    resource.data?.result?.data?.restaurants?.dineinRestaurants
                                         ?: emptyList()
                                 )
                             }.distinctBy { it.id }
