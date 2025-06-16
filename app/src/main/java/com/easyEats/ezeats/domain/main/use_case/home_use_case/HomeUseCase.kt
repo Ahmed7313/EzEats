@@ -32,7 +32,9 @@ class HomeUseCase @Inject constructor(private val mainRepository: MainRepository
     fun checkIfUserViewedRatingDialog() =
         mainRepository.checkIfUserViewedRatingDialog()
 
-    suspend fun getRestaurants(restaurantRequest: com.easyEats.ezeats.domain.main.model.request.RestaurantRequest) =
+    suspend fun getRestaurants(
+        restaurantRequest: com.easyEats.ezeats.domain.main.model.request.RestaurantRequest
+    ) =
         mainRepository.getRestaurants(restaurantRequest)
 
 }

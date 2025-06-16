@@ -43,6 +43,7 @@ import com.easyEats.ezeats.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import es.dmoral.toasty.Toasty
 import kotlinx.coroutines.launch
+import kotlin.collections.buildList
 
 @AndroidEntryPoint
 class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
@@ -73,7 +74,6 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
     private fun getCategoriesAndRestaurants() {
         offersViewModel.getCategoriesRestaurantResult()
         offersViewModel.getRestaurantsResult(
-            "",
             mainViewModel.userLocationAddressMutableLiveData.value?.lat,
             mainViewModel.userLocationAddressMutableLiveData.value?.lng
         )
@@ -141,8 +141,20 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
 
                         is Resource.Success -> {
                             hideMainLoading()
-                            val list =
-                                resource.data?.result?.data ?: emptyList<RestaurantsResponseItem>()
+                            val list = buildList {
+                                addAll(
+                                    resource.data?.result?.restaurants?.pickupRestaurants
+                                        ?: emptyList()
+                                )
+                                addAll(
+                                    resource.data?.result?.restaurants?.deliveryRestaurants
+                                        ?: emptyList()
+                                )
+                                addAll(
+                                    resource.data?.result?.restaurants?.dineinRestaurants
+                                        ?: emptyList()
+                                )
+                            }.distinctBy { it.id }
                             Log.v(
                                 "Fragment_Debug",
                                 "SUCCESS: Received a list of size: ${list.size}. Calling setContent."
@@ -216,7 +228,6 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
                 binding.tvLocation.text = loc?.address?.let { "You're at $it" }
                     ?: getString(R.string.select_location)
                 offersViewModel.getRestaurantsResult(
-                    "",
                     //loc?.lat,
                     //loc?.lng
                     30.0145125310423.toString(),
@@ -229,7 +240,6 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
     override fun onCategoryClicked(category: Category) {
         val id = category.categoryId ?: Constants.CATEGORY_ID_ALL
         offersViewModel.getRestaurantsResult(
-            id,
             mainViewModel.userLocationAddressMutableLiveData.value?.lat,
             mainViewModel.userLocationAddressMutableLiveData.value?.lng
         )

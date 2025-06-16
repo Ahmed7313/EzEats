@@ -101,6 +101,10 @@ interface MainApiService {
     @POST("clearDeviceToken")
     suspend fun clearDeviceToken(): BaseResponse<Any>
 
-    @POST("getRestaurantsAndOffersByCategory")
-    suspend fun getRestaurants(@Body restaurantRequest: com.easyEats.ezeats.domain.main.model.request.RestaurantRequest): BaseResponse<List<RestaurantsResponseItem>>
+    @POST("getRestaurants")
+    suspend fun getRestaurants(
+        @Body restaurantRequest: com.easyEats.ezeats.domain.main.model.request.RestaurantRequest
+    ): BaseResponse<
+        com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.restaurants_result.RestaurantsResult
+        >
 }
