@@ -141,6 +141,13 @@
                             android:paddingBottom="@dimen/_5sdp"
                             android:visibility="@{homeViewModel.activeOrder!=null ? View.VISIBLE:View.GONE}">
 
+                            <androidx.compose.ui.platform.ComposeView
+                                android:id="@+id/compose_view"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="20dp" />
+
+
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -154,6 +161,7 @@
                                     android:text='@{String.format("Your Order from %s", String.valueOf(homeViewModel.activeOrder.restaurantName))}'
                                     android:textColor="@color/black"
                                     android:textSize="@dimen/_13ssp"
+                                    android:layout_marginTop="20dp"
                                     tools:text="Your Order from Nude Bakery" />
 
                                 <TextView
@@ -163,6 +171,7 @@
                                     android:drawablePadding="3dp"
                                     android:fontFamily="@font/gilroy_500"
                                     android:gravity="end"
+                                    android:layout_marginTop="20dp"
                                     android:text="@string/details"
                                     android:textColor="@color/main_color"
                                     android:textSize="@dimen/_12ssp"
