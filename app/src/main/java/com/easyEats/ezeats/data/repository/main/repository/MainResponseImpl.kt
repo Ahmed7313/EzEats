@@ -40,6 +40,9 @@ class MainResponseImpl @Inject constructor(
     override suspend fun getHomeDetails(request: HomeRequest) =
         mainApiService.getHomeScreenDetails(request)
 
+    override suspend fun getAllCompoundData() =
+        mainApiService.getAllCompoundData()
+
     override suspend fun searchSuggestions(request: SearchSuggestionsRequest) =
         mainApiService.searchSuggestions(request)
 

@@ -1,7 +1,11 @@
 package com.easyEats.ezeats.ui.compose.cart.paymentSummaryScreen
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -33,6 +37,7 @@ import com.easyEats.ezeats.R
 import com.easyEats.ezeats.ui.compose.cart.paymentSummaryScreen.dummy.TipOption
 import com.easyEats.ezeats.ui.compose.cart.summary.PaymentSummary
 import com.easyEats.ezeats.ui.compose.components.AppButtonPrimary
+import com.easyEats.ezeats.ui.compose.components.AppImage
 import com.easyEats.ezeats.ui.compose.theme.AppColor
 import com.easyEats.ezeats.ui.compose.theme.AppColor.BlackColor2
 import com.easyEats.ezeats.ui.compose.theme.AppColor.GreyColor
@@ -116,6 +121,54 @@ fun PaymentSummaryScreenUI(modifier: Modifier = Modifier, navigate: NavControlle
             }
 
 
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .border(BorderStroke(1.dp, AppColor.BlackColor.copy(alpha = 0.5f)))
+            ) {
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    AppImage(
+                        imageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS03kZXomLjR2oTlWzo5P2MKLI5mEcC8lx-Kw&s",
+                        size = 47,
+                        cornerRadius = 0
+                    )
+                    Column(
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            text = "Buy your rider a coffee",
+                            color = AppColor.BlackColor,
+                            fontSize = 16.sp,
+                        )
+                        Text(
+                            text = "100% of this tip goes to your rider",
+                            color = AppColor.BlackColor.copy(0.5f),
+                            fontSize = 16.sp,
+                        )
+                    }
+                }
+
+                LazyRow(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
+
+                    items(tipOptions){ option ->
+                        TipOptionCurrencyItem(
+                            mod = Modifier,
+                            option = option,
+                            isSelected = option == selectedTipOption, // Check if current option is selected
+                            onTipSelected = {
+                                selectedTipOption = it // Update the selected option when clicked
+                            }
+                        )
+                    }
+                }
+            }
 
             HorizontalDivider(
                 color = Color.Black.copy(0.5f),
@@ -124,7 +177,9 @@ fun PaymentSummaryScreenUI(modifier: Modifier = Modifier, navigate: NavControlle
             )
 
             Row(
-                verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Start) {
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Start
+            ) {
                 Image(
                     painter = painterResource(R.drawable.ic_hand),
                     contentDescription = "back"
@@ -132,7 +187,9 @@ fun PaymentSummaryScreenUI(modifier: Modifier = Modifier, navigate: NavControlle
 
                 Text(
                     color = BlackColor2,
-                    modifier = Modifier.fillMaxWidth().padding(start = 6.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 6.dp),
                     text = stringResource(R.string.payment_method),
                     fontSize = 15.sp,
                     textAlign = TextAlign.Start,
@@ -140,7 +197,6 @@ fun PaymentSummaryScreenUI(modifier: Modifier = Modifier, navigate: NavControlle
                 )
 
             }
-
 
 
         }
@@ -164,7 +220,8 @@ fun PaymentSummaryScreenUI(modifier: Modifier = Modifier, navigate: NavControlle
             PaymentSummary(modifier = Modifier.fillMaxWidth())
 
             AppButtonPrimary(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .padding(horizontal = 6.dp),
                 text = stringResource(R.string.place_order)
             ) { }

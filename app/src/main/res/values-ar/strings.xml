@@ -221,6 +221,7 @@
     <string name="add_tip">Add Tip</string>
     <string name="payment_method">Payment Method</string>
     <string name="place_order">Place Order</string>
+    <string name="choose_your_compound">Choose Your Compound</string>
 
 
 </resources>

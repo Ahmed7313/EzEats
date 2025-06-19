@@ -25,11 +25,28 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearSnapHelper
 import com.easyEats.ezeats.MyApplication.Companion.TAG
+import com.easyEats.ezeats.domain.main.model.response.compound.CompoundResult
 import com.easyEats.ezeats.domain.main.model.response.home_response.HotDeal
+import com.easyEats.ezeats.ui.compose.components.AppImage
 import com.easyEats.ezeats.ui.main.complaint.ComplaintFragment
 import com.easyEats.ezeats.ui.main.home.adapter.partners.PartnersAdapter
 import com.easyEats.ezeats.ui.main.home.binding.BindingUI
@@ -86,6 +103,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
     private fun updateUIWithNotification() {
         homeViewModel.checkLocationPermission()
     }
+
 
     // Inflate the binding for the fragment
     override fun inflateBinding(
@@ -167,6 +185,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
     // Set up views and bind UI components
     override fun setUpViews() {
         homeViewModel.getPartners()
+        homeViewModel.getCompound()
         val bindingUI = BindingUI(
             binding,
             mainViewModel,
@@ -181,7 +200,57 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
             this,
             lifecycleScope
         )
+        getCompounds()
         bindingUI.invoke()
+    }
+
+    private fun getCompounds() {
+        Log.d("HOMESCREEN", "getCompounds:")
+
+        binding.composeView.setContent {
+
+            var compoundResult by remember {
+                mutableStateOf<List<CompoundResult>>(arrayListOf())
+            }
+
+            LaunchedEffect(homeViewModel.compoundResult) {
+                Log.d("HOMESCREEN", "compoundResult:")
+
+                homeViewModel.compoundResult.collect { resource ->
+                    Log.d("HOMESCREEN", "resource:")
+
+                    if(resource.isNotEmpty()){
+                        compoundResult = resource
+                        Log.d("HOMESCREEN", "${compoundResult.size} compounds loaded")
+                    }
+                }
+            }
+
+            LazyRow(
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Log.d("HOMESCREEN", "LazyRow:")
+
+                items(compoundResult.chunked(2)) { chunk ->
+                    Log.d("HOMESCREEN", "getCompounds: ${chunk.size}")
+                    Column(
+                        modifier = Modifier
+                            .width(110.dp) // Adjust width for each column
+                            .padding(end = 12.dp, bottom = 12.dp, top = 12.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        chunk.forEach { item ->
+                            Log.d("HOMESCREEN", "getCompounds: ${item.previewPhoto?.url}")
+                            AppImage(
+                                size = 100,
+                                cornerRadius = 12,
+                                imageUrl = item.previewPhoto?.url ?: "",
+                            )
+                        }
+                    }
+                }
+            }
+        }
     }
 
     // Observes changes in ViewModel data and updates the UI accordingly

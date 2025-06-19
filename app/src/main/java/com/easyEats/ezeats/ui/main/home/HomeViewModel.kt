@@ -11,6 +11,8 @@ import com.easyEats.ezeats.domain.main.model.UserLocationAddress
 import com.easyEats.ezeats.domain.main.model.request.RestaurantRequest
 import com.easyEats.ezeats.domain.main.model.request.firebase_token.UpdateTokeRequest
 import com.easyEats.ezeats.domain.main.model.request.home.HomeRequest
+import com.easyEats.ezeats.domain.main.model.request.search.SearchRequest
+import com.easyEats.ezeats.domain.main.model.response.compound.CompoundResult
 import com.easyEats.ezeats.domain.main.model.response.home_response.ActiveOrder
 import com.easyEats.ezeats.domain.main.model.response.home_response.FeaturedOffer
 import com.easyEats.ezeats.domain.main.model.response.home_response.HomeResponse
@@ -26,6 +28,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -78,6 +82,9 @@ class HomeViewModel @Inject constructor(private val mainUseCase: MainUseCase) :
     // Location utility instance for handling location-related tasks
     private var locationUtil: LocationUtil?=null
 
+    private val _compoundResult = MutableStateFlow<List<CompoundResult>>(listOf())
+    var compoundResult = _compoundResult.asStateFlow()
+
     /**
      * Sets the LocationUtil instance used for location operations.
      *
@@ -103,6 +110,49 @@ class HomeViewModel @Inject constructor(private val mainUseCase: MainUseCase) :
         })
     }
 
+    val TAG = "HomeViewModel"
+    fun getCompound(){
+        Log.d(TAG, "getCompound: getCompound") ; // Log for debugging
+/*
+send(Resource.Loading())
+            Log.d(TAG, "getCompound: called send") ; // Log for debugging
+            val homeResult = mainUseCase.homeUseCase.getAllCompoundData()
+            homeResult.handleResponse(onSuccess = {
+                Log.d(TAG, "getCompound: called send success") ; // Log for debugging
+                send(Resource.Success(homeResult))
+            }, onError = { message, error ->
+                Log.d(TAG, "getCompound: called send errror") ; // Log for debugging
+                send(Resource.Error(message, error))
+            }, onUnauthenticated = {
+                Log.d(TAG, "getCompound: called send unathenticate") ; // Log for debugging
+                send(Resource.UnAuthenticated())
+            })
+ */
+        viewModelScope.launch {
+            try {
+                // Fetch all compound data
+                val compoundData = mainUseCase.homeUseCase.getAllCompoundData()
+                compoundData.compoundResult?.let { result ->
+                    _compoundResult.value = result
+                }
+//                compoundData.compoundResult?.forEach { compound ->
+//                    Log.d(TAG, "Compound: ${compound?.name}, ID: ${compound?.updatedAt}") // Log each compound's name and ID
+//
+//                }
+
+                Log.d(TAG, "getCompound: $compoundData") // Log the fetched data
+            } catch (e: Exception) {
+                Log.e(TAG, "getCompound: Error fetching compound data", e) // Log any errors
+            }
+        }
+    }
+//        mainUseCase.homeUseCase.getAllCompoundData()
+
+
+
+
+
+
     /**
      * Creates a flow to request the home screen data, handles the response and updates LiveData.
      *
@@ -126,6 +176,8 @@ class HomeViewModel @Inject constructor(private val mainUseCase: MainUseCase) :
                 send(Resource.UnAuthenticated())
             })
         }
+
+
 
     /**
      * Checks whether location permission is granted.
@@ -217,6 +269,8 @@ class HomeViewModel @Inject constructor(private val mainUseCase: MainUseCase) :
                 }
             )
         }
+
+
 
 
 

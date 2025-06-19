@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -47,7 +48,8 @@ fun TipOptionItem(
             .border(
                 BorderStroke(1.dp, if (isSelected) ColorPrimary else AppColor.BlackColor),
                 shape = RoundedCornerShape(16.dp)
-            ).clickable {
+            )
+            .clickable {
                 onTipSelected(option)
             },
         verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally
@@ -63,4 +65,31 @@ fun TipOptionItem(
         )
 
     }
+}
+
+
+@Composable
+fun TipOptionCurrencyItem(
+    mod: Modifier = Modifier,
+    option: TipOption,
+    isSelected: Boolean,
+    onTipSelected: (TipOption) -> Unit
+) {
+    TextButton(
+        modifier = mod,
+        onClick = {
+        onTipSelected(option)
+    }) {
+        Text(
+            text = option.amount ?: "Custom",
+            color = if (isSelected) AppColor.WhiteColor else AppColor.BlackColor,
+            fontSize = 16.sp,
+            modifier = Modifier.padding(horizontal = 20.dp, vertical = 11.dp)
+                .background(
+                    if (isSelected) AppColor.WhiteColor else AppColor.ColorPrimary,
+                    shape = RoundedCornerShape(50.dp)
+                )
+        )
+    }
+
 }

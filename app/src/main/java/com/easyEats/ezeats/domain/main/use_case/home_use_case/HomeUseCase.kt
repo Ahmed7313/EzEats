@@ -16,6 +16,12 @@ class HomeUseCase @Inject constructor(private val mainRepository: MainRepository
     suspend fun getHomeDetails(request: HomeRequest) =
         mainRepository.getHomeDetails(request)
 
+
+    suspend fun getAllCompoundData() = mainRepository.getAllCompoundData()
+
+
+
+
     suspend fun saveAddress(userLocationAddress: UserLocationAddress) =
         mainRepository.saveAddress(userLocationAddress)
 

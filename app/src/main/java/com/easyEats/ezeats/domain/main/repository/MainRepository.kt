@@ -17,6 +17,8 @@ import com.easyEats.ezeats.domain.main.model.request.restaurant.RestaurantReques
 import com.easyEats.ezeats.domain.main.model.request.search.SearchRequest
 import com.easyEats.ezeats.domain.main.model.request.search.SearchSuggestionsRequest
 import com.easyEats.ezeats.domain.main.model.response.active_order.ActiveOrderResponse
+import com.easyEats.ezeats.domain.main.model.response.compound.CompoundResponse
+import com.easyEats.ezeats.domain.main.model.response.compound.CompoundResult
 import com.easyEats.ezeats.domain.main.model.response.home_response.HomeResponse
 import com.easyEats.ezeats.domain.main.model.response.home_response.HotDeal
 import com.easyEats.ezeats.domain.main.model.response.location_response.Location
@@ -41,6 +43,8 @@ import retrofit2.http.Body
 interface MainRepository {
 
     suspend fun getHomeDetails(request: HomeRequest): BaseResponse<HomeResponse>
+
+
     suspend fun searchSuggestions(request: SearchSuggestionsRequest): BaseResponse<List<String>>
     suspend fun searchScreen(): BaseResponse<SearchScreenResponse>
 
@@ -53,6 +57,8 @@ interface MainRepository {
     suspend fun clearRecentSearches(): BaseResponse<Any>
 
     suspend fun searchRestaurant(searchRequest: SearchRequest): BaseResponse<List<RestaurantsResponseItem>>
+    suspend fun getAllCompoundData():CompoundResponse
+
     suspend fun getRestaurantsByCategory(offersRequest: OffersRequest): BaseResponse<List<Restaurant>>
     suspend fun getCategory(): BaseResponse<List<Category>>
     suspend fun searchOffer(searchRequest: SearchRequest): BaseResponse<List<HotDeal>>

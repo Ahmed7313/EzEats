@@ -13,6 +13,8 @@ import com.easyEats.ezeats.domain.main.model.request.restaurant.RestaurantReques
 import com.easyEats.ezeats.domain.main.model.request.search.SearchRequest
 import com.easyEats.ezeats.domain.main.model.request.search.SearchSuggestionsRequest
 import com.easyEats.ezeats.domain.main.model.response.active_order.ActiveOrderResponse
+import com.easyEats.ezeats.domain.main.model.response.compound.CompoundResponse
+import com.easyEats.ezeats.domain.main.model.response.compound.CompoundResult
 import com.easyEats.ezeats.domain.main.model.response.home_response.HomeResponse
 import com.easyEats.ezeats.domain.main.model.response.home_response.HotDeal
 import com.easyEats.ezeats.domain.main.model.response.location_response.Location
@@ -34,6 +36,11 @@ interface MainApiService {
 
     @POST("homeScreen")
     suspend fun getHomeScreenDetails(@Body request: HomeRequest): BaseResponse<HomeResponse>
+
+    @POST("getAllCompoundData")
+    suspend fun getAllCompoundData(): CompoundResponse
+
+
 
     @POST("searchSuggestions")
     suspend fun searchSuggestions(@Body request: SearchSuggestionsRequest): BaseResponse<List<String>>

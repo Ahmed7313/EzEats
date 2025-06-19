@@ -13,12 +13,14 @@ import coil.compose.AsyncImage
 
 
 @Composable
-fun AppImage(imageUrl : String , size: Int = 100,cornerRadius : Int = 0){
+fun AppImage(
+    modifier: Modifier = Modifier,
+    imageUrl : String , size: Int = 100,cornerRadius : Int = 0){
     AsyncImage(
         model = imageUrl,
         contentDescription = "Loaded Image",
         contentScale = ContentScale.FillBounds,
-        modifier = Modifier
+        modifier = modifier
             .size(size.dp)
             .clip(RoundedCornerShape(cornerRadius.dp))
     )
