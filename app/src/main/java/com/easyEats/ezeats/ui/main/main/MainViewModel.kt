@@ -44,6 +44,8 @@ open class MainViewModel @Inject constructor(
     private val _saveAddressResult = MutableLiveData<Boolean>()
     val saveAddressResult: LiveData<Boolean> = _saveAddressResult
 
+    var compound = ""
+    
     // LiveData to expose location permission status
     val isLocationGranted = MutableLiveData<Boolean>()
 

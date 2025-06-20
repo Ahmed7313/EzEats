@@ -25,6 +25,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -42,8 +43,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearSnapHelper
 import com.easyEats.ezeats.MyApplication.Companion.TAG
+import com.easyEats.ezeats.R
 import com.easyEats.ezeats.domain.main.model.response.compound.CompoundResult
 import com.easyEats.ezeats.domain.main.model.response.home_response.HotDeal
 import com.easyEats.ezeats.ui.compose.components.AppImage
@@ -53,9 +56,11 @@ import com.easyEats.ezeats.ui.main.home.binding.BindingUI
 import com.easyEats.ezeats.ui.main.home.listeners.HomeListeners
 import com.easyEats.ezeats.ui.main.home.location.Location
 import com.easyEats.ezeats.ui.main.home.notifications.Notification
+import com.easyEats.ezeats.ui.main.main.HomeActivity
 import com.easyEats.ezeats.ui.main.rating.RateUsFragment
 import com.easyEats.ezeats.utils.Resource
 import kotlinx.coroutines.launch
+
 @AndroidEntryPoint
 class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
     HotDealsAdapter.OnHotDealClicked, FeaturedOfferAdapter.OnFeaturedClicked,
@@ -219,12 +224,13 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
                 homeViewModel.compoundResult.collect { resource ->
                     Log.d("HOMESCREEN", "resource:")
 
-                    if(resource.isNotEmpty()){
+                    if (resource.isNotEmpty()) {
                         compoundResult = resource
                         Log.d("HOMESCREEN", "${compoundResult.size} compounds loaded")
                     }
                 }
             }
+
 
             LazyRow(
                 modifier = Modifier.fillMaxWidth(),
@@ -242,6 +248,16 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
                         chunk.forEach { item ->
                             Log.d("HOMESCREEN", "getCompounds: ${item.previewPhoto?.url}")
                             AppImage(
+                                modifier = Modifier.clickable {
+                                    // here click and send id to percentScreenFragment
+                                    val itemId = item.objectId ?: ""
+                                    mainViewModel.compound = itemId
+                                    (requireActivity() as HomeActivity).binding.navView
+                                        .selectedItemId = R.id.percentScreenFragment
+
+//                                    notification.navController.navigate(HomeScreenFragmentDirections.goToPercentScreenFragment())
+//                                    notification.navController.navigate(R.id.percentScreenFragment, bundle)
+                                },
                                 size = 100,
                                 cornerRadius = 12,
                                 imageUrl = item.previewPhoto?.url ?: "",

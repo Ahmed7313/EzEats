@@ -1,40 +1,25 @@
 package com.easyEats.ezeats.ui.main.offers
 
-import android.content.Context
 import android.util.Log
-import android.view.View.GONE
-import android.view.View.VISIBLE
-import android.view.animation.AnimationUtils
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import androidx.recyclerview.widget.DefaultItemAnimator
 import com.easyEats.ezeats.MyApplication.Companion.TAG
-import com.easyEats.ezeats.R
 import com.easyEats.ezeats.base.BaseResponse
 import com.easyEats.ezeats.databinding.FragmentPercentScreenBinding
 import com.easyEats.ezeats.domain.main.model.request.RestaurantRequest
-import com.easyEats.ezeats.domain.main.model.request.offers.OffersRequest
-import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.Restaurant
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.new_restaurants_reponse.RestaurantsResponseItem
 import com.easyEats.ezeats.domain.main.model.response.search_response.Category
 import com.easyEats.ezeats.domain.main.use_case.MainUseCase
 import com.easyEats.ezeats.ui.main.main.MainViewModel
 import com.easyEats.ezeats.ui.main.offers.adapter.OffersCategoryAdapter
-import com.easyEats.ezeats.ui.main.search_result.adapter.RestaurantAdapter
 import com.easyEats.ezeats.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.channelFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 /**
  * ViewModel for handling the fetching and displaying of restaurant and category data.
@@ -64,9 +49,17 @@ class OffersViewModel @Inject constructor(val mainUseCase: MainUseCase) :
      * Fetches restaurant data for a given category.
      * It constructs a request with category ID and optional user latitude and longitude.
      */
-    fun getRestaurantsResult(categoryId: String, userLat: String?, userLong: String?) {
+    fun getRestaurantsResult(
+        categoryId: String,
+        userLat: String?,
+        userLong: String?,
+        compound: String
+    ) {
         viewModelScope.launch {
-            val flow = createRestaurantsResultRequest(RestaurantRequest(categoryId = categoryId, userLat = userLat ?: "0.0", userLon = userLong ?: "0.0"))
+            val flow = createRestaurantsResultRequest(RestaurantRequest(categoryId = categoryId,
+                userLat = if(compound.isEmpty()) userLat ?: "0.0" else "",
+                userLon = if(compound.isEmpty()) userLong ?: "0.0" else "",
+                cmpoundId = if(compound.isEmpty()) null else compound))
             apply(
                 flow = flow,
                 maxRetries = 2,

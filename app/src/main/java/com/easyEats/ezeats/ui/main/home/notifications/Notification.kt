@@ -12,8 +12,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 
 data class Notification(
     private val homeViewModel: HomeViewModel,
-    private val context: Activity,
-    private val navController: NavController
+    private val context: Activity, val navController: NavController
 ) {
 
     fun pushNotification(hasReceivedNotification:()->Unit) {

@@ -23,6 +23,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.databinding.ActivityHomeBinding
+import com.easyEats.ezeats.ui.main.home.HomeScreenFragment
 import com.easyEats.ezeats.utils.app_updates.InAppUpdateManager
 import com.google.android.gms.common.internal.Objects
 import com.google.firebase.messaging.FirebaseMessaging
@@ -124,9 +125,24 @@ class HomeActivity : AppCompatActivity() {
 
         // Initialize the NavController from the NavHostFragment
         navController = navHostFragment.navController
-        navController.addOnDestinationChangedListener { _, destination, _ ->
+
+//        val previousEntry = navController.previousBackStackEntry
+//        if(previousEntry?.savedStateHandle?.contains("itemId") == true){
+//            previousEntry.savedStateHandle.clearSavedStateProvider("itemId")
+//        }
+        binding.navView.setupWithNavController(navController)
+
+        navController.addOnDestinationChangedListener { _, destination, bundle ->
+            Log.d(TAG, "setUpBottomNavigationWithNavHostFragment: ${destination.id}")
+
+
             when (destination.id) {
-                R.id.homeScreenFragment, R.id.qrScreenFragment, R.id.percentScreenFragment, R.id.profileScreenFragment, R.id.pointScreenFragment -> {
+                
+                R.id.homeScreenFragment, R.id.qrScreenFragment, R.id.profileScreenFragment, R.id.pointScreenFragment -> {
+                    binding.navView.visibility = VISIBLE
+                    mainViewModel.compound = ""
+                }
+                R.id.percentScreenFragment -> {
                     binding.navView.visibility = VISIBLE
                 }
 
@@ -135,10 +151,6 @@ class HomeActivity : AppCompatActivity() {
                 }
             }
         }
-
-
-        // Set up the Bottom Navigation View with the NavController
-        binding.navView.setupWithNavController(navController)
 
     }
 

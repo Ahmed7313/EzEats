@@ -1,9 +1,7 @@
 package com.easyEats.ezeats.ui.main.offers
 
-import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
@@ -11,14 +9,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -37,7 +33,6 @@ import com.easyEats.ezeats.ui.compose.offers.SelectionButton
 import com.easyEats.ezeats.ui.large
 import com.easyEats.ezeats.ui.main.main.MainViewModel
 import com.easyEats.ezeats.ui.main.offers.adapter.OffersCategoryAdapter
-import com.easyEats.ezeats.ui.spacing
 import com.easyEats.ezeats.utils.Constants
 import com.easyEats.ezeats.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
@@ -54,6 +49,8 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
     private val offersViewModel: OffersViewModel by viewModels()
     private lateinit var cateAdapter: OffersCategoryAdapter
 
+    val TAG = "OffersScreenFragment"
+
     override fun inflateBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -68,6 +65,7 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
         }
         getCategoriesAndRestaurants()
         handleBackDirection()
+        Log.d(TAG, "setUpViews: compound ${mainViewModel.compound}")
     }
 
     private fun getCategoriesAndRestaurants() {
@@ -75,7 +73,8 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
         offersViewModel.getRestaurantsResult(
             "",
             mainViewModel.userLocationAddressMutableLiveData.value?.lat,
-            mainViewModel.userLocationAddressMutableLiveData.value?.lng
+            mainViewModel.userLocationAddressMutableLiveData.value?.lng,
+            mainViewModel.compound
         )
     }
 
@@ -220,7 +219,8 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
                     //loc?.lat,
                     //loc?.lng
                     30.0145125310423.toString(),
-                    30.975965400415998.toString()
+                    30.975965400415998.toString(),
+                    mainViewModel.compound,
                 )
             }
         }
@@ -231,7 +231,8 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
         offersViewModel.getRestaurantsResult(
             id,
             mainViewModel.userLocationAddressMutableLiveData.value?.lat,
-            mainViewModel.userLocationAddressMutableLiveData.value?.lng
+            mainViewModel.userLocationAddressMutableLiveData.value?.lng,
+            mainViewModel.compound
         )
     }
 
