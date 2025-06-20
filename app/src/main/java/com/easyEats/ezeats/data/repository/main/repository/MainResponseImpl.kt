@@ -150,9 +150,7 @@ class MainResponseImpl @Inject constructor(
     override fun checkIfUserViewedRatingDialog(): Flow<Boolean> =
         dataStorePreference.checkIfUserViewedRatingDialog()
 
-    override suspend fun getRestaurants(
-        restaurantRequest: com.easyEats.ezeats.domain.main.model.request.RestaurantRequest
-    ): BaseResponse<com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.restaurants_result.RestaurantsResult> {
+    override suspend fun getRestaurants(restaurantRequest: com.easyEats.ezeats.domain.main.model.request.RestaurantRequest): BaseResponse<List<RestaurantsResponseItem>> {
         return mainApiService.getRestaurants(restaurantRequest)
     }
 
