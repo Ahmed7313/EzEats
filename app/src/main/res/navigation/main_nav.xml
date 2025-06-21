@@ -95,9 +95,8 @@
         android:label="RestaurantFragment"
         tools:layout="@layout/fragment_restaurant">
         <argument
-            android:name="restaurantId"
-            app:argType="string" />
-
+            android:name="restaurant"
+            app:argType="com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.new_restaurants_reponse.RestaurantsResponseItem" />
     </fragment>
 
     <action

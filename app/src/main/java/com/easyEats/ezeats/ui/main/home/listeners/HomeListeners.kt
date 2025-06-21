@@ -155,10 +155,30 @@ class HomeListeners(
         mainViewModel.isOpenShareLink.observe(viewLifecycleOwner) { data ->
             if (data?.get("isOpenShareLink") == true) {
                 Log.d(TAG, "observeViewModelData: ${data["restaurantId"].toString()}")
+                val restaurant = RestaurantsResponseItem(
+                    id = data["restaurantId"].toString(),
+                    available = null,
+                    categories = null,
+                    discountOnMenu = null,
+                    distance = null,
+                    distanceValue = null,
+                    estimateDelivery = null,
+                    hasDiscount = null,
+                    hasFreeDelivery = null,
+                    hasOffers = null,
+                    isBusy = null,
+                    isCommingSoon = null,
+                    isDelivery = null,
+                    isPickUp = null,
+                    locationName = null,
+                    logo = null,
+                    name = null,
+                    offers = null,
+                    rating = null,
+                    reviewsCount = null
+                )
                 navController.navigate(
-                    HomeScreenFragmentDirections.goToRestaurantFragment(
-                        data["restaurantId"].toString()
-                    )
+                    HomeScreenFragmentDirections.goToRestaurantFragment(restaurant)
                 )
                 mainViewModel.isOpenShareLink.value = null  // Reset the state after navigating
             }

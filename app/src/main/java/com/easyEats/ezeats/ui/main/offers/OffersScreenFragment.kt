@@ -193,7 +193,7 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
                                             onRestaurantClick = { restaurant ->
                                                 findNavController().navigate(
                                                     OffersScreenFragmentDirections
-                                                        .goToRestaurantFragment(restaurant.id!!)
+                                                        .goToRestaurantFragment(restaurant)
                                                 )
                                             }
                                         )
