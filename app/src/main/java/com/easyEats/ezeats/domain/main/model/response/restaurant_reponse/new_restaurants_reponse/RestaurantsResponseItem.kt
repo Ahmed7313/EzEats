@@ -1,8 +1,10 @@
 package com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.new_restaurants_reponse
 
-
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class RestaurantsResponseItem(
     @SerializedName("available")
     val available: Boolean?,
@@ -44,4 +46,4 @@ data class RestaurantsResponseItem(
     val rating: Double?,
     @SerializedName("reviewsCount")
     val reviewsCount: Int?
-)
+) : Parcelable
