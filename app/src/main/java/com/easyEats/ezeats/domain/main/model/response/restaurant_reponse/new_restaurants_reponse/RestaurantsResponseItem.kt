@@ -3,6 +3,7 @@ package com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.new_re
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
+import kotlinx.parcelize.RawValue
 
 @Parcelize
 data class RestaurantsResponseItem(
@@ -41,7 +42,7 @@ data class RestaurantsResponseItem(
     @SerializedName("name")
     val name: String?,
     @SerializedName("offers")
-    val offers: List<Any?>?,
+    val offers: @RawValue List<Any?>?,
     @SerializedName("rating")
     val rating: Double?,
     @SerializedName("reviewsCount")
