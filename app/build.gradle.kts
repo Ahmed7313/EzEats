@@ -81,11 +81,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_19
+        targetCompatibility = JavaVersion.VERSION_19
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "19"
     }
 
     buildFeatures {
@@ -96,11 +96,11 @@ android {
 
     // Tell the Android plugin which Compose compiler to use:
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.2"
+        kotlinCompilerExtensionVersion = "1.5.15"
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "19"
         freeCompilerArgs += listOf(
             "-Xopt-in=androidx.compose.material3.ExperimentalMaterial3Api",
             "-Xopt-in=kotlin.RequiresOptIn"
