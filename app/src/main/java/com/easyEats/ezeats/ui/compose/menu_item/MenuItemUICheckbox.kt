@@ -26,9 +26,9 @@ import com.easyEats.ezeats.ui.compose.theme.AppColor
 @Composable
 fun MenuItemUICheckBox(
     modifier: Modifier = Modifier,
-    item: com.easyEats.ezeats.domain.main.model.response.restaurant_menu.SubOption,
+    item: SubOption,
     selectedChoiceId: String?,
-    onClick: (com.easyEats.ezeats.domain.main.model.response.restaurant_menu.Choice) -> Unit
+    onClick: (Choice) -> Unit
 ) {
     Row(
         modifier = modifier

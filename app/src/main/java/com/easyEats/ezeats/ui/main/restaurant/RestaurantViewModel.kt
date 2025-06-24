@@ -17,6 +17,8 @@ import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.Restaurant
 import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.SubMenu
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.RestaurantInfo
 import com.easyEats.ezeats.domain.main.use_case.MainUseCase
+import com.easyEats.ezeats.domain.room.ProductDao
+import com.easyEats.ezeats.domain.room.ProductEntity
 import com.easyEats.ezeats.ui.main.main.MainViewModel
 import com.easyEats.ezeats.ui.main.restaurant.adapter.SpecialOfferAdapter
 import com.easyEats.ezeats.utils.Resource
@@ -36,6 +38,7 @@ import javax.inject.Inject
 @HiltViewModel
 class RestaurantViewModel @Inject constructor(
     private val mainUseCase: MainUseCase,
+    private val productSelectionDao: ProductDao,
     savedStateHandle: SavedStateHandle
 ) : MainViewModel(mainUseCase) {
 
@@ -50,17 +53,26 @@ class RestaurantViewModel @Inject constructor(
     val selectedSubMenu = _selectedSubMenu.asStateFlow()
 
     fun showBottomSheet(subMenu: SubMenu) {
-        _selectedSubMenu.value = subMenu
-        _isBottomSheetVisible.value = true
-        Log.d(TAG, "showBottomSheet: showBottomSheet")
+        Log.d(TAG, "showBottomSheet: ")
+        viewModelScope.launch {
+            _selectedSubMenu.value = subMenu
+            Log.d(TAG, "showBottomSheet: ${isBottomSheetVisible.value}")
+            _isBottomSheetVisible.value = true
+            Log.d(TAG, "showBottomSheet: showing bottom sheet for ${subMenu.name}")
+        }
     }
-
     fun dismissBottomSheet() {
-        _isBottomSheetVisible.value = false
-        _selectedSubMenu.value = null
+        viewModelScope.launch {
+            _isBottomSheetVisible.value = false
+            _selectedSubMenu.value = null
+            Log.d(TAG, "dismissBottomSheet: hiding bottom sheet")
+        }
     }
-
-
+    fun cleanupBottomSheet() {
+        viewModelScope.launch {
+            dismissBottomSheet()
+        }
+    }
     // LiveData that holds the resource of special offers.
     private val _specialOffers = MutableLiveData<Resource<BaseResponse<RestaurantInfo>>>()
     val specialOffers: LiveData<Resource<BaseResponse<RestaurantInfo>>> = _specialOffers
@@ -74,6 +86,18 @@ class RestaurantViewModel @Inject constructor(
     fun selectChoice(groupId: String, choiceId: String) {
         _selected.value = _selected.value.toMutableMap().apply {
             this[groupId] = choiceId
+        }
+        viewModelScope.launch {
+            // Save the selected choice to the database.
+            productSelectionDao.insertProduct(
+                ProductEntity(
+                    "asd",
+                    "osama",
+                    "https://example.com/image.jpg",
+                    150.00,
+                    "Description"
+                )
+            )
         }
     }
 

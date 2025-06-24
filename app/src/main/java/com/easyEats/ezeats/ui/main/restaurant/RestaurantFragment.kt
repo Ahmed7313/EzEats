@@ -19,9 +19,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
@@ -35,6 +38,7 @@ import com.easyEats.ezeats.base.BaseBottomSheetFragment
 import com.easyEats.ezeats.base.BaseFragment
 import com.easyEats.ezeats.base.BaseResponse
 import com.easyEats.ezeats.databinding.FragmentRestaurantBinding
+import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.CoverPhoto
 import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.Menu
 import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.RestaurantMenuResponse
 import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.SubMenu
@@ -70,11 +74,13 @@ class RestaurantFragment : BaseFragment<FragmentRestaurantBinding>(),
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var specialOfferAdapter: SpecialOfferAdapter
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Request the special offers data from the ViewModel.
 //        viewModel.getSpecialOffers(args.restaurantId)
         viewModel.getRestaurantMenu(args.restaurantId)
+//        viewModel.getRestaurantMenu("YP4CPBjViS")
 //        viewModel.isBottomSheetVisible.observe(this) { isVisible ->
 //            if (isVisible) {
 //                viewModel.selectedSubMenu.observe(this) { subMenu ->
@@ -87,6 +93,13 @@ class RestaurantFragment : BaseFragment<FragmentRestaurantBinding>(),
 //        }
     }
 
+    var isAppearBefore = false
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+
+    }
 
 
     /**
@@ -109,41 +122,58 @@ class RestaurantFragment : BaseFragment<FragmentRestaurantBinding>(),
             findNavController().navigateUp()
         }
 
-        binding.composeView.setContent {
-            val isVisible by viewModel.isBottomSheetVisible.collectAsState()
-            val currentSubMenu by viewModel.selectedSubMenu.collectAsState()
 
-            
-            // Observe the selected submenu and show the bottom sheet when it changes.
-            // Only show bottom sheet when both values are available
-            if (isVisible && currentSubMenu != null) {
-                // Show the compose view
-                binding.composeView.visibility = View.VISIBLE
-                Log.d(TAG, "setUpViews: VISIBLE")
 
-                MenuItemBottomSheet(
-                    modifier = androidx.compose.ui.Modifier.fillMaxWidth(),
-                    isVisible = true,
-                    onDismiss = {
-                        Log.d(TAG, "setUpViews: GONE")
-                        // Hide the compose view when dismissing
-                        binding.composeView.visibility = View.GONE
-                        viewModel.dismissBottomSheet()
-                    },
-                    subMenu = currentSubMenu!!, onClick = { count, note ->
-                        // Handle the click event for the menu item
-                        Log.d(TAG, "setUpViews: GONE")
-                        binding.composeView.visibility = View.GONE
-                        viewModel.dismissBottomSheet()
-                    }
-                )
-            } else {
-                // Hide the compose view when not showing bottom sheet
-                binding.composeView.visibility = View.GONE
+        Log.d(TAG, "setUpViews: HERE")
+        binding.composeView.apply {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+
+            binding.composeView.setContent {
+
+                val isVisible by viewModel.isBottomSheetVisible.collectAsState()
+                val currentSubMenu by viewModel.selectedSubMenu.collectAsState()
+                LaunchedEffect(isVisible) {
+                    visibility = if (isVisible) View.VISIBLE else View.GONE
+                }
+
+                if (isVisible && currentSubMenu != null) {
+                    binding.composeView.visibility = View.VISIBLE
+                    MenuItemBottomSheet(
+                        modifier = Modifier.fillMaxWidth(),
+                        isVisible = true,
+                        onDismiss = {
+                            viewModel.dismissBottomSheet()
+                        },
+                        subMenu = currentSubMenu!!,
+                        onClick = { count, note ->
+                            viewModel.dismissBottomSheet()
+                        }
+                    )
+                }else{
+                    binding.composeView.visibility = View.GONE
+                }
+//                MenuItemBottomSheet(
+//                    modifier = androidx.compose.ui.Modifier.fillMaxWidth(),
+//                    isVisible = isVisible,
+//                    onDismiss = {
+//                        Log.d(TAG, "setUpViews: GONE")
+//                        // Hide the compose view when dismissing
+//                        binding.composeView.visibility = View.GONE
+//                        viewModel.dismissBottomSheet()
+//                    },
+//                    subMenu = currentSubMenu, onClick = { count, note ->
+//                        // Handle the click event for the menu item
+//                        Log.d(TAG, "setUpViews: GONE")
+//                        binding.composeView.visibility = View.GONE
+//                        viewModel.dismissBottomSheet()
+//                    }
+//                )
             }
+
         }
 
     }
+
 
     /**
      * Observes the special offers and restaurant menu data from the ViewModel and updates the UI accordingly.
@@ -169,7 +199,10 @@ class RestaurantFragment : BaseFragment<FragmentRestaurantBinding>(),
                     Log.d(TAG, "listenToObservers: found")
                     binding.restaurantInfo = resources.data?.result?.data
                     Log.d(TAG, "listenToObservers: found ${binding.restaurantInfo?.restaurantName}")
-                    Log.d(TAG, "listenToObservers: found ${resources.data?.result?.data?.offers?.size}")
+                    Log.d(
+                        TAG,
+                        "listenToObservers: found ${resources.data?.result?.data?.offers?.size}"
+                    )
 
                     viewModel.setRestaurantData(
                         binding,
@@ -247,18 +280,22 @@ class RestaurantFragment : BaseFragment<FragmentRestaurantBinding>(),
 
 
     private fun onMenuItemClicked(subMenu: SubMenu) {
-        if(subMenu.subOptions.isNullOrEmpty()){
-//            _selectedSubMenu.value = subMenu
-//            _isBottomSheetVisible.value = true
-            viewModel.showBottomSheet(subMenu)
-            Log.d(TAG, "SubMenu is empty or null: ${subMenu.name}")
-        }else {
-            findNavController().navigate(
-                RestaurantFragmentDirections.goToMenuItemDetailsFragment(
-                    subMenu
-                )
-            )
-        }
+        viewModel.cleanupBottomSheet()
+        viewModel.showBottomSheet(subMenu)
+//        if (subMenu.subOptions.isNullOrEmpty()) {
+////            _selectedSubMenu.value = subMenu
+////            _isBottomSheetVisible.value = true
+//            viewModel.cleanupBottomSheet()
+//            viewModel.showBottomSheet(subMenu)
+//            Log.d(TAG, "SubMenu is empty or null: ${subMenu.name}")
+//        } else {
+//            viewModel.cleanupBottomSheet()
+//            findNavController().navigate(
+//                RestaurantFragmentDirections.goToMenuItemDetailsFragment(
+//                    subMenu
+//                )
+//            )
+//        }
     }
 
     /**
@@ -287,6 +324,12 @@ class RestaurantFragment : BaseFragment<FragmentRestaurantBinding>(),
                 }
             }
         })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.cleanupBottomSheet()
+        Log.d(TAG, "onResume: ")
     }
 
     /**
