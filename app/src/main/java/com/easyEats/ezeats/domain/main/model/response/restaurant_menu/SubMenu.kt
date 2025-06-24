@@ -31,7 +31,7 @@ data class SubMenu(
     @SerializedName("prepTime")
     val prepTime: Int?,
     @SerializedName("price")
-    val price: Int?,
+    val price: Double?,
     @SerializedName("startTime")
     val startTime: String?,
     @SerializedName("subOptions")

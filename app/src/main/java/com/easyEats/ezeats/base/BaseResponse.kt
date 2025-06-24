@@ -39,18 +39,23 @@ data class BaseResponse<T>(
         onError: suspend (String, Error?) -> Unit,
         onUnauthenticated: suspend () -> Unit = {}
     ) {
-        when {
-            result.isSuccess() -> {
-                if (result.data != null) {
-                    result.data.let { onSuccess(it) }
-                } else {
-                    onSuccess(null)
+        try {
+            when {
+                result.isSuccess() -> {
+                    try {
+                        onSuccess(result.data)
+                    } catch (e: Exception) {
+                        onError("Failed to process data: ${e.message}", Error(-1, e.message))
+                    }
                 }
-
+                result.isUnauthenticated() -> onUnauthenticated()
+                else -> onError(
+                    result.message ?: "Unknown error",
+                    result.error ?: Error(-1, "Unknown error")
+                )
             }
-
-            result.isUnauthenticated() -> onUnauthenticated()
-            else -> onError(result.message.toString(), result.error)
+        } catch (e: Exception) {
+            onError("Unexpected error: ${e.message}", Error(-1, e.message))
         }
     }
 }

@@ -14,6 +14,7 @@ import com.easyEats.ezeats.domain.main.model.request.restaurant.RestaurantMenuRe
 import com.easyEats.ezeats.domain.main.model.request.restaurant.RestaurantRequest
 import com.easyEats.ezeats.domain.main.model.response.home_response.HotDeal
 import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.RestaurantMenuResponse
+import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.SubMenu
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.RestaurantInfo
 import com.easyEats.ezeats.domain.main.use_case.MainUseCase
 import com.easyEats.ezeats.ui.main.main.MainViewModel
@@ -21,6 +22,8 @@ import com.easyEats.ezeats.ui.main.restaurant.adapter.SpecialOfferAdapter
 import com.easyEats.ezeats.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -39,12 +42,44 @@ class RestaurantViewModel @Inject constructor(
     // The restaurant ID, obtained from the SavedStateHandle.
     val restaurantId: String? = savedStateHandle["restaurantId"]
 
+
+    private val _isBottomSheetVisible = MutableStateFlow(false)
+    val isBottomSheetVisible = _isBottomSheetVisible.asStateFlow()
+
+    private val _selectedSubMenu = MutableStateFlow<SubMenu?>(null)
+    val selectedSubMenu = _selectedSubMenu.asStateFlow()
+
+    fun showBottomSheet(subMenu: SubMenu) {
+        _selectedSubMenu.value = subMenu
+        _isBottomSheetVisible.value = true
+        Log.d(TAG, "showBottomSheet: showBottomSheet")
+    }
+
+    fun dismissBottomSheet() {
+        _isBottomSheetVisible.value = false
+        _selectedSubMenu.value = null
+    }
+
+
     // LiveData that holds the resource of special offers.
     private val _specialOffers = MutableLiveData<Resource<BaseResponse<RestaurantInfo>>>()
     val specialOffers: LiveData<Resource<BaseResponse<RestaurantInfo>>> = _specialOffers
 
     private val _restaurantMenu = MutableLiveData<Resource<BaseResponse<RestaurantMenuResponse>>>()
     val restaurantMenu: LiveData<Resource<BaseResponse<RestaurantMenuResponse>>> = _restaurantMenu
+
+    private val _selected = MutableStateFlow<Map<String, String>>(emptyMap())
+    val selected = _selected.asStateFlow()
+
+    fun selectChoice(groupId: String, choiceId: String) {
+        _selected.value = _selected.value.toMutableMap().apply {
+            this[groupId] = choiceId
+        }
+    }
+
+    fun isSelected(groupId: String, choiceId: String): Boolean {
+        return _selected.value[groupId] == choiceId
+    }
 
     /**
      * Fetches special offers for the restaurant by retrieving the current user's location.
@@ -56,6 +91,7 @@ class RestaurantViewModel @Inject constructor(
                 if (it?.lat?.isNullOrEmpty()?.not() == true) {
                     // Create a request to get special offers for the restaurant.
                     val flow = createSpecialOffersRequest(
+                        //osama
                         RestaurantRequest(
                             restaurantId!!,
                             userLat = "30.0145125310423", //it.lat ?: "" ,
@@ -136,25 +172,30 @@ class RestaurantViewModel @Inject constructor(
 
     private fun createRestaurantMenuRequest(restaurantMenuRequest: RestaurantMenuRequest): Flow<Resource<BaseResponse<RestaurantMenuResponse>>> =
         channelFlow {
-            send(Resource.Loading()) // Emit loading state.
-            val result = mainUseCase.restaurantUseCase.getRestaurantMenu(restaurantMenuRequest)
-            // Handle the response and send the result back to the Flow.
-            result.handleResponse(
-                onSuccess = {
-                    send(Resource.Success(result)) // Emit success state with the result.
-                },
-                onError = { message, error ->
-                    send(
-                        Resource.Error(
-                            message,
-                            error
-                        )
-                    ) // Emit error state with the message and error.
-                },
-                onUnauthenticated = {
-                    send(Resource.UnAuthenticated()) // Emit unauthenticated state if the user is not authenticated.
-                }
-            )
+            try {
+                send(Resource.Loading())
+                val result = mainUseCase.restaurantUseCase.getRestaurantMenu(restaurantMenuRequest)
+
+                result.handleResponse(
+                    onSuccess = { data ->
+                        if (data != null) {
+                            send(Resource.Success(result))
+                        } else {
+                            send(Resource.Error("Invalid data format"))
+                        }
+                    },
+                    onError = { message, error ->
+                        Log.e(TAG, "Error: $message, Details: $error")
+                        send(Resource.Error(message))
+                    },
+                    onUnauthenticated = {
+                        send(Resource.UnAuthenticated())
+                    }
+                )
+            } catch (e: Exception) {
+                Log.e(TAG, "Decoding error: ${e.message}", e)
+                send(Resource.Error("Failed to process response: ${e.message}"))
+            }
         }
 
     /**

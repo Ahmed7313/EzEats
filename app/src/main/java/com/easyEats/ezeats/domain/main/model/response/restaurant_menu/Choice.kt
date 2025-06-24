@@ -14,5 +14,5 @@ data class Choice(
     @SerializedName("name")
     val name: String?,
     @SerializedName("price")
-    val price: Int?
+    val price: Double?
 ) : Parcelable

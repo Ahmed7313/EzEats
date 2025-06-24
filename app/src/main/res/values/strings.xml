@@ -236,5 +236,9 @@
     <string name="payment_method">Payment Method</string>
     <string name="place_order">Place Order</string>
     <string name="choose_your_compound">Choose Your Compound</string>
+    <string name="required">Required</string>
+    <string name="currency">EGP</string>
+    <string name="any_special_request">Any Special Requests?</string>
+    <string name="add_note">Add Note</string>
 
 </resources>

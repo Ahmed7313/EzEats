@@ -25,3 +25,17 @@ fun AppImage(
             .clip(RoundedCornerShape(cornerRadius.dp))
     )
 }
+
+@Composable
+fun AppImageCornerTop(
+    modifier: Modifier = Modifier,
+    imageUrl : String , size: Int = 100,cornerRadius : Int = 0){
+    AsyncImage(
+        model = imageUrl,
+        contentDescription = "Loaded Image",
+        contentScale = ContentScale.FillBounds,
+        modifier = modifier
+            .size(size.dp)
+            .clip(RoundedCornerShape(topStart = cornerRadius.dp, topEnd = cornerRadius.dp))
+    )
+}

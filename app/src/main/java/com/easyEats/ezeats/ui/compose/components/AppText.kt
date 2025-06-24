@@ -19,6 +19,7 @@ import androidx.compose.ui.platform.LocalFontLoader
 import androidx.compose.ui.text.ParagraphIntrinsics
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -29,6 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.easyEats.ezeats.R
 
 import com.easyEats.ezeats.ui.gilroy
 import com.easyEats.ezeats.ui.grayColor
@@ -47,13 +49,29 @@ fun HeaderText(
     Text(
         text = text,
         style = TextStyle(
-            fontFamily = gilroy,
+            fontFamily = FontFamily(
+                if (fontWeight == FontWeight.Bold)
+                    Font(R.font.gilroy_700)
+                else if (fontWeight == FontWeight.Medium || fontWeight == FontWeight.Normal)
+                    Font(R.font.gilroy_500)
+                else
+                    Font(R.font.gilroy_400)
+            ),
             fontWeight = fontWeight,
             fontSize = fontSize.sp,
             color = color,
             lineHeight = fontSize.sp,
             letterSpacing = 0.5.sp,
-            textAlign = textAlign
+            textAlign = textAlign,
+        ),
+        fontWeight = fontWeight,
+        fontFamily = FontFamily(
+            if (fontWeight == FontWeight.Bold)
+                Font(R.font.gilroy_700)
+            else if (fontWeight == FontWeight.Medium || fontWeight == FontWeight.Normal)
+                Font(R.font.gilroy_500)
+            else
+                Font(R.font.gilroy_400)
         ),
         modifier = modifier
     )
@@ -74,20 +92,34 @@ fun NormalText(
         modifier = modifier,
         text = text,
         style = TextStyle(
-            fontFamily = gilroy,
+            fontFamily = FontFamily(
+                if (fontWeight == FontWeight.Bold)
+                    Font(R.font.gilroy_700)
+                else if (fontWeight == FontWeight.Medium || fontWeight == FontWeight.Normal)
+                    Font(R.font.gilroy_500)
+                else
+                    Font(R.font.gilroy_400)
+            ),
             fontWeight = fontWeight,
             fontSize = fontSize.sp,
             color = color,
             lineHeight = fontSize.sp,
             letterSpacing = 0.5.sp
         ),
+        fontFamily = FontFamily(
+            if (fontWeight == FontWeight.Bold)
+                Font(R.font.gilroy_700)
+            else if (fontWeight == FontWeight.Medium || fontWeight == FontWeight.Normal)
+                Font(R.font.gilroy_500)
+            else
+                Font(R.font.gilroy_400)
+        ),
+        fontWeight = fontWeight,
         textAlign = textAlign,
         maxLines = maxLines,
         overflow = overflow
     )
 }
-
-
 
 
 @Preview
