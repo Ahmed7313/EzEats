@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
+import android.view.View
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.easyEats.ezeats.MyApplication
@@ -54,6 +55,11 @@ fun setPoints(tv: TextView, points: Int?) {
     }
 
     tv.text = spannable
+}
+
+@BindingAdapter("visibleIf")
+fun View.visibleIf(isVisible: Boolean?) {
+    visibility = if (isVisible == true) View.VISIBLE else View.GONE
 }
 
 /**

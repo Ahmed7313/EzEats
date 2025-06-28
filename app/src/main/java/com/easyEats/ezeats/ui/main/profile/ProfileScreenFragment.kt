@@ -132,6 +132,8 @@ class ProfileScreenFragment : BaseFragment<FragmentProfileScreenBinding>(), LogO
                     findNavController().navigate(R.id.homeScreenFragment)  // Navigate to home screen
                 }
                 is Resource.UnAuthenticated -> {}
+                else ->{}
+
             }
         }
 
@@ -152,6 +154,8 @@ class ProfileScreenFragment : BaseFragment<FragmentProfileScreenBinding>(), LogO
                     binding.llGuestUser.visibility = VISIBLE
                     binding.llAccount.visibility = GONE
                 }
+                else ->{}
+
             }
         }
 

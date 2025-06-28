@@ -23,6 +23,7 @@ import com.easyEats.ezeats.databinding.FragmentSearchResultBinding
 import com.easyEats.ezeats.domain.main.model.response.home_response.HotDeal
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.Restaurant
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.new_restaurants_reponse.RestaurantsResponseItem
+import com.easyEats.ezeats.ui.compose.resturant.PAYMENT_INTEGRATION_TYPE
 import com.easyEats.ezeats.ui.main.home.HomeScreenFragmentDirections
 import com.easyEats.ezeats.ui.main.home.adapter.hot_deals.HotDealsAdapter
 import com.easyEats.ezeats.ui.main.main.MainViewModel
@@ -146,6 +147,8 @@ class SearchResultFragment : BaseFragment<FragmentSearchResultBinding>(),
                 is Resource.UnAuthenticated -> {
                     // Handle unauthenticated state if needed
                 }
+                else ->{}
+
             }
         }
 
@@ -173,6 +176,8 @@ class SearchResultFragment : BaseFragment<FragmentSearchResultBinding>(),
 
                 is Resource.UnAuthenticated -> {
                 }
+                else ->{}
+
             }
         }
     }
@@ -181,7 +186,9 @@ class SearchResultFragment : BaseFragment<FragmentSearchResultBinding>(),
         lifecycleScope.launch {
             cl.isClickable = false
             findNavController().navigate(
-                SearchResultFragmentDirections.goToRestaurantFragment(restaurant.objectId!!)
+                SearchResultFragmentDirections
+                    .goToRestaurantFragment(restaurant.objectId!!,restaurant.redirectionTable!!,if(restaurant.isKashier == true) PAYMENT_INTEGRATION_TYPE.KASHIER else PAYMENT_INTEGRATION_TYPE.PAYMOB)
+
             )
             delay(1000)
             cl.isClickable = true

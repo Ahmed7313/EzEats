@@ -103,6 +103,8 @@ class VerificationScreenFragment : BaseFragment<FragmentVerificationScreenBindin
                 is Resource.UnAuthenticated -> {
 
                 }
+                else ->{}
+
             }
         }
 
@@ -126,6 +128,8 @@ class VerificationScreenFragment : BaseFragment<FragmentVerificationScreenBindin
                 is Resource.UnAuthenticated -> {
 
                 }
+                else ->{}
+
             }
         }
 

@@ -141,6 +141,8 @@ class PointScreenFragment : BaseFragment<FragmentPointScreenBinding>() {
                     hideMainLoading() // Hide loading indicator
                     // Handle unauthenticated state (e.g., navigate to login)
                 }
+                else ->{}
+
             }
         }
     }

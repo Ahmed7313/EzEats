@@ -88,6 +88,8 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(),
                 is Resource.UnAuthenticated -> {
                     // Handle unauthenticated state
                 }
+                else ->{}
+
             }
         }
     }

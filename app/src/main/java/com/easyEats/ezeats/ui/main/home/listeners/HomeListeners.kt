@@ -13,6 +13,7 @@ import com.easyEats.ezeats.R
 import com.easyEats.ezeats.base.BaseResponse
 import com.easyEats.ezeats.databinding.FragmentHomeScreenBinding
 import com.easyEats.ezeats.domain.main.model.response.home_response.HomeResponse
+import com.easyEats.ezeats.ui.compose.resturant.PAYMENT_INTEGRATION_TYPE
 import com.easyEats.ezeats.ui.main.complaint.ComplaintFragment
 import com.easyEats.ezeats.ui.main.home.HomeScreenFragment
 import com.easyEats.ezeats.ui.main.home.HomeScreenFragmentDirections
@@ -88,6 +89,8 @@ class HomeListeners(
                 is Resource.Loading -> {}
                 is Resource.Success -> {}
                 is Resource.UnAuthenticated -> {}
+                else ->{}
+
             }
         }
     }
@@ -104,6 +107,8 @@ class HomeListeners(
                 }
 
                 is Resource.UnAuthenticated -> {}
+                else ->{}
+
             }
         }
     }
@@ -147,6 +152,8 @@ class HomeListeners(
                 is Resource.UnAuthenticated -> {
 //                    authenticateUser()
                 }
+                else ->{}
+
             }
         }
     }
@@ -157,7 +164,7 @@ class HomeListeners(
                 Log.d(TAG, "observeViewModelData: ${data["restaurantId"].toString()}")
                 navController.navigate(
                     HomeScreenFragmentDirections.goToRestaurantFragment(
-                        data["restaurantId"].toString()
+                        data["restaurantId"].toString(),"",PAYMENT_INTEGRATION_TYPE.KASHIER
                     )
                 )
                 mainViewModel.isOpenShareLink.value = null  // Reset the state after navigating

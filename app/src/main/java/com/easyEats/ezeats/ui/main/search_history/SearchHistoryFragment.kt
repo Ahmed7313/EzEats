@@ -121,6 +121,8 @@ class SearchHistoryFragment : BaseFragment<FragmentSearchHistoryBinding>(),
                 }
 
                 is Resource.UnAuthenticated -> {}
+                else ->{}
+
             }
         }
 
@@ -136,6 +138,8 @@ class SearchHistoryFragment : BaseFragment<FragmentSearchHistoryBinding>(),
                 }
 
                 is Resource.UnAuthenticated -> {}
+                else ->{}
+
             }
         }
 

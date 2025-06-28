@@ -4,6 +4,7 @@ import com.easyEats.ezeats.base.Error
 
 sealed class Resource<T> {
     // Represents a successful response
+    class DEFAULT<T> : Resource<T>()
     data class Success<T>(val data: T?) : Resource<T>()
 
     // Represents an error response

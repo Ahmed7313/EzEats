@@ -87,6 +87,8 @@ class VoucherFragment : BaseFragment<FragmentVoucherBinding>() {
                 is Resource.UnAuthenticated -> {
                     hideMainLoading() // Hide loading indicator
                 }
+                else ->{}
+
             }
         }
     }

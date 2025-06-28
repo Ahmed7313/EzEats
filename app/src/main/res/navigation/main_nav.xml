@@ -97,6 +97,12 @@
         <argument
             android:name="restaurantId"
             app:argType="string" />
+        <argument
+            android:name="tableId"
+            app:argType="string" />
+        <argument
+            android:name="PAYMENT_INTEGRATION_TYPE"
+            app:argType="com.easyEats.ezeats.ui.compose.resturant.PAYMENT_INTEGRATION_TYPE" />
 
     </fragment>
 

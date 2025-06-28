@@ -1,11 +1,17 @@
 package com.easyEats.ezeats.ui.main.restaurant
 
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,6 +29,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.Visibility
 import com.easyEats.ezeats.base.BaseFragment
 import com.easyEats.ezeats.base.BaseResponse
 import com.easyEats.ezeats.databinding.FragmentRestaurantBinding
@@ -64,38 +71,49 @@ class RestaurantFragment : BaseFragment<FragmentRestaurantBinding>(),
 
     //VzblCVYTa0 ammar shop
     //S7CQuGrgXX ramadan Test
-    var restaurantId = "VzblCVYTa0"
-    var tableId = "VzblCVYTa0"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Request the special offers data from the ViewModel.
 //        viewModel.getSpecialOffers(args.restaurantId)
 //        viewModel.getRestaurantMenu(args.restaurantId)
 //        viewModel.getRestaurantMenu("S7CQuGrgXX")
+        val restaurantId = args.restaurantId
+        val tableId = args.tableId
+        val payment_integration_type = args.PAYMENTINTEGRATIONTYPE
         lifecycleScope.launch {
             showLoading()
             // First check table availability
-            viewModel.checkTableAvailability(restaurantId, "1").collect { tableResponse ->
-                if (tableResponse != null) {
-                    Log.d(
-                        TAG,
-                        "onCreate: ${tableResponse.result?.tableOrder?.tableOrderId}"
-                    )//currentOrderId
-                    Log.d(TAG, "onCreate: ${tableResponse.result?.currentOrder?.userId}")//userId
-                    Log.d(TAG, "onCreate: ${tableResponse.result?.currentOrder?.currentOrderId}")
-                    // Table is available, now load menu
-                    cartViewModel.initShop(
-                        tableOrderId = tableResponse.result?.tableOrder?.tableOrderId.toString(),
-                        currentOrderId = tableResponse.result?.currentOrder?.currentOrderId.toString(),
-                        userId = tableResponse.result?.currentOrder?.userId.toString(),
-                        shopId = restaurantId,
-                        tableId = tableId
-                    )
-                    viewModel.getRestaurantMenu(restaurantId)
-                } else {
-                    // Handle table not available
-                    viewModel.getRestaurantMenu(restaurantId)
+            if(tableId.isNotEmpty()) {
+                viewModel.checkTableAvailability(restaurantId, tableId).collect { tableResponse ->
+                    if (tableResponse != null) {
+                        Log.d(
+                            TAG,
+                            "onCreate: ${tableResponse.result?.tableOrder?.tableOrderId}"
+                        )//currentOrderId
+                        Log.d(
+                            TAG,
+                            "onCreate: ${tableResponse.result?.currentOrder?.userId}"
+                        )//userId
+                        Log.d(
+                            TAG,
+                            "onCreate: ${tableResponse.result?.currentOrder?.currentOrderId}"
+                        )
+                        // Table is available, now load menu
+                        cartViewModel.initShop(
+                            tableOrderId = tableResponse.result?.tableOrder?.tableOrderId.toString(),
+                            currentOrderId = tableResponse.result?.currentOrder?.currentOrderId.toString(),
+                            userId = tableResponse.result?.currentOrder?.userId.toString(),
+                            shopId = restaurantId,
+                            tableId = tableId
+                        )
+                        viewModel.getRestaurantMenu(restaurantId)
+                    } else {
+                        // Handle table not available
+                        viewModel.getRestaurantMenu(restaurantId)
+                    }
                 }
+            }else{
+                viewModel.getRestaurantMenu(restaurantId)
             }
         }
 //        viewModel.isBottomSheetVisible.observe(this) { isVisible ->
@@ -123,6 +141,8 @@ class RestaurantFragment : BaseFragment<FragmentRestaurantBinding>(),
      * Sets up the views and their corresponding actions for the fragment.
      */
     override fun setUpViews() {
+        Log.d(TAG, "setUpViewsHere: GONE")
+        binding.restaurantContainer.visibility = View.GONE
         // Initialize the special offer adapter and set the click listener for the adapter.
         specialOfferAdapter = SpecialOfferAdapter(this)
 
@@ -138,6 +158,7 @@ class RestaurantFragment : BaseFragment<FragmentRestaurantBinding>(),
         binding.ivBack.setOnClickListener {
             findNavController().navigateUp()
         }
+
 
 
 
@@ -193,6 +214,32 @@ class RestaurantFragment : BaseFragment<FragmentRestaurantBinding>(),
 
     }
 
+    private fun setupBusyOrClose() {
+        val fullText = "This Restaurant is currently busy or closed, you can continue browsing the menu but you can’t make an order"
+
+
+// Change "busy" to red
+        val spannable = SpannableString(fullText)
+
+        listOf("busy", "closed").forEach { word ->
+            val start = fullText.indexOf(word)
+            if (start >= 0) {
+                spannable.setSpan(
+                    ForegroundColorSpan(Color.RED),
+                    start,
+                    start + word.length,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+            }
+        }
+        binding.busyOrCloseText.text = spannable
+        if(cartViewModel.currentOrderId.isEmpty() || cartViewModel.tableOrderId.isEmpty()){
+            binding.llCloseOrBusy.visibility = View.VISIBLE
+        }else{
+            binding.llCloseOrBusy.visibility = View.GONE
+        }
+    }
+
 
     /**
      * Observes the special offers and restaurant menu data from the ViewModel and updates the UI accordingly.
@@ -234,6 +281,7 @@ class RestaurantFragment : BaseFragment<FragmentRestaurantBinding>(),
                 is Resource.UnAuthenticated -> {
                     // Handle the unauthenticated case (e.g., redirect to login).
                 }
+                else ->{}
             }
         }
 
@@ -256,11 +304,15 @@ class RestaurantFragment : BaseFragment<FragmentRestaurantBinding>(),
                     Log.d(TAG, "listenToObservers: ${resources.data?.result?.data?.menu?.size}")
                     // Hide the loader and update the UI with the fetched data.
                     initializeMenuAndSubMenu(resources)
+                    setupBusyOrClose()
                     smoothScrolling()
                     hideLoading()
                 }
 
                 is Resource.UnAuthenticated -> {
+                    // Handle the unauthenticated case (e.g., redirect to login).
+                }
+                is Resource.DEFAULT -> {
                     // Handle the unauthenticated case (e.g., redirect to login).
                 }
             }
@@ -275,7 +327,6 @@ class RestaurantFragment : BaseFragment<FragmentRestaurantBinding>(),
     private fun initializeMenuAndSubMenu(resources: Resource.Success<BaseResponse<RestaurantMenuResponse>>) {
         // Initialize the menu tab adapter with the restaurant menu data.
         val list = mutableListOf<Menu>()
-
         resources.data?.result?.data?.menu?.forEach {
             if (it.isHidden == false)
                 list.add(it)
@@ -297,6 +348,8 @@ class RestaurantFragment : BaseFragment<FragmentRestaurantBinding>(),
                 LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             layoutManager = binding.rvSubMenu.layoutManager as LinearLayoutManager
         }
+        Log.d(TAG, "setUpViewsHere2: visible")
+        binding.restaurantContainer.visibility = View.VISIBLE
     }
 
 
@@ -429,10 +482,6 @@ class RestaurantFragment : BaseFragment<FragmentRestaurantBinding>(),
 
     override fun onDestroyView() {
         super.onDestroyView()
-        verticalMenuAdapter = VerticalMenuAdapter(arrayListOf(), ::onMenuItemClicked)
-        binding.rvSubMenu.adapter = verticalMenuAdapter
 
-        menuTabAdapter = MenuTabAdapter(arrayListOf(), null, ::updateSelection)
-        binding.rvMenuHeader.adapter = menuTabAdapter
     }
 }

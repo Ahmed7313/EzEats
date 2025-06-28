@@ -30,6 +30,7 @@ import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.new_res
 import com.easyEats.ezeats.domain.main.model.response.search_response.Category
 import com.easyEats.ezeats.ui.compose.offers.OffersList
 import com.easyEats.ezeats.ui.compose.offers.SelectionButton
+import com.easyEats.ezeats.ui.compose.resturant.PAYMENT_INTEGRATION_TYPE
 import com.easyEats.ezeats.ui.large
 import com.easyEats.ezeats.ui.main.main.MainViewModel
 import com.easyEats.ezeats.ui.main.offers.adapter.OffersCategoryAdapter
@@ -110,6 +111,8 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
 
                 is Resource.Loading -> showMainLoading()
                 is Resource.UnAuthenticated -> hideMainLoading()
+                else ->{}
+
             }
         }
     }
@@ -191,9 +194,10 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
                                         OffersList(
                                             restaurants = filteredList!!,
                                             onRestaurantClick = { restaurant ->
+                                                Log.d(TAG, "listenToRestaurants: geher")
                                                 findNavController().navigate(
                                                     OffersScreenFragmentDirections
-                                                        .goToRestaurantFragment(restaurant.objectId!!)
+                                                        .goToRestaurantFragment(restaurant.objectId!!,restaurant.redirectionTable!!,if(restaurant.isKashier == true) PAYMENT_INTEGRATION_TYPE.KASHIER else PAYMENT_INTEGRATION_TYPE.PAYMOB)
                                                 )
                                             }
                                         )
@@ -203,6 +207,8 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
                         }
 
                         is Resource.UnAuthenticated -> hideMainLoading()
+                        else ->{}
+
                     }
                 }
             }

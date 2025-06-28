@@ -62,6 +62,8 @@ class VoucherBottomSheet : BaseBottomSheetFragment<VoucherBottomSheetBinding>() 
                 }
 
                 is Resource.UnAuthenticated -> {}
+                else ->{}
+
             }
         }
     }

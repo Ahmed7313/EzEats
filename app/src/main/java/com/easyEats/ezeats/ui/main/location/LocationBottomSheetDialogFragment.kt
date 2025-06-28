@@ -89,6 +89,8 @@ class LocationBottomSheetDialogFragment : BottomSheetDialogFragment(),
                 }
 
                 is Resource.UnAuthenticated -> {}
+                else ->{}
+
             }
         }
         lifecycleScope.launch {

@@ -137,6 +137,8 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), DeleteAc
 
                 is Resource.UnAuthenticated -> { /* handle unauthenticated state */
                 }
+                else ->{}
+
             }
         }
 
@@ -159,6 +161,8 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), DeleteAc
                 is Resource.UnAuthenticated -> {
 
                 }
+                else ->{}
+
             }
 
         }

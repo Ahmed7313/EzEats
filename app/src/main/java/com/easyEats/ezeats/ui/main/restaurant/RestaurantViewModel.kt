@@ -3,6 +3,7 @@ package com.easyEats.ezeats.ui.main.restaurant
 import android.util.Log
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
@@ -58,6 +59,7 @@ class RestaurantViewModel @Inject constructor(
     var availableRestaurantId = ""
     var availableUserId = ""
     var availableTableId = ""
+
 
 
     fun showBottomSheet(subMenu: SubMenu) {
@@ -174,6 +176,7 @@ class RestaurantViewModel @Inject constructor(
                 onSuccess = { resource ->
                     // Update the LiveData with the fetched special offers.
                     _restaurantMenu.value = resource
+
                 }
             )
 
@@ -233,6 +236,8 @@ class RestaurantViewModel @Inject constructor(
                     onSuccess = { data ->
                         if (data != null) {
                             send(Resource.Success(result))
+                            send(Resource.DEFAULT())
+
                         } else {
                             send(Resource.Error("Invalid data format"))
                         }
