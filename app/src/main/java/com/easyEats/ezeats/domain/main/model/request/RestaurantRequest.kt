@@ -14,4 +14,5 @@ data class RestaurantRequest(
     val userLat: String = "",
     val userLon: String = "",
     val compoundId: String? = null,
+    val limit : Int = 200
 )

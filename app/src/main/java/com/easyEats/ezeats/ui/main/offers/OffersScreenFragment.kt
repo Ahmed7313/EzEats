@@ -220,12 +220,13 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
             mainViewModel.userLocationAddressMutableLiveData.collect { loc ->
                 binding.tvLocation.text = loc?.address?.let { "You're at $it" }
                     ?: getString(R.string.select_location)
+                //osama
                 offersViewModel.getRestaurantsResult(
                     "",
-                    //loc?.lat,
-                    //loc?.lng
-                    30.0145125310423.toString(),
-                    30.975965400415998.toString(),
+                    loc?.lat,
+                    loc?.lng,
+//                    30.0145125310423.toString(),
+//                    30.975965400415998.toString(),
                     mainViewModel.compound,
                 )
             }
