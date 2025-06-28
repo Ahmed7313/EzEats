@@ -19,11 +19,6 @@ fun SubMenu.toProductEntity() = ProductEntity(
     name = name ?: "",
     imageUrl = coverPhoto?.url,
     price = price ?: 0.0,
+    qty = 1,
     description = description
-)
-
-fun Choice.toProductChoiceEntity(productId: String) = ProductChoiceEntity(
-    productId = productId,
-    choiceId = id ?: throw IllegalArgumentException("Choice ID cannot be null"),
-    choicePrice = price ?: 0.0
 )

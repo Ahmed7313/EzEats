@@ -31,6 +31,13 @@ class VerticalMenuAdapter(
         }
     }
 
+    fun clear() {
+        if (items.isNotEmpty()) {
+            (items as? MutableList)?.clear()
+            notifyDataSetChanged()
+        }
+    }
+
     override fun getItemCount(): Int = items.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -44,6 +51,7 @@ class VerticalMenuAdapter(
                 )
                 HeaderViewHolder(binding)
             }
+
             TYPE_SUB_ITEM -> {
                 val binding = DataBindingUtil.inflate<MenuItemBinding>(
                     LayoutInflater.from(parent.context),
@@ -53,6 +61,7 @@ class VerticalMenuAdapter(
                 )
                 SubItemViewHolder(binding)
             }
+
             else -> throw IllegalArgumentException("Invalid view type")
         }
     }
@@ -60,18 +69,24 @@ class VerticalMenuAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (val item = items[position]) {
             is VerticalItem.Header -> (holder as HeaderViewHolder).bind(item)
-            is VerticalItem.SubItem -> (holder as SubItemViewHolder).bind(item.subMenu)
+            is VerticalItem.SubItem -> {
+                if (item.subMenu.isHidden == false)
+                    (holder as SubItemViewHolder).bind(item.subMenu)
+            }
         }
     }
 
-    inner class HeaderViewHolder(private val binding: SubMenuHeaderBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class HeaderViewHolder(private val binding: SubMenuHeaderBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(item: VerticalItem.Header) {
+
             binding.item = item
             binding.executePendingBindings() // Executes any pending bindings immediately
         }
     }
 
-    inner class SubItemViewHolder(private val binding: MenuItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class SubItemViewHolder(private val binding: MenuItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(subMenu: SubMenu) {
             binding.subMenu = subMenu
             binding.executePendingBindings()

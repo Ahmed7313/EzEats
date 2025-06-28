@@ -10,15 +10,18 @@ import androidx.lifecycle.viewModelScope
 import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.base.BaseResponse
 import com.easyEats.ezeats.databinding.FragmentRestaurantBinding
+import com.easyEats.ezeats.domain.main.model.request.restaurant.CheckTableAvailabilityRequest
 import com.easyEats.ezeats.domain.main.model.request.restaurant.RestaurantMenuRequest
 import com.easyEats.ezeats.domain.main.model.request.restaurant.RestaurantRequest
 import com.easyEats.ezeats.domain.main.model.response.home_response.HotDeal
 import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.RestaurantMenuResponse
 import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.SubMenu
+import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.check_table_availability.TableAvailabilityResponse
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.RestaurantInfo
 import com.easyEats.ezeats.domain.main.use_case.MainUseCase
 import com.easyEats.ezeats.domain.room.ProductDao
-import com.easyEats.ezeats.domain.room.ProductEntity
+import com.easyEats.ezeats.domain.room.ProductWithChoices
+import com.easyEats.ezeats.ui.compose.resturant.ChoiceSelection
 import com.easyEats.ezeats.ui.main.main.MainViewModel
 import com.easyEats.ezeats.ui.main.restaurant.adapter.SpecialOfferAdapter
 import com.easyEats.ezeats.utils.Resource
@@ -27,7 +30,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.channelFlow
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -38,7 +41,7 @@ import javax.inject.Inject
 @HiltViewModel
 class RestaurantViewModel @Inject constructor(
     private val mainUseCase: MainUseCase,
-    private val productSelectionDao: ProductDao,
+    private val productDao: ProductDao,
     savedStateHandle: SavedStateHandle
 ) : MainViewModel(mainUseCase) {
 
@@ -51,6 +54,11 @@ class RestaurantViewModel @Inject constructor(
 
     private val _selectedSubMenu = MutableStateFlow<SubMenu?>(null)
     val selectedSubMenu = _selectedSubMenu.asStateFlow()
+
+    var availableRestaurantId = ""
+    var availableUserId = ""
+    var availableTableId = ""
+
 
     fun showBottomSheet(subMenu: SubMenu) {
         Log.d(TAG, "showBottomSheet: ")
@@ -80,30 +88,37 @@ class RestaurantViewModel @Inject constructor(
     private val _restaurantMenu = MutableLiveData<Resource<BaseResponse<RestaurantMenuResponse>>>()
     val restaurantMenu: LiveData<Resource<BaseResponse<RestaurantMenuResponse>>> = _restaurantMenu
 
-    private val _selected = MutableStateFlow<Map<String, String>>(emptyMap())
-    val selected = _selected.asStateFlow()
+    private val _cartProducts = MutableStateFlow<List<ProductWithChoices>>(emptyList())
+    val cartProducts = _cartProducts.asStateFlow()
 
-    fun selectChoice(groupId: String, choiceId: String) {
-        _selected.value = _selected.value.toMutableMap().apply {
-            this[groupId] = choiceId
-        }
+    private val _totalCartPrice = MutableStateFlow(0.0)
+    val totalCartPrice = _totalCartPrice.asStateFlow()
+
+
+    init {
+        // Observe changes in the cart products and calculate the total price.
+        observeCartChanges()
+    }
+
+    private fun observeCartChanges() {
         viewModelScope.launch {
-            // Save the selected choice to the database.
-            productSelectionDao.insertProduct(
-                ProductEntity(
-                    "asd",
-                    "osama",
-                    "https://example.com/image.jpg",
-                    150.00,
-                    "Description"
-                )
-            )
+            productDao.getProductsWithChoices()
+                .collect { products ->
+                    _cartProducts.value = products
+                    calculateTotalPrice(products)
+                }
         }
     }
 
-    fun isSelected(groupId: String, choiceId: String): Boolean {
-        return _selected.value[groupId] == choiceId
+    private suspend fun calculateTotalPrice(products: List<ProductWithChoices>) {
+        var total = 0.0
+        products.forEach { productWithChoices ->
+            total += productDao.getProductTotalPriceOrZero(productWithChoices.product.productId)
+        }
+        _totalCartPrice.value = total
     }
+
+
 
     /**
      * Fetches special offers for the restaurant by retrieving the current user's location.
@@ -162,6 +177,20 @@ class RestaurantViewModel @Inject constructor(
                 }
             )
 
+        }
+    }
+
+    fun checkTableAvailability(restaurantId: String, tableNumber: String) : Flow<TableAvailabilityResponse?>  = flow{
+
+        availableRestaurantId = ""
+        availableUserId = ""
+        availableTableId = ""
+        try {
+            val result = mainUseCase.restaurantUseCase.checkTableAvailability(CheckTableAvailabilityRequest(restaurantId,tableNumber))
+            emit(result)
+        }catch (e: Exception){
+            emit(null)
+            Log.d(TAG, "checkTableAvailability: ")
         }
     }
 

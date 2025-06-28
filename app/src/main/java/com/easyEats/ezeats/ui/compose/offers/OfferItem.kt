@@ -6,7 +6,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,14 +16,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
@@ -33,22 +31,23 @@ import com.daman.edman.screens.components.HeaderText
 import com.daman.edman.screens.components.IconTextView
 import com.daman.edman.screens.components.NormalText
 import com.easyEats.ezeats.R
+import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.new_restaurants_reponse.RestaurantsResponseItem
 import com.easyEats.ezeats.ui.extraMedium
-import com.google.android.play.core.ktx.AppUpdateResult
 
 @Composable
 fun OfferItem(
-    resturantName : String,
-    resturantType : String,
+    restaurant: RestaurantsResponseItem,
+    resturantName: String,
+    resturantType: String,
     distance: String,
-    resturantImage : String,
-    available : Boolean = false,
+    resturantImage: String,
+    available: Boolean = false,
     modifier: Modifier = Modifier,
-    hasDiscount : Boolean = false,
+    hasDiscount: Boolean = false,
     discountPercentage: String,
-    hasFreeDelivery : Boolean = false,
-    hasOffers : Boolean = false,
-    onClick: () -> Unit
+    hasFreeDelivery: Boolean = false,
+    hasOffers: Boolean = false,
+    onClick: () -> Unit,
 ) {
 
     Surface(
@@ -71,17 +70,17 @@ fun OfferItem(
                     .size(105.dp)
             ) {
                 Image(
-                    painter = rememberAsyncImagePainter(resturantImage),
+                    painter = rememberAsyncImagePainter(restaurant.logo),
                     contentDescription = "Offer Background",
                     contentScale = ContentScale.Crop,
                     alignment = Alignment.Center,
                     modifier = Modifier
                         .fillMaxSize()
                         // dim the image when closed
-                        .alpha(if (!available) 0.5f else 1f)
+                        .alpha(if (!restaurant.available!!) 0.5f else 1f)
                 )
-
-                if (!available) {
+//isBusy , isClose ,
+                if (restaurant.isClose == "Closed" || restaurant.isBusy == true) {
                     // optional: a dark overlay
                     Box(
                         Modifier
@@ -89,7 +88,7 @@ fun OfferItem(
                             .background(Color.Black.copy(alpha = 0.8f))
                     )
                     HeaderText(
-                        text = "Closed",
+                        text = if(restaurant.isClose == "closed") stringResource(R.string.closed) else stringResource(R.string.busy),
                         color = Color.White,
                         modifier = Modifier.align(Alignment.Center)
                     )
@@ -105,15 +104,18 @@ fun OfferItem(
                     .padding(top = 4.dp, bottom = 10.dp)
             ) {
 
-                HeaderText(text = resturantName)
+                HeaderText(text = restaurant.name.toString())
 
                 AppSpacer(height = 4.dp)
 
-                NormalText(text = resturantType)
+                NormalText(text = restaurant.locationName.toString())
 
                 AppSpacer(height = 4.dp)
 
-                IconTextView(icon = R.drawable.marker_pin_icon, text = distance)
+                IconTextView(
+                    icon = R.drawable.marker_pin_icon,
+                    text = (restaurant.distance ?: 0).toString() + " km"
+                )
 
                 AppSpacer(height = 16.dp)
 
@@ -122,15 +124,15 @@ fun OfferItem(
                     // you can remember a scroll state if you want to observe scroll position:
                     // state = rememberLazyListState()
                 ) {
-                    if (hasDiscount) {
+                    if (restaurant.hasDiscount!!) {
                         item {
                             StatuesItem(
                                 hasDiscount = true,
-                                percentage = discountPercentage
+                                percentage = "${restaurant.discountOnMenu ?: 0}%"
                             )
                         }
                     }
-                    if (hasFreeDelivery) {
+                    if (restaurant.hasFreeDelivery!!) {
                         item {
                             StatuesItem(
                                 hasFreeDelivery = true,
@@ -138,7 +140,7 @@ fun OfferItem(
                             )
                         }
                     }
-                    if (hasOffers) {
+                    if (restaurant.hasOffers!!) {
                         item {
                             StatuesItem(
                                 hasOffers = true,
@@ -159,6 +161,7 @@ fun OfferItemPreview() {
 
     Column {
         OfferItem(
+            restaurant = RestaurantsResponseItem(),
             resturantName = "Resturant Name",
             resturantType = "Resturant Type",
             distance = "2.5 km",
@@ -168,12 +171,13 @@ fun OfferItemPreview() {
             discountPercentage = "20%",
             hasFreeDelivery = true,
             hasOffers = true,
-            onClick = {}
+            onClick = {},
         )
 
         AppSpacer(height = 16.dp)
 
         OfferItem(
+            restaurant = RestaurantsResponseItem(),
             resturantName = "Closed Resturant",
             resturantType = "Resturant Type",
             distance = "2.5 km",
@@ -183,7 +187,7 @@ fun OfferItemPreview() {
             discountPercentage = "",
             hasFreeDelivery = false,
             hasOffers = false,
-            onClick = {}
+            onClick = {},
         )
     }
 

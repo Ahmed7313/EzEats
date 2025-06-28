@@ -45,7 +45,6 @@
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_42sdp"
                 android:layout_marginHorizontal="@dimen/_20sdp"
-                android:layout_marginBottom="8dp"
                 android:backgroundTint="@color/white"
                 android:fontFamily="@font/gilroy_700"
                 android:text="@string/login"
@@ -53,11 +52,14 @@
                 android:textSize="@dimen/_15ssp"
                 app:layout_constraintBottom_toTopOf="@+id/btn_continue_as_guest"
                 app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginBottom="@dimen/_33sdp"
+
                 app:layout_constraintStart_toStartOf="parent" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_continue_as_guest"
                 android:layout_width="0dp"
+                android:visibility="gone"
                 android:layout_height="@dimen/_42sdp"
                 android:layout_marginHorizontal="@dimen/_20sdp"
                 android:layout_marginBottom="@dimen/_33sdp"

@@ -11,6 +11,7 @@ import com.easyEats.ezeats.domain.main.model.request.home.HomeRequest
 import com.easyEats.ezeats.domain.main.model.request.offer_request.OfferRequest
 import com.easyEats.ezeats.domain.main.model.request.offers.OffersRequest
 import com.easyEats.ezeats.domain.main.model.request.order_history.OrderHistoryRequest
+import com.easyEats.ezeats.domain.main.model.request.restaurant.CheckTableAvailabilityRequest
 import com.easyEats.ezeats.domain.main.model.request.restaurant.RestaurantMenuRequest
 import com.easyEats.ezeats.domain.main.model.request.restaurant.RestaurantRequest
 import com.easyEats.ezeats.domain.main.model.request.search.SearchRequest
@@ -22,10 +23,13 @@ import com.easyEats.ezeats.domain.main.model.response.order_history.OrderHistory
 import com.easyEats.ezeats.domain.main.model.response.partners.PartnersResponse
 import com.easyEats.ezeats.domain.main.model.response.points.PointsResponse
 import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.RestaurantMenuResponse
+import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.check_table_availability.TableAvailabilityResponse
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.Offer
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.Restaurant
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.RestaurantInfo
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.new_restaurants_reponse.RestaurantsResponseItem
+import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.result.RestaurantListResult
+import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.result.RestaurantListResultResponse
 import com.easyEats.ezeats.domain.main.model.response.search_response.Category
 import com.easyEats.ezeats.domain.main.model.response.user_info.UserInfoResponse
 import com.easyEats.ezeats.domain.main.model.response.voucher.VoucherResponse
@@ -80,6 +84,10 @@ class MainResponseImpl @Inject constructor(
 
     override suspend fun getRestaurantMenu(restaurantMenuRequest: RestaurantMenuRequest):BaseResponse<RestaurantMenuResponse> {
         return mainApiService.getRestaurantMenu(restaurantMenuRequest)
+    }
+
+    override suspend fun checkTableAvailability(restaurantMenuRequest: CheckTableAvailabilityRequest): TableAvailabilityResponse {
+        return mainApiService.checkTableAvailability(restaurantMenuRequest)
     }
 
     override suspend fun getOfferById(offerRequest: OfferRequest): BaseResponse<HotDeal> {
@@ -150,7 +158,7 @@ class MainResponseImpl @Inject constructor(
     override fun checkIfUserViewedRatingDialog(): Flow<Boolean> =
         dataStorePreference.checkIfUserViewedRatingDialog()
 
-    override suspend fun getRestaurants(restaurantRequest: com.easyEats.ezeats.domain.main.model.request.RestaurantRequest): BaseResponse<List<RestaurantsResponseItem>> {
+    override suspend fun getRestaurants(restaurantRequest: com.easyEats.ezeats.domain.main.model.request.RestaurantRequest): RestaurantListResultResponse {
         return mainApiService.getRestaurants(restaurantRequest)
     }
 

@@ -141,11 +141,11 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
                         is Resource.Success -> {
                             hideMainLoading()
                             val list =
-                                resource.data?.result?.data ?: emptyList<RestaurantsResponseItem>()
-                            Log.v(
-                                "Fragment_Debug",
-                                "SUCCESS: Received a list of size: ${list.size}. Calling setContent."
-                            )
+                                resource.data?.restaurantListResult
+//                            Log.v(
+//                                "Fragment_Debug",
+//                                "SUCCESS: Received a list of size: ${list}. Calling setContent."
+//                            )
 
                             // Check if the fragment's view is still active
                             if (view != null) {
@@ -183,17 +183,17 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
                                         AppSpacer(height = large   )
 
                                         val filteredList = when (selectedTab) {
-                                            0 -> list.filter { it.isPickUp == true }
-                                            1 -> list.filter { it.isDelivery == true }
-                                            else -> list
+                                            0 -> list?.restaurants?.pickupRestaurants
+                                            1 -> list?.restaurants?.deliveryRestaurants
+                                            else -> emptyList()
                                         }
-
+//
                                         OffersList(
-                                            restaurants = filteredList,
+                                            restaurants = filteredList!!,
                                             onRestaurantClick = { restaurant ->
                                                 findNavController().navigate(
                                                     OffersScreenFragmentDirections
-                                                        .goToRestaurantFragment(restaurant.id!!)
+                                                        .goToRestaurantFragment(restaurant.objectId!!)
                                                 )
                                             }
                                         )

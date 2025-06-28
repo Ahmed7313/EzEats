@@ -9,6 +9,8 @@ import com.easyEats.ezeats.base.BaseResponse
 import com.easyEats.ezeats.databinding.FragmentPercentScreenBinding
 import com.easyEats.ezeats.domain.main.model.request.RestaurantRequest
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.new_restaurants_reponse.RestaurantsResponseItem
+import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.result.RestaurantListResult
+import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.result.RestaurantListResultResponse
 import com.easyEats.ezeats.domain.main.model.response.search_response.Category
 import com.easyEats.ezeats.domain.main.use_case.MainUseCase
 import com.easyEats.ezeats.ui.main.main.MainViewModel
@@ -29,13 +31,14 @@ import javax.inject.Inject
 class OffersViewModel @Inject constructor(val mainUseCase: MainUseCase) :
     MainViewModel(mainUseCase) {
 
+        val TAG = "OffersViewModel"
     /**
      * Mutable state flow for holding restaurant results.
      * This is exposed as a StateFlow to the UI layer.
      */
     private val _restaurantResultStateFlow =
-        MutableStateFlow<Resource<BaseResponse<List<RestaurantsResponseItem>>>>(Resource.Loading())
-    val restaurantResultStateFlow: StateFlow<Resource<BaseResponse<List<RestaurantsResponseItem>>>> get() = _restaurantResultStateFlow
+        MutableStateFlow<Resource<RestaurantListResultResponse>>(Resource.Loading())
+    val restaurantResultStateFlow: StateFlow<Resource<RestaurantListResultResponse>> get() = _restaurantResultStateFlow
 
     /**
      * Mutable live data for holding category results.
@@ -55,44 +58,72 @@ class OffersViewModel @Inject constructor(val mainUseCase: MainUseCase) :
         userLong: String?,
         compound: String
     ) {
-        viewModelScope.launch {
-            val flow = createRestaurantsResultRequest(RestaurantRequest(categoryId = categoryId,
-                userLat = if(compound.isEmpty()) userLat ?: "0.0" else "",
-                userLon = if(compound.isEmpty()) userLong ?: "0.0" else "",
-                cmpoundId = if(compound.isEmpty()) null else compound))
-            apply(
-                flow = flow,
-                maxRetries = 2,
-                onError = {
-                    _restaurantResultStateFlow.value = Resource.Error("No Internet Connection")
-                },
-                onSuccess = { resource ->
-                    _restaurantResultStateFlow.value = resource
+        Log.d(TAG, "getRestaurantsResult: start")
+        _restaurantResultStateFlow.value = Resource.Loading()
+        try{
+            viewModelScope.launch {
+                try{
+//                     val request = createRestaurantsResultRequest()
+                    val response = mainUseCase.homeUseCase.getRestaurants(RestaurantRequest(categoryId = categoryId,
+                        userLat = if(compound.isEmpty()) userLat ?: "0.0" else "",
+                        userLon = if(compound.isEmpty()) userLong ?: "0.0" else "",
+                        compoundId = if(compound.isEmpty()) null else compound))
+                    _restaurantResultStateFlow.value = Resource.Success(response)
+//                    Log.d(TAG, "createRestaurantsResultRequest: ${restaurants.restaurantListResult?.restaurants?.pickupRestaurants?.size}")
+//                    Log.d(TAG, "createRestaurantsResultRequest: ${restaurants.restaurantListResult?.restaurants?.deliveryRestaurants?.size}")
+
+//                    apply(
+//                        flow = flow,
+//                        maxRetries = 2,
+//                        onError = {
+//                            _restaurantResultStateFlow.value = Resource.Error("No Internet Connection")
+//                        },
+//                        onSuccess = { resource ->
+//                            _restaurantResultStateFlow.value = resource
+//                        }
+//                    )
+                }catch (e: Exception){
+                    _restaurantResultStateFlow.value = Resource.Error(e.message.toString(),null)
+                    Log.d(TAG, "getRestaurantsResult: ${e.message}")
                 }
-            )
+            }    
+        }catch (e: Exception){
+            _restaurantResultStateFlow.value = Resource.Error(e.message.toString(),null)
+            Log.d(TAG, "getRestaurantsResult: ${e.message}")
         }
+        
     }
 
     /**
      * Creates a flow that makes a request to get restaurant data.
      * It uses the `homeUseCase.getRestaurants()` method and handles different response states.
      */
-    private fun createRestaurantsResultRequest(request: RestaurantRequest): Flow<Resource<BaseResponse<List<RestaurantsResponseItem>>>> =
-        channelFlow {
-            send(Resource.Loading())
-            val restaurants = mainUseCase.homeUseCase.getRestaurants(request)
-            restaurants.handleResponse(
-                onSuccess = {
-                    send(Resource.Success(restaurants))
-                },
-                onError = { message, error ->
-                    send(Resource.Error(message, error))
-                },
-                onUnauthenticated = {
-                    send(Resource.UnAuthenticated())
-                }
-            )
-        }
+    private fun createRestaurantsResultRequest(request: RestaurantRequest){
+
+//        viewModelScope.launch {
+//            val restaurants = mainUseCase.homeUseCase.getRestaurants(request)
+//            Log.d(TAG, "createRestaurantsResultRequest: ${restaurants.restaurantListResult?.restaurants?.pickupRestaurants?.size}")
+//            Log.d(TAG, "createRestaurantsResultRequest: ${restaurants.restaurantListResult?.restaurants?.deliveryRestaurants?.size}")
+//        }
+    }
+//        channelFlow {
+//            try{
+//                Log.d(TAG, "createRestaurantsResultRequest: starting")
+//                send(Resource.Loading())
+//
+////                restaurants.handleResponse(onSuccess = {
+////                    Log.d(TAG, "createRestaurantsResultRequest: ${it?.restaurants?.pickupRestaurants?.size}")
+////                    Log.d(TAG, "createRestaurantsResultRequest: ${it?.restaurants?.deliveryRestaurants?.size}")
+////                }, onError = { message , error ->
+////
+////                    Log.d(TAG, "createRestaurantsResultRequest: $message , $error")
+////                }, onUnauthenticated = {
+////
+////                })
+//            }catch (e: Exception){
+//                Log.d(TAG, "createRestaurantsResultRequest: ${e.message}")
+//            }
+//        }
 
     /**
      * Fetches category data for restaurants.

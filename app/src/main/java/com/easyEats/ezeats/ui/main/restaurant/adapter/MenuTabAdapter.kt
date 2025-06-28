@@ -14,6 +14,7 @@ import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.Menu
  * Adapter for the menu tab list. This adapter binds the list of menus to the RecyclerView.
  * It also handles the click event to select a menu tab.
  */
+
 class MenuTabAdapter(
     val menus: List<Menu>?,
     var selectedId: String?,
@@ -30,6 +31,13 @@ class MenuTabAdapter(
     inner class MenuTabViewHolder(val binding: MenuHeaderBinding) :
         RecyclerView.ViewHolder(binding.root)
 
+    fun clear() {
+        if (!menus.isNullOrEmpty()) {
+            (menus as? MutableList)?.clear()
+            notifyDataSetChanged()
+        }
+    }
+
     /**
      * Inflates the menu header layout for each menu tab
      */
@@ -42,6 +50,7 @@ class MenuTabAdapter(
      * Returns the number of items in the list
      */
     override fun getItemCount(): Int = menus?.size ?: 0
+
 
     /**
      * Binds data to the menu tab and updates the view with selection state

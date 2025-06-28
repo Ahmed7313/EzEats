@@ -15,12 +15,19 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.IOException
+import java.security.cert.X509Certificate
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
+import javax.net.ssl.SSLContext
+import javax.net.ssl.TrustManager
+import javax.net.ssl.X509TrustManager
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -68,17 +75,66 @@ object NetworkModule {
     /**
      * Provides OkHttpClient for making HTTP requests.
      */
+
+    class RetryInterceptor(private val maxRetry: Int) : Interceptor {
+        override fun intercept(chain: Interceptor.Chain): Response {
+            var attempt = 0
+            var response: Response
+            var exception: Exception? = null
+
+            do {
+                try {
+                    response = chain.proceed(chain.request())
+                    if (response.isSuccessful) {
+                        return response
+                    }
+                } catch (e: Exception) {
+                    exception = e
+                }
+                attempt++
+            } while (attempt < maxRetry)
+
+            throw exception ?: IOException("Request failed after $maxRetry attempts")
+        }
+    }
+
+    @Provides
+    @Singleton
+    fun provideUnsafeOkHttpClient(): OkHttpClient.Builder {
+        try {
+            val trustAllCerts = arrayOf<TrustManager>(
+                object : X509TrustManager {
+                    override fun checkClientTrusted(chain: Array<out X509Certificate>, authType: String) {}
+                    override fun checkServerTrusted(chain: Array<out X509Certificate>, authType: String) {}
+                    override fun getAcceptedIssuers(): Array<X509Certificate> = arrayOf()
+                }
+            )
+
+            val sslContext = SSLContext.getInstance("SSL")
+            sslContext.init(null, trustAllCerts, java.security.SecureRandom())
+
+            val sslSocketFactory = sslContext.socketFactory
+            return OkHttpClient.Builder()
+                .sslSocketFactory(sslSocketFactory, trustAllCerts[0] as X509TrustManager)
+                .hostnameVerifier { _, _ -> true }
+        } catch (e: Exception) {
+            throw RuntimeException(e)
+        }
+    }
+
+
     @Provides
     @Singleton
     fun provideOkHttpClient(
         loggingInterceptor: HttpLoggingInterceptor,
         headerInterceptor: HeaderInterceptor,
+        unsafeOkHttpClient: OkHttpClient.Builder,
         @ApplicationContext context: Context
     ): OkHttpClient {
-        return OkHttpClient.Builder()
+        return unsafeOkHttpClient
             .addInterceptor(loggingInterceptor)
             .addInterceptor(headerInterceptor)
-//            .addInterceptor(ChuckerInterceptor(context))
+//            .addInterceptor(RetryInterceptor(maxRetry = 2))
             .addNetworkInterceptor(CacheInterceptor())
             .connectTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)

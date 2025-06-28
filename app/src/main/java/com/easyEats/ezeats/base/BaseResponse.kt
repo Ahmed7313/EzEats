@@ -1,5 +1,7 @@
 package com.easyEats.ezeats.base
 
+import android.util.Log
+
 // Define the Result class with generics
 data class Result<T>(
     val code: Int,
@@ -33,6 +35,8 @@ data class Error(
 data class BaseResponse<T>(
     val result: Result<T>
 ) {
+
+    val TAG = "BaseResponse"
     // Process the result and handle success, error, or unauthenticated accordingly
     suspend fun handleResponse(
         onSuccess: suspend (T?) -> Unit,
@@ -45,6 +49,7 @@ data class BaseResponse<T>(
                     try {
                         onSuccess(result.data)
                     } catch (e: Exception) {
+                        Log.d(TAG, "handleResponse: ${e.message}")
                         onError("Failed to process data: ${e.message}", Error(-1, e.message))
                     }
                 }
@@ -55,6 +60,7 @@ data class BaseResponse<T>(
                 )
             }
         } catch (e: Exception) {
+            Log.d(TAG, "handleResponse: ${e.message}")
             onError("Unexpected error: ${e.message}", Error(-1, e.message))
         }
     }

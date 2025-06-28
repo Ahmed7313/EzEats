@@ -1,47 +1,74 @@
 package com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.new_restaurants_reponse
 
 
+import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.result.ResLocation
 import com.google.gson.annotations.SerializedName
 
 data class RestaurantsResponseItem(
     @SerializedName("available")
-    val available: Boolean?,
+    var available: Boolean? = false,
     @SerializedName("categories")
-    val categories: List<String?>?,
+    var categories: List<String>? = listOf(),
+    @SerializedName("createdAt")
+    var createdAt: String? = "",
     @SerializedName("discountOnMenu")
-    val discountOnMenu: Int?,
+    var discountOnMenu: Int? = 0,
     @SerializedName("distance")
-    val distance: String?,
-    @SerializedName("distanceValue")
-    val distanceValue: Int?,
+    var distance: String? = "",
     @SerializedName("estimateDelivery")
-    val estimateDelivery: String?,
+    var estimateDelivery: String? = "",
     @SerializedName("hasDiscount")
-    val hasDiscount: Boolean?,
+    var hasDiscount: Boolean? = false,
     @SerializedName("hasFreeDelivery")
-    val hasFreeDelivery: Boolean?,
+    var hasFreeDelivery: Boolean? = false,
     @SerializedName("hasOffers")
-    val hasOffers: Boolean?,
-    @SerializedName("id")
-    val id: String?,
+    var hasOffers: Boolean? = false,
     @SerializedName("isBusy")
-    val isBusy: Boolean?,
-    @SerializedName("isCommingSoon")
-    val isCommingSoon: Boolean?,
+    var isBusy: Boolean? = false,
+    @SerializedName("isClose")
+    var isClose: String? = "",
     @SerializedName("isDelivery")
-    val isDelivery: Boolean?,
+    var isDelivery: Boolean? = false,
+    @SerializedName("isFoodtruck")
+    var isFoodtruck: Boolean? = false,
+    @SerializedName("isKashier")
+    var isKashier: Boolean? = false,
+    @SerializedName("isPaymob")
+    var isPaymob: Boolean? = false,
     @SerializedName("isPickUp")
-    val isPickUp: Boolean?,
+    var isPickUp: Boolean? = false,
+    @SerializedName("kashierAPIkey")
+    var kashierAPIkey: String? = "",
+    @SerializedName("kashierMID")
+    var kashierMID: String? = "",
+    @SerializedName("kashierSecretKey")
+    var kashierSecretKey: String? = "",
     @SerializedName("locationName")
-    val locationName: String?,
+    var locationName: String? = "",
     @SerializedName("logo")
-    val logo: String?,
+    var logo: String? = "",
     @SerializedName("name")
-    val name: String?,
-    @SerializedName("offers")
-    val offers: List<Any?>?,
+    var name: String? = "",
+    @SerializedName("objectId")
+    var objectId: String? = "",
+    @SerializedName("PApiKey")
+    var pApiKey: String? = "",
+    @SerializedName("PIntegrationID")
+    var pIntegrationID: String? = "",
+    @SerializedName("paymobApiKey")
+    var paymobApiKey: String? = "",
+    @SerializedName("paymobIntegrationID")
+    var paymobIntegrationID: String? = "",
+    @SerializedName("rate")
+    var rate: Double? = 0.0,
     @SerializedName("rating")
-    val rating: Double?,
+    var rating: Double? = 0.0,
+    @SerializedName("redirectionTable")
+    var redirectionTable: String? = "",
+    @SerializedName("resLocation")
+    var resLocation: ResLocation? = ResLocation(),
     @SerializedName("reviewsCount")
-    val reviewsCount: Int?
+    var reviewsCount: Int? = 0,
+    @SerializedName("updatedAt")
+    var updatedAt: String? = ""
 )

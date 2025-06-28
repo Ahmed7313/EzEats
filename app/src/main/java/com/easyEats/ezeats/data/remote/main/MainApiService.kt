@@ -8,6 +8,7 @@ import com.easyEats.ezeats.domain.main.model.request.home.HomeRequest
 import com.easyEats.ezeats.domain.main.model.request.offer_request.OfferRequest
 import com.easyEats.ezeats.domain.main.model.request.offers.OffersRequest
 import com.easyEats.ezeats.domain.main.model.request.order_history.OrderHistoryRequest
+import com.easyEats.ezeats.domain.main.model.request.restaurant.CheckTableAvailabilityRequest
 import com.easyEats.ezeats.domain.main.model.request.restaurant.RestaurantMenuRequest
 import com.easyEats.ezeats.domain.main.model.request.restaurant.RestaurantRequest
 import com.easyEats.ezeats.domain.main.model.request.search.SearchRequest
@@ -22,9 +23,12 @@ import com.easyEats.ezeats.domain.main.model.response.loyality_center.LoyaltyCen
 import com.easyEats.ezeats.domain.main.model.response.order_history.OrderHistoryResponse
 import com.easyEats.ezeats.domain.main.model.response.partners.PartnersResponse
 import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.RestaurantMenuResponse
+import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.check_table_availability.TableAvailabilityResponse
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.Restaurant
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.RestaurantInfo
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.new_restaurants_reponse.RestaurantsResponseItem
+import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.result.RestaurantListResult
+import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.result.RestaurantListResultResponse
 import com.easyEats.ezeats.domain.main.model.response.search_response.Category
 import com.easyEats.ezeats.domain.main.model.response.search_response.SearchScreenResponse
 import com.easyEats.ezeats.domain.main.model.response.user_info.UserInfoResponse
@@ -72,6 +76,12 @@ interface MainApiService {
     @POST("getRestaurantMenu")
     suspend fun getRestaurantMenu(@Body restaurantMenuRequest: RestaurantMenuRequest): BaseResponse<RestaurantMenuResponse>
 
+
+    @POST("checkTableAvailability")
+    suspend fun checkTableAvailability(@Body restaurantMenuRequest: CheckTableAvailabilityRequest): TableAvailabilityResponse
+
+
+
     @POST("getOfferById")
     suspend fun getOfferById(@Body offerRequest: OfferRequest): BaseResponse<HotDeal>
 
@@ -108,6 +118,6 @@ interface MainApiService {
     @POST("clearDeviceToken")
     suspend fun clearDeviceToken(): BaseResponse<Any>
 
-    @POST("getRestaurantsAndOffersByCategory")
-    suspend fun getRestaurants(@Body restaurantRequest: com.easyEats.ezeats.domain.main.model.request.RestaurantRequest): BaseResponse<List<RestaurantsResponseItem>>
+    @POST("getRestaurants")
+    suspend fun getRestaurants(@Body restaurantRequest: com.easyEats.ezeats.domain.main.model.request.RestaurantRequest): RestaurantListResultResponse
 }

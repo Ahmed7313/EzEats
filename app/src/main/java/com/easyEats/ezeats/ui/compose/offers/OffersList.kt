@@ -22,6 +22,7 @@ fun OffersList(
     ) {
         items(restaurants) { restaurant ->
             OfferItem(
+                restaurant = restaurant,
                 resturantName = restaurant.name ?: "",
                 resturantType = restaurant.locationName ?: "",
                 distance = "${restaurant.distance ?: 0} km",

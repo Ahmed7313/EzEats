@@ -53,49 +53,50 @@ fun MenuItemUIRadio(
     }
     val size = item.choices?.size ?: 0
     item.choices?.forEachIndexed { index, it ->
-        Row(
-            modifier = modifier
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
-        ) {
-            NormalText(
-                text = it?.name ?: "Unknown",
-                color = AppColor.BlackColor,
-                textAlign = TextAlign.Center,
-                fontWeight = FontWeight.Medium,
-                fontSize = 13
-            )
-            Spacer(modifier = Modifier.weight(1f))
-            if (it?.price?.toInt() != 0) {
+        if(it?.isHidden == false) {
+            Row(
+                modifier = modifier
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
                 NormalText(
-                    text = ("(+" + stringResource(R.string.currency) + " " + it?.price + ")"),
-                    modifier = Modifier.padding(end = 7.dp),
+                    text = it?.name ?: "Unknown",
                     color = AppColor.BlackColor,
-                    fontWeight = FontWeight.Light,
                     textAlign = TextAlign.Center,
+                    fontWeight = FontWeight.Medium,
                     fontSize = 13
                 )
-            }
-            RadioButton(
-                selected = selectedChoiceId == it?.id,
-                onClick = { onClick(it!!) },
-                colors = androidx.compose.material3.RadioButtonDefaults.colors(
-                    selectedColor = AppColor.ColorPrimary,
-                    unselectedColor = AppColor.GrayColor
+                Spacer(modifier = Modifier.weight(1f))
+                if (it?.price?.toInt() != 0) {
+                    NormalText(
+                        text = ("(+" + stringResource(R.string.currency) + " " + it?.price + ")"),
+                        modifier = Modifier.padding(end = 7.dp),
+                        color = AppColor.BlackColor,
+                        fontWeight = FontWeight.Light,
+                        textAlign = TextAlign.Center,
+                        fontSize = 13
+                    )
+                }
+                RadioButton(
+                    selected = selectedChoiceId == it?.id,
+                    onClick = { onClick(it!!) },
+                    colors = androidx.compose.material3.RadioButtonDefaults.colors(
+                        selectedColor = AppColor.ColorPrimary,
+                        unselectedColor = AppColor.GrayColor
+                    )
                 )
-            )
-        }
+            }
 
-        if (index < size - 1) {
-            HorizontalDivider(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp),
-                color = AppColor.GrayColor,
-                thickness = 1.dp
-            )
+            if (index < size - 1) {
+                HorizontalDivider(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                    color = AppColor.GrayColor,
+                    thickness = 1.dp
+                )
+            }
         }
-
     }
 }

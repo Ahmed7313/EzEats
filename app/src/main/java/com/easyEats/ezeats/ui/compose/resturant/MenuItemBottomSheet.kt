@@ -28,6 +28,7 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -51,6 +52,8 @@ import com.easyEats.ezeats.ui.compose.components.AppInputField
 import com.easyEats.ezeats.ui.compose.menu_item.MenuItemUICheckBox
 import com.easyEats.ezeats.ui.compose.menu_item.MenuItemUIRadio
 import com.easyEats.ezeats.ui.compose.theme.AppColor
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 val TAG = "MenuItemBottomSheet"
 
@@ -60,15 +63,57 @@ fun MenuItemBottomSheet(
     isVisible: Boolean,
     onDismiss: () -> Unit,
     subMenu: SubMenu, // Passing the necessary data
-    onClick: (Int,String) -> Unit
+    calculateTotal: (Int,Double,String,HashMap<String, List<ChoiceSelection>>) -> Unit
 ) {
+    var subTotal by remember {
+        mutableStateOf(0.0)
+    }
+
+
+
+
+
+
+    val selected = remember { mutableStateOf(HashMap<String, List<ChoiceSelection>>()) }
+
+    Log.d(TAG, "MenuItemBottomSheet size: ${selected.value.size}")
+
+
+    var isEnableAdd by remember { mutableStateOf(false) }
+
+    fun checkEnableAdd() : Boolean {
+
+        subMenu.subOptions?.forEach {
+            if(it?.type == "radio"){
+                if(!selected.value.containsKey(it.id)){
+                    return false
+                }
+//                val selections = selected.value[it.id]
+//                // التأكد من أن القائمة تحتوي على عنصر محدد بالـ id الخاص بـ option
+//                if (selections.isNullOrEmpty() ) {
+//                    return false
+//                }
+            }
+        }
+        return true
+    }
+    LaunchedEffect(Unit) {
+        isEnableAdd = checkEnableAdd()
+    }
+    LaunchedEffect(selected.value) {
+        isEnableAdd = checkEnableAdd()
+    }
+
+
+
     val sheetState = rememberModalBottomSheetState()
     var noteText by remember {
         mutableStateOf("")
     }
     var count by remember {
-        mutableStateOf(1)
+        mutableIntStateOf(1)
     }
+
     Log.d(TAG, "MenuItemBottomSheet: visible")
     Log.d(TAG, "MenuItemBottomSheet: ")
     LaunchedEffect(isVisible) {
@@ -77,6 +122,19 @@ fun MenuItemBottomSheet(
         }
     }
 
+    Log.d(TAG, "MenuItemBottomSheet: $isEnableAdd")
+
+    fun getSelectedRadio(id: String): String {
+        return selected.value[id]?.firstOrNull()?.id ?: ""
+    }
+
+    fun getSelectedCheckbox(id: String): List<ChoiceSelection> {
+        return selected.value[id] ?: emptyList()
+    }
+
+    fun getTotal() : Double{
+        return count *(subTotal + (subMenu.price ?: 0.0))
+    }
 
     ModalBottomSheet(
         modifier = modifier.then(
@@ -96,19 +154,26 @@ fun MenuItemBottomSheet(
         content = {
             Column( modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(min = 100.dp, max = (LocalConfiguration.current.screenHeightDp.dp * 0.85f))) {
-                LazyColumn(modifier = Modifier.fillMaxWidth().then(
-                    if (!subMenu.subOptions.isNullOrEmpty()) {
-                        Modifier.weight(1f)
-                    } else {
-                        Modifier
-                    }
+                .heightIn(
+                    min = 100.dp,
+                    max = (LocalConfiguration.current.screenHeightDp.dp * 0.85f)
                 )) {
+                LazyColumn(modifier = Modifier
+                    .fillMaxWidth()
+                    .then(
+                        if (!subMenu.subOptions.isNullOrEmpty()) {
+                            Modifier.weight(1f)
+                        } else {
+                            Modifier
+                        }
+                    )) {
                     item {
                         AppImageCornerTop(
                             imageUrl = subMenu.coverPhoto?.url.toString(),
                             cornerRadius = 16,
-                            modifier = Modifier.fillMaxWidth().height(280.dp)
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(280.dp)
                         )
 
                         HeaderText(
@@ -134,23 +199,53 @@ fun MenuItemBottomSheet(
                         items(it) { item ->
                             if (item?.type == "radio") {
                                 MenuItemUIRadio(
-                                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(horizontal = 16.dp),
                                     item = item!!,
-//                                selectedChoiceId = selectedState[item.id!!],
-                                    selectedChoiceId = "false",
+                                    selectedChoiceId = getSelectedRadio(item.id!!),
+//                                    selectedChoiceId = "false",
                                     onClick = { selectedOption ->
+//                                        ids = selectedOption.id ?: ""
                                         Log.d(TAG, "listenToObservers: ${selectedOption.id}")
-//                                    viewModel.selectChoice(item.id!!, selectedOption.id!!)
+                                        val currentMap = HashMap(selected.value)
+                                        val previousSelection = currentMap[item.id!!]?.firstOrNull()
+// Subtract previous selection price if exists
+                                        if (previousSelection != null) {
+                                            subTotal -= previousSelection.price
+                                        }
+                                        subTotal += selectedOption.price!!
+
+                                        currentMap[item.id!!] = listOf(ChoiceSelection(selectedOption.id!!,selectedOption.price!!))
+                                        selected.value = currentMap
+                                        Log.d(TAG, "Radio selected: ${selectedOption.id}")
+//                                        calculateTotal(count,subTotal,noteText,selected.value)
                                     }
                                 )
                             } else if (item?.type == "checkbox") {
                                 MenuItemUICheckBox(
-                                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(horizontal = 16.dp),
                                     item = item,
-//                                selectedChoiceId = selectedState[item.id!!],
-                                    selectedChoiceId = "false",
+                                    selectedChoiceId = getSelectedCheckbox(item.id!!),
                                     onClick = { selectedOption ->
-//                                    viewModel.selectChoice(item.id!!, selectedOption.id!!)
+                                        val currentMap = HashMap(selected.value)
+                                        val currentList = currentMap[item.id!!]?.toMutableList() ?: mutableListOf()
+
+                                        if (currentList.any { it.id == selectedOption.id }) {
+                                            currentList.removeAll { it.id == selectedOption.id }
+                                            subTotal -= selectedOption.price!!
+                                        } else {
+                                            currentList.add(ChoiceSelection(selectedOption.id!!, selectedOption.price!!))
+                                            subTotal += selectedOption.price!!
+                                        }
+
+                                        currentMap[item.id!!] = currentList
+                                        selected.value = currentMap
+                                        Log.d(TAG, "Checkbox selected: ${selectedOption.id}")
+//                                        calculateTotal(count,subTotal,noteText,selected.value)
+//                                    addOrRemove(item.id!!, selectedOption.id!!)
                                     }
                                 )
                             }
@@ -218,10 +313,14 @@ fun MenuItemBottomSheet(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     IconButton(
-                        modifier = Modifier.size(24.dp).padding(end = 6.dp),
+                        modifier = Modifier
+                            .size(24.dp)
+                            .padding(end = 6.dp),
+                        enabled = count > 1,
                         onClick = {
                             if (count > 1) {
                                 count--
+//                                calculateTotal(count,subTotal,noteText,selected.value)
                             }
                         }) {
                         Image(
@@ -231,16 +330,18 @@ fun MenuItemBottomSheet(
                     }
 
                     NormalText(
-                        text = "1",
+                        text = count.toString(),
                         fontSize = 16,
                         color = AppColor.BlackColor2,
                         textAlign = TextAlign.Center
                     )
 
                     IconButton(
-                        modifier = Modifier.size(24.dp).padding(end = 6.dp),
+                        modifier = Modifier
+                            .size(24.dp)
+                            .padding(end = 6.dp),
                         onClick = {
-
+                            count++
                         }) {
                         Image(
                             painter = painterResource(R.drawable.ic_plus),
@@ -255,11 +356,15 @@ fun MenuItemBottomSheet(
                     modifier = Modifier
                         .weight(2f)
                         .background(
-                            AppColor.ColorPrimary,
+                            if (isEnableAdd) AppColor.ColorPrimary else AppColor.GreyColor,
                             shape = RoundedCornerShape(16.dp)
-                        ).height(45.dp),
+                        )
+                        .height(45.dp),
+                    enabled = isEnableAdd,
                     onClick = {
-                        count++
+                        if(isEnableAdd)
+                            calculateTotal(count,subTotal,noteText,selected.value)
+
                     }) {
                     Row(
                         modifier = Modifier
@@ -281,7 +386,7 @@ fun MenuItemBottomSheet(
                         Spacer(modifier = Modifier.weight(1f))
 
                         HeaderText(
-                            text = "${subMenu.price} " + stringResource(R.string.currency),
+                            text = "${getTotal()} " + stringResource(R.string.currency),
                             fontSize = 16,
                             color = AppColor.WhiteColor,
                             fontWeight = FontWeight.Normal
@@ -321,7 +426,9 @@ fun MenuItemBottomSheetPreview() {
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             IconButton(
-                modifier = Modifier.size(24.dp).padding(end = 6.dp),
+                modifier = Modifier
+                    .size(24.dp)
+                    .padding(end = 6.dp),
                 onClick = {
 
             }) {
@@ -339,7 +446,9 @@ fun MenuItemBottomSheetPreview() {
             )
 
             IconButton(
-                modifier = Modifier.size(24.dp).padding(end = 6.dp),
+                modifier = Modifier
+                    .size(24.dp)
+                    .padding(end = 6.dp),
                 onClick = {
 
                 }) {
@@ -355,7 +464,8 @@ fun MenuItemBottomSheetPreview() {
         TextButton(
             modifier = Modifier
                 .weight(2f)
-                .background(AppColor.ColorPrimary, shape = RoundedCornerShape(16.dp)).height(45.dp),
+                .background(AppColor.ColorPrimary, shape = RoundedCornerShape(16.dp))
+                .height(45.dp),
             onClick = {
 
             }) {

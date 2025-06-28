@@ -6,39 +6,26 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ViewCompositionStrategy
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.ViewPager2
-import com.easyEats.ezeats.R
-import com.easyEats.ezeats.base.BaseBottomSheetFragment
 import com.easyEats.ezeats.base.BaseFragment
 import com.easyEats.ezeats.base.BaseResponse
 import com.easyEats.ezeats.databinding.FragmentRestaurantBinding
-import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.CoverPhoto
 import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.Menu
 import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.RestaurantMenuResponse
 import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.SubMenu
@@ -50,9 +37,8 @@ import com.easyEats.ezeats.ui.main.restaurant.adapter.VerticalMenuAdapter
 import com.easyEats.ezeats.ui.main.restaurant.adapter.flattenMenu
 import com.easyEats.ezeats.utils.Resource
 import com.easyEats.ezeats.utils.extensions.smoothScrollToCenter
-import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 /**
  * A fragment that displays restaurant information and special offers. It allows the user to share the restaurant
@@ -68,6 +54,7 @@ class RestaurantFragment : BaseFragment<FragmentRestaurantBinding>(),
 
     // ViewModel to manage the restaurant data and special offers.
     private val viewModel: RestaurantViewModel by activityViewModels()
+    private val cartViewModel: CartViewModel by viewModels()
     private val args by navArgs<RestaurantFragmentArgs>()
     private lateinit var menuTabAdapter: MenuTabAdapter
     private lateinit var verticalMenuAdapter: VerticalMenuAdapter
@@ -75,12 +62,42 @@ class RestaurantFragment : BaseFragment<FragmentRestaurantBinding>(),
     private lateinit var specialOfferAdapter: SpecialOfferAdapter
 
 
+    //VzblCVYTa0 ammar shop
+    //S7CQuGrgXX ramadan Test
+    var restaurantId = "VzblCVYTa0"
+    var tableId = "VzblCVYTa0"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Request the special offers data from the ViewModel.
 //        viewModel.getSpecialOffers(args.restaurantId)
-        viewModel.getRestaurantMenu(args.restaurantId)
-//        viewModel.getRestaurantMenu("YP4CPBjViS")
+//        viewModel.getRestaurantMenu(args.restaurantId)
+//        viewModel.getRestaurantMenu("S7CQuGrgXX")
+        lifecycleScope.launch {
+            showLoading()
+            // First check table availability
+            viewModel.checkTableAvailability(restaurantId, "1").collect { tableResponse ->
+                if (tableResponse != null) {
+                    Log.d(
+                        TAG,
+                        "onCreate: ${tableResponse.result?.tableOrder?.tableOrderId}"
+                    )//currentOrderId
+                    Log.d(TAG, "onCreate: ${tableResponse.result?.currentOrder?.userId}")//userId
+                    Log.d(TAG, "onCreate: ${tableResponse.result?.currentOrder?.currentOrderId}")
+                    // Table is available, now load menu
+                    cartViewModel.initShop(
+                        tableOrderId = tableResponse.result?.tableOrder?.tableOrderId.toString(),
+                        currentOrderId = tableResponse.result?.currentOrder?.currentOrderId.toString(),
+                        userId = tableResponse.result?.currentOrder?.userId.toString(),
+                        shopId = restaurantId,
+                        tableId = tableId
+                    )
+                    viewModel.getRestaurantMenu(restaurantId)
+                } else {
+                    // Handle table not available
+                    viewModel.getRestaurantMenu(restaurantId)
+                }
+            }
+        }
 //        viewModel.isBottomSheetVisible.observe(this) { isVisible ->
 //            if (isVisible) {
 //                viewModel.selectedSubMenu.observe(this) { subMenu ->
@@ -136,6 +153,7 @@ class RestaurantFragment : BaseFragment<FragmentRestaurantBinding>(),
                     visibility = if (isVisible) View.VISIBLE else View.GONE
                 }
 
+
                 if (isVisible && currentSubMenu != null) {
                     binding.composeView.visibility = View.VISIBLE
                     MenuItemBottomSheet(
@@ -145,11 +163,12 @@ class RestaurantFragment : BaseFragment<FragmentRestaurantBinding>(),
                             viewModel.dismissBottomSheet()
                         },
                         subMenu = currentSubMenu!!,
-                        onClick = { count, note ->
+                        calculateTotal = { count, subTotal, note, selected ->
+                            cartViewModel.addToCart(currentSubMenu!!,selected,count,note)
                             viewModel.dismissBottomSheet()
                         }
                     )
-                }else{
+                } else {
                     binding.composeView.visibility = View.GONE
                 }
 //                MenuItemBottomSheet(
@@ -255,20 +274,29 @@ class RestaurantFragment : BaseFragment<FragmentRestaurantBinding>(),
      */
     private fun initializeMenuAndSubMenu(resources: Resource.Success<BaseResponse<RestaurantMenuResponse>>) {
         // Initialize the menu tab adapter with the restaurant menu data.
-        menuTabAdapter = MenuTabAdapter(
-            resources.data?.result?.data?.menu,
-            resources.data?.result?.data?.menu?.get(0)?.id,
-            ::updateSelection
-        )
-        binding.rvMenuHeader.adapter = menuTabAdapter
+        val list = mutableListOf<Menu>()
 
-        // Flatten the nested menu structure into a single list for vertical display.
-        val subMenu = flattenMenu(resources.data?.result?.data?.menu)
-        verticalMenuAdapter = VerticalMenuAdapter(subMenu, ::onMenuItemClicked)
-        binding.rvSubMenu.adapter = verticalMenuAdapter
-        binding.rvSubMenu.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        layoutManager = binding.rvSubMenu.layoutManager as LinearLayoutManager
+        resources.data?.result?.data?.menu?.forEach {
+            if (it.isHidden == false)
+                list.add(it)
+        }
+
+        if (list.isNotEmpty()) {
+            menuTabAdapter = MenuTabAdapter(
+                list,
+                list[0].id,
+                ::updateSelection
+            )
+            binding.rvMenuHeader.adapter = menuTabAdapter
+
+            // Flatten the nested menu structure into a single list for vertical display.
+            val subMenu = flattenMenu(list)
+            verticalMenuAdapter = VerticalMenuAdapter(subMenu, ::onMenuItemClicked)
+            binding.rvSubMenu.adapter = verticalMenuAdapter
+            binding.rvSubMenu.layoutManager =
+                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            layoutManager = binding.rvSubMenu.layoutManager as LinearLayoutManager
+        }
     }
 
 
@@ -397,5 +425,14 @@ class RestaurantFragment : BaseFragment<FragmentRestaurantBinding>(),
         val intent = Intent(Intent.ACTION_VIEW)
         intent.data = Uri.parse("https://ezeats.app/${viewModel.restaurantId}-1")
         requireActivity().startActivity(intent)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        verticalMenuAdapter = VerticalMenuAdapter(arrayListOf(), ::onMenuItemClicked)
+        binding.rvSubMenu.adapter = verticalMenuAdapter
+
+        menuTabAdapter = MenuTabAdapter(arrayListOf(), null, ::updateSelection)
+        binding.rvMenuHeader.adapter = menuTabAdapter
     }
 }

@@ -181,7 +181,7 @@ class SearchResultFragment : BaseFragment<FragmentSearchResultBinding>(),
         lifecycleScope.launch {
             cl.isClickable = false
             findNavController().navigate(
-                SearchResultFragmentDirections.goToRestaurantFragment(restaurant.id!!)
+                SearchResultFragmentDirections.goToRestaurantFragment(restaurant.objectId!!)
             )
             delay(1000)
             cl.isClickable = true

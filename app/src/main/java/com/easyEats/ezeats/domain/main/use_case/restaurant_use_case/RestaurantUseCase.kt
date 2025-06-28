@@ -2,6 +2,7 @@ package com.easyEats.ezeats.domain.main.use_case.restaurant_use_case
 
 import com.easyEats.ezeats.domain.main.model.request.restaurant.RestaurantMenuRequest
 import com.easyEats.ezeats.domain.main.model.request.restaurant.RestaurantRequest
+import com.easyEats.ezeats.domain.main.model.request.restaurant.CheckTableAvailabilityRequest
 import com.easyEats.ezeats.domain.main.repository.MainRepository
 import javax.inject.Inject
 
@@ -11,4 +12,7 @@ class RestaurantUseCase @Inject constructor(private val mainRepository: MainRepo
 
     suspend fun getRestaurantMenu(restaurantMenuRequest: RestaurantMenuRequest) =
         mainRepository.getRestaurantMenu(restaurantMenuRequest)
+
+    suspend fun checkTableAvailability(checkTableAvailabilityRequest: CheckTableAvailabilityRequest) =
+        mainRepository.checkTableAvailability(checkTableAvailabilityRequest)
 }

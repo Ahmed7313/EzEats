@@ -8,7 +8,9 @@ data class ProductEntity(
     @PrimaryKey
     val productId: String,
     val name: String,
+    val qty: Int,
     val imageUrl: String?,
     val price: Double,
-    val description: String?
+    val description: String?,
+    val note: String? = null,
 )

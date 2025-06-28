@@ -6,12 +6,12 @@ package com.easyEats.ezeats.domain.main.model.request
  * @param page optional page number for pagination
  * @param limit optional page size
  * @param userLat optional user latitude
- * @param cmpoundId optional compound id if available
+ * @param compoundId optional compound id if available
  * @param userLon optional user longitude
  */
 data class RestaurantRequest(
     val categoryId: String = "",
     val userLat: String = "",
     val userLon: String = "",
-    val cmpoundId: String? = null,
+    val compoundId: String? = null,
 )
