@@ -5,14 +5,18 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -30,6 +34,7 @@ import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.new_res
 import com.easyEats.ezeats.domain.main.model.response.search_response.Category
 import com.easyEats.ezeats.ui.compose.offers.OffersList
 import com.easyEats.ezeats.ui.compose.offers.SelectionButton
+import com.easyEats.ezeats.ui.compose.resturant.CompoundBottomSheet
 import com.easyEats.ezeats.ui.compose.resturant.PAYMENT_INTEGRATION_TYPE
 import com.easyEats.ezeats.ui.large
 import com.easyEats.ezeats.ui.main.main.MainViewModel
@@ -72,6 +77,10 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
 
     private fun getCategoriesAndRestaurants() {
         offersViewModel.getCategoriesRestaurantResult()
+        getRestaurantResults()
+    }
+
+    private fun getRestaurantResults(){
         offersViewModel.getRestaurantsResult(
             "",
             mainViewModel.userLocationAddressMutableLiveData.value?.lat,
@@ -155,53 +164,93 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
                             if (view != null) {
                                 binding.composeRestaurantList.setContent {
 
+                                    val compounds = mainViewModel.compoundList.collectAsState()
+
+                                    var showCompound by remember {
+                                        mutableStateOf(false)
+                                    }
+
+                                    var compoundSelected by remember {
+                                        mutableStateOf(mainViewModel.compound)
+                                    }
+
+                                    var scope = rememberCoroutineScope()
+
                                     var selectedTab by remember { mutableStateOf(0) }
 
 
-                                    Column(modifier = Modifier) {
+                                    Box{
 
-                                        Row(
-                                            modifier = Modifier
-                                                .fillMaxWidth()
-                                        ) {
-                                            SelectionButton(
-                                                modifier = Modifier.weight(1f),
-                                                text = getString(R.string.pickup),
-                                                icon = R.drawable.ic_dish,
-                                                isSelected = selectedTab == 0,
-                                                onSelect = { selectedTab = 0 }
-                                            )
+                                        Column(modifier = Modifier) {
 
-                                            Spacer(modifier = Modifier.width(8.dp))
-
-                                            SelectionButton(
-                                                modifier = Modifier.weight(1f),
-                                                text = getString(R.string.delivery),
-                                                isSelected = selectedTab == 1,
-                                                onSelect = { selectedTab = 1 },
-                                                icon = R.drawable.ic_delivery,
-
+                                            Row(
+                                                modifier = Modifier
+                                                    .fillMaxWidth()
+                                            ) {
+                                                SelectionButton(
+                                                    modifier = Modifier.weight(1f),
+                                                    text = getString(R.string.pickup),
+                                                    icon = R.drawable.ic_dish,
+                                                    isSelected = selectedTab == 0,
+                                                    onSelect = { selectedTab = 0 }
                                                 )
-                                        }
 
-                                        AppSpacer(height = large   )
+                                                Spacer(modifier = Modifier.width(8.dp))
 
-                                        val filteredList = when (selectedTab) {
-                                            0 -> list?.restaurants?.pickupRestaurants
-                                            1 -> list?.restaurants?.deliveryRestaurants
-                                            else -> emptyList()
-                                        }
-//
-                                        OffersList(
-                                            restaurants = filteredList!!,
-                                            onRestaurantClick = { restaurant ->
-                                                Log.d(TAG, "listenToRestaurants: geher")
-                                                findNavController().navigate(
-                                                    OffersScreenFragmentDirections
-                                                        .goToRestaurantFragment(restaurant.objectId!!,restaurant.redirectionTable!!,if(restaurant.isKashier == true) PAYMENT_INTEGRATION_TYPE.KASHIER else PAYMENT_INTEGRATION_TYPE.PAYMOB)
-                                                )
+                                                SelectionButton(
+                                                    modifier = Modifier.weight(1f),
+                                                    text = getString(R.string.delivery),
+                                                    isSelected = selectedTab == 1,
+                                                    onSelect = {
+                                                        if(mainViewModel.compound.isEmpty()) {
+                                                            showCompound = true
+                                                        }else{
+                                                            selectedTab = 1
+                                                        }
+                                                    },
+                                                    icon = R.drawable.ic_delivery,
+
+                                                    )
                                             }
-                                        )
+
+                                            AppSpacer(height = large   )
+
+                                            val filteredList = when (selectedTab) {
+                                                0 -> list?.restaurants?.pickupRestaurants
+                                                1 -> list?.restaurants?.deliveryRestaurants
+                                                else -> emptyList()
+                                            }
+//
+                                            OffersList(
+                                                restaurants = filteredList!!,
+                                                onRestaurantClick = { restaurant ->
+                                                    Log.d(TAG, "listenToRestaurants: geher")
+                                                    findNavController().navigate(
+                                                        OffersScreenFragmentDirections
+                                                            .goToRestaurantFragment(restaurant.objectId!!,restaurant.redirectionTable!!,if(restaurant.isKashier == true) PAYMENT_INTEGRATION_TYPE.KASHIER else PAYMENT_INTEGRATION_TYPE.PAYMOB)
+                                                    )
+                                                }
+                                            )
+                                        }
+
+                                        if(showCompound) {
+                                            CompoundBottomSheet(
+                                                modifier = Modifier.fillMaxWidth(),
+                                                list = compounds.value,
+                                                selected = compoundSelected,
+                                                click = { compound ->
+                                                    mainViewModel.compound = compound
+                                                    compoundSelected = compound
+                                                    selectedTab = 1
+                                                    showCompound = false
+                                                    scope.launch {
+                                                        getRestaurantResults()
+                                                    }
+                                                },
+                                                onDismiss = {
+                                                    showCompound = false
+                                                })
+                                        }
                                     }
                                 }
                             }

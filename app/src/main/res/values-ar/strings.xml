@@ -226,6 +226,9 @@
     <string name="currency">EGP</string>
     <string name="any_special_request">Any Special Requests?</string>
     <string name="add_note">Add Note</string>
+    <string name="welcome_to_sahel">Welcome to Sahel</string>
+    <string name="pick_compound_from_list">Pick a compound from the list below, so can serve you there</string>
+    <string name="select_compound">Select Compound</string>
 
 
 </resources>

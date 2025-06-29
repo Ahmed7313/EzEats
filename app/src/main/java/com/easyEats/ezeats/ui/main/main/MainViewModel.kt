@@ -11,6 +11,8 @@ import androidx.lifecycle.viewModelScope
 import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.MyApplication.Companion.baseApplication
 import com.easyEats.ezeats.domain.main.model.UserLocationAddress
+import com.easyEats.ezeats.domain.main.model.response.compound.CompoundResult
+import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.SubMenu
 import com.easyEats.ezeats.domain.main.use_case.MainUseCase
 import com.easyEats.ezeats.domain.main.use_case.main_use_case.MainActivityUseCase
 import com.easyEats.ezeats.utils.reciveirs.LocationReceiver
@@ -23,6 +25,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
@@ -66,6 +69,8 @@ open class MainViewModel @Inject constructor(
 
     val userLocationAddressMutableLiveData = MutableStateFlow<UserLocationAddress?>(null)
 
+    private val _compoundList = MutableStateFlow<List<CompoundResult>>(arrayListOf())
+    val compoundList = _compoundList.asStateFlow()
 
     /**
      * Initializes the ViewModel.
@@ -81,9 +86,8 @@ open class MainViewModel @Inject constructor(
         viewModelScope.launch {
             mainUseCase.mainUseCase.getCompound().collect {
                 if(it != null){
-                    it.forEach { compound ->
-                        Log.d(TAG, "getCompound: ${compound.objectId} , ${compound.name}")
-                    }
+                    _compoundList.value = arrayListOf()
+                    _compoundList.value = it
                 }
             }
         }

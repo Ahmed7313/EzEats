@@ -175,7 +175,7 @@ class RestaurantFragment : BaseFragment<FragmentRestaurantBinding>(),
                 }
 
 
-                if (isVisible && currentSubMenu != null) {
+                if (isVisible && currentSubMenu != null && cartViewModel.currentOrderId.isNotEmpty() && cartViewModel.tableOrderId.isNotEmpty()) {
                     binding.composeView.visibility = View.VISIBLE
                     MenuItemBottomSheet(
                         modifier = Modifier.fillMaxWidth(),
