@@ -22,6 +22,7 @@ import com.easyEats.ezeats.base.BaseResponse
 import com.easyEats.ezeats.databinding.FragmentSearchResultBinding
 import com.easyEats.ezeats.domain.main.model.response.home_response.HotDeal
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.Restaurant
+import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.RestaurantInfo
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.new_restaurants_reponse.RestaurantsResponseItem
 import com.easyEats.ezeats.ui.compose.resturant.PAYMENT_INTEGRATION_TYPE
 import com.easyEats.ezeats.ui.main.home.HomeScreenFragmentDirections
@@ -98,7 +99,7 @@ class SearchResultFragment : BaseFragment<FragmentSearchResultBinding>(),
 //            searchResultViewModel.changeViewType()
 
         }
-        binding.etSearch.text=searchResultViewModel.searchKey
+        binding.etSearch.text = searchResultViewModel.searchKey
     }
 
     /**
@@ -109,7 +110,7 @@ class SearchResultFragment : BaseFragment<FragmentSearchResultBinding>(),
         // Observe changes in the user's location and update the location text view
         lifecycleScope.launch {
             mainViewModel.userLocationAddressMutableLiveData.collect {
-                binding.tvLocation.text = if (it?.address !=null) {
+                binding.tvLocation.text = if (it?.address != null) {
                     "You're at ${it.address}"
                 } else {
                     getString(R.string.select_location)
@@ -147,7 +148,8 @@ class SearchResultFragment : BaseFragment<FragmentSearchResultBinding>(),
                 is Resource.UnAuthenticated -> {
                     // Handle unauthenticated state if needed
                 }
-                else ->{}
+
+                else -> {}
 
             }
         }
@@ -176,18 +178,34 @@ class SearchResultFragment : BaseFragment<FragmentSearchResultBinding>(),
 
                 is Resource.UnAuthenticated -> {
                 }
-                else ->{}
+
+                else -> {}
 
             }
         }
     }
 
-    override fun onRestaurantClickListener(restaurant: RestaurantsResponseItem,cl:ConstraintLayout) {
+    override fun onRestaurantClickListener(
+        restaurant: RestaurantsResponseItem,
+        cl: ConstraintLayout
+    ) {
         lifecycleScope.launch {
             cl.isClickable = false
             findNavController().navigate(
                 SearchResultFragmentDirections
-                    .goToRestaurantFragment(restaurant.objectId!!,restaurant.redirectionTable!!,if(restaurant.isKashier == true) PAYMENT_INTEGRATION_TYPE.KASHIER else PAYMENT_INTEGRATION_TYPE.PAYMOB)
+                    .goToRestaurantFragment(
+                        restaurant.objectId!!,
+                        restaurant.redirectionTable!!,
+                        if (restaurant.isKashier == true) PAYMENT_INTEGRATION_TYPE.KASHIER else PAYMENT_INTEGRATION_TYPE.PAYMOB,
+                        RestaurantInfo(
+                            restaurantName = restaurant.name.toString(),
+                            restaurantLogo = restaurant.logo.toString(),
+                            restaurantCover = restaurant.logo.toString(),
+                            reviewsCount = restaurant.reviewsCount,
+                            distance = restaurant.distance,
+                            rating = restaurant.rating
+                        )
+                    )
 
             )
             delay(1000)

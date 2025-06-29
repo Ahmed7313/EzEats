@@ -143,6 +143,7 @@ class RestaurantFragment : BaseFragment<FragmentRestaurantBinding>(),
     override fun setUpViews() {
         Log.d(TAG, "setUpViewsHere: GONE")
         binding.restaurantContainer.visibility = View.GONE
+        binding.restaurantInfo = args.resturantInfo
         // Initialize the special offer adapter and set the click listener for the adapter.
         specialOfferAdapter = SpecialOfferAdapter(this)
 

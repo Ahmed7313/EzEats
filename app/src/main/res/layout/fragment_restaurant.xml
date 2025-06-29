@@ -140,7 +140,7 @@
             android:text='@{String.format("%s", restaurantInfo.distance.toString())}'
             android:textColor="#C9C9C9"
             android:textSize="@dimen/_12ssp"
-            android:visibility="@{restaurantInfo.distance!=null?View.VISIBLE:View.GONE}"
+            android:visibility="@{restaurantInfo.distance == null || restaurantInfo.distance == `` ?View.GONE:View.VISIBLE}"
             app:drawableStartCompat="@drawable/marker_pin_icon"
             app:drawableTint="#C9C9C9"
             app:layout_constraintBottom_toBottomOf="@+id/iv_restaurant_cover_image"

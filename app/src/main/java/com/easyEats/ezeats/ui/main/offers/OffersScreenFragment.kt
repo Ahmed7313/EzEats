@@ -30,6 +30,7 @@ import com.daman.edman.screens.components.AppSpacer
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.base.BaseFragment
 import com.easyEats.ezeats.databinding.FragmentPercentScreenBinding
+import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.RestaurantInfo
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.new_restaurants_reponse.RestaurantsResponseItem
 import com.easyEats.ezeats.domain.main.model.response.search_response.Category
 import com.easyEats.ezeats.ui.compose.offers.OffersList
@@ -227,7 +228,16 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
                                                     Log.d(TAG, "listenToRestaurants: geher")
                                                     findNavController().navigate(
                                                         OffersScreenFragmentDirections
-                                                            .goToRestaurantFragment(restaurant.objectId!!,restaurant.redirectionTable!!,if(restaurant.isKashier == true) PAYMENT_INTEGRATION_TYPE.KASHIER else PAYMENT_INTEGRATION_TYPE.PAYMOB)
+                                                            .goToRestaurantFragment(restaurant.objectId!!,restaurant.redirectionTable!!,if(restaurant.isKashier == true) PAYMENT_INTEGRATION_TYPE.KASHIER else PAYMENT_INTEGRATION_TYPE.PAYMOB,
+                                                                RestaurantInfo(
+                                                                    restaurantName = restaurant.name.toString(),
+                                                                    restaurantLogo = restaurant.logo.toString(),
+                                                                    restaurantCover = restaurant.logo.toString(),
+                                                                    reviewsCount = restaurant.reviewsCount,
+                                                                    distance = restaurant.distance,
+                                                                    rating = restaurant.rating
+                                                                )
+                                                            )
                                                     )
                                                 }
                                             )

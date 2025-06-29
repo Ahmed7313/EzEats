@@ -3,8 +3,9 @@ package com.easyEats.ezeats.domain.main.model.response.home_response
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
+import kotlinx.serialization.Serializable
 
-
+@Serializable
 @Parcelize
 data class HotDeal(
     val available: Boolean?,
@@ -13,14 +14,14 @@ data class HotDeal(
     val distance: String?,
     val dateForm: @RawValue DateForm?,
     val id: String?,
-    val isFeature: @RawValue Any?,
+    val isFeature: @RawValue String?,
     val isFeaturedLogo: String?,
     val isHot: Boolean?,
     val isNew: Boolean?,
     val name: String?,
-    val offerLocation: @RawValue Any?,
+    val offerLocation: @RawValue String? = null,
     val offerLogo: String?,
-    val points: @RawValue Any?,
+    val points: @RawValue String?,
     val pointsType: String?,
     val restaurantLogo: String?,
     val restaurantName: String?,

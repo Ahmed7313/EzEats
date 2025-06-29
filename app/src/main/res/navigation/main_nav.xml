@@ -103,6 +103,9 @@
         <argument
             android:name="PAYMENT_INTEGRATION_TYPE"
             app:argType="com.easyEats.ezeats.ui.compose.resturant.PAYMENT_INTEGRATION_TYPE" />
+        <argument
+            android:name="resturantInfo"
+            app:argType="com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.RestaurantInfo" />
 
     </fragment>
 
