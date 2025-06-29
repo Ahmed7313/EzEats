@@ -17,6 +17,7 @@ import com.easyEats.ezeats.domain.main.model.request.restaurant.RestaurantReques
 import com.easyEats.ezeats.domain.main.model.request.search.SearchRequest
 import com.easyEats.ezeats.domain.main.model.request.search.SearchSuggestionsRequest
 import com.easyEats.ezeats.domain.main.model.response.active_order.ActiveOrderResponse
+import com.easyEats.ezeats.domain.main.model.response.compound.CompoundResult
 import com.easyEats.ezeats.domain.main.model.response.home_response.HotDeal
 import com.easyEats.ezeats.domain.main.model.response.loyality_center.LoyaltyCenterResponse
 import com.easyEats.ezeats.domain.main.model.response.order_history.OrderHistoryResponse
@@ -58,6 +59,7 @@ class MainResponseImpl @Inject constructor(
     }
 
     override fun fetchAddress() = dataStorePreference.userLocationAddressFlow
+    override fun getCompound() = dataStorePreference.getCompound
     override suspend fun clearRecentSearches(): BaseResponse<Any> {
         return mainApiService.clearRecentSearches()
     }
@@ -113,6 +115,11 @@ class MainResponseImpl @Inject constructor(
     override suspend fun setUserVerification(isUserVerified: Boolean) {
         return dataStorePreference.setUserVerification(isUserVerified)
     }
+
+    override suspend fun saveCompound(isUserVerified: List<CompoundResult>) {
+        return dataStorePreference.saveCompound(isUserVerified)
+    }
+
 
     override suspend fun deleteAccount(): BaseResponse<Any> {
         return mainApiService.deleteAccount()

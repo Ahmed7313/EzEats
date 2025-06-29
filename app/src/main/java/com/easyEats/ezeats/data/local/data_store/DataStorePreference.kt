@@ -7,7 +7,9 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.easyEats.ezeats.domain.main.model.UserLocationAddress
+import com.easyEats.ezeats.domain.main.model.response.compound.CompoundResult
 import com.easyEats.ezeats.utils.Constants.ADDRESS_KEY
+import com.easyEats.ezeats.utils.Constants.COMPOUND
 import com.easyEats.ezeats.utils.Constants.IS_VERIFIED
 import com.easyEats.ezeats.utils.Constants.MOBILE_NUMBER_KEY
 import com.easyEats.ezeats.utils.Constants.NAME_KEY
@@ -17,6 +19,9 @@ import com.easyEats.ezeats.utils.Constants.TOKEN_KEY
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.encodeToJsonElement
 import javax.inject.Inject
 
 class DataStorePreference @Inject constructor(private val preferences: DataStore<Preferences>) {
@@ -46,6 +51,33 @@ class DataStorePreference @Inject constructor(private val preferences: DataStore
             it[booleanPreferencesKey(IS_VERIFIED)] = isVerified
         }
     }
+
+    suspend fun saveCompound(compound: List<CompoundResult>) {
+        preferences.edit {
+            val json = Json.encodeToString(compound)
+            it[stringPreferencesKey(COMPOUND)] = json
+        }
+    }
+
+    val userLocationAddressFlow: Flow<UserLocationAddress?> = preferences.data
+        .map { preferences ->
+            val userLocationAddressGson = preferences[stringPreferencesKey(ADDRESS_KEY)]
+            userLocationAddressGson?.let { gson ->
+                Gson().fromJson(gson, UserLocationAddress::class.java)
+            }
+        }
+
+    val getCompound: Flow<List<CompoundResult>?> = preferences.data
+        .map { preference ->
+            val json = preference[stringPreferencesKey(COMPOUND)]
+            json?.let {
+                try {
+                    Json.decodeFromString<List<CompoundResult>>(it)
+                } catch (e: Exception) {
+                    null // handle parse error gracefully
+                }
+            }
+        }
 
 
     suspend fun saveMobileNumber(mobileNumber: String) {
@@ -80,14 +112,6 @@ class DataStorePreference @Inject constructor(private val preferences: DataStore
 //            gson.fromJson(userLocationAddressJson, UserLocationAddress::class.java)
 //        }
 //    }
-
-    val userLocationAddressFlow: Flow<UserLocationAddress?> = preferences.data
-        .map { preferences ->
-            val userLocationAddressGson = preferences[stringPreferencesKey(ADDRESS_KEY)]
-            userLocationAddressGson?.let { gson ->
-                Gson().fromJson(gson, UserLocationAddress::class.java)
-            }
-        }
 
 
     fun fetchMobileNumber() = preferences.data.map {

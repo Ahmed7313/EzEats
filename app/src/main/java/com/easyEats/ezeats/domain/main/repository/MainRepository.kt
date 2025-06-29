@@ -58,6 +58,8 @@ interface MainRepository {
 
     fun fetchAddress(): Flow<UserLocationAddress?>
 
+    fun getCompound() : Flow<List<CompoundResult>?>
+
     suspend fun clearRecentSearches(): BaseResponse<Any>
 
     suspend fun searchRestaurant(searchRequest: SearchRequest): BaseResponse<List<RestaurantsResponseItem>>
@@ -84,6 +86,9 @@ interface MainRepository {
     suspend fun saveToken(token: String)
 
     suspend fun setUserVerification(isUserVerified: Boolean)
+    suspend fun saveCompound(isUserVerified: List<CompoundResult>)
+
+
 
     suspend fun deleteAccount(): BaseResponse<Any>
 

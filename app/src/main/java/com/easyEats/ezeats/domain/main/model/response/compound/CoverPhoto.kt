@@ -2,7 +2,9 @@ package com.easyEats.ezeats.domain.main.model.response.compound
 
 
 import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class CoverPhoto(
     @SerializedName("name")
     var name: String? = "",

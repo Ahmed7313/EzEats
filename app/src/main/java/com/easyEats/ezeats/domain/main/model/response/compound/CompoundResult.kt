@@ -2,7 +2,9 @@ package com.easyEats.ezeats.domain.main.model.response.compound
 
 
 import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class CompoundResult(
     @SerializedName("className")
     var className: String? = "",
@@ -18,8 +20,8 @@ data class CompoundResult(
     var name: String? = "",
     @SerializedName("objectId")
     var objectId: String? = "",
-    @SerializedName("officesLocations")
-    var officesLocations: List<Any?>? = listOf(),
+//    @SerializedName("officesLocations")
+//    var officesLocations: List<Any?>? = listOf(),
     @SerializedName("pickUpLocations")
     var pickUpLocations: List<String?>? = listOf(),
     @SerializedName("previewPhoto")

@@ -6,6 +6,7 @@ plugins {
     id("androidx.navigation.safeargs.kotlin")
     id("kotlin-kapt")
     id("kotlin-parcelize")
+    alias(libs.plugins.kotlin.serialization)
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
 }
@@ -189,6 +190,8 @@ dependencies {
     // optional - Kotlin Extensions and Coroutines support for Room
 //    implementation("androidx.room:room-ktx:$room_version")
 
+    //json encode
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3") // Use latest version
 
     //rounded image view
     implementation(libs.roundedimageview)

@@ -8,25 +8,19 @@ import com.easyEats.ezeats.MyApplication.Companion.baseApplication
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.base.BaseResponse
 import com.easyEats.ezeats.domain.main.model.UserLocationAddress
-import com.easyEats.ezeats.domain.main.model.request.RestaurantRequest
 import com.easyEats.ezeats.domain.main.model.request.firebase_token.UpdateTokeRequest
 import com.easyEats.ezeats.domain.main.model.request.home.HomeRequest
-import com.easyEats.ezeats.domain.main.model.request.search.SearchRequest
 import com.easyEats.ezeats.domain.main.model.response.compound.CompoundResult
 import com.easyEats.ezeats.domain.main.model.response.home_response.ActiveOrder
 import com.easyEats.ezeats.domain.main.model.response.home_response.FeaturedOffer
 import com.easyEats.ezeats.domain.main.model.response.home_response.HomeResponse
 import com.easyEats.ezeats.domain.main.model.response.home_response.HotDeal
-import com.easyEats.ezeats.domain.main.model.response.location_response.Location
 import com.easyEats.ezeats.domain.main.model.response.partners.PartnersResponse
-import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.new_restaurants_reponse.RestaurantsResponseItem
 import com.easyEats.ezeats.domain.main.use_case.MainUseCase
 import com.easyEats.ezeats.ui.main.main.MainViewModel
 import com.easyEats.ezeats.utils.Resource
 import com.easyEats.ezeats.utils.location.LocationUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.async
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -134,11 +128,10 @@ send(Resource.Loading())
                 val compoundData = mainUseCase.homeUseCase.getAllCompoundData()
                 compoundData.compoundResult?.let { result ->
                     _compoundResult.value = result
+                    if(result.isNotEmpty()){
+                        mainUseCase.mainUseCase.saveCompound(result)
+                    }
                 }
-//                compoundData.compoundResult?.forEach { compound ->
-//                    Log.d(TAG, "Compound: ${compound?.name}, ID: ${compound?.updatedAt}") // Log each compound's name and ID
-//
-//                }
 
                 Log.d(TAG, "getCompound: $compoundData") // Log the fetched data
             } catch (e: Exception) {

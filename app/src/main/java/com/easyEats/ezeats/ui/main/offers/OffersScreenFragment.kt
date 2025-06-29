@@ -67,6 +67,7 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
         getCategoriesAndRestaurants()
         handleBackDirection()
         Log.d(TAG, "setUpViews: compound ${mainViewModel.compound}")
+
     }
 
     private fun getCategoriesAndRestaurants() {

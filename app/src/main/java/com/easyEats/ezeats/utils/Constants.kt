@@ -34,6 +34,7 @@ object Constants {
     const val NAME_KEY = "name"
     const val RATING_KEY = "rating_key"
     const val IS_VERIFIED = "isVerified"
+    const val COMPOUND = "compound"
 
 
     const val CATEGORY_ID_ALL: String="eqvWcHcHaD"

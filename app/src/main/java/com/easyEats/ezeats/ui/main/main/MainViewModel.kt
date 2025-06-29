@@ -24,6 +24,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
@@ -73,7 +74,19 @@ open class MainViewModel @Inject constructor(
     init {
         baseApplication.registerReceiver(networkChangeReceiver, intentFilter)
         baseApplication.registerReceiver(locationChangeReceiver, intentFilter_)
+        getCompoundLocal()
+    }
 
+    fun getCompoundLocal(){
+        viewModelScope.launch {
+            mainUseCase.mainUseCase.getCompound().collect {
+                if(it != null){
+                    it.forEach { compound ->
+                        Log.d(TAG, "getCompound: ${compound.objectId} , ${compound.name}")
+                    }
+                }
+            }
+        }
     }
 
     fun fetchCurrentAddress(): StateFlow<UserLocationAddress?> {
