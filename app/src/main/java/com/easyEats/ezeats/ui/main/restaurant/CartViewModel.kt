@@ -3,10 +3,13 @@ package com.easyEats.ezeats.ui.main.restaurant
 import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.easyEats.ezeats.MyApplication
 import com.easyEats.ezeats.domain.main.model.request.cart.ItemCheckoutModel
 import com.easyEats.ezeats.domain.main.model.request.cart.SuboptionsId
 import com.easyEats.ezeats.domain.main.model.request.cart.UpdateCartRequest
+import com.easyEats.ezeats.domain.main.model.request.restaurant.CheckTableAvailabilityRequest
 import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.SubMenu
+import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.check_table_availability.TableAvailabilityResponse
 import com.easyEats.ezeats.domain.main.use_case.MainUseCase
 import com.easyEats.ezeats.domain.room.ProductDao
 import com.easyEats.ezeats.domain.room.ProductWithChoices
@@ -14,12 +17,14 @@ import com.easyEats.ezeats.domain.room.ShopEntity
 import com.easyEats.ezeats.ui.compose.resturant.ChoiceSelection
 import com.easyEats.ezeats.ui.main.main.MainViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.forEach
 import kotlinx.coroutines.flow.map
@@ -95,6 +100,27 @@ class CartViewModel @Inject constructor(
 
     init {
         // Observe changes in the cart products and calculate the total price.
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun checkTableAvailability(): Flow<TableAvailabilityResponse?> {
+        return productDao.getShop().flatMapLatest { shop ->
+            flow {
+                if (shop != null) {
+                    try {
+                        val result = mainUseCase.restaurantUseCase.checkTableAvailability(
+                            CheckTableAvailabilityRequest(shop.shopId, shop.tableId)
+                        )
+                        emit(result)
+                    } catch (e: Exception) {
+                        Log.d(MyApplication.TAG, "checkTableAvailability: ${e.message}")
+                        emit(null)
+                    }
+                } else {
+                    emit(null)
+                }
+            }
+        }
     }
 
     fun getProductsCount() = flow<Int> {
@@ -215,6 +241,7 @@ class CartViewModel @Inject constructor(
             productDao.clearProductChoices()
         }
     }
+
     /*
             Log.d(TAG, "checkout: here")
         val request = UpdateCartRequest()
@@ -270,6 +297,10 @@ class CartViewModel @Inject constructor(
 
         request.items = items
 
-        mainUseCase.homeUseCase.updateCart(request)
+        try{
+            mainUseCase.homeUseCase.updateCart(request)
+        }catch (e: Exception){
+            e.printStackTrace()
+        }
     }
 }

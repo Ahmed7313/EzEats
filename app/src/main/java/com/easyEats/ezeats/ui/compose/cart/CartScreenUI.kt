@@ -86,7 +86,7 @@ fun CartScreenUI(
     }
 
     LaunchedEffect(Unit) {
-//        viewModel.checkout()
+        viewModel.checkout()
     }
 
     LazyColumn(
@@ -159,9 +159,6 @@ fun CartScreenUI(
                         .padding(horizontal = 6.dp),
                     text = stringResource(R.string.checkout)
                 ) {
-                    scope.launch {
-                        viewModel.checkout()
-                    }
 //                    findNavController.navigate(CartFragmentDirections.actionCartFragmentToPaymentSummaryFragment())
                 }
                 AppButtonStroke(

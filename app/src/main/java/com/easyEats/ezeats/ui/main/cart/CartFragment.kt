@@ -17,6 +17,7 @@ import com.easyEats.ezeats.base.BaseFragment
 import com.easyEats.ezeats.databinding.FragmentCartBinding
 import com.easyEats.ezeats.ui.compose.cart.CartScreenUI
 import com.easyEats.ezeats.ui.main.restaurant.CartViewModel
+import com.easyEats.ezeats.ui.main.restaurant.RestaurantViewModel
 import com.easyEats.ezeats.ui.main.restaurant.adapter.MenuTabAdapter
 import com.easyEats.ezeats.ui.main.restaurant.adapter.SpecialOfferAdapter
 import com.easyEats.ezeats.ui.main.restaurant.adapter.VerticalMenuAdapter
@@ -41,6 +42,8 @@ class CartFragment : BaseFragment<FragmentCartBinding>() {
 
     // ViewModel to manage the restaurant data and special offers.
     val viewModel: CartViewModel by activityViewModels()
+    private val viewModelRestaurant: RestaurantViewModel by activityViewModels()
+
     private lateinit var menuTabAdapter: MenuTabAdapter
     private lateinit var verticalMenuAdapter: VerticalMenuAdapter
     private lateinit var layoutManager: LinearLayoutManager
@@ -55,11 +58,9 @@ class CartFragment : BaseFragment<FragmentCartBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "onViewCreated: ")
-        binding.composeView.setContent {
-            Log.d(TAG, "onViewCreated: setContent")
-            CartScreenUI(modifier = Modifier.fillMaxSize(), viewModel,findNavController())
-        }
     }
+
+
 
 
     private fun loadCart(){
@@ -88,9 +89,29 @@ class CartFragment : BaseFragment<FragmentCartBinding>() {
         Log.d(TAG, "setUpViews: Set")
     }
 
+    fun callCheckTableAvailability() {
+        lifecycleScope.launch {
+            showLoading()
+            viewModel.checkTableAvailability().collect { tableResponse ->
+                hideLoading()
+                if (tableResponse != null) {
+                    binding.composeView.setContent {
+                        Log.d(TAG, "onViewCreated: setContent")
+                        CartScreenUI(
+                            modifier = Modifier.fillMaxSize(),
+                            viewModel,
+                            findNavController()
+                        )
+                    }
+                }
+            }
+        }
+    }
+
     override fun onResume() {
         super.onResume()
         Log.d(TAG, "onResume: ")
+        callCheckTableAvailability()
 
     }
 

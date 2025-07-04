@@ -5,7 +5,7 @@ import com.easyEats.ezeats.data.local.data_store.DataStorePreference
 import com.easyEats.ezeats.data.remote.main.MainApiService
 import com.easyEats.ezeats.domain.main.model.UserLocationAddress
 import com.easyEats.ezeats.domain.main.model.request.cart.UpdateCartRequest
-import com.easyEats.ezeats.domain.main.model.request.cart.UpdateCartResponse
+import com.easyEats.ezeats.domain.main.model.request.cart.response.UpdateCartResponse
 import com.easyEats.ezeats.domain.main.model.request.complaint_request.ComplaintRequest
 import com.easyEats.ezeats.domain.main.model.request.edit_user_info.UserInfoRequest
 import com.easyEats.ezeats.domain.main.model.request.firebase_token.UpdateTokeRequest
@@ -24,14 +24,11 @@ import com.easyEats.ezeats.domain.main.model.response.home_response.HotDeal
 import com.easyEats.ezeats.domain.main.model.response.loyality_center.LoyaltyCenterResponse
 import com.easyEats.ezeats.domain.main.model.response.order_history.OrderHistoryResponse
 import com.easyEats.ezeats.domain.main.model.response.partners.PartnersResponse
-import com.easyEats.ezeats.domain.main.model.response.points.PointsResponse
 import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.RestaurantMenuResponse
 import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.check_table_availability.TableAvailabilityResponse
-import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.Offer
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.Restaurant
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.RestaurantInfo
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.new_restaurants_reponse.RestaurantsResponseItem
-import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.result.RestaurantListResult
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.result.RestaurantListResultResponse
 import com.easyEats.ezeats.domain.main.model.response.search_response.Category
 import com.easyEats.ezeats.domain.main.model.response.user_info.UserInfoResponse

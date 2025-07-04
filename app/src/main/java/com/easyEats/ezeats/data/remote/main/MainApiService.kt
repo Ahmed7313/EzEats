@@ -2,6 +2,7 @@ package com.easyEats.ezeats.data.remote.main
 
 import com.easyEats.ezeats.base.BaseResponse
 import com.easyEats.ezeats.domain.main.model.request.cart.UpdateCartRequest
+import com.easyEats.ezeats.domain.main.model.request.cart.response.UpdateCartResponse
 import com.easyEats.ezeats.domain.main.model.request.complaint_request.ComplaintRequest
 import com.easyEats.ezeats.domain.main.model.request.edit_user_info.UserInfoRequest
 import com.easyEats.ezeats.domain.main.model.request.firebase_token.UpdateTokeRequest
@@ -16,7 +17,6 @@ import com.easyEats.ezeats.domain.main.model.request.search.SearchRequest
 import com.easyEats.ezeats.domain.main.model.request.search.SearchSuggestionsRequest
 import com.easyEats.ezeats.domain.main.model.response.active_order.ActiveOrderResponse
 import com.easyEats.ezeats.domain.main.model.response.compound.CompoundResponse
-import com.easyEats.ezeats.domain.main.model.response.compound.CompoundResult
 import com.easyEats.ezeats.domain.main.model.response.home_response.HomeResponse
 import com.easyEats.ezeats.domain.main.model.response.home_response.HotDeal
 import com.easyEats.ezeats.domain.main.model.response.location_response.Location
@@ -28,7 +28,6 @@ import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.check_tabl
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.Restaurant
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.RestaurantInfo
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.new_restaurants_reponse.RestaurantsResponseItem
-import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.result.RestaurantListResult
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.result.RestaurantListResultResponse
 import com.easyEats.ezeats.domain.main.model.response.search_response.Category
 import com.easyEats.ezeats.domain.main.model.response.search_response.SearchScreenResponse
