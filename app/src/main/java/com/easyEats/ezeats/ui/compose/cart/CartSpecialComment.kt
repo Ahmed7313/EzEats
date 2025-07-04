@@ -74,10 +74,12 @@ fun CartSpecialComment(modifier: Modifier = Modifier) {
                 .padding(top = 10.dp),
             text = comment,
             hint = stringResource(R.string.enter_your_comment)
-        ) { }
+        ) {
+            comment = it
+        }
 
         HorizontalDivider(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().padding(top = 20.dp),
             thickness = 1.dp,
             color = BlackColor2.copy(
                 alpha = 0.5f

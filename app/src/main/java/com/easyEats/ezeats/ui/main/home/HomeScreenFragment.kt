@@ -20,6 +20,7 @@ import com.easyEats.ezeats.ui.main.home.adapter.hot_deals.HotDealsAdapter
 import com.easyEats.ezeats.ui.main.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import android.util.Log
+import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
@@ -50,6 +51,7 @@ import com.easyEats.ezeats.R
 import com.easyEats.ezeats.domain.main.model.response.compound.CompoundResult
 import com.easyEats.ezeats.domain.main.model.response.home_response.HotDeal
 import com.easyEats.ezeats.ui.compose.components.AppImage
+import com.easyEats.ezeats.ui.main.cart.CartFragment
 import com.easyEats.ezeats.ui.main.complaint.ComplaintFragment
 import com.easyEats.ezeats.ui.main.home.adapter.partners.PartnersAdapter
 import com.easyEats.ezeats.ui.main.home.binding.BindingUI
@@ -58,8 +60,11 @@ import com.easyEats.ezeats.ui.main.home.location.Location
 import com.easyEats.ezeats.ui.main.home.notifications.Notification
 import com.easyEats.ezeats.ui.main.main.HomeActivity
 import com.easyEats.ezeats.ui.main.rating.RateUsFragment
+import com.easyEats.ezeats.ui.main.restaurant.CartViewModel
 import com.easyEats.ezeats.utils.Resource
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
@@ -68,6 +73,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
 
     // ViewModels are injected using Hilt
     val mainViewModel: MainViewModel by activityViewModels()
+    val cartViewModel: CartViewModel by viewModels()
     private val homeViewModel: HomeViewModel by activityViewModels()
 
     // Adapters for different categories
@@ -78,6 +84,9 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
     // Adapters for Partners section
     private val ourPartnersAdapter by lazy { PartnersAdapter() }
     private val spinWheelPartnersAdapter by lazy { PartnersAdapter() }
+
+    // Add a coroutine scope for the fragment
+    private val fragmentScope = lifecycleScope
 
     // Location and notification setup
     private lateinit var locationSettingsLauncher: ActivityResultLauncher<IntentSenderRequest>
@@ -147,11 +156,16 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
             }
         }
 
+
         // Handle the type of notification to navigate to a specific screen
         val notificationType = requireActivity().intent.getStringExtra("type")
         notificationType?.let {
             notification.navigateToScreen(it)
         }
+    }
+
+    fun navigateToNotification(){
+        findNavController().navigate(R.id.cartFragment)
     }
 
     // Observe saved address
@@ -164,11 +178,41 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
         }
     }
 
+    fun showNotificationCart() {
+        // Use viewLifecycleOwner.lifecycleScope to ensure the coroutine is cancelled when the view is destroyed
+        viewLifecycleOwner.lifecycleScope.launch {
+            cartViewModel.getProductsCount().collect { size ->
+                // Check if binding is valid and view is not destroyed
+                _binding?.let { safeBinding ->
+                    if (size > 0) {
+                        withContext(Dispatchers.Main) {
+                            safeBinding.ivNotification.visibility = View.VISIBLE
+                            safeBinding.tvNotificationCount.visibility = View.VISIBLE
+                            safeBinding.tvNotificationCount.text = size.toString()
+                            safeBinding.tvNotificationCount.setOnClickListener {
+                                navigateToNotification()
+                            }
+                            safeBinding.ivNotification.setOnClickListener {
+                                navigateToNotification()
+                            }
+                        }
+                    } else {
+                        withContext(Dispatchers.Main) {
+                            safeBinding.ivNotification.visibility = View.GONE
+                            safeBinding.tvNotificationCount.visibility = View.GONE
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     // Handle fragment resume state, register broadcast receiver and observe data
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onResume() {
         super.onResume()
         observeViewModelData()
+        showNotificationCart()
 
         // Handle back press to finish the activity
         requireActivity().onBackPressedDispatcher.addCallback(

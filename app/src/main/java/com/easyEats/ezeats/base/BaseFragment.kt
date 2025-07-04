@@ -20,7 +20,7 @@ import com.easyEats.ezeats.ui.main.main.HomeActivity
 abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
 
     // Backing property for the ViewDataBinding instance
-    private var _binding: VB? = null
+    var _binding: VB? = null
 
     // Non-nullable property to access the ViewDataBinding instance
     protected val binding get() = _binding ?: throw IllegalStateException("View binding is only valid between onCreateView and onDestroyView.")

@@ -29,5 +29,5 @@ data class MainUseCase(
     val orderHistoryUseCase: OrderHistoryUseCase,
     val pointsUseCase: PointsUseCase,
     val voucherUseCase: VoucherUseCase,
-    val trackActiveOrderUseCase: ActiveOrderUseCase
+    val trackActiveOrderUseCase: ActiveOrderUseCase,
 )

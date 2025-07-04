@@ -9,8 +9,8 @@ import androidx.room.PrimaryKey
     foreignKeys = [
         ForeignKey(
             entity = ProductEntity::class,
-            parentColumns = ["productId"],
-            childColumns = ["productId"],
+            parentColumns = ["id"],           // <- important: link to unique cart row
+            childColumns = ["productId"],     // <- actually points to product *row* ID now
             onDelete = ForeignKey.CASCADE
         )
     ]
@@ -21,5 +21,6 @@ data class ProductChoiceEntity(
     val productId: String,
     val subOptionId: String,
     val choiceId: String,
+    val choiceName: String,
     val choicePrice: Double
 )

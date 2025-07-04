@@ -216,7 +216,7 @@ fun MenuItemBottomSheet(
                                         }
                                         subTotal += selectedOption.price!!
 
-                                        currentMap[item.id!!] = listOf(ChoiceSelection(selectedOption.id!!,selectedOption.price!!))
+                                        currentMap[item.id!!] = listOf(ChoiceSelection(selectedOption.id!!,selectedOption.name!!,selectedOption.price!!))
                                         selected.value = currentMap
                                         Log.d(TAG, "Radio selected: ${selectedOption.id}")
 //                                        calculateTotal(count,subTotal,noteText,selected.value)
@@ -237,7 +237,7 @@ fun MenuItemBottomSheet(
                                             currentList.removeAll { it.id == selectedOption.id }
                                             subTotal -= selectedOption.price!!
                                         } else {
-                                            currentList.add(ChoiceSelection(selectedOption.id!!, selectedOption.price!!))
+                                            currentList.add(ChoiceSelection(selectedOption.id!!,selectedOption.name!!, selectedOption.price!!))
                                             subTotal += selectedOption.price!!
                                         }
 

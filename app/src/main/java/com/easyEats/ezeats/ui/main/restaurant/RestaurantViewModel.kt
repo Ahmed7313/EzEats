@@ -3,7 +3,6 @@ package com.easyEats.ezeats.ui.main.restaurant
 import android.util.Log
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
@@ -22,7 +21,6 @@ import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.Restaur
 import com.easyEats.ezeats.domain.main.use_case.MainUseCase
 import com.easyEats.ezeats.domain.room.ProductDao
 import com.easyEats.ezeats.domain.room.ProductWithChoices
-import com.easyEats.ezeats.ui.compose.resturant.ChoiceSelection
 import com.easyEats.ezeats.ui.main.main.MainViewModel
 import com.easyEats.ezeats.ui.main.restaurant.adapter.SpecialOfferAdapter
 import com.easyEats.ezeats.utils.Resource
@@ -63,9 +61,11 @@ class RestaurantViewModel @Inject constructor(
 
 
     fun showBottomSheet(subMenu: SubMenu) {
-        Log.d(TAG, "showBottomSheet: ")
+        Log.d(TAG, "showBottomSheet: here")
         viewModelScope.launch {
+            Log.d(TAG, "showBottomSheet: start launch subMenu")
             _selectedSubMenu.value = subMenu
+            Log.d(TAG, "showBottomSheet: ${subMenu.id}")
             Log.d(TAG, "showBottomSheet: ${isBottomSheetVisible.value}")
             _isBottomSheetVisible.value = true
             Log.d(TAG, "showBottomSheet: showing bottom sheet for ${subMenu.name}")
@@ -104,7 +104,7 @@ class RestaurantViewModel @Inject constructor(
 
     private fun observeCartChanges() {
         viewModelScope.launch {
-            productDao.getProductsWithChoices()
+            productDao.getProductsChoices()
                 .collect { products ->
                     _cartProducts.value = products
                     calculateTotalPrice(products)
@@ -194,7 +194,7 @@ class RestaurantViewModel @Inject constructor(
             emit(result)
         }catch (e: Exception){
             emit(null)
-            Log.d(TAG, "checkTableAvailability: ")
+            Log.d(TAG, "checkTableAvailability: ${e.message}")
         }
     }
 

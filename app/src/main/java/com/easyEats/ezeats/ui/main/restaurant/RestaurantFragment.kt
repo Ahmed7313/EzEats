@@ -6,20 +6,33 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
-import android.text.Spanned
 import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
@@ -29,7 +42,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.transition.Visibility
+import com.daman.edman.screens.components.HeaderText
+import com.daman.edman.screens.components.NormalText
+import com.easyEats.ezeats.R
 import com.easyEats.ezeats.base.BaseFragment
 import com.easyEats.ezeats.base.BaseResponse
 import com.easyEats.ezeats.databinding.FragmentRestaurantBinding
@@ -37,6 +52,9 @@ import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.Menu
 import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.RestaurantMenuResponse
 import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.SubMenu
 import com.easyEats.ezeats.ui.compose.resturant.MenuItemBottomSheet
+import com.easyEats.ezeats.ui.compose.resturant.PAYMENT_INTEGRATION_TYPE
+import com.easyEats.ezeats.ui.compose.resturant.ShopDifferentDialog
+import com.easyEats.ezeats.ui.compose.theme.AppColor
 import com.easyEats.ezeats.ui.main.restaurant.adapter.MenuTabAdapter
 import com.easyEats.ezeats.ui.main.restaurant.adapter.SpecialOfferAdapter
 import com.easyEats.ezeats.ui.main.restaurant.adapter.VerticalItem
@@ -45,6 +63,7 @@ import com.easyEats.ezeats.ui.main.restaurant.adapter.flattenMenu
 import com.easyEats.ezeats.utils.Resource
 import com.easyEats.ezeats.utils.extensions.smoothScrollToCenter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 /**
@@ -55,7 +74,7 @@ import kotlinx.coroutines.launch
 class RestaurantFragment : BaseFragment<FragmentRestaurantBinding>(),
     SpecialOfferAdapter.OnSpecialOfferClicked {
 
-    override val shouldRetainView: Boolean = true
+//    override val shouldRetainView: Boolean = true
 
     val TAG = "RestaurantFragment"
 
@@ -69,21 +88,16 @@ class RestaurantFragment : BaseFragment<FragmentRestaurantBinding>(),
     private lateinit var specialOfferAdapter: SpecialOfferAdapter
 
 
-    //VzblCVYTa0 ammar shop
-    //S7CQuGrgXX ramadan Test
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        // Request the special offers data from the ViewModel.
-//        viewModel.getSpecialOffers(args.restaurantId)
-//        viewModel.getRestaurantMenu(args.restaurantId)
-//        viewModel.getRestaurantMenu("S7CQuGrgXX")
-        val restaurantId = args.restaurantId
-        val tableId = args.tableId
-        val payment_integration_type = args.PAYMENTINTEGRATIONTYPE
+    var restaurantId = ""
+    var tableId = ""
+    var payment_integration_type: PAYMENT_INTEGRATION_TYPE = PAYMENT_INTEGRATION_TYPE.DEFAULT
+
+
+    fun callCheckTableAvailability() {
         lifecycleScope.launch {
             showLoading()
             // First check table availability
-            if(tableId.isNotEmpty()) {
+            if (tableId.isNotEmpty()) {
                 viewModel.checkTableAvailability(restaurantId, tableId).collect { tableResponse ->
                     if (tableResponse != null) {
                         Log.d(
@@ -98,13 +112,29 @@ class RestaurantFragment : BaseFragment<FragmentRestaurantBinding>(),
                             TAG,
                             "onCreate: ${tableResponse.result?.currentOrder?.currentOrderId}"
                         )
+                        /*
+                            val shopLogo: String,
+    val shopCoverLogo : String,
+    val reviewsCount: Int,
+    val distance: String,
+    val rating: Double,
+    val redirectUrl: String = "",
+)
+                         */
                         // Table is available, now load menu
                         cartViewModel.initShop(
                             tableOrderId = tableResponse.result?.tableOrder?.tableOrderId.toString(),
                             currentOrderId = tableResponse.result?.currentOrder?.currentOrderId.toString(),
                             userId = tableResponse.result?.currentOrder?.userId.toString(),
                             shopId = restaurantId,
-                            tableId = tableId
+                            tableId = tableId,
+                            shopName = args.resturantInfo.restaurantName!!,
+                            logo = args.resturantInfo.restaurantLogo ?: "",
+                            coverLogo = args.resturantInfo.restaurantCover ?: "",
+                            reviewsCount = args.resturantInfo.reviewsCount ?: 0,
+                            distance = args.resturantInfo.distance ?: "",
+                            rating = args.resturantInfo.rating ?: 0.0
+
                         )
                         viewModel.getRestaurantMenu(restaurantId)
                     } else {
@@ -112,10 +142,26 @@ class RestaurantFragment : BaseFragment<FragmentRestaurantBinding>(),
                         viewModel.getRestaurantMenu(restaurantId)
                     }
                 }
-            }else{
+            } else {
                 viewModel.getRestaurantMenu(restaurantId)
             }
         }
+
+    }
+
+    //VzblCVYTa0 ammar shop
+    //S7CQuGrgXX ramadan Test
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        // Request the special offers data from the ViewModel.
+//        viewModel.getSpecialOffers(args.restaurantId)
+//        viewModel.getRestaurantMenu(args.restaurantId)
+//        viewModel.getRestaurantMenu("S7CQuGrgXX")
+        restaurantId = args.restaurantId
+        tableId = args.tableId.ifEmpty { "1" }
+        Log.d(TAG, "onCreate: $restaurantId, $tableId")
+        payment_integration_type = args.PAYMENTINTEGRATIONTYPE
+        callCheckTableAvailability()
 //        viewModel.isBottomSheetVisible.observe(this) { isVisible ->
 //            if (isVisible) {
 //                viewModel.selectedSubMenu.observe(this) { subMenu ->
@@ -127,6 +173,7 @@ class RestaurantFragment : BaseFragment<FragmentRestaurantBinding>(),
 //            }
 //        }
     }
+
 
     var isAppearBefore = false
 
@@ -167,12 +214,18 @@ class RestaurantFragment : BaseFragment<FragmentRestaurantBinding>(),
         binding.composeView.apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
 
+
             binding.composeView.setContent {
 
+                val scope = rememberCoroutineScope()
+                var showDifferentShop by remember { mutableStateOf(false) }
                 val isVisible by viewModel.isBottomSheetVisible.collectAsState()
                 val currentSubMenu by viewModel.selectedSubMenu.collectAsState()
                 LaunchedEffect(isVisible) {
                     visibility = if (isVisible) View.VISIBLE else View.GONE
+                }
+                LaunchedEffect(currentSubMenu) {
+                    Log.d(TAG, "setUpViews: ${currentSubMenu?.id} , ${currentSubMenu?.name}")
                 }
 
 
@@ -186,37 +239,118 @@ class RestaurantFragment : BaseFragment<FragmentRestaurantBinding>(),
                         },
                         subMenu = currentSubMenu!!,
                         calculateTotal = { count, subTotal, note, selected ->
-                            cartViewModel.addToCart(currentSubMenu!!,selected,count,note)
                             viewModel.dismissBottomSheet()
+                            Log.d("Checkout", "currentSubMenu: $currentSubMenu")
+                            Log.d("Checkout", "cartViewModel.shopId: ${cartViewModel.shopId}")
+                            Log.d("Checkout", "cartViewModel.tableOrderId: ${cartViewModel.tableOrderId}")
+                            Log.d("Checkout", "cartViewModel.currentOrderId: ${cartViewModel.currentOrderId}")
+                            var subMenu = currentSubMenu
+                            Log.d("Checkout", "currentSubMenu subMenu: $subMenu")
+
+                            scope.launch {
+                                cartViewModel.checkValidToAdd().collect { isValid ->
+                                    Log.d(TAG, "setUpViews: valid")
+                                    if(isValid){
+                                        if (subMenu != null) {
+                                            cartViewModel.addToCart(subMenu!!, selected, count, note)
+                                            subMenu = null
+                                        } else {
+                                            Log.e("Checkout", "currentSubMenu is null")
+                                        }
+                                    }else{
+                                        subMenu = null
+                                        showDifferentShop = true
+                                    }
+                                }
+                            }
+
+//                            if () {
+//                                val subMenu = currentSubMenu
+//                                if (subMenu != null) {
+//                                    scope.launch(Dispatchers.IO) {
+//                                        cartViewModel.addToCart(subMenu, selected, count, note)
+//                                    }
+//                                } else {
+//                                    Log.e("Checkout", "currentSubMenu is null")
+//                                }
+//                            } else {
+//                                showDifferentShop = true
+//                            }
+
                         }
                     )
                 } else {
-                    binding.composeView.visibility = View.GONE
+                    if(showDifferentShop){
+                        ShopDifferentDialog(modifier = Modifier.fillMaxWidth(), start = {
+                            scope.launch(Dispatchers.IO) {
+                                cartViewModel.clearShop()
+                            }
+                            showDifferentShop = false
+                        }, dismiss = {
+                            showDifferentShop = false
+                        })
+                    }else {
+                        binding.composeView.visibility = View.GONE
+                    }
                 }
-//                MenuItemBottomSheet(
-//                    modifier = androidx.compose.ui.Modifier.fillMaxWidth(),
-//                    isVisible = isVisible,
-//                    onDismiss = {
-//                        Log.d(TAG, "setUpViews: GONE")
-//                        // Hide the compose view when dismissing
-//                        binding.composeView.visibility = View.GONE
-//                        viewModel.dismissBottomSheet()
-//                    },
-//                    subMenu = currentSubMenu, onClick = { count, note ->
-//                        // Handle the click event for the menu item
-//                        Log.d(TAG, "setUpViews: GONE")
-//                        binding.composeView.visibility = View.GONE
-//                        viewModel.dismissBottomSheet()
-//                    }
-//                )
+            }
+
+            binding.composeTotalView.setContent {
+                val cartSummary =
+                    cartViewModel.cartSummary.collectAsState(CartSummary(0, 0.0)).value
+
+                if (cartSummary.count != null && cartSummary.count != 0)
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(17.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .background(
+                                    AppColor.ColorPrimary,
+                                    shape = RoundedCornerShape(16.dp)
+                                )
+                                .padding(17.dp)
+                                .align(Alignment.BottomCenter)
+                                .clickable {
+                                    findNavController().navigate(RestaurantFragmentDirections.goToCartScreen())
+                                },
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            HeaderText(
+                                text = cartSummary.count.toString(),
+                                color = AppColor.WhiteColor,
+                                fontSize = 15
+                            )
+
+                            NormalText(
+                                text = stringResource(R.string.view_cart),
+                                color = AppColor.WhiteColor,
+                                fontSize = 15,
+                                modifier = Modifier.padding(start = 6.dp)
+                            )
+                            Spacer(modifier = Modifier.weight(1f))
+                            NormalText(
+                                fontSize = 15,
+                                text = stringResource(R.string.currency) + " ${cartSummary.total}",
+                                color = AppColor.WhiteColor
+                            )
+                        }
+                    }
+
+
             }
 
         }
 
+
     }
 
     private fun setupBusyOrClose() {
-        val fullText = "This Restaurant is currently busy or closed, you can continue browsing the menu but you can’t make an order"
+        val fullText =
+            "This Restaurant is currently busy or closed, you can continue browsing the menu but you can’t make an order"
 
 
 // Change "busy" to red
@@ -234,9 +368,9 @@ class RestaurantFragment : BaseFragment<FragmentRestaurantBinding>(),
             }
         }
         binding.busyOrCloseText.text = spannable
-        if(cartViewModel.currentOrderId.isEmpty() || cartViewModel.tableOrderId.isEmpty()){
+        if (cartViewModel.currentOrderId.isEmpty() || cartViewModel.tableOrderId.isEmpty()) {
             binding.llCloseOrBusy.visibility = View.VISIBLE
-        }else{
+        } else {
             binding.llCloseOrBusy.visibility = View.GONE
         }
     }
@@ -282,7 +416,8 @@ class RestaurantFragment : BaseFragment<FragmentRestaurantBinding>(),
                 is Resource.UnAuthenticated -> {
                     // Handle the unauthenticated case (e.g., redirect to login).
                 }
-                else ->{}
+
+                else -> {}
             }
         }
 
@@ -313,6 +448,7 @@ class RestaurantFragment : BaseFragment<FragmentRestaurantBinding>(),
                 is Resource.UnAuthenticated -> {
                     // Handle the unauthenticated case (e.g., redirect to login).
                 }
+
                 is Resource.DEFAULT -> {
                     // Handle the unauthenticated case (e.g., redirect to login).
                 }
@@ -411,7 +547,7 @@ class RestaurantFragment : BaseFragment<FragmentRestaurantBinding>(),
     override fun onResume() {
         super.onResume()
         viewModel.cleanupBottomSheet()
-        Log.d(TAG, "onResume: ")
+        callCheckTableAvailability()
     }
 
     /**

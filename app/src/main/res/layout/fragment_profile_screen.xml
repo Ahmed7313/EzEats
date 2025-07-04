@@ -365,18 +365,6 @@
                 app:drawableEndCompat="@drawable/chevron_right_icon"
                 app:drawableStartCompat="@drawable/help_circle_icon" />
 
-            <TextView
-                android:id="@+id/tvCart"
-                style="@style/TextProfile"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:drawablePadding="@dimen/_5sdp"
-                android:gravity="center_vertical"
-                android:text="cart"
-                app:drawableEndCompat="@drawable/chevron_right_icon"
-                app:drawableStartCompat="@drawable/help_circle_icon" />
-
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_90sdp"/>

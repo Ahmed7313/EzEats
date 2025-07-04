@@ -91,9 +91,6 @@ class ProfileScreenFragment : BaseFragment<FragmentProfileScreenBinding>(), LogO
             openBrowser("https://www.ez-eats.com/privacypolicy")
         }
 
-        binding.tvCart.setOnClickListener {
-            findNavController().navigate(R.id.goToCartScreen)
-        }
 
         // Navigate to the voucher screen when the promo code option is clicked
         binding.tvPromoCode.setOnClickListener {

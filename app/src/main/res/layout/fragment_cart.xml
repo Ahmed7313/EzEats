@@ -11,7 +11,10 @@
         android:layout_height="match_parent"
         android:paddingHorizontal="@dimen/_11sdp"
         android:paddingTop="@dimen/_20sdp"
+        android:orientation="vertical"
         tools:context=".ui.main.cart.CartFragment">
+
+
 
         <androidx.compose.ui.platform.ComposeView
             android:id="@+id/compose_view"

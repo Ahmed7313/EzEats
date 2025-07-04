@@ -16,5 +16,12 @@ data class ShopEntity(
     val currentOrderId: String,
     val userId: String,
     val shopId: String,
-    val tableId: String
+    val tableId: String,
+    val shopName: String,
+    val logo: String,
+    val coverLogo : String,
+    val reviewsCount: Int,
+    val distance: String,
+    val rating: Double,
+    val redirectUrl: String = "",
 )

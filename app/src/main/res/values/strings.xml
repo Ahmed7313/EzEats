@@ -243,5 +243,9 @@
     <string name="welcome_to_sahel">Welcome to Sahel</string>
     <string name="pick_compound_from_list">Pick a compound from the list below, so can serve you there</string>
     <string name="select_compound">Select Compound</string>
+    <string name="view_cart">View Cart</string>
+    <string name="start_new_order">Start New Order</string>
+    <string name="adding_items">Adding items from this one will clear your current cart</string>
+    <string name="start">Start</string>
 
 </resources>

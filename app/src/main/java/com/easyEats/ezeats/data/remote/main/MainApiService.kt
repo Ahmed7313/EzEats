@@ -1,6 +1,7 @@
 package com.easyEats.ezeats.data.remote.main
 
 import com.easyEats.ezeats.base.BaseResponse
+import com.easyEats.ezeats.domain.main.model.request.cart.UpdateCartRequest
 import com.easyEats.ezeats.domain.main.model.request.complaint_request.ComplaintRequest
 import com.easyEats.ezeats.domain.main.model.request.edit_user_info.UserInfoRequest
 import com.easyEats.ezeats.domain.main.model.request.firebase_token.UpdateTokeRequest
@@ -120,4 +121,7 @@ interface MainApiService {
 
     @POST("getRestaurants")
     suspend fun getRestaurants(@Body restaurantRequest: com.easyEats.ezeats.domain.main.model.request.RestaurantRequest): RestaurantListResultResponse
+
+    @POST("updateCart")
+    suspend fun updateCart(@Body restaurantRequest: UpdateCartRequest): UpdateCartResponse
 }

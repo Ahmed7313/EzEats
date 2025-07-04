@@ -23,6 +23,7 @@ class MainActivityUseCase @Inject constructor(private val mainRepository: MainRe
     }
 
     fun getCompound() = mainRepository.getCompound()
+    fun updateCart() = mainRepository.getCompound()
 
 
 

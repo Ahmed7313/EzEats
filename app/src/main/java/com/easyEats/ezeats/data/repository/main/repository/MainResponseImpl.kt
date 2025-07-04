@@ -4,6 +4,8 @@ import com.easyEats.ezeats.base.BaseResponse
 import com.easyEats.ezeats.data.local.data_store.DataStorePreference
 import com.easyEats.ezeats.data.remote.main.MainApiService
 import com.easyEats.ezeats.domain.main.model.UserLocationAddress
+import com.easyEats.ezeats.domain.main.model.request.cart.UpdateCartRequest
+import com.easyEats.ezeats.domain.main.model.request.cart.UpdateCartResponse
 import com.easyEats.ezeats.domain.main.model.request.complaint_request.ComplaintRequest
 import com.easyEats.ezeats.domain.main.model.request.edit_user_info.UserInfoRequest
 import com.easyEats.ezeats.domain.main.model.request.firebase_token.UpdateTokeRequest
@@ -168,5 +170,9 @@ class MainResponseImpl @Inject constructor(
     override suspend fun getRestaurants(restaurantRequest: com.easyEats.ezeats.domain.main.model.request.RestaurantRequest): RestaurantListResultResponse {
         return mainApiService.getRestaurants(restaurantRequest)
     }
+    override suspend fun updateCart(restaurantRequest: UpdateCartRequest): UpdateCartResponse {
+        return mainApiService.updateCart(restaurantRequest)
+    }
+
 
 }
