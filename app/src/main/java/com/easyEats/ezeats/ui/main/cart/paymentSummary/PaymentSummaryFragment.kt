@@ -7,13 +7,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.navigation.fragment.navArgs
 import com.easyEats.ezeats.base.BaseFragment
 import com.easyEats.ezeats.databinding.FragmentPaymentSummaryBinding
 import com.easyEats.ezeats.ui.compose.cart.paymentSummaryScreen.PaymentSummaryScreenUI
-import com.easyEats.ezeats.ui.main.restaurant.adapter.MenuTabAdapter
-import com.easyEats.ezeats.ui.main.restaurant.adapter.SpecialOfferAdapter
-import com.easyEats.ezeats.ui.main.restaurant.adapter.VerticalMenuAdapter
+import com.easyEats.ezeats.ui.main.restaurant.CartViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -32,23 +30,22 @@ class PaymentSummaryFragment : BaseFragment<FragmentPaymentSummaryBinding>() {
 
 
     // ViewModel to manage the restaurant data and special offers.
-    private val viewModel: PaymentSummaryViewModel by activityViewModels()
-    private lateinit var menuTabAdapter: MenuTabAdapter
-    private lateinit var verticalMenuAdapter: VerticalMenuAdapter
-    private lateinit var layoutManager: LinearLayoutManager
-    private lateinit var specialOfferAdapter: SpecialOfferAdapter
+    val viewModel: CartViewModel by activityViewModels()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Request the special offers data from the ViewModel.
 
     }
+    private val args by navArgs<PaymentSummaryFragmentArgs>()
+
     /**
      * Sets up the views and their corresponding actions for the fragment.
      */
     override fun setUpViews() {
         binding.composeView.setContent {
-            PaymentSummaryScreenUI(modifier = Modifier.fillMaxSize(),findNavController())
+            PaymentSummaryScreenUI(modifier = Modifier.fillMaxSize(),findNavController(),viewModel,args.cartResponse)
         }
     }
 

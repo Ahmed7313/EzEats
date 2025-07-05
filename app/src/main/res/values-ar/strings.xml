@@ -233,6 +233,12 @@
     <string name="start_new_order">Start New Order</string>
     <string name="adding_items">Adding items from this one will clear your current cart</string>
     <string name="start">Start</string>
+    <string name="service_fees">Service Fees</string>
+    <string name="tip">Tip</string>
+    <string name="your_are_at">You are at</string>
+    <string name="saved_address">Saved Address</string>
+    <string name="selected">Selected</string>
+    <string name="add_new_address">Add New Address</string>
 
 
 </resources>

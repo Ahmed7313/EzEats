@@ -8,8 +8,9 @@ import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.SubMenu
 data class ProductWithChoices(
     @Embedded val product: ProductEntity,
     @Relation(
-        parentColumn = "productId",
-        entityColumn = "productId"
+        parentColumn = "id",
+        entityColumn = "productId",
+        entity = ProductChoiceEntity::class
     )
     val choices: List<ProductChoiceEntity>
 )

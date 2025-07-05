@@ -4,6 +4,7 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.easyEats.ezeats.domain.main.model.UserLocationAddress
+import com.easyEats.ezeats.domain.main.model.request.cart.TipRequest
 import com.easyEats.ezeats.domain.main.model.request.cart.UpdateCartRequest
 import com.easyEats.ezeats.domain.main.model.request.firebase_token.UpdateTokeRequest
 import com.easyEats.ezeats.domain.main.model.request.home.HomeRequest
@@ -46,7 +47,6 @@ class HomeUseCase @Inject constructor(private val mainRepository: MainRepository
     suspend fun updateCart(restaurantRequest: UpdateCartRequest) =
         mainRepository.updateCart(restaurantRequest)
 
-
-
+    suspend fun saveTip(request: TipRequest) = mainRepository.saveTip(request)
 
 }

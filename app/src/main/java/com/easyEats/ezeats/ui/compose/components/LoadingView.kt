@@ -1,5 +1,6 @@
 package com.trend.thecontent.screens.components
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
@@ -15,7 +16,7 @@ import com.thub.uadadvertisor.presentation.components.LoadingAnimation
 @Composable
 fun LoadingView(isLoading: Boolean) {
     var showDialog by remember { mutableStateOf(false) }
-
+    Log.d("LoadingView", "LoadingView: $isLoading")
     if (isLoading) {
         Dialog(
             onDismissRequest = { showDialog = false },

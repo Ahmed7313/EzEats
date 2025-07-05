@@ -6,7 +6,10 @@ import androidx.lifecycle.viewModelScope
 import com.easyEats.ezeats.MyApplication
 import com.easyEats.ezeats.domain.main.model.request.cart.ItemCheckoutModel
 import com.easyEats.ezeats.domain.main.model.request.cart.SuboptionsId
+import com.easyEats.ezeats.domain.main.model.request.cart.TipRequest
 import com.easyEats.ezeats.domain.main.model.request.cart.UpdateCartRequest
+import com.easyEats.ezeats.domain.main.model.request.cart.response.UpdateCartResponse
+import com.easyEats.ezeats.domain.main.model.request.cart.tip.TipResponse
 import com.easyEats.ezeats.domain.main.model.request.restaurant.CheckTableAvailabilityRequest
 import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.SubMenu
 import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.check_table_availability.TableAvailabilityResponse
@@ -54,6 +57,12 @@ class CartViewModel @Inject constructor(
 
     private val _cartProducts = MutableStateFlow<List<ProductWithChoices>>(emptyList())
     val cartProducts = _cartProducts.asStateFlow()
+
+    private val _updateCartResponse = MutableStateFlow<UpdateCartResponse>(UpdateCartResponse())
+    val updateCartResponse = _updateCartResponse.asStateFlow()
+
+    private val _showLoading = MutableStateFlow<Boolean>(false)
+    val showLoading = _showLoading.asStateFlow()
 
 
     private val _addToCartResult = MutableStateFlow<ProductDao.Result?>(null)
@@ -152,11 +161,11 @@ class CartViewModel @Inject constructor(
         }
     }
 
-    fun updateProductQty(productId: String,qty: Int){
+    fun updateProductQty(productId: String, qty: Int) {
         viewModelScope.launch {
-            if(qty > 0)
-                productDao.updateProductQuantity(productId,qty)
-            else{
+            if (qty > 0)
+                productDao.updateProductQuantity(productId, qty)
+            else {
                 productDao.deleteProduct(productId)
             }
             observeCartChanges()
@@ -180,22 +189,23 @@ class CartViewModel @Inject constructor(
             coverLogo,
             reviewsCount, distance, rating
         )
-        val exist = productDao.isProductExist(currentSubMenu.id.toString(),note)
+        val exist = productDao.isProductExist(currentSubMenu.id.toString(), note)
         Log.d(TAG, "addToCart: exist")
-        if(exist){
+        if (exist) {
             Log.d(TAG, "addToCart: exist 2")
-            val isProductChoicesInsertBefore = productDao.isProductChoicesInsertBefore(currentSubMenu.id.toString(),selected)
+            val isProductChoicesInsertBefore =
+                productDao.isProductChoicesInsertBefore(currentSubMenu.id.toString(), selected)
             Log.d(TAG, "addToCart: $isProductChoicesInsertBefore")
-            if(isProductChoicesInsertBefore){
+            if (isProductChoicesInsertBefore) {
                 Log.d(TAG, "addToCart: before")
                 productDao.updateProductQuantityPlus(currentSubMenu.id.toString())
-            }else{
+            } else {
                 Log.d(TAG, "addToCart: new")
                 val productId = productDao.addProduct(currentSubMenu, count, note)
                 Log.d(TAG, "addToCart: $productId")
                 productDao.addProductVariation(productId, selected)
             }
-        }else {
+        } else {
             Log.d(TAG, "addToCart: not exist")
             val productId = productDao.addProduct(currentSubMenu, count, note)
             Log.d(TAG, "addToCart: $productId")
@@ -209,7 +219,7 @@ class CartViewModel @Inject constructor(
             _cartSummary.value = productDao.count_with_total_price(shopId)
     }
 
-    fun checkValidToAdd() : Flow<Boolean>{
+    fun checkValidToAdd(): Flow<Boolean> {
         return productDao.getCurrentShopId().map { currentShopId ->
             currentShopId == null || currentShopId == shopId
         }
@@ -265,7 +275,7 @@ class CartViewModel @Inject constructor(
         }
      */
 
-    suspend fun checkout(){
+    suspend fun checkout() {
         val request = UpdateCartRequest()
         val items = mutableListOf<ItemCheckoutModel>()
 
@@ -297,10 +307,66 @@ class CartViewModel @Inject constructor(
 
         request.items = items
 
-        try{
-            mainUseCase.homeUseCase.updateCart(request)
-        }catch (e: Exception){
+        try {
+            mainUseCase.homeUseCase.updateCart(request).let {
+                Log.d(TAG, "checkout: result")
+                _updateCartResponse.value = it
+            }
+
+
+        } catch (e: Exception) {
             e.printStackTrace()
         }
     }
+
+    /*
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun checkTableAvailability(): Flow<TableAvailabilityResponse?> {
+        return productDao.getShop().flatMapLatest { shop ->
+            flow {
+                if (shop != null) {
+                    try {
+                        val result = mainUseCase.restaurantUseCase.checkTableAvailability(
+                            CheckTableAvailabilityRequest(shop.shopId, shop.tableId)
+                        )
+                        emit(result)
+                    } catch (e: Exception) {
+                        Log.d(MyApplication.TAG, "checkTableAvailability: ${e.message}")
+                        emit(null)
+                    }
+                } else {
+                    emit(null)
+                }
+            }
+        }
+    }
+     */
+
+    fun saveTip(
+        amount: String?,
+        orderId: String?
+    ) : Flow<TipResponse?> {
+        _showLoading.value = true
+       return flow {
+            if (amount != null && orderId != null && amount.isNotEmpty() && orderId.isNotEmpty()) {
+                try{
+                    _showLoading.value = false
+                    val tipResponse = mainUseCase.homeUseCase.saveTip(TipRequest(amount.toInt(), orderId))
+                    emit(tipResponse)
+                }catch (Ex: Exception){
+                    _showLoading.value = false
+                    emit(null)
+                }
+            }else{
+                _showLoading.value = false
+                emit(null)
+            }
+        }
+    }
+
+    fun getAddressList()  {
+
+    }
+
 }

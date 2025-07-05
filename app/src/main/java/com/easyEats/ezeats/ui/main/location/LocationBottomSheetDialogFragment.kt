@@ -60,7 +60,13 @@ class LocationBottomSheetDialogFragment : BottomSheetDialogFragment(),
         }
         locationAdapter = LocationAdapter(this)
         binding.rvLocation.adapter = locationAdapter
-        binding.tvRefresh.setOnClickListener { askUserToEnableLocation() }
+        binding.tvRefresh.setOnClickListener {
+            askUserToEnableLocation()
+
+            if (binding.tvTitleLocation.text.isNotEmpty()) {
+                mainViewModel.clearCompound()
+            }
+        }
 
         listenToObservers()
         return binding.root
@@ -89,12 +95,13 @@ class LocationBottomSheetDialogFragment : BottomSheetDialogFragment(),
                 }
 
                 is Resource.UnAuthenticated -> {}
-                else ->{}
+                else -> {}
 
             }
         }
         lifecycleScope.launch {
             mainViewModel.fetchCurrentAddress().collect {
+                Log.d(TAG, "listenToObservers: here fetchCurrentAddress")
                 it?.let {
                     binding.tvTitleLocation.text = it.address ?: ""
                 }

@@ -1,5 +1,6 @@
 package com.easyEats.ezeats.ui.compose.cart
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -28,23 +29,25 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.fragment.findNavController
 import com.easyEats.ezeats.R
+import com.easyEats.ezeats.domain.main.model.request.cart.response.UpdateCartResponse
+import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.RestaurantInfo
 import com.easyEats.ezeats.domain.room.ShopEntity
 import com.easyEats.ezeats.ui.compose.cart.summary.PaymentSummary
 import com.easyEats.ezeats.ui.compose.components.AppButtonPrimary
 import com.easyEats.ezeats.ui.compose.components.AppButtonStroke
+import com.easyEats.ezeats.ui.compose.resturant.PAYMENT_INTEGRATION_TYPE
 import com.easyEats.ezeats.ui.compose.theme.AppColor.BlackColor2
 import com.easyEats.ezeats.ui.compose.theme.AppColor.GreyColor
 import com.easyEats.ezeats.ui.main.cart.CartFragmentDirections
 import com.easyEats.ezeats.ui.main.restaurant.CartViewModel
-import kotlinx.coroutines.launch
 
 @Composable
 fun CartScreenUI(
     modifier: Modifier = Modifier,
     viewModel: CartViewModel,
-    findNavController: NavController,) {
+    findNavController: NavController,
+) {
 
     val TAG = "CartScreenUI"
     val scope = rememberCoroutineScope()
@@ -72,6 +75,9 @@ fun CartScreenUI(
     val cartData =
         viewModel.cartProducts.collectAsState(arrayListOf()).value
 
+    val updateCartResponse =
+        viewModel.updateCartResponse.collectAsState(UpdateCartResponse()).value
+
     var isAddedBefore by remember {
         mutableStateOf(false)
     }
@@ -80,8 +86,8 @@ fun CartScreenUI(
         if (shopData?.shopId?.isNotEmpty() == true)
             viewModel.getCartData(shopData.shopId)
     }
-    LaunchedEffect(cartData,isAddedBefore) {
-        if(cartData.isEmpty() && isAddedBefore)
+    LaunchedEffect(cartData, isAddedBefore) {
+        if (cartData.isEmpty() && isAddedBefore)
             findNavController.navigateUp()
     }
 
@@ -150,7 +156,7 @@ fun CartScreenUI(
             VoucherOrPromoUI(modifier = Modifier.fillMaxWidth())
 
 
-            PaymentSummary(modifier = Modifier.fillMaxWidth())
+            PaymentSummary(modifier = Modifier.fillMaxWidth(),updateCartResponse)
 
             Row(modifier = Modifier.fillMaxWidth()) {
                 AppButtonPrimary(
@@ -159,7 +165,11 @@ fun CartScreenUI(
                         .padding(horizontal = 6.dp),
                     text = stringResource(R.string.checkout)
                 ) {
-//                    findNavController.navigate(CartFragmentDirections.actionCartFragmentToPaymentSummaryFragment())
+                    findNavController.navigate(
+                        CartFragmentDirections.actionCartFragmentToPaymentSummaryFragment(
+                            updateCartResponse
+                        )
+                    )
                 }
                 AppButtonStroke(
                     modifier = Modifier
@@ -167,11 +177,27 @@ fun CartScreenUI(
                         .padding(horizontal = 6.dp),
                     text = stringResource(R.string.add_items)
                 ) {
-//                    navigate.navigate(R.)
+                    Log.d(TAG, "CartScreenUI: ${shopData?.shopId}")
+                    Log.d(TAG, "CartScreenUI: ${shopData?.tableId}")
+                    findNavController.navigate(
+                        CartFragmentDirections.actionCartFragmentToRestaurantFragment2(
+                            shopData?.shopId ?: "",
+                            shopData?.tableId ?: "",
+                            PAYMENTINTEGRATIONTYPE = if (updateCartResponse.result?.restaurant?.paymentSystem == "paymob")
+                                PAYMENT_INTEGRATION_TYPE.PAYMOB else PAYMENT_INTEGRATION_TYPE.KASHIER,
+                            RestaurantInfo(
+                                rating = 0.0,
+                                restaurantName = shopData?.shopName ?: "",
+                                reviewsCount = shopData?.reviewsCount ?: 0,
+                                distance = shopData?.distance ?: "",
+                                restaurantLogo = shopData?.logo ?: "",
+                                restaurantCover = shopData?.coverLogo ?: "",
+                            )
+                        )
+                    )
                 }
             }
         }
-
     }
 }
 

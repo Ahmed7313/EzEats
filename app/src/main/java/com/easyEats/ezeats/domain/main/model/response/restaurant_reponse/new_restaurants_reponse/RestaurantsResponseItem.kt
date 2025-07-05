@@ -57,6 +57,8 @@ data class RestaurantsResponseItem(
     var pIntegrationID: String? = "",
     @SerializedName("paymobApiKey")
     var paymobApiKey: String? = "",
+    @SerializedName("paymentSystem")
+    var paymentSystem: String? = "",
     @SerializedName("paymobIntegrationID")
     var paymobIntegrationID: String? = "",
     @SerializedName("rate")

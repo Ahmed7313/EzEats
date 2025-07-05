@@ -1,12 +1,15 @@
 package com.easyEats.ezeats.domain.main.model.request.cart.response
 
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.Serializable
 
 @OptIn(InternalSerializationApi::class)
 @Serializable
+@Parcelize
 data class Restaurant(
     @SerializedName("country")
     var country: String? = "",
@@ -20,4 +23,4 @@ data class Restaurant(
     var objectId: String? = "",
     @SerializedName("paymentSystem")
     var paymentSystem: String? = ""
-)
+) : Parcelable

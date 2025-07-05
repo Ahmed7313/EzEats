@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -37,34 +38,40 @@ fun TipOptionItem(
     isSelected: Boolean,
     onTipSelected: (TipOption) -> Unit
 ) {
-    Column(
-        modifier = mod
-            .width(107.dp)
-            .height(72.dp)
-            .background(
-                if (isSelected) AppColor.ColorPrimaryOpacity else AppColor.WhiteColor,
-                shape = RoundedCornerShape(16.dp)
+    Box(modifier = mod.padding(end = 16.dp)) {
+        Column(
+            modifier = Modifier
+                .align(Alignment.Center)
+                .width(107.dp)
+                .height(72.dp)
+                .background(
+                    if (isSelected) AppColor.ColorPrimaryOpacity else AppColor.WhiteColor,
+                    shape = RoundedCornerShape(5.dp)
+                )
+                .border(
+                    BorderStroke(1.dp, if (isSelected) ColorPrimary else AppColor.BlackColor),
+                    shape = RoundedCornerShape(5.dp)
+                )
+                .clickable {
+                    onTipSelected(option)
+                },
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = if (option.amount != null)
+                    "${option.amount} EGP" else "Custom",
+                fontSize = 16.sp,
             )
-            .border(
-                BorderStroke(1.dp, if (isSelected) ColorPrimary else AppColor.BlackColor),
-                shape = RoundedCornerShape(16.dp)
+            Text(
+                color = if (option.percentage.isNullOrEmpty()) BlackColor else ColorPrimary,
+                text = option.percentage ?: "Tip",
+                fontSize = 16.sp,
             )
-            .clickable {
-                onTipSelected(option)
-            },
-        verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = option.amount ?: "Custom",
-            fontSize = 16.sp,
-        )
-        Text(
-            color = if (option.percentage.isNullOrEmpty()) BlackColor else ColorPrimary,
-            text = option.percentage ?: "Tip",
-            fontSize = 16.sp,
-        )
 
+        }
     }
+
 }
 
 
@@ -78,13 +85,14 @@ fun TipOptionCurrencyItem(
     TextButton(
         modifier = mod,
         onClick = {
-        onTipSelected(option)
-    }) {
+            onTipSelected(option)
+        }) {
         Text(
             text = option.amount ?: "Custom",
             color = if (isSelected) AppColor.WhiteColor else AppColor.BlackColor,
             fontSize = 16.sp,
-            modifier = Modifier.padding(horizontal = 20.dp, vertical = 11.dp)
+            modifier = Modifier
+                .padding(horizontal = 20.dp, vertical = 11.dp)
                 .background(
                     if (isSelected) AppColor.WhiteColor else AppColor.ColorPrimary,
                     shape = RoundedCornerShape(50.dp)

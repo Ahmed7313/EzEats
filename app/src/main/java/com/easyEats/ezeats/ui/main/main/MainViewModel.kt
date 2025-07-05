@@ -3,37 +3,27 @@ package com.easyEats.ezeats.ui.main.main
 import android.content.IntentFilter
 import android.location.LocationManager
 import android.net.ConnectivityManager
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.MyApplication.Companion.baseApplication
+import com.easyEats.ezeats.R
 import com.easyEats.ezeats.domain.main.model.UserLocationAddress
 import com.easyEats.ezeats.domain.main.model.response.compound.CompoundResult
-import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.SubMenu
 import com.easyEats.ezeats.domain.main.use_case.MainUseCase
-import com.easyEats.ezeats.domain.main.use_case.main_use_case.MainActivityUseCase
 import com.easyEats.ezeats.utils.reciveirs.LocationReceiver
 import com.easyEats.ezeats.utils.reciveirs.NetworkChangeReceiver
-import com.google.android.gms.common.internal.Objects
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.retryWhen
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 import kotlin.math.pow
 
@@ -48,8 +38,19 @@ open class MainViewModel @Inject constructor(
     private val _saveAddressResult = MutableLiveData<Boolean>()
     val saveAddressResult: LiveData<Boolean> = _saveAddressResult
 
-    var compound = ""
-    
+    var compoundId = ""
+    var compoundName = ""
+
+
+    private val _compoundIdValue =
+        MutableLiveData(baseApplication.getString(R.string.select_location))
+    val compoundIdValue: LiveData<String> = _compoundIdValue
+
+    fun clearCompound(){
+        compoundId = ""
+        _compoundIdValue.value = ""
+    }
+
     // LiveData to expose location permission status
     val isLocationGranted = MutableLiveData<Boolean>()
 

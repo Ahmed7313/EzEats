@@ -1,31 +1,20 @@
 package com.easyEats.ezeats.ui.main.main
 
-import android.Manifest
 import android.content.Intent
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.view.get
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.databinding.ActivityHomeBinding
-import com.easyEats.ezeats.ui.main.home.HomeScreenFragment
 import com.easyEats.ezeats.utils.app_updates.InAppUpdateManager
-import com.google.android.gms.common.internal.Objects
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -140,7 +129,7 @@ class HomeActivity : AppCompatActivity() {
                 
                 R.id.homeScreenFragment, R.id.qrScreenFragment, R.id.profileScreenFragment, R.id.pointScreenFragment -> {
                     binding.navView.visibility = VISIBLE
-                    mainViewModel.compound = ""
+                    mainViewModel.compoundId = ""
                 }
                 R.id.percentScreenFragment -> {
                     binding.navView.visibility = VISIBLE

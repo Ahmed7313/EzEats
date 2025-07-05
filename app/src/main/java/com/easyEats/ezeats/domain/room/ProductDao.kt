@@ -20,7 +20,6 @@ interface ProductDao {
     fun getCurrentShopId(): Flow<String?>
 
 
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertShop(shop: ShopEntity)
 
@@ -31,9 +30,9 @@ interface ProductDao {
     suspend fun insertProduct(product: ProductEntity): Long
 
 
-
     @Query("UPDATE products SET qty = :additionalQty WHERE productId = :productId")
     suspend fun updateProductQuantity(productId: String, additionalQty: Int)
+
     @Query(
         "UPDATE products SET    qty = qty + 1 WHERE  productId = :productId"
     )
@@ -61,7 +60,17 @@ interface ProductDao {
         clearShops()
         insertShop(
             ShopEntity(
-                tableOrderId, currentOrderId, userId, shopId, tableId,shopName, logo,coverLogo,reviewsCount,distance,rating
+                tableOrderId,
+                currentOrderId,
+                userId,
+                shopId,
+                tableId,
+                shopName,
+                logo,
+                coverLogo,
+                reviewsCount,
+                distance,
+                rating
             )
         )
     }
@@ -105,6 +114,7 @@ interface ProductDao {
 
 
     @Transaction
+//    @Query("SELECT products.* , product_choices.choiceName , product_choices.choicePrice , ((products.qty * products.price) + product_choices.choicePrice) as product_total  FROM products inner join product_choices on products.id = product_choices.productId group by product_choices.productId")
     @Query("SELECT * FROM products")
     fun getProductsChoices(): Flow<List<ProductWithChoices>>
 
@@ -125,7 +135,11 @@ interface ProductDao {
     suspend fun deleteProduct(productId: String)
 
     @Query("SELECT EXISTS (SELECT 1 FROM product_choices WHERE productId = :productId AND subOptionId = :subOptionId AND choiceId = :choiceId)")
-    suspend fun isProductChoiceExist(productId: String, subOptionId: String, choiceId: String): Boolean
+    suspend fun isProductChoiceExist(
+        productId: String,
+        subOptionId: String,
+        choiceId: String
+    ): Boolean
 
     @Transaction
     suspend fun isProductChoicesInsertBefore(
@@ -137,8 +151,9 @@ interface ProductDao {
                 val result = isProductChoiceExist(
                     productId = productId,
                     subOptionId = it.key,
-                    choiceId = choice.id)
-                if(!result) return false
+                    choiceId = choice.id
+                )
+                if (!result) return false
             }
 
         }
@@ -159,7 +174,8 @@ interface ProductDao {
     )
     suspend fun getProductTotalPriceOrZero(productId: String): Double
 
-    @Query("""
+    @Query(
+        """
     SELECT (
         SELECT SUM(p.qty) 
         FROM products p
@@ -180,12 +196,14 @@ interface ProductDao {
             GROUP BY p.productId
         )
     ) as total
-""")
+"""
+    )
     suspend fun count_with_total_price(
         shopId: kotlin.String,
     ): CartSummary
 
-    @Query("""
+    @Query(
+        """
     SELECT p.*, s.shopName, 
     (
         SELECT (p2.price * p2.qty) + COALESCE(SUM(pc.choicePrice), 0.0)
@@ -200,10 +218,9 @@ interface ProductDao {
         SELECT 1 FROM shop s2
         WHERE s2.shopId = :shopId
     )
-""")
+"""
+    )
     fun getCartProducts(shopId: String): Flow<List<ProductWithChoices>>
-
-
 
 
     @Query("SELECT * FROM shop LIMIT 1")

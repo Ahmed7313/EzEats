@@ -1,5 +1,6 @@
 package com.easyEats.ezeats.ui.main.offers
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -11,7 +12,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -19,6 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -31,7 +32,6 @@ import com.easyEats.ezeats.R
 import com.easyEats.ezeats.base.BaseFragment
 import com.easyEats.ezeats.databinding.FragmentPercentScreenBinding
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.RestaurantInfo
-import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.new_restaurants_reponse.RestaurantsResponseItem
 import com.easyEats.ezeats.domain.main.model.response.search_response.Category
 import com.easyEats.ezeats.ui.compose.offers.OffersList
 import com.easyEats.ezeats.ui.compose.offers.SelectionButton
@@ -63,6 +63,7 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
         container: ViewGroup?
     ) = FragmentPercentScreenBinding.inflate(inflater, container, false)
 
+    @SuppressLint("SetTextI18n")
     override fun setUpViews() {
         binding.tvLocation.setOnClickListener {
             findNavController().navigate(R.id.location_bottom_sheet)
@@ -70,10 +71,41 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
         binding.ivSearch.setOnClickListener {
             findNavController().navigate(R.id.goToSearchHistoryFragment)
         }
+        drawSelectedCompoundOrLocation()
         getCategoriesAndRestaurants()
         handleBackDirection()
-        Log.d(TAG, "setUpViews: compound ${mainViewModel.compound}")
+        Log.d(TAG, "setUpViews: compound ${mainViewModel.compoundId}")
 
+        lifecycleScope.launch {
+            mainViewModel.compoundIdValue.observe(viewLifecycleOwner) {
+                drawSelectedCompoundOrLocation()
+            }
+        }
+    }
+
+    fun drawSelectedCompoundOrLocation(){
+        Log.d(TAG, "drawSelectedCompoundOrLocation: here compoundOrLocation")
+        if(mainViewModel.compoundId.isNotEmpty()){
+            binding.tvLocation.text = getString(R.string.your_are_at) + " "+mainViewModel.compoundName
+        }else{
+            Log.d(TAG, "drawSelectedCompoundOrLocation: here")
+            lifecycleScope.launch {
+                mainViewModel.userLocationAddressMutableLiveData.collect { loc ->
+                    binding.tvLocation.text = loc?.address?.let { "You're at $it" }
+                        ?: getString(R.string.select_location)
+                    //osama
+                    offersViewModel.getRestaurantsResult(
+                        "",
+                        loc?.lat,
+                        loc?.lng,
+//                    30.0145125310423.toString(),
+//                    30.975965400415998.toString(),
+                        mainViewModel.compoundId,
+                    )
+                }
+            }
+
+        }
     }
 
     private fun getCategoriesAndRestaurants() {
@@ -86,7 +118,7 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
             "",
             mainViewModel.userLocationAddressMutableLiveData.value?.lat,
             mainViewModel.userLocationAddressMutableLiveData.value?.lng,
-            mainViewModel.compound
+            mainViewModel.compoundId
         )
     }
 
@@ -172,7 +204,7 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
                                     }
 
                                     var compoundSelected by remember {
-                                        mutableStateOf(mainViewModel.compound)
+                                        mutableStateOf(mainViewModel.compoundId)
                                     }
 
                                     var scope = rememberCoroutineScope()
@@ -203,7 +235,7 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
                                                     text = getString(R.string.delivery),
                                                     isSelected = selectedTab == 1,
                                                     onSelect = {
-                                                        if(mainViewModel.compound.isEmpty()) {
+                                                        if(mainViewModel.compoundId.isEmpty()) {
                                                             showCompound = true
                                                         }else{
                                                             selectedTab = 1
@@ -249,7 +281,7 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
                                                 list = compounds.value,
                                                 selected = compoundSelected,
                                                 click = { compound ->
-                                                    mainViewModel.compound = compound
+                                                    mainViewModel.compoundId = compound
                                                     compoundSelected = compound
                                                     selectedTab = 1
                                                     showCompound = false
@@ -278,17 +310,19 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
     private fun listenToCurrentLocation() {
         lifecycleScope.launch {
             mainViewModel.userLocationAddressMutableLiveData.collect { loc ->
-                binding.tvLocation.text = loc?.address?.let { "You're at $it" }
-                    ?: getString(R.string.select_location)
-                //osama
-                offersViewModel.getRestaurantsResult(
-                    "",
-                    loc?.lat,
-                    loc?.lng,
+                if(mainViewModel.compoundId.isEmpty()) {
+                    binding.tvLocation.text = loc?.address?.let { "You're at $it" }
+                        ?: getString(R.string.select_location)
+                    //osama
+                    offersViewModel.getRestaurantsResult(
+                        "",
+                        loc?.lat,
+                        loc?.lng,
 //                    30.0145125310423.toString(),
 //                    30.975965400415998.toString(),
-                    mainViewModel.compound,
-                )
+                        mainViewModel.compoundId,
+                    )
+                }
             }
         }
     }
@@ -299,7 +333,7 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
             id,
             mainViewModel.userLocationAddressMutableLiveData.value?.lat,
             mainViewModel.userLocationAddressMutableLiveData.value?.lng,
-            mainViewModel.compound
+            mainViewModel.compoundId
         )
     }
 

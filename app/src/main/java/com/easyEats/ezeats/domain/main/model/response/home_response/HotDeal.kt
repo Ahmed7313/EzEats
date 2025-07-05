@@ -3,8 +3,10 @@ package com.easyEats.ezeats.domain.main.model.response.home_response
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
+import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.Serializable
 
+@OptIn(InternalSerializationApi::class)
 @Serializable
 @Parcelize
 data class HotDeal(

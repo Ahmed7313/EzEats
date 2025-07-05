@@ -4,8 +4,10 @@ import com.easyEats.ezeats.base.BaseResponse
 import com.easyEats.ezeats.data.local.data_store.DataStorePreference
 import com.easyEats.ezeats.data.remote.main.MainApiService
 import com.easyEats.ezeats.domain.main.model.UserLocationAddress
+import com.easyEats.ezeats.domain.main.model.request.cart.TipRequest
 import com.easyEats.ezeats.domain.main.model.request.cart.UpdateCartRequest
 import com.easyEats.ezeats.domain.main.model.request.cart.response.UpdateCartResponse
+import com.easyEats.ezeats.domain.main.model.request.cart.tip.TipResponse
 import com.easyEats.ezeats.domain.main.model.request.complaint_request.ComplaintRequest
 import com.easyEats.ezeats.domain.main.model.request.edit_user_info.UserInfoRequest
 import com.easyEats.ezeats.domain.main.model.request.firebase_token.UpdateTokeRequest
@@ -167,9 +169,12 @@ class MainResponseImpl @Inject constructor(
     override suspend fun getRestaurants(restaurantRequest: com.easyEats.ezeats.domain.main.model.request.RestaurantRequest): RestaurantListResultResponse {
         return mainApiService.getRestaurants(restaurantRequest)
     }
-    override suspend fun updateCart(restaurantRequest: UpdateCartRequest): UpdateCartResponse {
-        return mainApiService.updateCart(restaurantRequest)
-    }
 
+    override suspend fun updateCart(restaurantRequest: UpdateCartRequest): UpdateCartResponse =
+        mainApiService.updateCart(restaurantRequest)
+
+
+    override suspend fun saveTip(restaurantRequest: TipRequest): TipResponse =
+        mainApiService.saveTip(restaurantRequest)
 
 }

@@ -206,9 +206,16 @@
         <action
             android:id="@+id/action_cartFragment_to_paymentSummaryFragment"
             app:destination="@id/paymentSummaryFragment" />
+        <action
+            android:id="@+id/action_cartFragment_to_restaurantFragment2"
+            app:destination="@id/restaurantFragment" />
     </fragment>
     <fragment
         android:id="@+id/paymentSummaryFragment"
         android:name="com.easyEats.ezeats.ui.main.cart.paymentSummary.PaymentSummaryFragment"
-        android:label="PaymentSummaryFragment" />
+        android:label="PaymentSummaryFragment" >
+        <argument
+            android:name="cart_response"
+            app:argType="com.easyEats.ezeats.domain.main.model.request.cart.response.UpdateCartResponse" />
+    </fragment>
 </navigation>

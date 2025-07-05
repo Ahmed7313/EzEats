@@ -29,7 +29,6 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -44,15 +43,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearSnapHelper
 import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.domain.main.model.response.compound.CompoundResult
 import com.easyEats.ezeats.domain.main.model.response.home_response.HotDeal
 import com.easyEats.ezeats.ui.compose.components.AppImage
-import com.easyEats.ezeats.ui.main.cart.CartFragment
-import com.easyEats.ezeats.ui.main.complaint.ComplaintFragment
 import com.easyEats.ezeats.ui.main.home.adapter.partners.PartnersAdapter
 import com.easyEats.ezeats.ui.main.home.binding.BindingUI
 import com.easyEats.ezeats.ui.main.home.listeners.HomeListeners
@@ -61,7 +57,6 @@ import com.easyEats.ezeats.ui.main.home.notifications.Notification
 import com.easyEats.ezeats.ui.main.main.HomeActivity
 import com.easyEats.ezeats.ui.main.rating.RateUsFragment
 import com.easyEats.ezeats.ui.main.restaurant.CartViewModel
-import com.easyEats.ezeats.utils.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -295,7 +290,8 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>(),
                                 modifier = Modifier.clickable {
                                     // here click and send id to percentScreenFragment
                                     val itemId = item.objectId ?: ""
-                                    mainViewModel.compound = itemId
+                                    mainViewModel.compoundId = itemId
+                                    mainViewModel.compoundName = item.name.toString()
                                     (requireActivity() as HomeActivity).binding.navView
                                         .selectedItemId = R.id.percentScreenFragment
 

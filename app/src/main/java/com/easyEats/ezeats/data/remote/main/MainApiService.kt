@@ -1,8 +1,10 @@
 package com.easyEats.ezeats.data.remote.main
 
 import com.easyEats.ezeats.base.BaseResponse
+import com.easyEats.ezeats.domain.main.model.request.cart.TipRequest
 import com.easyEats.ezeats.domain.main.model.request.cart.UpdateCartRequest
 import com.easyEats.ezeats.domain.main.model.request.cart.response.UpdateCartResponse
+import com.easyEats.ezeats.domain.main.model.request.cart.tip.TipResponse
 import com.easyEats.ezeats.domain.main.model.request.complaint_request.ComplaintRequest
 import com.easyEats.ezeats.domain.main.model.request.edit_user_info.UserInfoRequest
 import com.easyEats.ezeats.domain.main.model.request.firebase_token.UpdateTokeRequest
@@ -33,6 +35,7 @@ import com.easyEats.ezeats.domain.main.model.response.search_response.Category
 import com.easyEats.ezeats.domain.main.model.response.search_response.SearchScreenResponse
 import com.easyEats.ezeats.domain.main.model.response.user_info.UserInfoResponse
 import com.easyEats.ezeats.domain.main.model.response.voucher.VoucherResponse
+import kotlinx.coroutines.flow.Flow
 import retrofit2.http.Body
 import retrofit2.http.POST
 
@@ -123,4 +126,10 @@ interface MainApiService {
 
     @POST("updateCart")
     suspend fun updateCart(@Body restaurantRequest: UpdateCartRequest): UpdateCartResponse
+
+
+    @POST("saveTip")
+    suspend fun saveTip(@Body restaurantRequest: TipRequest): TipResponse
+
+
 }

@@ -8,15 +8,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,18 +24,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.daman.edman.screens.components.HeaderText
-import com.daman.edman.screens.components.NormalText
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.domain.room.ProductWithChoices
 import com.easyEats.ezeats.ui.compose.components.AppImage
 import com.easyEats.ezeats.ui.compose.theme.AppColor
 import com.easyEats.ezeats.ui.compose.theme.AppColor.BlackColor2
-import com.easyEats.ezeats.ui.compose.theme.AppColor.ColorPrimary
 
 @Composable
 fun CartItem(
     modifier: Modifier = Modifier,
     productWithChoices: ProductWithChoices,
+    allowAction: Boolean = true,
     click: (CartItemAction) -> Unit
 ) {
     Row(
@@ -91,46 +87,47 @@ fun CartItem(
                 backgroundColor = AppColor.ColorPrimary
             )
 
-            Box(
-                modifier = Modifier
-                    .padding(horizontal = 4.dp, vertical = 4.dp)
-                    .align(Alignment.BottomCenter)
-            ) {
-                Row(
+            if(allowAction)
+                Box(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .background(
-                            AppColor.WhiteColor.copy(alpha = 0.7f),
-                            shape = RoundedCornerShape(100.dp)
-                        )
-                        .padding(horizontal = 5.dp, vertical = 2.dp)
-                        .align(Alignment.BottomCenter),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
+                        .padding(horizontal = 4.dp, vertical = 4.dp)
+                        .align(Alignment.BottomCenter)
                 ) {
-                    Image(
-                        modifier = Modifier.clickable {
-                            click(CartItemAction.DELETE)
-                        },
-                        painter = if (productWithChoices.product.qty == 1) painterResource(R.drawable.delete_account_icon) else painterResource(
-                            R.drawable.ic_minus
-                        ),
-                        contentDescription = "minus"
-                    )
-                    HeaderText(
-                        text = productWithChoices.product.qty.toString(),
-                        fontSize = 15,
-                        color = AppColor.BlackColor2
-                    )
-                    Image(
-                        modifier = Modifier.clickable {
-                            click(CartItemAction.ADD)
-                        },
-                        painter = painterResource(R.drawable.ic_plus), contentDescription = "add"
-                    )
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(
+                                AppColor.WhiteColor.copy(alpha = 0.7f),
+                                shape = RoundedCornerShape(100.dp)
+                            )
+                            .padding(horizontal = 5.dp, vertical = 2.dp)
+                            .align(Alignment.BottomCenter),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Image(
+                            modifier = Modifier.clickable {
+                                click(CartItemAction.DELETE)
+                            },
+                            painter = if (productWithChoices.product.qty == 1) painterResource(R.drawable.delete_account_icon) else painterResource(
+                                R.drawable.ic_minus
+                            ),
+                            contentDescription = "minus"
+                        )
+                        HeaderText(
+                            text = productWithChoices.product.qty.toString(),
+                            fontSize = 15,
+                            color = AppColor.BlackColor2
+                        )
+                        Image(
+                            modifier = Modifier.clickable {
+                                click(CartItemAction.ADD)
+                            },
+                            painter = painterResource(R.drawable.ic_plus), contentDescription = "add"
+                        )
 
+                    }
                 }
-            }
 
         }
 

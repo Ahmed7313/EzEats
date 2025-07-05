@@ -2,8 +2,10 @@ package com.easyEats.ezeats.domain.main.repository
 
 import com.easyEats.ezeats.base.BaseResponse
 import com.easyEats.ezeats.domain.main.model.UserLocationAddress
+import com.easyEats.ezeats.domain.main.model.request.cart.TipRequest
 import com.easyEats.ezeats.domain.main.model.request.cart.UpdateCartRequest
 import com.easyEats.ezeats.domain.main.model.request.cart.response.UpdateCartResponse
+import com.easyEats.ezeats.domain.main.model.request.cart.tip.TipResponse
 import com.easyEats.ezeats.domain.main.model.request.complaint_request.ComplaintRequest
 import com.easyEats.ezeats.domain.main.model.request.edit_user_info.UserInfoRequest
 import com.easyEats.ezeats.domain.main.model.request.firebase_token.UpdateTokeRequest
@@ -100,14 +102,16 @@ interface MainRepository {
     suspend fun getPartners(): BaseResponse<PartnersResponse>
 
     suspend fun updateDeviceToken(updateTokeRequest: UpdateTokeRequest): BaseResponse<String>
+
     suspend fun clearDeviceToken(): BaseResponse<Any>
 
     suspend fun saveUserRating(isUserViewedRatingDialog: Boolean)
+
     fun checkIfUserViewedRatingDialog(): Flow<Boolean>
 
     suspend fun getRestaurants(restaurantRequest: com.easyEats.ezeats.domain.main.model.request.RestaurantRequest): RestaurantListResultResponse
 
-
     suspend fun updateCart(restaurantRequest: UpdateCartRequest): UpdateCartResponse
+    suspend fun saveTip(restaurantRequest: TipRequest): TipResponse
 
 }

@@ -103,6 +103,9 @@ class CartFragment : BaseFragment<FragmentCartBinding>() {
                             findNavController()
                         )
                     }
+                }else{
+                    viewModel.clearShop()
+                    findNavController().navigateUp()
                 }
             }
         }
