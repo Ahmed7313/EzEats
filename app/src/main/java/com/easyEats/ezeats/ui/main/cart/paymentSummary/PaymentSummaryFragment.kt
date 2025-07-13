@@ -10,7 +10,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.easyEats.ezeats.base.BaseFragment
 import com.easyEats.ezeats.databinding.FragmentPaymentSummaryBinding
+import com.easyEats.ezeats.ui.compose.address.AddressViewModel
 import com.easyEats.ezeats.ui.compose.cart.paymentSummaryScreen.PaymentSummaryScreenUI
+import com.easyEats.ezeats.ui.compose.map.MapViewModel
+import com.easyEats.ezeats.ui.main.edit_profile.EditProfileViewModel
+import com.easyEats.ezeats.ui.main.profile.ProfileViewModel
 import com.easyEats.ezeats.ui.main.restaurant.CartViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -31,6 +35,10 @@ class PaymentSummaryFragment : BaseFragment<FragmentPaymentSummaryBinding>() {
 
     // ViewModel to manage the restaurant data and special offers.
     val viewModel: CartViewModel by activityViewModels()
+    val mapViewModel: MapViewModel by activityViewModels()
+    val addressViewModel: AddressViewModel by activityViewModels()
+    val profileViewModel: ProfileViewModel by activityViewModels()
+    val editProfileViewModel: EditProfileViewModel by activityViewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,6 +46,7 @@ class PaymentSummaryFragment : BaseFragment<FragmentPaymentSummaryBinding>() {
         // Request the special offers data from the ViewModel.
 
     }
+
     private val args by navArgs<PaymentSummaryFragmentArgs>()
 
     /**
@@ -45,8 +54,27 @@ class PaymentSummaryFragment : BaseFragment<FragmentPaymentSummaryBinding>() {
      */
     override fun setUpViews() {
         binding.composeView.setContent {
-            PaymentSummaryScreenUI(modifier = Modifier.fillMaxSize(),findNavController(),viewModel,args.cartResponse)
+            PaymentSummaryScreenUI(
+                modifier = Modifier.fillMaxSize(),
+                findNavController(),
+                viewModel,
+                mapViewModel,
+                addressViewModel,
+                profileViewModel,
+                editProfileViewModel,
+                args.cartResponse
+            )
         }
     }
 
+    override fun onDestroy() {
+
+        super.onDestroy()
+
+    }
+
+    override fun onStop() {
+
+        super.onStop()
+    }
 }

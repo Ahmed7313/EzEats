@@ -18,9 +18,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.daman.edman.screens.components.NormalText
+import com.daman.edman.screens.components.AppTextNormal
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.ui.compose.theme.AppColor
 
@@ -48,14 +47,14 @@ fun ItemAddress(modifier: Modifier = Modifier,selectedAddressId: (Int) -> Unit) 
                 modifier = Modifier.padding(start = 9.dp, end = 5.dp, top = 11.dp),
                 contentDescription = "pin"
             )
-            NormalText(
+            AppTextNormal(
                 text = "Home",
                 fontSize = 16,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(start = 2.dp, top = 11.dp)
             )
             Spacer(modifier = Modifier.weight(1f))
-            NormalText(
+            AppTextNormal(
                 text = stringResource(R.string.selected),
                 fontSize = 12,
                 color = AppColor.WhiteColor,
@@ -68,7 +67,7 @@ fun ItemAddress(modifier: Modifier = Modifier,selectedAddressId: (Int) -> Unit) 
                     .padding(start = 20.dp, end = 10.dp, top = 8.dp, bottom = 8.dp)
             )
         }
-        NormalText(
+        AppTextNormal(
             text = "asdas asddas das ",
             textAlign = TextAlign.Start,
             modifier = Modifier

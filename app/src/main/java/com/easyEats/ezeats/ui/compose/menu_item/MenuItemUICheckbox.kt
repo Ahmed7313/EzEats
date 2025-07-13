@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.RadioButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,8 +15,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.daman.edman.screens.components.HeaderText
-import com.daman.edman.screens.components.NormalText
+import com.daman.edman.screens.components.AppTextHeader
+import com.daman.edman.screens.components.AppTextNormal
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.Choice
 import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.SubOption
@@ -37,7 +36,7 @@ fun MenuItemUICheckBox(
             .padding(top = 17.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        HeaderText(
+        AppTextHeader(
             text = item.name ?: "Unknown",
             color = AppColor.BlackColor,
             fontSize = 13,
@@ -59,7 +58,7 @@ fun MenuItemUICheckBox(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
-                NormalText(
+                AppTextNormal(
                     text = it?.name ?: "Unknown",
                     color = AppColor.BlackColor,
                     textAlign = TextAlign.Center,
@@ -68,7 +67,7 @@ fun MenuItemUICheckBox(
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 if (it?.price?.toInt() != 0) {
-                    NormalText(
+                    AppTextNormal(
                         text = ("(+" + stringResource(R.string.currency) + " " + it?.price + ")"),
                         modifier = Modifier.padding(end = 7.dp),
                         color = AppColor.BlackColor,

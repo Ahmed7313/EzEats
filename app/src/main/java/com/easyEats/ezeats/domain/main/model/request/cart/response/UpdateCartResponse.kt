@@ -13,3 +13,33 @@ data class UpdateCartResponse(
     @SerializedName("result")
     var result: Result? = Result()
 ) : Parcelable
+
+//isAddress , isPickup , isDelivery , isUmberlla
+/*
+if(isPickUp == true)
+//call api from is ////PickUp
+
+
+api > savePickUpStation
+pickup ->
+{
+   "orderId": "4QxXfNMnVE",
+   "pickUpStation":"Restaurant",
+   "compoundName" : " from updateCart -> compoundObj -> name "
+}
+
+api > savePickUpStation
+{
+   "orderId": "4QxXfNMnVE",
+   "pickUpStation":"umberall-444",
+  "compoundName" : "marassi"
+
+}
+
+saveUserAddressIdOnOrderTable
+{
+   "orderId": "VSbH9UTHFL",
+   "userAddressId": "boTkzowIOL"
+}
+
+ */

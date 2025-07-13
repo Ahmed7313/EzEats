@@ -1,6 +1,7 @@
 package com.easyEats.ezeats.data.remote.main
 
 import com.easyEats.ezeats.base.BaseResponse
+import com.easyEats.ezeats.domain.main.model.request.address.AddressListRequest
 import com.easyEats.ezeats.domain.main.model.request.cart.TipRequest
 import com.easyEats.ezeats.domain.main.model.request.cart.UpdateCartRequest
 import com.easyEats.ezeats.domain.main.model.request.cart.response.UpdateCartResponse
@@ -11,6 +12,7 @@ import com.easyEats.ezeats.domain.main.model.request.firebase_token.UpdateTokeRe
 import com.easyEats.ezeats.domain.main.model.request.home.HomeRequest
 import com.easyEats.ezeats.domain.main.model.request.offer_request.OfferRequest
 import com.easyEats.ezeats.domain.main.model.request.offers.OffersRequest
+import com.easyEats.ezeats.domain.main.model.request.order.SavePickupRequest
 import com.easyEats.ezeats.domain.main.model.request.order_history.OrderHistoryRequest
 import com.easyEats.ezeats.domain.main.model.request.restaurant.CheckTableAvailabilityRequest
 import com.easyEats.ezeats.domain.main.model.request.restaurant.RestaurantMenuRequest
@@ -18,6 +20,10 @@ import com.easyEats.ezeats.domain.main.model.request.restaurant.RestaurantReques
 import com.easyEats.ezeats.domain.main.model.request.search.SearchRequest
 import com.easyEats.ezeats.domain.main.model.request.search.SearchSuggestionsRequest
 import com.easyEats.ezeats.domain.main.model.response.active_order.ActiveOrderResponse
+import com.easyEats.ezeats.domain.main.model.response.address.add.AddAddressRequest
+import com.easyEats.ezeats.domain.main.model.response.address.add.AddAddressResponse
+import com.easyEats.ezeats.domain.main.model.response.address.add.SaveAddressRequest
+import com.easyEats.ezeats.domain.main.model.response.address.list.AddressListResponse
 import com.easyEats.ezeats.domain.main.model.response.compound.CompoundResponse
 import com.easyEats.ezeats.domain.main.model.response.home_response.HomeResponse
 import com.easyEats.ezeats.domain.main.model.response.home_response.HotDeal
@@ -130,6 +136,21 @@ interface MainApiService {
 
     @POST("saveTip")
     suspend fun saveTip(@Body restaurantRequest: TipRequest): TipResponse
+
+    @POST("getUserAddresses")
+    suspend fun addressList(@Body restaurantRequest: AddressListRequest): AddressListResponse
+
+    @POST("saveUserAddress")
+    suspend fun addAddress(@Body restaurantRequest: AddAddressRequest): AddAddressResponse
+
+
+    @POST("saveUserAddressIdOnOrderTable")
+    suspend fun saveAddress(@Body restaurantRequest: SaveAddressRequest): BaseResponse<Any>
+
+
+    @POST("savePickUpStation")
+    suspend fun savePickUpStation(@Body restaurantRequest: SavePickupRequest): BaseResponse<Any>
+
 
 
 }

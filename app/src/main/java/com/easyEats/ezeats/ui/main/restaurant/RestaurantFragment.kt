@@ -42,8 +42,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.daman.edman.screens.components.HeaderText
-import com.daman.edman.screens.components.NormalText
+import com.daman.edman.screens.components.AppTextHeader
+import com.daman.edman.screens.components.AppTextNormal
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.base.BaseFragment
 import com.easyEats.ezeats.base.BaseResponse
@@ -319,20 +319,20 @@ class RestaurantFragment : BaseFragment<FragmentRestaurantBinding>(),
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.Center
                         ) {
-                            HeaderText(
+                            AppTextHeader(
                                 text = cartSummary.count.toString(),
                                 color = AppColor.WhiteColor,
                                 fontSize = 15
                             )
 
-                            NormalText(
+                            AppTextNormal(
                                 text = stringResource(R.string.view_cart),
                                 color = AppColor.WhiteColor,
                                 fontSize = 15,
                                 modifier = Modifier.padding(start = 6.dp)
                             )
                             Spacer(modifier = Modifier.weight(1f))
-                            NormalText(
+                            AppTextNormal(
                                 fontSize = 15,
                                 text = stringResource(R.string.currency) + " ${cartSummary.total}",
                                 color = AppColor.WhiteColor

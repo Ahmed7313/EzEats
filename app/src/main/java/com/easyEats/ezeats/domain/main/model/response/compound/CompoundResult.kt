@@ -1,10 +1,15 @@
 package com.easyEats.ezeats.domain.main.model.response.compound
 
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.Serializable
 
+@OptIn(InternalSerializationApi::class)
 @Serializable
+@Parcelize
 data class CompoundResult(
     @SerializedName("className")
     var className: String? = "",
@@ -30,4 +35,4 @@ data class CompoundResult(
     var type: String? = "",
     @SerializedName("updatedAt")
     var updatedAt: String? = ""
-)
+) : Parcelable

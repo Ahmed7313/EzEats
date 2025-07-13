@@ -23,7 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.daman.edman.screens.components.HeaderText
+import com.daman.edman.screens.components.AppTextHeader
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.domain.room.ProductWithChoices
 import com.easyEats.ezeats.ui.compose.components.AppImage
@@ -114,7 +114,7 @@ fun CartItem(
                             ),
                             contentDescription = "minus"
                         )
-                        HeaderText(
+                        AppTextHeader(
                             text = productWithChoices.product.qty.toString(),
                             fontSize = 15,
                             color = AppColor.BlackColor2

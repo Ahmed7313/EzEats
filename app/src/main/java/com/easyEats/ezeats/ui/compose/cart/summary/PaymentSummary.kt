@@ -26,9 +26,13 @@ fun PaymentSummary(modifier: Modifier = Modifier, updateCartResponse: UpdateCart
         PaymentSummaryItem(
             modifier = Modifier.padding(top = 9.dp),
             title = stringResource(R.string.sub_total), value = "${updateCartResponse.result?.subtotal} EGP")
-        PaymentSummaryItem(
-            modifier = Modifier.padding(top = 9.dp),
-            title = stringResource(R.string.tip), value = "${updateCartResponse.result?.tip} EGP")
+        if(updateCartResponse.result?.tip != 0.0) {
+            PaymentSummaryItem(
+                modifier = Modifier.padding(top = 9.dp),
+                title = stringResource(R.string.tip),
+                value = "${updateCartResponse.result?.tip} EGP"
+            )
+        }
         PaymentSummaryItem(
             modifier = Modifier.padding(top = 9.dp),
             title = stringResource(R.string.delivery_fee), value = "${updateCartResponse.result?.deliveryFees} EGP")

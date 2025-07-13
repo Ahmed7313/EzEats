@@ -166,6 +166,9 @@ dependencies {
     implementation(libs.logging.interceptor)
     // locations
     implementation(libs.play.services.location)
+    implementation( libs.play.services.maps)
+    implementation(libs.maps.compose)
+
     //qr code
     implementation(libs.core)
     implementation(libs.zxing.android.embedded)
@@ -206,6 +209,8 @@ dependencies {
     implementation(libs.coil)
     implementation(libs.coil.svg)
     implementation(libs.coil.compose)
+    implementation( "androidx.compose.runtime:runtime-livedata:1.5.4")
+
     //chucker
     debugImplementation(libs.library)
     releaseImplementation(libs.library.no.op)

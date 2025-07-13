@@ -253,5 +253,28 @@
     <string name="saved_address">Saved Address</string>
     <string name="selected">Selected</string>
     <string name="add_new_address">Add New Address</string>
+    <string name="where_do_you_want_order_your_order">Where do you want your order delivered?</string>
+    <string name="address_label">Address Label</string>
+    <string name="enter">Enter</string>
+    <string name="street_name">Street Name</string>
+    <string name="building_number">Building Number</string>
+    <string name="apartement_no">Apartment No</string>
+    <string name="floor">Floor</string>
+    <string name="done_selected_address">Your Location Had Been Selected</string>
+    <string name="location">Location</string>
+    <string name="confirm_location">Confirm Location</string>
+    <string name="umbrella">Umbrella</string>
+    <string name="address">Address</string>
+    <string name="office">Office</string>
+    <string name="please_enter_your_address">Please Enter your Address</string>
+    <string name="tip_goes_to_your_ride">100% of this tip goes to your rider</string>
+    <string name="how_do_you_want_to_collect_your_order">How do you want to collect your order?</string>
+    <string name="soon">Soon</string>
+    <string name="compound">Compound</string>
+    <string name="confirm_new_address">Confirm New Address</string>
+    <string name="enter_your">Enter Your</string>
+    <string name="select_your_compound">Select Your Compound</string>
+    <string name="umbrella_no">Umbrella Number</string>
+    <string name="update_your_profile">Update Your Profile</string>
 
 </resources>

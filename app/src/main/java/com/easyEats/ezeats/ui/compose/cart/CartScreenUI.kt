@@ -22,6 +22,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -75,8 +77,20 @@ fun CartScreenUI(
     val cartData =
         viewModel.cartProducts.collectAsState(arrayListOf()).value
 
-    val updateCartResponse =
-        viewModel.updateCartResponse.collectAsState(UpdateCartResponse()).value
+//    val updateCartResponse =
+//        viewModel.updateCartResponse.collectAsState(UpdateCartResponse()).value
+
+    var updateCartResponse by remember {
+        mutableStateOf<UpdateCartResponse>(UpdateCartResponse())
+    }
+//        viewModel.updateCartResponse.collectAsState(UpdateCartResponse()).value
+
+    val showLoading =
+        viewModel.showLoading.collectAsState(false).value
+
+    var enableTakeAction by remember {
+        mutableStateOf(false)
+    }
 
     var isAddedBefore by remember {
         mutableStateOf(false)
@@ -92,8 +106,40 @@ fun CartScreenUI(
     }
 
     LaunchedEffect(Unit) {
-        viewModel.checkout()
+        viewModel.updateCart().collect {
+            Log.d(TAG, "CartScreenUI: start result $it")
+            if(it != null) {
+                Log.d(TAG, "CartScreenUI: not null")
+                updateCartResponse = it
+                if(updateCartResponse.result?.tip != 0.0){
+                    viewModel.saveTip("0").collect { tip ->
+                        if (tip != null) {
+                            updateCartResponse = updateCartResponse.copy(
+                                result = updateCartResponse.result?.copy(
+                                    tip = tip.result?.data?.tipAmount,
+                                    total = tip.result?.data?.finalTotal
+                                )
+                            )
+                        }
+                    }
+                }
+                Log.d(TAG, "CartScreenUI: ${updateCartResponse.result?.order?.restaurant?.paymentSystem}")
+                Log.d(TAG, "CartScreenUI: ${updateCartResponse.result?.order?.restaurant?.isPickUp}")
+                Log.d(TAG, "CartScreenUI: ${updateCartResponse.result?.order?.restaurant?.isDelivery}")
+                enableTakeAction = true
+            }else{
+                viewModel.clearShop()
+                findNavController.navigateUp()
+            }
+        }
     }
+
+//    LaunchedEffect(updateCartResponse) {
+//        if(!updateCartResponse.result?.order?.userId.isNullOrBlank()){
+//        }else{
+//
+//        }
+//    }
 
     LazyColumn(
         modifier = modifier
@@ -156,10 +202,15 @@ fun CartScreenUI(
             VoucherOrPromoUI(modifier = Modifier.fillMaxWidth())
 
 
-            PaymentSummary(modifier = Modifier.fillMaxWidth(),updateCartResponse)
+            PaymentSummary(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .graphicsLayer { alpha = if (showLoading) 0.5f else 1f }
+                    .blur(if (showLoading) 10.dp else 0.dp), updateCartResponse)
 
             Row(modifier = Modifier.fillMaxWidth()) {
                 AppButtonPrimary(
+                    enabled = enableTakeAction,
                     modifier = Modifier
                         .weight(1f)
                         .padding(horizontal = 6.dp),
@@ -172,6 +223,7 @@ fun CartScreenUI(
                     )
                 }
                 AppButtonStroke(
+                    enabled = enableTakeAction,
                     modifier = Modifier
                         .weight(1f)
                         .padding(horizontal = 6.dp),
@@ -183,7 +235,7 @@ fun CartScreenUI(
                         CartFragmentDirections.actionCartFragmentToRestaurantFragment2(
                             shopData?.shopId ?: "",
                             shopData?.tableId ?: "",
-                            PAYMENTINTEGRATIONTYPE = if (updateCartResponse.result?.restaurant?.paymentSystem == "paymob")
+                            PAYMENTINTEGRATIONTYPE = if (updateCartResponse.result?.order?.restaurant?.paymentSystem == "paymob")
                                 PAYMENT_INTEGRATION_TYPE.PAYMOB else PAYMENT_INTEGRATION_TYPE.KASHIER,
                             RestaurantInfo(
                                 rating = 0.0,

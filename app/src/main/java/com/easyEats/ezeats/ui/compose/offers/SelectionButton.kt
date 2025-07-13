@@ -16,7 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.daman.edman.screens.components.AppSpacer
-import com.daman.edman.screens.components.NormalText
+import com.daman.edman.screens.components.AppTextNormal
 import com.easyEats.ezeats.ui.RedColor
 import com.easyEats.ezeats.ui.medium
 import com.easyEats.ezeats.ui.spacing
@@ -50,7 +50,7 @@ fun SelectionButton(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
-        NormalText(text = text, color = if (isSelected) Color.White else Color.Black, fontSize = 15)
+        AppTextNormal(text = text, color = if (isSelected) Color.White else Color.Black, fontSize = 15)
         AppSpacer(width = medium)
         Icon(
             painter = painterResource(id = icon),

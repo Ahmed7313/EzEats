@@ -27,9 +27,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.daman.edman.screens.components.AppSpacer
-import com.daman.edman.screens.components.HeaderText
+import com.daman.edman.screens.components.AppTextHeader
 import com.daman.edman.screens.components.IconTextView
-import com.daman.edman.screens.components.NormalText
+import com.daman.edman.screens.components.AppTextNormal
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.new_restaurants_reponse.RestaurantsResponseItem
 import com.easyEats.ezeats.ui.extraMedium
@@ -80,15 +80,17 @@ fun OfferItem(
                         .alpha(if (!restaurant.available!!) 0.5f else 1f)
                 )
 //isBusy , isClose ,
-                if (restaurant.isClose == "Closed" || restaurant.isBusy == true) {
+                if (restaurant.isClose == "Closed" || restaurant.isBusy == true || restaurant.isCommingsoon == true) {
                     // optional: a dark overlay
                     Box(
                         Modifier
                             .fillMaxSize()
                             .background(Color.Black.copy(alpha = 0.8f))
                     )
-                    HeaderText(
-                        text = if(restaurant.isClose == "closed") stringResource(R.string.closed) else stringResource(R.string.busy),
+                    AppTextHeader(
+                        text = if (restaurant.isClose == "closed") stringResource(R.string.closed) else if (restaurant.isCommingsoon == true) stringResource(
+                            R.string.soon
+                        ) else stringResource(R.string.busy),
                         color = Color.White,
                         modifier = Modifier.align(Alignment.Center)
                     )
@@ -104,11 +106,11 @@ fun OfferItem(
                     .padding(top = 4.dp, bottom = 10.dp)
             ) {
 
-                HeaderText(text = restaurant.name.toString())
+                AppTextHeader(text = restaurant.name.toString())
 
                 AppSpacer(height = 4.dp)
 
-                NormalText(text = restaurant.locationName.toString())
+                AppTextNormal(text = restaurant.locationName.toString())
 
                 AppSpacer(height = 4.dp)
 

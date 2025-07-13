@@ -217,5 +217,12 @@
         <argument
             android:name="cart_response"
             app:argType="com.easyEats.ezeats.domain.main.model.request.cart.response.UpdateCartResponse" />
+        <action
+            android:id="@+id/action_paymentSummaryFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.easyEats.ezeats.ui.compose.map.MapFragment"
+        android:label="MapFragment" />
 </navigation>

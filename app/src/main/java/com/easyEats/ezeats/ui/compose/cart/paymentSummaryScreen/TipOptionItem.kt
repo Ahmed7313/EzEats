@@ -82,22 +82,21 @@ fun TipOptionCurrencyItem(
     isSelected: Boolean,
     onTipSelected: (TipOption) -> Unit
 ) {
-    TextButton(
-        modifier = mod,
-        onClick = {
-            onTipSelected(option)
-        }) {
+    Box(modifier = mod) {
         Text(
-            text = option.amount ?: "Custom",
+            text = if(option.amount != null) "${option.amount} EGP" else "Custom",
             color = if (isSelected) AppColor.WhiteColor else AppColor.BlackColor,
             fontSize = 16.sp,
-            modifier = Modifier
-                .padding(horizontal = 20.dp, vertical = 11.dp)
+            modifier = Modifier.align(Alignment.Center)
                 .background(
-                    if (isSelected) AppColor.WhiteColor else AppColor.ColorPrimary,
+                    if (isSelected) AppColor.BlackColor2 else AppColor.WhiteColor,
                     shape = RoundedCornerShape(50.dp)
                 )
+                .padding(horizontal = 20.dp, vertical = 11.dp).clickable{
+                    onTipSelected(option)
+                }
         )
+
     }
 
 }

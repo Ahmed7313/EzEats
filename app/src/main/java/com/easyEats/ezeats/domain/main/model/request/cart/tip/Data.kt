@@ -5,9 +5,9 @@ import com.google.gson.annotations.SerializedName
 
 data class Data(
     @SerializedName("finalTotal")
-    var finalTotal: Int? = 0,
+    var finalTotal: Double? = 0.0,
     @SerializedName("price")
-    var price: Int? = 0,
+    var price: Double? = 0.0,
     @SerializedName("tipAmount")
     var tipAmount: Double? = 0.0
 )

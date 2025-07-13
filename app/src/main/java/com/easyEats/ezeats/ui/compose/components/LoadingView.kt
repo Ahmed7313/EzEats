@@ -1,17 +1,20 @@
-package com.trend.thecontent.screens.components
+package com.easyEats.ezeats.ui.compose.components
 
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.thub.uadadvertisor.presentation.components.LoadingAnimation
+import com.easyEats.ezeats.ui.compose.theme.AppColor
 
 @Composable
 fun LoadingView(isLoading: Boolean) {
@@ -26,6 +29,15 @@ fun LoadingView(isLoading: Boolean) {
             LoadingAnimation(modifier = Modifier.size(200.dp))
         }
     }
+}
+
+@Composable
+fun LoadingCircle(color: Color = AppColor.WhiteColor) {
+    CircularProgressIndicator(
+        modifier = Modifier.width(8.dp),
+        color = MaterialTheme.colorScheme.secondary,
+        trackColor =color,
+    )
 }
 
 @Composable

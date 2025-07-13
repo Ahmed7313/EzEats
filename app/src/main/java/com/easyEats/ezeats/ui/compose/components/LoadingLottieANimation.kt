@@ -1,4 +1,4 @@
-package com.thub.uadadvertisor.presentation.components
+package com.easyEats.ezeats.ui.compose.components
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -9,7 +9,7 @@ import com.easyEats.ezeats.R
 
 
 @Composable
-fun LoadingAnimation(modifier: Modifier = Modifier,rawRes: Int = R.raw.loading_icon) {
+fun LoadingAnimation(modifier: Modifier = Modifier,rawRes: Int = R.raw.loading) {
     var isPlaying by remember {
         mutableStateOf(true)
     }

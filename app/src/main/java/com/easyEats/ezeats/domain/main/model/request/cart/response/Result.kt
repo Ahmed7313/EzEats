@@ -19,8 +19,6 @@ data class Result(
     var promoCodeDiscount: Double? = 0.0,
     @SerializedName("promoCodeDiscountValue")
     var promoCodeDiscountValue: Double? = 0.0,
-    @SerializedName("restaurant")
-    var restaurant: Restaurant? = Restaurant(),
     @SerializedName("serviceFees")
     var serviceFees: Double? = 0.0,
     @SerializedName("serviceFeesPercentage")

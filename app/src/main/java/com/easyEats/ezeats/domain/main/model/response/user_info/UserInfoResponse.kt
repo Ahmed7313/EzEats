@@ -6,12 +6,12 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class UserInfoResponse(
-    val name: String?,
-    val username: String?,
-    val email: String?,
-    val profilePicture: ProfilePicture?,
-    val mobileNumber: String?,
-    val birthDate: Date?,
+    val name: String? = "",
+    val username: String? = "",
+    val email: String? = "",
+    val profilePicture: ProfilePicture? = null,
+    val mobileNumber: String? = null,
+    val birthDate: Date? = null,
 ) : Parcelable {
     fun getFirstName(fullName: String?): String? {
         return fullName?.split(" ")?.firstOrNull() ?: ""

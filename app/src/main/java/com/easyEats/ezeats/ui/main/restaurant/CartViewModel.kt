@@ -10,6 +10,7 @@ import com.easyEats.ezeats.domain.main.model.request.cart.TipRequest
 import com.easyEats.ezeats.domain.main.model.request.cart.UpdateCartRequest
 import com.easyEats.ezeats.domain.main.model.request.cart.response.UpdateCartResponse
 import com.easyEats.ezeats.domain.main.model.request.cart.tip.TipResponse
+import com.easyEats.ezeats.domain.main.model.request.order.SavePickupRequest
 import com.easyEats.ezeats.domain.main.model.request.restaurant.CheckTableAvailabilityRequest
 import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.SubMenu
 import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.check_table_availability.TableAvailabilityResponse
@@ -29,11 +30,8 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.forEach
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
 /**
@@ -61,8 +59,11 @@ class CartViewModel @Inject constructor(
     private val _updateCartResponse = MutableStateFlow<UpdateCartResponse>(UpdateCartResponse())
     val updateCartResponse = _updateCartResponse.asStateFlow()
 
-    private val _showLoading = MutableStateFlow<Boolean>(false)
+    var _showLoading = MutableStateFlow<Boolean>(false)
     val showLoading = _showLoading.asStateFlow()
+
+    private val _enableTakeAction = MutableStateFlow<Boolean>(false)
+    val enableTakeAction = _enableTakeAction.asStateFlow()
 
 
     private val _addToCartResult = MutableStateFlow<ProductDao.Result?>(null)
@@ -121,12 +122,15 @@ class CartViewModel @Inject constructor(
                             CheckTableAvailabilityRequest(shop.shopId, shop.tableId)
                         )
                         emit(result)
+                        _enableTakeAction.emit(true)
                     } catch (e: Exception) {
                         Log.d(MyApplication.TAG, "checkTableAvailability: ${e.message}")
+                        _enableTakeAction.emit(false)
                         emit(null)
                     }
                 } else {
                     emit(null)
+                    _enableTakeAction.emit(false)
                 }
             }
         }
@@ -308,15 +312,63 @@ class CartViewModel @Inject constructor(
         request.items = items
 
         try {
+            _showLoading.value = true
             mainUseCase.homeUseCase.updateCart(request).let {
+                _showLoading.value = false
                 Log.d(TAG, "checkout: result")
+                _enableTakeAction.value = true
                 _updateCartResponse.value = it
             }
 
 
         } catch (e: Exception) {
             e.printStackTrace()
+            _showLoading.value = false
+            _enableTakeAction.value = false
+            Log.d(TAG, "checkout: ${e.message}")
         }
+    }
+
+    suspend fun updateCart(): Flow<UpdateCartResponse?> {
+        val request = UpdateCartRequest()
+        val items = mutableListOf<ItemCheckoutModel>()
+
+        val shop = productDao.getShop().firstOrNull()
+        request.orderId = shop?.currentOrderId
+        val products = productDao.getProductsList().first()
+
+        for (product in products) {
+            val subOptions = productDao.getProductsChoices(product.id).first()
+            val suboptionMap = subOptions.groupBy { it.subOptionId }
+
+            val subOptionsList = suboptionMap.map { (suboptionId, choices) ->
+                SuboptionsId(
+                    suboptionId = suboptionId,
+                    choicesIds = choices.map { it.choiceId }
+                )
+            }
+
+            val itemModel = ItemCheckoutModel(
+                itemId = product.productId,
+                notes = product.note,
+                quantity = product.qty,
+                suboptionsIds = subOptionsList
+            )
+
+            items.add(itemModel)
+        }
+
+        request.items = items
+
+        return flow {
+            try {
+                val result = mainUseCase.homeUseCase.updateCart(request)
+                emit(result)
+            } catch (e: Exception) {
+                null
+            }
+        }
+
     }
 
     /*
@@ -343,30 +395,48 @@ class CartViewModel @Inject constructor(
     }
      */
 
-    fun saveTip(
-        amount: String?,
-        orderId: String?
-    ) : Flow<TipResponse?> {
+    fun savePickUpStation(request: SavePickupRequest) : Flow<*> {
         _showLoading.value = true
-       return flow {
-            if (amount != null && orderId != null && amount.isNotEmpty() && orderId.isNotEmpty()) {
-                try{
-                    _showLoading.value = false
-                    val tipResponse = mainUseCase.homeUseCase.saveTip(TipRequest(amount.toInt(), orderId))
-                    emit(tipResponse)
-                }catch (Ex: Exception){
-                    _showLoading.value = false
-                    emit(null)
-                }
-            }else{
+        return flow {
+            try{
+                val result = mainUseCase.homeUseCase.savePickupStation(request)
+                _showLoading.value = false
+                emit(result)
+            }catch (e: Exception){
                 _showLoading.value = false
                 emit(null)
             }
         }
     }
 
-    fun getAddressList()  {
+    suspend fun saveTip(
+        amount: String?,
+    ): Flow<TipResponse?> {
+        _showLoading.value = true
+        val shop = productDao.getShop().firstOrNull()
+        val orderId = shop?.currentOrderId
+        Log.d(TAG, "saveTip: $orderId")
+        Log.d(TAG, "saveTip: $amount")
+        return flow {
+            if (amount != null && orderId != null && amount.isNotEmpty() && orderId.isNotEmpty()) {
+                try {
+                    Log.d(TAG, "saveTip: start")
+                    _showLoading.value = false
+                    val tipResponse =
+                        mainUseCase.homeUseCase.saveTip(TipRequest(amount.toInt(), orderId))
+                    Log.d(TAG, "saveTip: emit")
 
+                    emit(tipResponse)
+                } catch (Ex: Exception) {
+                    _showLoading.value = false
+                    emit(null)
+                }
+            } else {
+                _showLoading.value = false
+                emit(null)
+            }
+        }
     }
+
 
 }

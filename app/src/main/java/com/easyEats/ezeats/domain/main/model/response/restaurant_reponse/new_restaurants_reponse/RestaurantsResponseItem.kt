@@ -12,7 +12,7 @@ data class RestaurantsResponseItem(
     @SerializedName("createdAt")
     var createdAt: String? = "",
     @SerializedName("discountOnMenu")
-    var discountOnMenu: Int? = 0,
+    var discountOnMenu: Double? = 0.0,
     @SerializedName("distance")
     var distance: String? = "",
     @SerializedName("estimateDelivery")
@@ -25,6 +25,8 @@ data class RestaurantsResponseItem(
     var hasOffers: Boolean? = false,
     @SerializedName("isBusy")
     var isBusy: Boolean? = false,
+    @SerializedName("isCommingsoon")
+    var isCommingsoon: Boolean? = false,
     @SerializedName("isClose")
     var isClose: String? = "",
     @SerializedName("isDelivery")

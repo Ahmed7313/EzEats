@@ -136,6 +136,40 @@
                         android:textColor="@color/white"
                         android:textSize="@dimen/_15ssp" />
 
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tvTitle"
+                        android:layout_alignStart="@+id/tvTitle"
+                        android:layout_alignEnd="@+id/ivNotification"
+                        android:layout_marginTop="@dimen/_27sdp"
+                        android:backgroundTint="@color/white"
+                        app:cardCornerRadius="@dimen/_100sdp"
+                        app:cardElevation="@dimen/_5sdp"
+                        app:strokeWidth="0dp">
+
+                        <!--                        android:layout_height="@dimen/_40sdp"-->
+
+                        <TextView
+                            android:id="@+id/etSearch"
+                            style="@style/defaultInputText"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_40sdp"
+                            android:layout_marginHorizontal="@dimen/_17sdp"
+                            android:background="@drawable/rounded_search_background"
+                            android:drawablePadding="10dp"
+                            android:ellipsize="end"
+                            android:gravity="center_vertical"
+                            android:hint="@string/search_for_restaurants_dishes_and_more"
+                            android:maxLines="1"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_11ssp"
+                            app:drawableStartCompat="@drawable/search_icon"
+                            app:hintTextColor="@color/white" />
+
+                    </com.google.android.material.card.MaterialCardView>
+
+
 
                     <LinearLayout
                         android:id="@+id/linearContainer"
@@ -901,35 +935,6 @@
                         </androidx.constraintlayout.widget.ConstraintLayout>
                     </LinearLayout>
 
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/tvTitle"
-                        android:layout_alignStart="@+id/tvTitle"
-                        android:layout_alignEnd="@+id/ivNotification"
-                        android:layout_marginTop="@dimen/_27sdp"
-                        android:backgroundTint="@color/white"
-                        app:cardCornerRadius="@dimen/_100sdp"
-                        app:cardElevation="@dimen/_5sdp"
-                        app:strokeWidth="0dp">
-
-                        <TextView
-                            android:id="@+id/etSearch"
-                            style="@style/defaultInputText"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/_40sdp"
-                            android:layout_marginHorizontal="@dimen/_17sdp"
-                            android:background="@drawable/rounded_search_background"
-                            android:drawablePadding="10dp"
-                            android:ellipsize="end"
-                            android:gravity="center_vertical"
-                            android:hint="@string/search_for_restaurants_dishes_and_more"
-                            android:maxLines="1"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/_11ssp"
-                            app:drawableStartCompat="@drawable/search_icon"
-                            app:hintTextColor="@color/white" />
-                    </com.google.android.material.card.MaterialCardView>
 
                 </RelativeLayout>
 

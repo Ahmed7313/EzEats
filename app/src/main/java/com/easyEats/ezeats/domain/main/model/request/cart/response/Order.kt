@@ -11,6 +11,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 @Parcelize
 data class Order(
+    @SerializedName("restaurant")
+    var restaurant: Restaurant? = Restaurant(),
     @SerializedName("restaurantId")
     var restaurantId: String? = "",
     @SerializedName("userId")

@@ -6,7 +6,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -17,7 +16,6 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -41,19 +39,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.daman.edman.screens.components.HeaderText
-import com.daman.edman.screens.components.NormalText
+import com.daman.edman.screens.components.AppTextHeader
+import com.daman.edman.screens.components.AppTextNormal
 import com.easyEats.ezeats.R
-import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.CoverPhoto
 import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.SubMenu
-import com.easyEats.ezeats.ui.compose.components.AppImage
 import com.easyEats.ezeats.ui.compose.components.AppImageCornerTop
 import com.easyEats.ezeats.ui.compose.components.AppInputField
 import com.easyEats.ezeats.ui.compose.menu_item.MenuItemUICheckBox
 import com.easyEats.ezeats.ui.compose.menu_item.MenuItemUIRadio
 import com.easyEats.ezeats.ui.compose.theme.AppColor
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 
 val TAG = "MenuItemBottomSheet"
 
@@ -176,7 +170,7 @@ fun MenuItemBottomSheet(
                                 .height(280.dp)
                         )
 
-                        HeaderText(
+                        AppTextHeader(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(top = 20.dp, start = 16.dp, end = 16.dp),
@@ -185,7 +179,7 @@ fun MenuItemBottomSheet(
                             fontWeight = FontWeight.Bold,
                         )
 
-                        NormalText(
+                        AppTextNormal(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(start = 16.dp, end = 16.dp, top = 3.dp),
@@ -264,14 +258,14 @@ fun MenuItemBottomSheet(
                                 contentDescription = "note"
                             )
 
-                            HeaderText(
+                            AppTextHeader(
                                 modifier = Modifier.padding(start = 8.dp),
                                 text = stringResource(R.string.any_special_request),
                                 fontSize = 14
                             )
 
                             Spacer(modifier = Modifier.weight(1f))
-                            NormalText(
+                            AppTextNormal(
                                 text = stringResource(R.string.add_note),
                                 fontSize = 12,
                                 color = AppColor.BlackColor2
@@ -329,7 +323,7 @@ fun MenuItemBottomSheet(
                         )
                     }
 
-                    NormalText(
+                    AppTextNormal(
                         text = count.toString(),
                         fontSize = 16,
                         color = AppColor.BlackColor2,
@@ -373,7 +367,7 @@ fun MenuItemBottomSheet(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.Center
                     ) {
-                        HeaderText(
+                        AppTextHeader(
                             text = stringResource(
                                 R.string.add_item
                             ),
@@ -385,7 +379,7 @@ fun MenuItemBottomSheet(
 
                         Spacer(modifier = Modifier.weight(1f))
 
-                        HeaderText(
+                        AppTextHeader(
                             text = "${getTotal()} " + stringResource(R.string.currency),
                             fontSize = 16,
                             color = AppColor.WhiteColor,
@@ -438,7 +432,7 @@ fun MenuItemBottomSheetPreview() {
                 )
             }
 
-            NormalText(
+            AppTextNormal(
                 text = "1",
                 fontSize = 16,
                 color = AppColor.BlackColor2,
@@ -476,7 +470,7 @@ fun MenuItemBottomSheetPreview() {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
-                HeaderText(
+                AppTextHeader(
                     text = stringResource(
                         R.string.add_item
                     ),
@@ -488,7 +482,7 @@ fun MenuItemBottomSheetPreview() {
 
                 Spacer(modifier = Modifier.weight(1f))
 
-                HeaderText(
+                AppTextHeader(
                     text = "123 " + stringResource(R.string.currency),
                     fontSize = 16,
                     color = AppColor.WhiteColor,

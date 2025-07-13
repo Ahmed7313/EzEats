@@ -9,7 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.daman.edman.screens.components.HeaderText
+import com.daman.edman.screens.components.AppTextHeader
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.ui.compose.theme.AppColor
 
@@ -23,7 +23,7 @@ fun MenuItemTag(modifier: Modifier = Modifier, menuItemTag: Boolean = true) {
                 shape = RoundedCornerShape(16.dp)
             )
         ) {
-            HeaderText(
+            AppTextHeader(
                 text = stringResource(R.string.required),
                 modifier = modifier.align(Alignment.Center).padding(horizontal = 14.dp, vertical = 4.dp),
                 color = AppColor.WhiteColor,

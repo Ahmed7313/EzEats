@@ -179,6 +179,7 @@ send(Resource.Loading())
      */
     fun checkLocationPermission() {
         viewModelScope.launch {
+            getCompound()
             fetchCurrentAddress().collect {
                 if (it?.lat?.isEmpty()?.not() == true) {
                     // Fetch home result if location is available

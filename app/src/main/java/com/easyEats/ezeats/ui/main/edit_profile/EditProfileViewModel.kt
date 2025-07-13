@@ -89,7 +89,7 @@ class EditProfileViewModel @Inject constructor(
      * Creates a flow that handles the profile update request by interacting with the `userInfoUseCase`.
      * Sends appropriate resource states (loading, success, error, unauthenticated).
      */
-    private fun createUserInfoResultRequest(userInfoRequest: UserInfoRequest): Flow<Resource<BaseResponse<Any>>> =
+    fun createUserInfoResultRequest(userInfoRequest: UserInfoRequest): Flow<Resource<BaseResponse<Any>>> =
         channelFlow {
             send(Resource.Loading())
             val result = mainUseCase.userInfoUseCase.editUserInfo(userInfoRequest)

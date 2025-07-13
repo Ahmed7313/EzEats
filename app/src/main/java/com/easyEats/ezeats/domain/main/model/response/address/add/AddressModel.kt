@@ -1,9 +1,10 @@
-package com.easyEats.ezeats.domain.main.model.response.address
+package com.easyEats.ezeats.domain.main.model.response.address.add
 
 
 import com.google.gson.annotations.SerializedName
 
-data class Address(
+//isam
+data class AddressModel(
     @SerializedName("addressLabel")
     var addressLabel: String? = "",
     @SerializedName("apartmentNumber")

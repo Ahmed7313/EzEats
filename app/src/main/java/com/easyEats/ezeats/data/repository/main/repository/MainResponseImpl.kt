@@ -4,6 +4,7 @@ import com.easyEats.ezeats.base.BaseResponse
 import com.easyEats.ezeats.data.local.data_store.DataStorePreference
 import com.easyEats.ezeats.data.remote.main.MainApiService
 import com.easyEats.ezeats.domain.main.model.UserLocationAddress
+import com.easyEats.ezeats.domain.main.model.request.address.AddressListRequest
 import com.easyEats.ezeats.domain.main.model.request.cart.TipRequest
 import com.easyEats.ezeats.domain.main.model.request.cart.UpdateCartRequest
 import com.easyEats.ezeats.domain.main.model.request.cart.response.UpdateCartResponse
@@ -14,6 +15,7 @@ import com.easyEats.ezeats.domain.main.model.request.firebase_token.UpdateTokeRe
 import com.easyEats.ezeats.domain.main.model.request.home.HomeRequest
 import com.easyEats.ezeats.domain.main.model.request.offer_request.OfferRequest
 import com.easyEats.ezeats.domain.main.model.request.offers.OffersRequest
+import com.easyEats.ezeats.domain.main.model.request.order.SavePickupRequest
 import com.easyEats.ezeats.domain.main.model.request.order_history.OrderHistoryRequest
 import com.easyEats.ezeats.domain.main.model.request.restaurant.CheckTableAvailabilityRequest
 import com.easyEats.ezeats.domain.main.model.request.restaurant.RestaurantMenuRequest
@@ -21,6 +23,10 @@ import com.easyEats.ezeats.domain.main.model.request.restaurant.RestaurantReques
 import com.easyEats.ezeats.domain.main.model.request.search.SearchRequest
 import com.easyEats.ezeats.domain.main.model.request.search.SearchSuggestionsRequest
 import com.easyEats.ezeats.domain.main.model.response.active_order.ActiveOrderResponse
+import com.easyEats.ezeats.domain.main.model.response.address.add.AddAddressRequest
+import com.easyEats.ezeats.domain.main.model.response.address.add.AddAddressResponse
+import com.easyEats.ezeats.domain.main.model.response.address.add.SaveAddressRequest
+import com.easyEats.ezeats.domain.main.model.response.address.list.AddressListResponse
 import com.easyEats.ezeats.domain.main.model.response.compound.CompoundResult
 import com.easyEats.ezeats.domain.main.model.response.home_response.HotDeal
 import com.easyEats.ezeats.domain.main.model.response.loyality_center.LoyaltyCenterResponse
@@ -176,5 +182,17 @@ class MainResponseImpl @Inject constructor(
 
     override suspend fun saveTip(restaurantRequest: TipRequest): TipResponse =
         mainApiService.saveTip(restaurantRequest)
+    override suspend fun addressList(request: AddressListRequest): AddressListResponse =
+        mainApiService.addressList(request)
+
+    override suspend fun addAddress(request: AddAddressRequest): AddAddressResponse =
+        mainApiService.addAddress(request)
+
+    override suspend fun saveAddress(request: SaveAddressRequest): BaseResponse<Any> =
+        mainApiService.saveAddress(request)
+
+
+    override suspend fun savePickupStation(request: SavePickupRequest): BaseResponse<Any> =
+        mainApiService.savePickUpStation(request)
 
 }

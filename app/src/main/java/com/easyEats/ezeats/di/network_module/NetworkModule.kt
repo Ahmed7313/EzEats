@@ -15,6 +15,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import okhttp3.ConnectionPool
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
@@ -76,28 +77,6 @@ object NetworkModule {
      * Provides OkHttpClient for making HTTP requests.
      */
 
-    class RetryInterceptor(private val maxRetry: Int) : Interceptor {
-        override fun intercept(chain: Interceptor.Chain): Response {
-            var attempt = 0
-            var response: Response
-            var exception: Exception? = null
-
-            do {
-                try {
-                    response = chain.proceed(chain.request())
-                    if (response.isSuccessful) {
-                        return response
-                    }
-                } catch (e: Exception) {
-                    exception = e
-                }
-                attempt++
-            } while (attempt < maxRetry)
-
-            throw exception ?: IOException("Request failed after $maxRetry attempts")
-        }
-    }
-
     @Provides
     @Singleton
     fun provideUnsafeOkHttpClient(): OkHttpClient.Builder {
@@ -115,6 +94,7 @@ object NetworkModule {
 
             val sslSocketFactory = sslContext.socketFactory
             return OkHttpClient.Builder()
+                .connectionPool(ConnectionPool(5, 5, TimeUnit.MINUTES))
                 .sslSocketFactory(sslSocketFactory, trustAllCerts[0] as X509TrustManager)
                 .hostnameVerifier { _, _ -> true }
         } catch (e: Exception) {

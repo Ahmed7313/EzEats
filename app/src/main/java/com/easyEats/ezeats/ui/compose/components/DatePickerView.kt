@@ -3,7 +3,6 @@ package com.daman.edman.screens.components
 import android.os.Build
 import android.widget.DatePicker
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -16,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.easyEats.ezeats.R
@@ -58,7 +56,7 @@ fun DatePickerView(
         border = BorderStroke(1.dp, Color.Gray)
     ) {
         Column(modifier.fillMaxWidth().padding(16.dp)) {
-            HeaderText(
+            AppTextHeader(
                 text = "اختر التاريخ",
                 color = Color.Gray,
                 fontSize = 12
@@ -70,7 +68,7 @@ fun DatePickerView(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                NormalText(text = if (selectedDate.isEmpty()) "DD/MM/YYYY" else selectedDate)
+                AppTextNormal(text = if (selectedDate.isEmpty()) "DD/MM/YYYY" else selectedDate)
                 Icon(
                     painter = painterResource(id = R.drawable.calendar_icon),
                     contentDescription = null,

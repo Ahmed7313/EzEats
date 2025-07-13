@@ -2,6 +2,7 @@ package com.easyEats.ezeats.domain.main.model.request.cart.response
 
 
 import android.os.Parcelable
+import com.easyEats.ezeats.domain.main.model.response.compound.CompoundResult
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.InternalSerializationApi
@@ -11,6 +12,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 @Parcelize
 data class Restaurant(
+
+    @SerializedName("compound")
+    var compound: CompoundResult? = null,
     @SerializedName("country")
     var country: String? = "",
     @SerializedName("kashierAPIkey")
@@ -22,5 +26,11 @@ data class Restaurant(
     @SerializedName("objectId")
     var objectId: String? = "",
     @SerializedName("paymentSystem")
-    var paymentSystem: String? = ""
+    var paymentSystem: String? = "",
+    @SerializedName("isUmbrellaDelivery")
+    var isUmbrellaDelivery: Boolean? = false,
+    @SerializedName("isPickUp")
+    var isPickUp: Boolean? = false,
+    @SerializedName("isDelivery")
+    var isDelivery: Boolean? = false,
 ) : Parcelable
