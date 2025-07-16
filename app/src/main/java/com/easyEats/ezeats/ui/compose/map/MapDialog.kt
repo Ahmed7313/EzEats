@@ -3,6 +3,7 @@ package com.easyEats.ezeats.ui.compose.map
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -25,7 +26,10 @@ fun MapDialog(
     onDismiss: () -> Unit,
 ) {
     val TAG = "MapDialog"
-    val sheetState = rememberModalBottomSheetState()
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true,
+        confirmValueChange = { true }
+    )
     var selectedaddressId by remember {
         mutableStateOf(addressId)
     }
@@ -36,7 +40,7 @@ fun MapDialog(
     ModalBottomSheet(
         modifier = modifier
             .fillMaxWidth()
-            .height(412.dp),
+            .requiredHeight(600.dp),
         dragHandle = {},
         sheetState = sheetState,
         shape = RoundedCornerShape(

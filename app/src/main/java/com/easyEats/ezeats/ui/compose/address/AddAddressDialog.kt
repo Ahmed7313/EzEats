@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ModalBottomSheet
@@ -42,14 +43,18 @@ import kotlinx.coroutines.launch
 @Composable
 fun AddAddressDialog(
     modifier: Modifier = Modifier,
+    lat: Double,
+    lng: Double,
     cartResponse: UpdateCartResponse,
     addressViewModel: AddressViewModel,
     onDismiss: () -> Unit,
     onResult: (AddAddressResponse) -> Unit
 ) {
     val TAG = "AddAddressDialog"
-    val sheetState = rememberModalBottomSheetState()
-
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true,
+        confirmValueChange = { true }
+    )
     var addressLabel by remember {
         mutableStateOf("")
     }
@@ -77,7 +82,7 @@ fun AddAddressDialog(
     ModalBottomSheet(
         modifier = modifier
             .fillMaxWidth()
-            .height(570.dp),
+            .requiredHeight(700.dp),
         dragHandle = {},
         sheetState = sheetState,
         shape = RoundedCornerShape(
@@ -232,10 +237,14 @@ fun AddAddressDialog(
                             addressViewModel.addAddress(
                                 AddAddressRequest(
                                     addressLabel = addressLabel,
+                                    userId = cartResponse.result?.order?.userId,
+                                    compound = cartResponse.result?.order?.restaurant?.compound?.name!!,
                                     streetName = streetName,
                                     buildingNumber = buildingNo,
                                     apartmentNumber = apartementNo,
-                                    floorNumber = floor
+                                    floorNumber = floor,
+                                    userLat = lat.toString(),
+                                    userLon = lng.toString()
                                 )
                             ).collect {
                                 if(it != null){

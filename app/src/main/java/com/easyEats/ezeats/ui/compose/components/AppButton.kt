@@ -22,7 +22,14 @@ import com.easyEats.ezeats.ui.compose.theme.AppColor
 
 
 @Composable
-fun AppButtonPrimary(modifier: Modifier = Modifier,text: String,enabled: Boolean = true,showLoader : Boolean = false, onClick: () -> Unit){
+fun AppButtonPrimary(
+    modifier: Modifier = Modifier,
+    text: String,
+    enabled: Boolean = true,
+    showLoader: Boolean = false,
+    color: Color = AppColor.ColorPrimary,
+    onClick: () -> Unit
+) {
     Button(
         onClick = onClick,
         enabled = enabled,
@@ -30,11 +37,14 @@ fun AppButtonPrimary(modifier: Modifier = Modifier,text: String,enabled: Boolean
             .width(173.dp)
             .height(45.dp),
         shape = RoundedCornerShape(50.dp), // Full rounded
-        colors = ButtonDefaults.buttonColors(containerColor = AppColor.ColorPrimary) // Red color
+        colors = ButtonDefaults.buttonColors(containerColor = color) // Red color
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
 
-            if(showLoader){
+            if (showLoader) {
                 LoadingCircle()
                 Spacer(modifier = Modifier.width(30.dp))
             }
@@ -52,7 +62,12 @@ fun AppButtonPrimary(modifier: Modifier = Modifier,text: String,enabled: Boolean
 }
 
 @Composable
-fun AppButtonStroke(modifier: Modifier = Modifier, text: String,enabled: Boolean = true, onClick: () -> Unit){
+fun AppButtonStroke(
+    modifier: Modifier = Modifier,
+    text: String,
+    enabled: Boolean = true,
+    onClick: () -> Unit
+) {
     OutlinedButton(
         onClick = onClick,
         enabled = enabled,
@@ -60,7 +75,7 @@ fun AppButtonStroke(modifier: Modifier = Modifier, text: String,enabled: Boolean
             .width(190.dp)
             .height(45.dp),
         shape = RoundedCornerShape(50.dp), // Fully rounded
-        border = BorderStroke(width = 1.dp,Color.Black)
+        border = BorderStroke(width = 1.dp, Color.Black)
     ) {
         Text(
             text = text,

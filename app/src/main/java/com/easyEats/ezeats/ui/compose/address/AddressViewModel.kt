@@ -40,11 +40,16 @@ class AddressViewModel @Inject constructor(
     private val _addressList = MutableStateFlow<List<AddressModel>>(emptyList())
     val addressList: StateFlow<List<AddressModel>> = _addressList.asStateFlow()
 
-    fun getAddressList(userId: String) {
-        viewModelScope.launch {
+    fun getAddressList(userId: String) : Flow<List<AddressModel?>?> {
+        return flow {
             getAddressListFlow(userId).collect { response ->
-                val addresses = response?.addressListResult?.addresses.orEmpty().filterNotNull()
-                _addressList.value = addresses
+                try{
+                    response?.addressListResult?.addresses?.let { result ->
+                        emit(result)
+                    }
+                }catch (e: Exception){
+                    emit(null)
+                }
             }
         }
     }

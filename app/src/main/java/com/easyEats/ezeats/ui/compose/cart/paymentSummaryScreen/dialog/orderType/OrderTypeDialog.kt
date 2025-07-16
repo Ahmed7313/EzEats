@@ -40,6 +40,7 @@ import com.easyEats.ezeats.domain.main.model.request.cart.response.UpdateCartRes
 import com.easyEats.ezeats.domain.main.model.request.order.SavePickupRequest
 import com.easyEats.ezeats.domain.room.ShopEntity
 import com.easyEats.ezeats.ui.compose.components.AppButtonPrimary
+import com.easyEats.ezeats.ui.compose.components.AppButtonStroke
 import com.easyEats.ezeats.ui.compose.theme.AppColor
 import com.easyEats.ezeats.ui.main.restaurant.CartViewModel
 import kotlinx.coroutines.launch
@@ -50,7 +51,8 @@ fun OrderTypeDialog(
     cartResponse: UpdateCartResponse,
     shop: ShopEntity,
     cartViewModel: CartViewModel,
-    confirm: (ORDER_TYPE) -> Unit
+    confirm: (ORDER_TYPE) -> Unit,
+    cancel: () -> Unit
 ) {
     var selectedPlaceOrder by remember { mutableStateOf(ORDER_TYPE.DEFAULT) }
     val sheetState = rememberModalBottomSheetState(
@@ -129,24 +131,33 @@ fun OrderTypeDialog(
                     }
                 }
 
-                AppButtonPrimary(text = stringResource(R.string.confirm),
-                    showLoader = cartViewModel.showLoading.collectAsState(false).value,
-                    modifier = Modifier.fillMaxWidth().padding(top = 20.dp)) {
-                    if(selectedPlaceOrder != ORDER_TYPE.DEFAULT) {
-                        scope.launch {
-                            cartViewModel.savePickUpStation(SavePickupRequest(
-                                orderId = cartResponse.result?.order?.objectId,
-                                pickUpStation = "Restaurant",
-                                compoundName = cartResponse.result?.order?.restaurant?.compound?.objectId
-                            )).collect { result ->
-                                if(result != null){
-                                    confirm(selectedPlaceOrder)
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth().padding(top = 20.dp)) {
+                    AppButtonPrimary(text = stringResource(R.string.confirm),
+                        enabled = selectedPlaceOrder != ORDER_TYPE.DEFAULT,
+                        showLoader = cartViewModel.showLoading.collectAsState(false).value,
+                        modifier = Modifier.weight(1f).fillMaxWidth().padding(end = 6.dp)) {
+                        if(selectedPlaceOrder != ORDER_TYPE.DEFAULT) {
+                            scope.launch {
+                                cartViewModel.savePickUpStation(SavePickupRequest(
+                                    orderId = cartResponse.result?.order?.objectId,
+                                    pickUpStation = "Restaurant",
+                                    compoundName = cartResponse.result?.order?.restaurant?.compound?.objectId
+                                )).collect { result ->
+                                    if(result != null){
+                                        confirm(selectedPlaceOrder)
+                                    }
                                 }
                             }
-                        }
 
+                        }
+                    }
+
+                    AppButtonStroke(text = stringResource(R.string.back),
+                        modifier = Modifier.weight(1f).fillMaxWidth().padding(start = 6.dp)) {
+                        cancel()
                     }
                 }
+
 
             }
         },

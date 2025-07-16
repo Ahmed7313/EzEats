@@ -12,36 +12,56 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.daman.edman.screens.components.AppTextHeader
+import com.daman.edman.screens.components.AppTextNormal
 
 @Composable
 fun PaymentSummaryItem(
     modifier: Modifier = Modifier,
     title: String,
     value: String,
-    color: Color = Color.Black
+    color: Color = Color.Black,
+    fontWeight: FontWeight = FontWeight.Normal,
 ) {
 
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(10.dp),
+            .padding(vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
 
-        Text(
-            text = title,
-            fontSize = 13.sp,
-            fontWeight = FontWeight.Bold,
-            color = color
-        )
+        if(fontWeight == FontWeight.Normal) {
 
-        Text(
-            text = value,
-            fontSize = 13.sp,
-            fontWeight = FontWeight.Bold,
-            color = color
-        )
+            AppTextNormal(
+                text = title,
+                fontSize = 16,
+                fontWeight = FontWeight.Normal,
+                color = color
+            )
+
+            AppTextNormal(
+                text = value,
+                fontSize = 16,
+                fontWeight = FontWeight.Normal,
+                color = color
+            )
+        }else{
+            AppTextHeader(
+                text = title,
+                fontSize = 16,
+                fontWeight = FontWeight.Bold,
+                color = color
+            )
+
+            AppTextHeader(
+                text = value,
+                fontSize = 16,
+                fontWeight = FontWeight.Bold,
+                color = color
+            )
+        }
 
     }
 

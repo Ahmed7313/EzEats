@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -108,10 +109,10 @@ fun CartScreenUI(
     LaunchedEffect(Unit) {
         viewModel.updateCart().collect {
             Log.d(TAG, "CartScreenUI: start result $it")
-            if(it != null) {
+            if (it != null) {
                 Log.d(TAG, "CartScreenUI: not null")
                 updateCartResponse = it
-                if(updateCartResponse.result?.tip != 0.0){
+                if (updateCartResponse.result?.tip != 0.0) {
                     viewModel.saveTip("0").collect { tip ->
                         if (tip != null) {
                             updateCartResponse = updateCartResponse.copy(
@@ -123,11 +124,20 @@ fun CartScreenUI(
                         }
                     }
                 }
-                Log.d(TAG, "CartScreenUI: ${updateCartResponse.result?.order?.restaurant?.paymentSystem}")
-                Log.d(TAG, "CartScreenUI: ${updateCartResponse.result?.order?.restaurant?.isPickUp}")
-                Log.d(TAG, "CartScreenUI: ${updateCartResponse.result?.order?.restaurant?.isDelivery}")
+                Log.d(
+                    TAG,
+                    "CartScreenUI: ${updateCartResponse.result?.order?.restaurant?.paymentSystem}"
+                )
+                Log.d(
+                    TAG,
+                    "CartScreenUI: ${updateCartResponse.result?.order?.restaurant?.isPickUp}"
+                )
+                Log.d(
+                    TAG,
+                    "CartScreenUI: ${updateCartResponse.result?.order?.restaurant?.isDelivery}"
+                )
                 enableTakeAction = true
-            }else{
+            } else {
                 viewModel.clearShop()
                 findNavController.navigateUp()
             }
@@ -201,6 +211,13 @@ fun CartScreenUI(
 
             VoucherOrPromoUI(modifier = Modifier.fillMaxWidth())
 
+            HorizontalDivider(
+                modifier = Modifier.padding(vertical = 16.dp),
+                thickness = 1.dp,
+                color = BlackColor2.copy(
+                    alpha = 0.5f
+                )
+            )
 
             PaymentSummary(
                 modifier = Modifier

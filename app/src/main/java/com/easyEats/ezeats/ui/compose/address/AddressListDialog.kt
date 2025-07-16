@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.TextButton
@@ -29,24 +31,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.daman.edman.screens.components.AppTextHeader
 import com.daman.edman.screens.components.AppTextNormal
 import com.easyEats.ezeats.R
-import com.easyEats.ezeats.domain.main.model.request.cart.response.UpdateCartResponse
+import com.easyEats.ezeats.domain.main.model.response.address.add.AddressModel
 import com.easyEats.ezeats.domain.main.model.response.address.add.SaveAddressRequest
 import com.easyEats.ezeats.ui.compose.components.AppButtonPrimary
+import com.easyEats.ezeats.ui.compose.components.AppButtonStroke
 import com.easyEats.ezeats.ui.compose.theme.AppColor
-import com.easyEats.ezeats.ui.main.restaurant.CartViewModel
 import com.easyEats.ezeats.ui.compose.components.LoadingView
 import kotlinx.coroutines.launch
 
 
 @Composable
 fun AddressListDialog(
-    modifier : Modifier = Modifier,
+    modifier: Modifier = Modifier,
     addressViewModel: AddressViewModel,
-    orderId: String,
+    userId: String,
     addNewAddress: () -> Unit,
     selectedAddress: () -> Unit,
     onDismiss: () -> Unit,
@@ -57,13 +60,27 @@ fun AddressListDialog(
         mutableStateOf(-1)
     }
     val scope = rememberCoroutineScope()
-    val addressList by addressViewModel.addressList.collectAsState()
+    var addressList by remember {
+        mutableStateOf<List<AddressModel>>(arrayListOf())
+    }
 
+    var isListEmpty by remember {
+        mutableStateOf(false)
+    }
+
+    LaunchedEffect(Unit) {
+        addressViewModel.getAddressList(userId).collect {
+            if (it != null) {
+                isListEmpty = it.isEmpty()
+                addressList = it.filterNotNull()
+            }
+        }
+    }
 
     ModalBottomSheet(
         modifier = modifier
             .fillMaxWidth()
-            .height(412.dp),
+            .height(480.dp),
         dragHandle = {},
         sheetState = sheetState,
         shape = RoundedCornerShape(
@@ -72,46 +89,69 @@ fun AddressListDialog(
         ),
         contentColor = AppColor.backgroundColor,
         content = {
-            Box(modifier = modifier.fillMaxWidth().padding(vertical = 18.dp, horizontal = 28.dp)) {
+            Box(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 18.dp, horizontal = 28.dp)
+            ) {
                 LazyColumn {
                     item {
-                        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(bottom = 10.dp)) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
                             AppTextHeader(
                                 text = stringResource(R.string.saved_address),
                                 color = AppColor.BlackColor2,
                                 fontSize = 20,
+                                textAlign = TextAlign.Center,
                                 fontWeight = FontWeight.Bold
                             )
                             Image(
                                 contentDescription = "image",
                                 painter = painterResource(R.drawable.img_pin),
-                                modifier = Modifier.size(18.dp)
+                                modifier = Modifier.size(20.dp)
                             )
                         }
                     }
 
-                    items(3) {
+                    items(addressList) { address ->
                         ItemAddress(
-                            modifier = Modifier.fillMaxWidth().padding(bottom = 15.dp)
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = 15.dp),
+                            address = address
                         ) {
                             selectedaddressId = it
                         }
                     }
 
-                    if(addressList.isNotEmpty()) {
-//                        items(addressList.size) {
-//                            ItemAddress(
-//                                modifier = Modifier.fillMaxWidth().padding(bottom = 15.dp)
-//                            ) {
-//                                selectedaddressId = it
-//                            }
-//                        }
-                    }else{
-                        item {
-                            Spacer(modifier = Modifier.height(60.dp)) // or show a "No addresses" message
+                    item {
+                        if (isListEmpty) {
+                            Column(
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                modifier = Modifier
+                                    .fillMaxWidth().padding(top = 16.dp)
+                                    .align(
+                                        Alignment.Center
+                                    )
+                            ) {
+                                Image(
+                                    painter = painterResource(R.drawable.ic_pin),
+                                    contentDescription = "pin", modifier = Modifier.size(26.dp)
+                                )
+                                Spacer(modifier = Modifier.height(20.dp))
+                                AppTextHeader(
+                                    textAlign = TextAlign.Center,
+                                    text = stringResource(R.string.no_address_found),
+                                    fontSize = 16,
+                                    fontWeight = FontWeight.Bold
+                                )
+                                Spacer(modifier = Modifier.height(40.dp))
+                            }
                         }
                     }
-
                     item {
                         TextButton(
                             modifier = Modifier
@@ -124,9 +164,12 @@ fun AddressListDialog(
 
                             }) {
                             Row(
-                                modifier = Modifier.fillMaxWidth().height(32.dp).clickable{
-                                    addNewAddress()
-                                },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(32.dp)
+                                    .clickable {
+                                        addNewAddress()
+                                    },
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.Center
                             ) {
@@ -147,24 +190,31 @@ fun AddressListDialog(
                     }
                     item {
                         AppButtonPrimary(
-                            modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
-                            text = stringResource(R.string.confirm)) {
-                            if(selectedaddressId != -1){
+                            enabled = selectedaddressId != -1,
+                            modifier = Modifier
+                                .fillMaxWidth().padding(top = 16.dp),
+                            text = stringResource(R.string.confirm)
+                        ) {
+                            if (selectedaddressId != -1) {
 //                                click(selectedaddressId)
                                 scope.launch {
-                                    addressViewModel.saveAddressCart(SaveAddressRequest(
-                                        orderId = orderId,
-                                        userAddressId = selectedaddressId.toString()
-                                    )).collect {
-                                        if(it != null)
+                                    addressViewModel.saveAddressCart(
+                                        SaveAddressRequest(
+                                            orderId = userId,
+                                            userAddressId = selectedaddressId.toString()
+                                        )
+                                    ).collect {
+                                        if (it != null)
                                             selectedAddress()
                                     }
                                 }
                             }
                         }
+
                     }
                 }
                 LoadingView(addressViewModel.showLoading.collectAsState().value)
+
             }
         },
         onDismissRequest = {

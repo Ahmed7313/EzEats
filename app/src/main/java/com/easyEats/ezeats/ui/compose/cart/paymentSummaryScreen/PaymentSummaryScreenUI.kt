@@ -33,7 +33,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -41,9 +40,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.daman.edman.screens.components.AppTextHeader
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.domain.main.model.request.cart.response.UpdateCartResponse
 import com.easyEats.ezeats.domain.main.model.request.cart.tip.TipResponse
+import com.easyEats.ezeats.domain.main.model.response.payment.PaymentRequest
 import com.easyEats.ezeats.domain.main.model.response.user_info.UserInfoResponse
 import com.easyEats.ezeats.domain.room.ShopEntity
 import com.easyEats.ezeats.ui.compose.address.AddAddressDialog
@@ -51,12 +52,14 @@ import com.easyEats.ezeats.ui.compose.address.AddressListDialog
 import com.easyEats.ezeats.ui.compose.address.AddressViewModel
 import com.easyEats.ezeats.ui.compose.address.UmbrellaDialog
 import com.easyEats.ezeats.ui.compose.address.UpdateProfileDialog
-import com.easyEats.ezeats.ui.compose.cart.CartItem
+import com.easyEats.ezeats.ui.compose.cart.paymentMethod.PaymentMethodModel
+import com.easyEats.ezeats.ui.compose.cart.paymentMethod.PaymentMethodUI
 import com.easyEats.ezeats.ui.compose.cart.paymentSummaryScreen.dialog.PLACE_ORDER_TYPE
 import com.easyEats.ezeats.ui.compose.cart.paymentSummaryScreen.dialog.PlaceOrderDialog
 import com.easyEats.ezeats.ui.compose.cart.paymentSummaryScreen.dialog.orderType.ORDER_TYPE
 import com.easyEats.ezeats.ui.compose.cart.paymentSummaryScreen.dialog.orderType.OrderTypeDialog
 import com.easyEats.ezeats.ui.compose.cart.paymentSummaryScreen.dummy.TipOption
+import com.easyEats.ezeats.ui.compose.cart.paymentSummaryScreen.tip.CustomTipAmount
 import com.easyEats.ezeats.ui.compose.cart.summary.PaymentSummary
 import com.easyEats.ezeats.ui.compose.components.AppButtonPrimary
 import com.easyEats.ezeats.ui.compose.map.MapDialog
@@ -153,13 +156,17 @@ fun PaymentSummaryScreenUI(
         mutableStateOf(false)
     }
 
+    var selectedPaymentMethod by remember {
+        mutableStateOf(PaymentMethodModel())
+    }
+
 
     val tipOptions = remember {
         listOf(
             TipOption("1", "10", "5%"),
             TipOption("2", "15", "5%"),
-            TipOption("2", "20", "5%"),
-//            TipOption("3", null, null, isCustom = true)
+            TipOption("3", "20", "5%"),
+            TipOption("4", null, null, isCustom = true)
         )
     }
 
@@ -168,6 +175,7 @@ fun PaymentSummaryScreenUI(
     }
 
     var selectedTipOption by remember { mutableStateOf<TipOption?>(null) }
+    var showTipOptionCustom by remember { mutableStateOf(false) }
 
     var tipResponse by remember {
         mutableStateOf<TipResponse>(TipResponse())
@@ -185,14 +193,24 @@ fun PaymentSummaryScreenUI(
 //            val userInfo = userInfoResult.data
             // Do something with userInfo
             userInfo = userInfoResult.data?.result?.data ?: UserInfoResponse()
-            if(userInfo.email.isNullOrEmpty() || userInfo.name.isNullOrEmpty())
+            if (userInfo.email.isNullOrEmpty() || userInfo.name.isNullOrEmpty())
                 showEditProfile = true
-            else{
-                Log.d(TAG, "PaymentSummaryScreenUI: Call WebBrowser Payment")
+            else {
+                viewModel.payment(
+                    PaymentRequest(
+                        TableOrderID = updateCartResponse.result?.order?.tableOrder?.objectId,
+                        UserID = updateCartResponse.result?.order?.userId,
+                        paymentMethod = selectedPaymentMethod.paymentMethod?.name.toString().toLowerCase()
+                    )
+                ).collect {
+                    if (it == null) {
+
+                    }
+                }
             }
-        }else if(userInfoResult is Resource.Loading){
+        } else if (userInfoResult is Resource.Loading) {
             viewModel._showLoading.value = true
-        }else{
+        } else {
             viewModel._showLoading.value = false
         }
     }
@@ -258,7 +276,7 @@ fun PaymentSummaryScreenUI(
                     modifier = Modifier
                         .fillMaxWidth()
                         .border(
-                            BorderStroke(1.dp, AppColor.BlackColor),
+                            BorderStroke(1.dp, AppColor.GreyColor),
                             shape = RoundedCornerShape(10.dp)
                         )
                         .background(AppColor.BlackColor3, shape = RoundedCornerShape(10.dp))
@@ -309,26 +327,66 @@ fun PaymentSummaryScreenUI(
                                 isSelected = option == selectedTipOption, // Check if current option is selected
                                 onTipSelected = { tip ->
 
-                                    scope.launch {
-                                        viewModel.saveTip(
-                                            tip.amount,
-                                        ).collect {
-                                            if (it != null) {
-                                                cartResponse = cartResponse.copy(
-                                                    result = cartResponse.result?.copy(
-                                                        tip = it.result?.data?.tipAmount,
-                                                        total = it.result?.data?.finalTotal
+                                    if (!tip.isCustom) {
+                                        scope.launch {
+                                            viewModel.saveTip(
+                                                tip.amount,
+                                            ).collect {
+                                                if (it != null) {
+                                                    tipOptions[3].amount = null
+                                                    tipOptions[3].percentage = null
+                                                    cartResponse = cartResponse.copy(
+                                                        result = cartResponse.result?.copy(
+                                                            tip = it.result?.data?.tipAmount,
+                                                            total = it.result?.data?.finalTotal
+                                                        )
                                                     )
-                                                )
-                                                selectedTipOption =
-                                                    tip // Update the selected option when clicked                                            }
+                                                    showTipOptionCustom = false
+                                                    selectedTipOption =
+                                                        tip // Update the selected option when clicked                                            }
+                                                }
                                             }
                                         }
+
+                                    } else {
+                                        selectedTipOption = tip
+                                        showTipOptionCustom = true
                                     }
                                 }
                             )
                         }
                     }
+
+                    if (showTipOptionCustom)
+                        CustomTipAmount(
+                            modifier = Modifier.fillMaxWidth(),
+                            total = cartResponse.result?.total?.toDouble() ?: 0.0
+                        ) { result ->
+                            scope.launch {
+                                viewModel.saveTip(
+                                    result.toString(),
+                                ).collect {
+                                    if (it != null) {
+                                        cartResponse = cartResponse.copy(
+                                            result = cartResponse.result?.copy(
+                                                tip = it.result?.data?.tipAmount,
+                                                total = it.result?.data?.finalTotal
+                                            )
+                                        )
+                                        if(result == "0"){
+                                            tipOptions[3].amount = null
+                                            tipOptions[3].percentage = null
+                                        }else{
+                                            tipOptions[3].amount = result
+                                        }
+                                        showTipOptionCustom = false
+
+                                    }
+
+                                }
+                            }
+                        }
+
                 }
 
 
@@ -371,35 +429,38 @@ fun PaymentSummaryScreenUI(
 
 
                 HorizontalDivider(
-                    color = Color.Black.copy(0.5f),
+                    color = AppColor.GreyColor.copy(0.5f),
                     thickness = 1.dp,
-                    modifier = Modifier.padding(vertical = 23.dp)
+                    modifier = Modifier.padding(vertical = 16.dp)
                 )
 
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Start
+                AppTextHeader(
+                    color = BlackColor2,
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    text = stringResource(R.string.payment_method),
+                    fontSize = 16,
+                    textAlign = TextAlign.Start,
+                    fontWeight = FontWeight.Bold
+                )
+
+                PaymentMethodUI(
+                    modifier = Modifier
+                        .padding(top = 8.dp)
+                        .fillMaxWidth(),
+                    selectedPaymentMethod
                 ) {
-                    Image(
-                        painter = painterResource(R.drawable.ic_hand),
-                        contentDescription = "back"
-                    )
-
-                    Text(
-                        color = BlackColor2,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 6.dp),
-                        text = stringResource(R.string.payment_method),
-                        fontSize = 15.sp,
-                        textAlign = TextAlign.Start,
-                        fontWeight = FontWeight.Bold
-                    )
-
+                    selectedPaymentMethod = it
                 }
 
 
+                HorizontalDivider(
+                    color = AppColor.GreyColor.copy(0.5f),
+                    thickness = 1.dp,
+                    modifier = Modifier.padding(vertical = 16.dp)
+                )
             }
+
 //        items(3) {
 //            PaymentMethodItem(
 //                modifier = Modifier.fillMaxWidth(),
@@ -409,11 +470,11 @@ fun PaymentSummaryScreenUI(
 //                paymentMethodId = it
 //            }
 //        }
-            items(cartData) {
-                CartItem(modifier = Modifier.fillMaxWidth(), it, false) { cartItemAction ->
-
-                }
-            }
+//            items(cartData) {
+//                CartItem(modifier = Modifier.fillMaxWidth(), it, false) { cartItemAction ->
+//
+//                }
+//            }
             item {
 
 //            HorizontalDivider(
@@ -428,6 +489,7 @@ fun PaymentSummaryScreenUI(
                 )
 
                 AppButtonPrimary(
+                    enabled = selectedPaymentMethod.paymentMethod != null,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 6.dp),
@@ -465,11 +527,16 @@ fun PaymentSummaryScreenUI(
                     if (orderTypeSelected != ORDER_TYPE.PICKUP) {
                         showPlaceOrder = true
                     }
+                }, cancel = {
+                    orderTypeDialog = false
+                    navigate.navigateUp()
                 })
         }
 
         if (showPlaceOrder) PlaceOrderDialog(
-            modifier = Modifier.fillMaxWidth(), confirm = {
+            modifier = Modifier.fillMaxWidth(),
+            updateCartResponse = updateCartResponse,
+            confirm = {
                 placeOrderType = it
                 showPlaceOrder = false
                 if (placeOrderType == PLACE_ORDER_TYPE.ADDRESS) {
@@ -477,7 +544,10 @@ fun PaymentSummaryScreenUI(
                 } else if (placeOrderType == PLACE_ORDER_TYPE.UMBERLLA) {
                     showUmbrellaDialog = true
                 }
-            }, dismiss = { showPlaceOrder = false })
+            }, dismiss = {
+                showPlaceOrder = false
+                orderTypeDialog = true
+            })
         if (showUmbrellaDialog) {
             UmbrellaDialog(
                 modifier = Modifier.fillMaxWidth(),
@@ -490,7 +560,7 @@ fun PaymentSummaryScreenUI(
 
             AddressListDialog(
                 addressViewModel = addressViewModel,
-                orderId = updateCartResponse.result?.order?.objectId.toString(),
+                userId = updateCartResponse.result?.order?.userId.toString(),
                 selectedAddress = {
                     showAddressList = false
                 }, addNewAddress = {
@@ -501,6 +571,7 @@ fun PaymentSummaryScreenUI(
                     showMap = true
                 }, onDismiss = {
                     showAddressList = false
+                    showPlaceOrder = true
                 },
                 modifier = Modifier.fillMaxWidth()
             )
@@ -516,29 +587,41 @@ fun PaymentSummaryScreenUI(
                     showMap = false
                     addNewAddressForm = true
                 },
-                onDismiss = { showMap = false })
+                onDismiss = {
+                    showMap = false
+                    showAddressList = true
+                })
         }
         if (addNewAddressForm) {
             AddAddressDialog(
                 modifier = Modifier.fillMaxWidth(),
+                lat = lat,
+                lng = lng,
                 cartResponse,
                 addressViewModel,
                 onDismiss = {
                     addNewAddressForm = false
+                    showMap = true
                 },
                 onResult = { address ->
                     addNewAddressForm = false
                     showAddressList = true
                 })
         }
-        if(showEditProfile){
-            UpdateProfileDialog(modifier = Modifier.fillMaxWidth(),editProfileViewModel,viewModel,userInfo, onUpdate = {
-                //done
-                showEditProfile = false
-                Log.d(TAG, "PaymentSummaryScreenUI: Updated")
-            }, onDismiss = {
-              showEditProfile = false  
-            })
+        if (showEditProfile) {
+            UpdateProfileDialog(
+                modifier = Modifier.fillMaxWidth(),
+                editProfileViewModel,
+                viewModel,
+                userInfo,
+                onUpdate = {
+                    //done
+                    showEditProfile = false
+                    Log.d(TAG, "PaymentSummaryScreenUI: Updated")
+                },
+                onDismiss = {
+                    showEditProfile = false
+                })
         }
         LoadingView(viewModel.showLoading.collectAsState(false).value)
 

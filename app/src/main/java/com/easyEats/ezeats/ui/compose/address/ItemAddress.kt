@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.RadioButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,11 +22,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.daman.edman.screens.components.AppTextNormal
 import com.easyEats.ezeats.R
+import com.easyEats.ezeats.domain.main.model.response.address.add.AddressModel
 import com.easyEats.ezeats.ui.compose.theme.AppColor
 
 
 @Composable
-fun ItemAddress(modifier: Modifier = Modifier,selectedAddressId: (Int) -> Unit) {
+fun ItemAddress(modifier: Modifier = Modifier,address: AddressModel,selectedAddressId: (Int) -> Unit) {
 
     Column(
         modifier = modifier
@@ -42,13 +44,14 @@ fun ItemAddress(modifier: Modifier = Modifier,selectedAddressId: (Int) -> Unit) 
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
         ) {
-            Image(
-                painter = painterResource(R.drawable.ic_pin),
-                modifier = Modifier.padding(start = 9.dp, end = 5.dp, top = 11.dp),
-                contentDescription = "pin"
-            )
+//            Image(
+//                painter = painterResource(R.drawable.ic_pin),
+//                modifier = Modifier.padding(start = 9.dp, end = 5.dp, top = 11.dp),
+//                contentDescription = "pin"
+//            )
+//            RadioButton(selected = address.)
             AppTextNormal(
-                text = "Home",
+                text = address.addressLabel.toString(),
                 fontSize = 16,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(start = 2.dp, top = 11.dp)
@@ -68,7 +71,7 @@ fun ItemAddress(modifier: Modifier = Modifier,selectedAddressId: (Int) -> Unit) 
             )
         }
         AppTextNormal(
-            text = "asdas asddas das ",
+            text = "${address.streetName} , ${address.buildingNumber}, ${address.floorNumber}, ${address.apartmentNumber}",
             textAlign = TextAlign.Start,
             modifier = Modifier
                 .fillMaxWidth()

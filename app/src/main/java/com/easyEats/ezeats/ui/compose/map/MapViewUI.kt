@@ -296,8 +296,8 @@ fun MapViewUI(
 
             Text(
                 text = stringResource(R.string.confirm_location),
-                fontSize = 30.sp,
-                modifier = Modifier.padding(bottom = 16.dp),
+                fontSize = 20.sp,
+                modifier = Modifier.padding(bottom = 16.dp, top = 10.dp),
                 fontWeight = FontWeight.Bold,
                 color = Color.Black
             )

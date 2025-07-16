@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.easyEats.ezeats.MyApplication
+import com.easyEats.ezeats.base.BaseResponse
 import com.easyEats.ezeats.domain.main.model.request.cart.ItemCheckoutModel
 import com.easyEats.ezeats.domain.main.model.request.cart.SuboptionsId
 import com.easyEats.ezeats.domain.main.model.request.cart.TipRequest
@@ -12,6 +13,7 @@ import com.easyEats.ezeats.domain.main.model.request.cart.response.UpdateCartRes
 import com.easyEats.ezeats.domain.main.model.request.cart.tip.TipResponse
 import com.easyEats.ezeats.domain.main.model.request.order.SavePickupRequest
 import com.easyEats.ezeats.domain.main.model.request.restaurant.CheckTableAvailabilityRequest
+import com.easyEats.ezeats.domain.main.model.response.payment.PaymentRequest
 import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.SubMenu
 import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.check_table_availability.TableAvailabilityResponse
 import com.easyEats.ezeats.domain.main.use_case.MainUseCase
@@ -61,6 +63,9 @@ class CartViewModel @Inject constructor(
 
     var _showLoading = MutableStateFlow<Boolean>(false)
     val showLoading = _showLoading.asStateFlow()
+
+//    var _showLoadingBlur = MutableStateFlow<Boolean>(false)
+//    val showLoadingBlur = _showLoadingBlur.asStateFlow()
 
     private val _enableTakeAction = MutableStateFlow<Boolean>(false)
     val enableTakeAction = _enableTakeAction.asStateFlow()
@@ -330,6 +335,7 @@ class CartViewModel @Inject constructor(
     }
 
     suspend fun updateCart(): Flow<UpdateCartResponse?> {
+        _showLoading.value = true
         val request = UpdateCartRequest()
         val items = mutableListOf<ItemCheckoutModel>()
 
@@ -363,6 +369,7 @@ class CartViewModel @Inject constructor(
         return flow {
             try {
                 val result = mainUseCase.homeUseCase.updateCart(request)
+                _showLoading.value = false
                 emit(result)
             } catch (e: Exception) {
                 null
@@ -432,6 +439,20 @@ class CartViewModel @Inject constructor(
                     emit(null)
                 }
             } else {
+                _showLoading.value = false
+                emit(null)
+            }
+        }
+    }
+
+    fun payment(request: PaymentRequest) : Flow<BaseResponse<Any>?>  {
+        _showLoading.value = true
+        return flow {
+            try{
+                val result = mainUseCase.homeUseCase.payment(request)
+                _showLoading.value = false
+                emit(result)
+            }catch (Ex: Exception){
                 _showLoading.value = false
                 emit(null)
             }

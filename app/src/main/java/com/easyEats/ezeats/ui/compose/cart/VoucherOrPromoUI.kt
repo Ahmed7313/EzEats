@@ -32,7 +32,7 @@ import com.easyEats.ezeats.ui.compose.theme.AppColor.skyColor
 @Composable
 fun VoucherOrPromoUI(modifier: Modifier = Modifier) {
     Column(
-        modifier = modifier.padding(vertical = 20.dp),
+        modifier = modifier.padding(bottom = 20.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -71,13 +71,7 @@ fun VoucherOrPromoUI(modifier: Modifier = Modifier) {
 
     }
 
-    HorizontalDivider(
-        modifier = Modifier.fillMaxWidth(),
-        thickness = 1.dp,
-        color = BlackColor2.copy(
-            alpha = 0.5f
-        )
-    )
+
 
 
 }

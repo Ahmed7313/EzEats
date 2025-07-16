@@ -13,6 +13,8 @@ import kotlinx.serialization.Serializable
 data class Order(
     @SerializedName("restaurant")
     var restaurant: Restaurant? = Restaurant(),
+    @SerializedName("tableOrder")
+    var tableOrder: TableOrder? = TableOrder(),
     @SerializedName("restaurantId")
     var restaurantId: String? = "",
     @SerializedName("userId")

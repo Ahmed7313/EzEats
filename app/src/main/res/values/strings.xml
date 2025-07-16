@@ -276,5 +276,11 @@
     <string name="select_your_compound">Select Your Compound</string>
     <string name="umbrella_no">Umbrella Number</string>
     <string name="update_your_profile">Update Your Profile</string>
+    <string name="no_address_found">No Address Found</string>
+    <string name="back">Back</string>
+    <string name="tax">Tax</string>
+    <string name="visa">Visa</string>
+    <string name="wallet">Wallet</string>
+    <string name="insert_your_amount_you_like_to_tip">"Insert the amount you would like to tip "</string>
 
 </resources>

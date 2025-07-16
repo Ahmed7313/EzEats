@@ -22,6 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
@@ -29,16 +30,20 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.aramex.mypos.Presentation.Components.CustomDialog
 import com.daman.edman.screens.components.AppTextHeader
 import com.daman.edman.screens.components.AppTextNormal
 import com.easyEats.ezeats.R
+import com.easyEats.ezeats.domain.main.model.request.cart.response.UpdateCartResponse
 import com.easyEats.ezeats.ui.compose.components.AppButtonPrimary
 import com.easyEats.ezeats.ui.compose.theme.AppColor
-import com.easyEats.ezeats.ui.compose.theme.AppColor.ColorPrimaryOpacity2
 
 @Composable
-fun PlaceOrderDialog(modifier: Modifier = Modifier,confirm: (PLACE_ORDER_TYPE) -> Unit, dismiss: () -> Unit) {
+fun PlaceOrderDialog(
+    modifier: Modifier = Modifier,
+    updateCartResponse: UpdateCartResponse,
+    confirm: (PLACE_ORDER_TYPE) -> Unit,
+    dismiss: () -> Unit,
+) {
     var selectedPlaceOrder by remember { mutableStateOf(PLACE_ORDER_TYPE.DEFAULT) }
     val sheetState = rememberModalBottomSheetState()
 
@@ -74,13 +79,15 @@ fun PlaceOrderDialog(modifier: Modifier = Modifier,confirm: (PLACE_ORDER_TYPE) -
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     PlaceOrderImage(
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier.weight(1f)
+                            .alpha(if (updateCartResponse.result?.order?.restaurant?.isUmbrellaDelivery == true)
+                                0.1f else 0.5f),
                         image = painterResource(R.drawable.ic_umberlla),
                         contentDescription = "ic_umberlla",
                         label = stringResource(R.string.umbrella),
                         selected = selectedPlaceOrder == PLACE_ORDER_TYPE.UMBERLLA
                     ){
-                        selectedPlaceOrder = PLACE_ORDER_TYPE.UMBERLLA
+                        if (updateCartResponse.result?.order?.restaurant?.isUmbrellaDelivery == true) selectedPlaceOrder = PLACE_ORDER_TYPE.UMBERLLA
                     }
                     PlaceOrderImage(
                         modifier = Modifier.weight(1f),
@@ -93,19 +100,23 @@ fun PlaceOrderDialog(modifier: Modifier = Modifier,confirm: (PLACE_ORDER_TYPE) -
 
                     }
                     PlaceOrderImage(
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier.weight(1f).alpha(0.5f),
                         label = stringResource(R.string.office),
                         image = painterResource(R.drawable.ic_office),
                         contentDescription = "ic_office",
                         selected = selectedPlaceOrder == PLACE_ORDER_TYPE.OFFICE
                     ){
-                        selectedPlaceOrder = PLACE_ORDER_TYPE.OFFICE
+//                        selectedPlaceOrder = PLACE_ORDER_TYPE.OFFICE
                     }
                 }
 
-                AppButtonPrimary(text = stringResource(R.string.confirm), modifier = Modifier.fillMaxWidth().padding(top = 20.dp)) {
+                AppButtonPrimary(
+                    enabled = selectedPlaceOrder != PLACE_ORDER_TYPE.DEFAULT,
+                    text = stringResource(R.string.confirm), modifier = Modifier.fillMaxWidth()
+                        .padding(top = 20.dp)) {
                     if(selectedPlaceOrder != PLACE_ORDER_TYPE.DEFAULT) confirm(selectedPlaceOrder)
                 }
+
 
             }
         },

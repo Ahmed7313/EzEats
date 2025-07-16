@@ -31,6 +31,7 @@ import com.easyEats.ezeats.domain.main.model.response.location_response.Location
 import com.easyEats.ezeats.domain.main.model.response.loyality_center.LoyaltyCenterResponse
 import com.easyEats.ezeats.domain.main.model.response.order_history.OrderHistoryResponse
 import com.easyEats.ezeats.domain.main.model.response.partners.PartnersResponse
+import com.easyEats.ezeats.domain.main.model.response.payment.PaymentRequest
 import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.RestaurantMenuResponse
 import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.check_table_availability.TableAvailabilityResponse
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.Restaurant
@@ -41,7 +42,6 @@ import com.easyEats.ezeats.domain.main.model.response.search_response.Category
 import com.easyEats.ezeats.domain.main.model.response.search_response.SearchScreenResponse
 import com.easyEats.ezeats.domain.main.model.response.user_info.UserInfoResponse
 import com.easyEats.ezeats.domain.main.model.response.voucher.VoucherResponse
-import kotlinx.coroutines.flow.Flow
 import retrofit2.http.Body
 import retrofit2.http.POST
 
@@ -150,6 +150,15 @@ interface MainApiService {
 
     @POST("savePickUpStation")
     suspend fun savePickUpStation(@Body restaurantRequest: SavePickupRequest): BaseResponse<Any>
+
+
+    @POST("KashierPayment")
+    suspend fun kashierPayment(@Body restaurantRequest: PaymentRequest): BaseResponse<Any>
+
+
+    @POST("PaymobPayment")
+    suspend fun paymobPayment(@Body restaurantRequest: PaymentRequest): BaseResponse<Any>
+
 
 
 
