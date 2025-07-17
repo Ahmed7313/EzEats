@@ -1,6 +1,7 @@
 package com.easyEats.ezeats.domain.main.model.response.address.add
 
 
+import com.easyEats.ezeats.domain.main.model.response.address.list.AddressUser
 import com.google.gson.annotations.SerializedName
 
 //isam
@@ -17,6 +18,10 @@ data class AddressModel(
     var floorNumber: Int? = 0,
     @SerializedName("streetName")
     var streetName: String? = "",
+    @SerializedName("objectId")
+    var objectId: String? = "",
     @SerializedName("userLocation")
-    var userLocation: UserLocation? = UserLocation()
+    var userLocation: UserLocation? = UserLocation(),
+    @SerializedName("user")
+    var user: AddressUser? = AddressUser(),
 )

@@ -1,5 +1,6 @@
 package com.easyEats.ezeats.ui.main.main
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -15,9 +16,12 @@ import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.databinding.ActivityHomeBinding
 import com.easyEats.ezeats.utils.app_updates.InAppUpdateManager
+import com.easyEats.ezeats.utils.language.LanguagesHelper
+import com.easyEats.ezeats.utils.language.MyContextWrapper
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.util.Locale
 
 @AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
@@ -35,6 +39,8 @@ class HomeActivity : AppCompatActivity() {
     private val REQUEST_CODE_UPDATE = 100
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        LanguagesHelper.changeLanguage(this,LanguagesHelper.getCurrentLanguage(this))
+        LanguagesHelper.changeLanguage(this,LanguagesHelper.getCurrentLanguage(this))
         super.onCreate(savedInstanceState)
         // Initialize the view binding
         binding = ActivityHomeBinding.inflate(layoutInflater)
@@ -148,5 +154,17 @@ class HomeActivity : AppCompatActivity() {
         // Handle the update result
         inAppUpdateManager.handleUpdateResult(requestCode, resultCode)
     }
+    override fun attachBaseContext(newBase: Context) {
+        LanguagesHelper.changeLanguage(newBase,LanguagesHelper.getCurrentLanguage(newBase))
+        LanguagesHelper.changeLanguage(newBase,LanguagesHelper.getCurrentLanguage(newBase))
+
+        val newLocale = Locale(LanguagesHelper.getCurrentLanguage(newBase))
+
+        val context: Context = MyContextWrapper.wrap(newBase, newLocale)
+
+        super.attachBaseContext(context)
+//        }
+    }
+
 }
 

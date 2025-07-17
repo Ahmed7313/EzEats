@@ -83,7 +83,8 @@ fun AppInputField(
 }
 
 @Composable
-fun AppInputTextLabelTop(modifier: Modifier = Modifier,label: String = "",hint: String = "",value: String = "",onChange: (String) -> Unit){
+fun AppInputTextLabelTop(modifier: Modifier = Modifier, label: String = "", hint: String = "",
+                         value: String = "", keyboardType: KeyboardType = KeyboardType.Text, onChange: (String) -> Unit){
     Column(modifier = modifier.fillMaxWidth()) {
         AppTextHeader(text = label, fontSize = 15, modifier = Modifier.padding(bottom = 7.dp))
         Box(

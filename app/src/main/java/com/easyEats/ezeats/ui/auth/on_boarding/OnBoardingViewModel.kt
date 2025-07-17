@@ -30,37 +30,23 @@ class OnBoardingViewModel @Inject constructor(
     private val _introSlides = MutableLiveData<List<IntroSlide>>()
     val introSlides: LiveData<List<IntroSlide>> = _introSlides
 
+
+    fun setIntroSlides(slides: List<IntroSlide>) {
+        _introSlides.value = slides
+    }
+
     /**
      * Initializes the ViewModel and loads the introductory slides.
      * This is called when the ViewModel is created and sets up the initial state.
      */
     init {
-        loadIntroSlides()
     }
 
     /**
      * Loads the introductory slides with titles, descriptions, and icons.
      * This data is used to populate the onboarding screens.
      */
-    private fun loadIntroSlides() {
-        _introSlides.value = listOf(
-            IntroSlide(
-                baseApplication.getString(R.string.welcome_to_ezeats),
-                baseApplication.getString(R.string.ezeats_is_your_destination_to_saving_on_your_favorite_restaurants),
-                R.drawable.welcome_icon
-            ),
-            IntroSlide(
-                baseApplication.getString(R.string.save_money_earn_rewards),
-                baseApplication.getString(R.string.with_ezeats_you_can_save_money_get_special_offers_get_points_that_you_can_redeem_and_much_more),
-                R.drawable.rewards_on_boarding
-            ),
-            IntroSlide(
-                baseApplication.getString(R.string.location_access),
-                baseApplication.getString(R.string.we_would_like_to_get_access_to_your_location_so_we_can_always_notify_you_about_the_best_near_deals),
-                R.drawable.location_icon
-            )
-        )
-    }
+
 
 
     /**

@@ -37,4 +37,7 @@ data class Result(
     var tip: Double? = 0.0,
     @SerializedName("total")
     var total: Double? = 0.0,
+    @SerializedName("compoundName")
+    var compoundName: String? = "",
+
 ) :Parcelable

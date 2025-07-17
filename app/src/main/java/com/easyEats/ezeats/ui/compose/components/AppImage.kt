@@ -22,6 +22,7 @@ fun AppImage(
     imageUrl: String,
     size: Int = 100,
     cornerRadius: Int = 0,
+    contentScale: ContentScale = ContentScale.FillBounds,
     backgroundColor: Color = Color.Transparent
 ) {
     Box(

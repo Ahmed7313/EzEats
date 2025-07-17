@@ -14,6 +14,7 @@ import com.easyEats.ezeats.domain.main.model.request.home.HomeRequest
 import com.easyEats.ezeats.domain.main.model.request.offer_request.OfferRequest
 import com.easyEats.ezeats.domain.main.model.request.offers.OffersRequest
 import com.easyEats.ezeats.domain.main.model.request.order.SavePickupRequest
+import com.easyEats.ezeats.domain.main.model.request.order.umbrella.SaveUmbrellaResponse
 import com.easyEats.ezeats.domain.main.model.request.order_history.OrderHistoryRequest
 import com.easyEats.ezeats.domain.main.model.request.restaurant.CheckTableAvailabilityRequest
 import com.easyEats.ezeats.domain.main.model.request.restaurant.RestaurantMenuRequest
@@ -33,7 +34,9 @@ import com.easyEats.ezeats.domain.main.model.response.location_response.Location
 import com.easyEats.ezeats.domain.main.model.response.loyality_center.LoyaltyCenterResponse
 import com.easyEats.ezeats.domain.main.model.response.order_history.OrderHistoryResponse
 import com.easyEats.ezeats.domain.main.model.response.partners.PartnersResponse
+import com.easyEats.ezeats.domain.main.model.response.payment.CreateNewOrderRequest
 import com.easyEats.ezeats.domain.main.model.response.payment.PaymentRequest
+import com.easyEats.ezeats.domain.main.model.response.payment.PaymentResponse
 import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.RestaurantMenuResponse
 import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.check_table_availability.TableAvailabilityResponse
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.Restaurant
@@ -122,9 +125,10 @@ interface MainRepository {
     suspend fun saveTip(restaurantRequest: TipRequest): TipResponse
     suspend fun addressList(request: AddressListRequest): AddressListResponse
     suspend fun addAddress(request: AddAddressRequest): AddAddressResponse
-    suspend fun saveAddress(request: SaveAddressRequest): BaseResponse<Any>
-    suspend fun payment(request: PaymentRequest): BaseResponse<Any>
-    suspend fun savePickupStation(request: SavePickupRequest): BaseResponse<Any>
+    suspend fun saveAddress(request: SaveAddressRequest): SaveUmbrellaResponse?
+    suspend fun payment(request: PaymentRequest): PaymentResponse?
+    suspend fun createNewOrder(request: CreateNewOrderRequest): PaymentResponse?
+    suspend fun savePickupStation(request: SavePickupRequest): SaveUmbrellaResponse?
 
 
 

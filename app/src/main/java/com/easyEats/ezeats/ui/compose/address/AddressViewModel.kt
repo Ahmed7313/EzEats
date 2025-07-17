@@ -3,6 +3,7 @@ package com.easyEats.ezeats.ui.compose.address
 import androidx.lifecycle.viewModelScope
 import com.easyEats.ezeats.base.BaseResponse
 import com.easyEats.ezeats.domain.main.model.request.address.AddressListRequest
+import com.easyEats.ezeats.domain.main.model.request.order.umbrella.SaveUmbrellaResponse
 import com.easyEats.ezeats.domain.main.model.response.address.add.AddAddressRequest
 import com.easyEats.ezeats.domain.main.model.response.address.add.AddAddressResponse
 import com.easyEats.ezeats.domain.main.model.response.address.add.AddressModel
@@ -83,7 +84,7 @@ class AddressViewModel @Inject constructor(
         }
     }
 
-    fun saveAddressCart(request: SaveAddressRequest) : Flow<BaseResponse<Any>?>  {
+    fun saveAddressCart(request: SaveAddressRequest) : Flow<SaveUmbrellaResponse?>  {
         _showLoading.value = true
         return flow {
             try{

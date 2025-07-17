@@ -27,6 +27,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.daman.edman.screens.components.AppTextHeader
 import com.easyEats.ezeats.R
@@ -172,6 +173,7 @@ fun AddAddressDialog(
                                 .weight(1f)
                                 .padding(end = 6.dp),
                             value = apartementNo,
+                            keyboardType = KeyboardType.Text,
                             label = stringResource(R.string.apartement_no),
                             hint = "${stringResource(R.string.enter)} ${stringResource(R.string.apartement_no)}"
                         ) {
@@ -183,7 +185,8 @@ fun AddAddressDialog(
                                 .weight(1f)
                                 .padding(start = 6.dp),
                             value = floor,
-                            label = stringResource(R.string.apartement_no),
+                            keyboardType = KeyboardType.Text,
+                            label = stringResource(R.string.floor_no),
                             hint = "${stringResource(R.string.enter)} ${stringResource(R.string.floor)}"
                         ) {
                             floor = it

@@ -42,7 +42,7 @@ fun LoadingAnimation(modifier: Modifier = Modifier,rawRes: Int = R.raw.loading) 
         // pass isPlaying we created above,
         // changing isPlaying will recompose
         // Lottie and pause/play
-        isPlaying = isPlaying,
+        isPlaying = true,
 
         // pass speed we created above,
         // changing speed will increase Lottie
@@ -52,7 +52,7 @@ fun LoadingAnimation(modifier: Modifier = Modifier,rawRes: Int = R.raw.loading) 
         // when paused and play
         // pass false to continue the animation
         // at which is was paused
-        restartOnPlay = false
+        restartOnPlay = true
 
     )
 

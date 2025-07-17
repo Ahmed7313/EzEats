@@ -16,6 +16,7 @@ import com.easyEats.ezeats.domain.main.model.request.home.HomeRequest
 import com.easyEats.ezeats.domain.main.model.request.offer_request.OfferRequest
 import com.easyEats.ezeats.domain.main.model.request.offers.OffersRequest
 import com.easyEats.ezeats.domain.main.model.request.order.SavePickupRequest
+import com.easyEats.ezeats.domain.main.model.request.order.umbrella.SaveUmbrellaResponse
 import com.easyEats.ezeats.domain.main.model.request.order_history.OrderHistoryRequest
 import com.easyEats.ezeats.domain.main.model.request.restaurant.CheckTableAvailabilityRequest
 import com.easyEats.ezeats.domain.main.model.request.restaurant.RestaurantMenuRequest
@@ -32,7 +33,9 @@ import com.easyEats.ezeats.domain.main.model.response.home_response.HotDeal
 import com.easyEats.ezeats.domain.main.model.response.loyality_center.LoyaltyCenterResponse
 import com.easyEats.ezeats.domain.main.model.response.order_history.OrderHistoryResponse
 import com.easyEats.ezeats.domain.main.model.response.partners.PartnersResponse
+import com.easyEats.ezeats.domain.main.model.response.payment.CreateNewOrderRequest
 import com.easyEats.ezeats.domain.main.model.response.payment.PaymentRequest
+import com.easyEats.ezeats.domain.main.model.response.payment.PaymentResponse
 import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.RestaurantMenuResponse
 import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.check_table_availability.TableAvailabilityResponse
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.Restaurant
@@ -189,16 +192,19 @@ class MainResponseImpl @Inject constructor(
     override suspend fun addAddress(request: AddAddressRequest): AddAddressResponse =
         mainApiService.addAddress(request)
 
-    override suspend fun saveAddress(request: SaveAddressRequest): BaseResponse<Any> =
+    override suspend fun saveAddress(request: SaveAddressRequest): SaveUmbrellaResponse? =
         mainApiService.saveAddress(request)
 
 
-    override suspend fun savePickupStation(request: SavePickupRequest): BaseResponse<Any> =
+    override suspend fun savePickupStation(request: SavePickupRequest): SaveUmbrellaResponse? =
         mainApiService.savePickUpStation(request)
 
 
-    override suspend fun payment(request: PaymentRequest): BaseResponse<Any> =
+    override suspend fun payment(request: PaymentRequest): PaymentResponse =
         mainApiService.kashierPayment(request)
+
+    override suspend fun createNewOrder(request: CreateNewOrderRequest): PaymentResponse =
+        mainApiService.createNewOrder(request)
 
 
 }

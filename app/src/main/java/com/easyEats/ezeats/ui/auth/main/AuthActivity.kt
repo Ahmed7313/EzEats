@@ -1,6 +1,8 @@
 package com.easyEats.ezeats.ui.auth.main
 
+import android.content.Context
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
@@ -12,7 +14,10 @@ import androidx.navigation.findNavController
 import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.databinding.ActivityAuthBinding
+import com.easyEats.ezeats.utils.language.LanguagesHelper
+import com.easyEats.ezeats.utils.language.MyContextWrapper
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Locale
 import kotlin.math.log
 
 /**
@@ -42,7 +47,17 @@ class AuthActivity : AppCompatActivity() {
      * @param savedInstanceState If the activity is being re-initialized after previously being shut down
      *                           then this Bundle contains the data it most recently supplied in [onSaveInstanceState].
      */
+
+    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
+        LanguagesHelper.changeLanguage(this,LanguagesHelper.getCurrentLanguage(this))
+        LanguagesHelper.changeLanguage(this,LanguagesHelper.getCurrentLanguage(this))
+        super.onCreate(savedInstanceState, persistentState)
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        LanguagesHelper.changeLanguage(this,LanguagesHelper.getCurrentLanguage(this))
+        LanguagesHelper.changeLanguage(this,LanguagesHelper.getCurrentLanguage(this))
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityAuthBinding.inflate(layoutInflater)
@@ -65,5 +80,18 @@ class AuthActivity : AppCompatActivity() {
             }
         }
     }
+
+    override fun attachBaseContext(newBase: Context) {
+        LanguagesHelper.changeLanguage(newBase,LanguagesHelper.getCurrentLanguage(newBase))
+        LanguagesHelper.changeLanguage(newBase,LanguagesHelper.getCurrentLanguage(newBase))
+
+        val newLocale = Locale(LanguagesHelper.getCurrentLanguage(newBase))
+
+        val context: Context = MyContextWrapper.wrap(newBase, newLocale)
+
+        super.attachBaseContext(context)
+//        }
+    }
+
 
 }

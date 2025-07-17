@@ -81,7 +81,7 @@ fun PlaceOrderDialog(
                     PlaceOrderImage(
                         modifier = Modifier.weight(1f)
                             .alpha(if (updateCartResponse.result?.order?.restaurant?.isUmbrellaDelivery == true)
-                                0.1f else 0.5f),
+                                1f else 0.5f),
                         image = painterResource(R.drawable.ic_umberlla),
                         contentDescription = "ic_umberlla",
                         label = stringResource(R.string.umbrella),

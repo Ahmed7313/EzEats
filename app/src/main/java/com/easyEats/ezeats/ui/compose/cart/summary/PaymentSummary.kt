@@ -18,9 +18,15 @@ import com.easyEats.ezeats.ui.compose.helper.AppHelper.formatTextNumber
 import com.easyEats.ezeats.ui.compose.theme.AppColor
 import com.easyEats.ezeats.ui.compose.theme.AppColor.BlackColor2
 
+fun getTotal(subTotal: Double , delivery: Double) : String{
+    return (subTotal + delivery).formatTextNumber()
+}
+
 @Composable
-fun PaymentSummary(modifier: Modifier = Modifier, updateCartResponse: UpdateCartResponse){
-    Column(modifier = modifier.fillMaxWidth().padding(bottom = 20.dp)) {
+fun PaymentSummary(modifier: Modifier = Modifier, updateCartResponse: UpdateCartResponse) {
+    Column(modifier = modifier
+        .fillMaxWidth()
+        .padding(bottom = 20.dp)) {
         AppTextHeader(
             text = stringResource(R.string.payment_summary),
             fontSize = 16,
@@ -31,15 +37,29 @@ fun PaymentSummary(modifier: Modifier = Modifier, updateCartResponse: UpdateCart
         PaymentSummaryItem(
             modifier = Modifier,
             title = stringResource(R.string.sub_total),
-            value = "${updateCartResponse.result?.subtotal?.formatTextNumber()} EGP")
+            value = "${updateCartResponse.result?.subtotal?.formatTextNumber()} EGP"
+        )
+//        PaymentSummaryItem(
+//            modifier = Modifier,
+//            title = stringResource(R.string.delivery_fee),
+//            value = when (updateCartResponse.result?.deliveryFees) {
+//                0.0 -> if (updateCartResponse.result?.order?.restaurant?.umbrellaDeliveryFees != null &&
+//                    updateCartResponse.result?.order?.restaurant?.umbrellaDeliveryFees!! > 0.0) "${updateCartResponse.result?.order?.restaurant?.umbrellaDeliveryFees?.formatTextNumber()} EGP"
+//                else "0.0 EGP"
+//                else -> "${updateCartResponse.result?.deliveryFees?.formatTextNumber()} EGP"
+//            }
+//        )
 
         PaymentSummaryItem(
             modifier = Modifier,
-            title = stringResource(R.string.delivery_fee), value = "${updateCartResponse.result?.deliveryFees} EGP")
+            title = stringResource(R.string.delivery_fee),
+            value = (updateCartResponse.result?.deliveryFees?.formatTextNumber() ?: "0.0" )+" EGP"
+        )
         PaymentSummaryItem(
             modifier = Modifier,
             title = stringResource(R.string.service_fees),
-            value = "${updateCartResponse.result?.serviceFees?.formatTextNumber()} EGP")
+            value = "${updateCartResponse.result?.serviceFees?.formatTextNumber()} EGP"
+        )
 
         PaymentSummaryItem(
             modifier = Modifier,
@@ -53,7 +73,7 @@ fun PaymentSummary(modifier: Modifier = Modifier, updateCartResponse: UpdateCart
             value = "${updateCartResponse.result?.promoCodeDiscountValue} EGP"
         )
 
-        if(updateCartResponse.result?.tip != 0.0) {
+        if (updateCartResponse.result?.tip != 0.0) {
             PaymentSummaryItem(
                 modifier = Modifier,
                 title = stringResource(R.string.tip),
@@ -69,8 +89,11 @@ fun PaymentSummary(modifier: Modifier = Modifier, updateCartResponse: UpdateCart
         PaymentSummaryItem(
             modifier = Modifier,
             title = stringResource(R.string.total_amount),
-            value = "${updateCartResponse.result?.total?.formatTextNumber()} EGP", fontWeight = FontWeight.Bold)
+            value = "${getTotal(updateCartResponse.result?.total!!,updateCartResponse.result?.deliveryFees!!)} EGP",
+            fontWeight = FontWeight.Bold
+        )
     }
 
 
 }
+

@@ -56,6 +56,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/_230sdp"
+            android:visibility="gone"
             android:background="@drawable/restaurant_background"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -68,6 +69,7 @@
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginTop="@dimen/_50sdp"
             android:layout_marginBottom="@dimen/_5sdp"
+            android:visibility="gone"
             android:background="@drawable/logo_background"
             app:layout_constraintBottom_toTopOf="@+id/tv_offers_count"
             app:layout_constraintStart_toStartOf="parent" />
@@ -77,6 +79,7 @@
             loadImage="@{restaurantInfo.restaurantLogo}"
             android:layout_width="@dimen/_22sdp"
             android:layout_height="@dimen/_22sdp"
+            android:visibility="gone"
             android:contentDescription="@string/restaurant_logo"
             android:src="@drawable/ez_eats_icon"
             app:layout_constraintBottom_toBottomOf="@+id/view3"
@@ -106,6 +109,7 @@
             android:text="@{restaurantInfo.restaurantName}"
             android:textColor="@color/white"
             android:textSize="@dimen/_24ssp"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/tvReview"
             app:layout_constraintStart_toStartOf="@+id/view3"
             tools:text="Dominos Pizza" />
@@ -128,6 +132,8 @@
             app:layout_constraintStart_toStartOf="@+id/textView7"
             tools:text="4.5 Stars (112 Reviews)" />
 
+
+<!--        android:visibility="@{restaurantInfo.distance == null || restaurantInfo.distance == `` ?View.GONE:View.VISIBLE}"-->
         <TextView
             android:id="@+id/tvMeterAway"
             android:layout_width="wrap_content"
@@ -140,7 +146,7 @@
             android:text='@{String.format("%s", restaurantInfo.distance.toString())}'
             android:textColor="#C9C9C9"
             android:textSize="@dimen/_12ssp"
-            android:visibility="@{restaurantInfo.distance == null || restaurantInfo.distance == `` ?View.GONE:View.VISIBLE}"
+            android:visibility="gone"
             app:drawableStartCompat="@drawable/marker_pin_icon"
             app:drawableTint="#C9C9C9"
             app:layout_constraintBottom_toBottomOf="@+id/iv_restaurant_cover_image"
@@ -151,6 +157,7 @@
             android:id="@+id/tv_share"
             android:layout_width="@dimen/_46sdp"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:layout_marginTop="@dimen/_35sdp"
             android:background="@drawable/share_background"
             android:contentDescription="@string/share_icon"
@@ -196,7 +203,7 @@
             android:src="@drawable/white_arrow_back"
             android:layout_margin="@dimen/_15sdp"
             android:padding="5dp"
-            android:background="@drawable/circular_background"
+            android:background="@drawable/circular_background_primary"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

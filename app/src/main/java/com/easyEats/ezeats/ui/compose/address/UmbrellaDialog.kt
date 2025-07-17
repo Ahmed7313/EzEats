@@ -59,10 +59,13 @@ fun UmbrellaDialog(
     cartViewModel: CartViewModel,
     cartResponse: UpdateCartResponse,
     onDismiss: () -> Unit,
+    onResult: (Double) -> Unit = { _ -> } // Callback to handle result if needed
 ) {
     val TAG = "UmbrellaDialog"
-    val sheetState = rememberModalBottomSheetState()
-
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true,
+        confirmValueChange = { true }
+    )
     val scope = rememberCoroutineScope()
 
     val context = LocalContext.current
@@ -182,12 +185,12 @@ fun UmbrellaDialog(
                             cartViewModel.savePickUpStation(
                                 SavePickupRequest(
                                     orderId = cartResponse.result?.order?.objectId,
-                                    pickUpStation = "umberall-$umbrellaNo",
+                                    pickUpStation = "umbrella-$umbrellaNo",
                                     compoundName = cartResponse.result?.order?.restaurant?.compound?.objectId
                                 )
                             ).collect { result ->
                                 if (result != null) {
-                                    onDismiss()
+                                    onResult(result.result?.deliveryFees ?: 0.0)
                                 }
                             }
                         }

@@ -33,4 +33,6 @@ data class Restaurant(
     var isPickUp: Boolean? = false,
     @SerializedName("isDelivery")
     var isDelivery: Boolean? = false,
+    @SerializedName("umbrellaDeliveryFees")
+    var umbrellaDeliveryFees: Double? = 0.0,
 ) : Parcelable

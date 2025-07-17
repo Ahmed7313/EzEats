@@ -12,8 +12,11 @@ import com.easyEats.ezeats.domain.main.model.request.cart.UpdateCartRequest
 import com.easyEats.ezeats.domain.main.model.request.cart.response.UpdateCartResponse
 import com.easyEats.ezeats.domain.main.model.request.cart.tip.TipResponse
 import com.easyEats.ezeats.domain.main.model.request.order.SavePickupRequest
+import com.easyEats.ezeats.domain.main.model.request.order.umbrella.SaveUmbrellaResponse
 import com.easyEats.ezeats.domain.main.model.request.restaurant.CheckTableAvailabilityRequest
+import com.easyEats.ezeats.domain.main.model.response.payment.CreateNewOrderRequest
 import com.easyEats.ezeats.domain.main.model.response.payment.PaymentRequest
+import com.easyEats.ezeats.domain.main.model.response.payment.PaymentResponse
 import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.SubMenu
 import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.check_table_availability.TableAvailabilityResponse
 import com.easyEats.ezeats.domain.main.use_case.MainUseCase
@@ -402,7 +405,7 @@ class CartViewModel @Inject constructor(
     }
      */
 
-    fun savePickUpStation(request: SavePickupRequest) : Flow<*> {
+    fun savePickUpStation(request: SavePickupRequest) : Flow<SaveUmbrellaResponse?> {
         _showLoading.value = true
         return flow {
             try{
@@ -445,16 +448,34 @@ class CartViewModel @Inject constructor(
         }
     }
 
-    fun payment(request: PaymentRequest) : Flow<BaseResponse<Any>?>  {
+    fun payment(request: PaymentRequest) : Flow<PaymentResponse>  {
         _showLoading.value = true
         return flow {
             try{
                 val result = mainUseCase.homeUseCase.payment(request)
                 _showLoading.value = false
-                emit(result)
+                if(result != null){
+                    emit(result)
+                }
             }catch (Ex: Exception){
                 _showLoading.value = false
-                emit(null)
+                emit(PaymentResponse())
+            }
+        }
+    }
+
+    fun createNewOrder(request: CreateNewOrderRequest) : Flow<PaymentResponse>  {
+        _showLoading.value = true
+        return flow {
+            try{
+                val result = mainUseCase.homeUseCase.createNewOrder(request)
+                _showLoading.value = false
+                if(result != null){
+                    emit(result)
+                }
+            }catch (Ex: Exception){
+                _showLoading.value = false
+                emit(PaymentResponse())
             }
         }
     }

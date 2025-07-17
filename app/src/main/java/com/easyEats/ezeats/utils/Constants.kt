@@ -44,4 +44,18 @@ object Constants {
     // mixpanel token
     const val MIXPANEL_TOKEN="94d10c9a05bb04ac55869d43151b44f0"
 
+
+    const val APP_PREFERENCES_NAME = "max_cash"
+    val LANGUAGE = "language"
+    val TOKEN = "token"
+    val FirebaseToken = "firebase-token"
+
+    val LANUAGE_AR = "ar"
+    val LANUAGE_EN = "en"
+    val DEFAULT_LANGUAGE = "en"
+    val PREFERENCES_NAME = "my_app"
+    val LOGIN = "login"
+    val FORGET_PASSWORD = "forget_password"
+    val REGISTER = "register"
+
 }

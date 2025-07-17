@@ -48,9 +48,11 @@ import com.easyEats.ezeats.R
 import com.easyEats.ezeats.base.BaseFragment
 import com.easyEats.ezeats.base.BaseResponse
 import com.easyEats.ezeats.databinding.FragmentRestaurantBinding
+import com.easyEats.ezeats.domain.main.model.response.payment.CreateNewOrderRequest
 import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.Menu
 import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.RestaurantMenuResponse
 import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.SubMenu
+import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.check_table_availability.TableAvailabilityResponse
 import com.easyEats.ezeats.ui.compose.resturant.MenuItemBottomSheet
 import com.easyEats.ezeats.ui.compose.resturant.PAYMENT_INTEGRATION_TYPE
 import com.easyEats.ezeats.ui.compose.resturant.ShopDifferentDialog
@@ -88,6 +90,8 @@ class RestaurantFragment : BaseFragment<FragmentRestaurantBinding>(),
     private lateinit var specialOfferAdapter: SpecialOfferAdapter
 
 
+    private lateinit var tableOrderResponse : TableAvailabilityResponse
+
     var restaurantId = ""
     var tableId = ""
     var payment_integration_type: PAYMENT_INTEGRATION_TYPE = PAYMENT_INTEGRATION_TYPE.DEFAULT
@@ -100,6 +104,7 @@ class RestaurantFragment : BaseFragment<FragmentRestaurantBinding>(),
             if (tableId.isNotEmpty()) {
                 viewModel.checkTableAvailability(restaurantId, tableId).collect { tableResponse ->
                     if (tableResponse != null) {
+                        tableOrderResponse = tableResponse
                         Log.d(
                             TAG,
                             "onCreate: ${tableResponse.result?.tableOrder?.tableOrderId}"
@@ -283,7 +288,13 @@ class RestaurantFragment : BaseFragment<FragmentRestaurantBinding>(),
                     if(showDifferentShop){
                         ShopDifferentDialog(modifier = Modifier.fillMaxWidth(), start = {
                             scope.launch(Dispatchers.IO) {
-                                cartViewModel.clearShop()
+                                cartViewModel.createNewOrder(
+                                    CreateNewOrderRequest(
+                                        tableOrderID = tableOrderResponse.result?.tableOrder?.tableOrderId,
+                                    )
+                                ).collect {
+                                    cartViewModel.clearShop()
+                                }
                             }
                             showDifferentShop = false
                         }, dismiss = {

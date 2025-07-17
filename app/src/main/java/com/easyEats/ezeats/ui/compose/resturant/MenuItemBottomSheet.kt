@@ -32,6 +32,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -43,6 +44,7 @@ import com.daman.edman.screens.components.AppTextHeader
 import com.daman.edman.screens.components.AppTextNormal
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.SubMenu
+import com.easyEats.ezeats.ui.compose.components.AppImage
 import com.easyEats.ezeats.ui.compose.components.AppImageCornerTop
 import com.easyEats.ezeats.ui.compose.components.AppInputField
 import com.easyEats.ezeats.ui.compose.menu_item.MenuItemUICheckBox
@@ -162,8 +164,9 @@ fun MenuItemBottomSheet(
                         }
                     )) {
                     item {
-                        AppImageCornerTop(
+                        AppImage(
                             imageUrl = subMenu.coverPhoto?.url.toString(),
+                            contentScale = ContentScale.Fit,
                             cornerRadius = 16,
                             modifier = Modifier
                                 .fillMaxWidth()

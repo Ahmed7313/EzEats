@@ -10,10 +10,12 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.easyEats.ezeats.MyApplication.Companion.TAG
+import com.easyEats.ezeats.MyApplication.Companion.baseApplication
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.base.BaseFragment
 import com.easyEats.ezeats.databinding.FragmentOnBoardingBinding
 import com.easyEats.ezeats.domain.main.model.UserLocationAddress
+import com.easyEats.ezeats.ui.auth.on_boarding.pager.IntroSlide
 import com.easyEats.ezeats.ui.auth.on_boarding.pager.IntroSliderAdapter
 import com.easyEats.ezeats.utils.Constants.LOCATION_PERMISSION_REQUEST_CODE
 import com.easyEats.ezeats.utils.location.LocationUtil
@@ -54,6 +56,22 @@ class OnBoardingFragment : BaseFragment<FragmentOnBoardingBinding>() {
         setupObservers()
         setupSkipButton()
         setupPageChangeCallback()
+        viewModel.setIntroSlides(listOf(
+            IntroSlide(
+                getString(R.string.welcome_to_ezeats),
+                getString(R.string.ezeats_is_your_destination_to_saving_on_your_favorite_restaurants),
+                R.drawable.welcome_icon
+            ),
+            IntroSlide(
+                getString(R.string.save_money_earn_rewards),
+                getString(R.string.with_ezeats_you_can_save_money_get_special_offers_get_points_that_you_can_redeem_and_much_more),
+                R.drawable.rewards_on_boarding
+            ),
+            IntroSlide(
+                getString(R.string.location_access),
+                getString(R.string.we_would_like_to_get_access_to_your_location_so_we_can_always_notify_you_about_the_best_near_deals),
+                R.drawable.location_icon
+            )));
     }
 
     /**

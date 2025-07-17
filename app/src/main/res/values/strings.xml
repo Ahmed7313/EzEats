@@ -282,5 +282,6 @@
     <string name="visa">Visa</string>
     <string name="wallet">Wallet</string>
     <string name="insert_your_amount_you_like_to_tip">"Insert the amount you would like to tip "</string>
+    <string name="floor_no">Floor No</string>
 
 </resources>

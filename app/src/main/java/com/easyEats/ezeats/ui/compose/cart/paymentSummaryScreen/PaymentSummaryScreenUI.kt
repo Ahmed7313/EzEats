@@ -44,6 +44,7 @@ import com.daman.edman.screens.components.AppTextHeader
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.domain.main.model.request.cart.response.UpdateCartResponse
 import com.easyEats.ezeats.domain.main.model.request.cart.tip.TipResponse
+import com.easyEats.ezeats.domain.main.model.response.payment.CreateNewOrderRequest
 import com.easyEats.ezeats.domain.main.model.response.payment.PaymentRequest
 import com.easyEats.ezeats.domain.main.model.response.user_info.UserInfoResponse
 import com.easyEats.ezeats.domain.room.ShopEntity
@@ -52,6 +53,7 @@ import com.easyEats.ezeats.ui.compose.address.AddressListDialog
 import com.easyEats.ezeats.ui.compose.address.AddressViewModel
 import com.easyEats.ezeats.ui.compose.address.UmbrellaDialog
 import com.easyEats.ezeats.ui.compose.address.UpdateProfileDialog
+import com.easyEats.ezeats.ui.compose.cart.payment.PaymentDialog
 import com.easyEats.ezeats.ui.compose.cart.paymentMethod.PaymentMethodModel
 import com.easyEats.ezeats.ui.compose.cart.paymentMethod.PaymentMethodUI
 import com.easyEats.ezeats.ui.compose.cart.paymentSummaryScreen.dialog.PLACE_ORDER_TYPE
@@ -71,6 +73,7 @@ import com.easyEats.ezeats.ui.compose.components.LoadingView
 import com.easyEats.ezeats.ui.main.edit_profile.EditProfileViewModel
 import com.easyEats.ezeats.ui.main.profile.ProfileViewModel
 import com.easyEats.ezeats.utils.Resource
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Composable
@@ -95,6 +98,9 @@ fun PaymentSummaryScreenUI(
     }
     var placeOrderType by remember {
         mutableStateOf(PLACE_ORDER_TYPE.DEFAULT)
+    }
+    var checkUserInfo by remember {
+        mutableStateOf(false)
     }
 
     val shopData =
@@ -156,6 +162,14 @@ fun PaymentSummaryScreenUI(
         mutableStateOf(false)
     }
 
+    var showPayment by remember {
+        mutableStateOf(false)
+    }
+
+    var paymentUrl by remember {
+        mutableStateOf("")
+    }
+
     var selectedPaymentMethod by remember {
         mutableStateOf(PaymentMethodModel())
     }
@@ -186,32 +200,36 @@ fun PaymentSummaryScreenUI(
     }
 
     LaunchedEffect(userInfoResult) {
-        if (userInfoResult is Resource.Success) {
-            viewModel._showLoading.value = false
+        if(checkUserInfo) {
+            if (userInfoResult is Resource.Success) {
+                viewModel._showLoading.value = false
 
-            // Handle success case
+                // Handle success case
 //            val userInfo = userInfoResult.data
-            // Do something with userInfo
-            userInfo = userInfoResult.data?.result?.data ?: UserInfoResponse()
-            if (userInfo.email.isNullOrEmpty() || userInfo.name.isNullOrEmpty())
-                showEditProfile = true
-            else {
-                viewModel.payment(
-                    PaymentRequest(
-                        TableOrderID = updateCartResponse.result?.order?.tableOrder?.objectId,
-                        UserID = updateCartResponse.result?.order?.userId,
-                        paymentMethod = selectedPaymentMethod.paymentMethod?.name.toString().toLowerCase()
-                    )
-                ).collect {
-                    if (it == null) {
-
+                // Do something with userInfo
+                userInfo = userInfoResult.data?.result?.data ?: UserInfoResponse()
+                if (userInfo.email.isNullOrEmpty() || userInfo.name.isNullOrEmpty())
+                    showEditProfile = true
+                else {
+                    viewModel.payment(
+                        PaymentRequest(
+                            TableOrderID = updateCartResponse.result?.order?.tableOrder?.objectId,
+                            UserID = updateCartResponse.result?.order?.userId,
+                            paymentMethod = selectedPaymentMethod.paymentMethod?.name.toString()
+                                .toLowerCase()
+                        )
+                    ).collect {
+                        if (it.result != null && !it.result.isNullOrEmpty()) {
+                            paymentUrl = it.result.toString()
+                            showPayment = true
+                        }
                     }
                 }
+            } else if (userInfoResult is Resource.Loading) {
+                viewModel._showLoading.value = true
+            } else {
+                viewModel._showLoading.value = false
             }
-        } else if (userInfoResult is Resource.Loading) {
-            viewModel._showLoading.value = true
-        } else {
-            viewModel._showLoading.value = false
         }
     }
 
@@ -495,6 +513,7 @@ fun PaymentSummaryScreenUI(
                         .padding(horizontal = 6.dp),
                     text = stringResource(R.string.place_order)
                 ) {
+                    checkUserInfo = true
                     //here call getProfile
                     scope.launch {
                         profileViewModel.getUserInfoResult()
@@ -551,18 +570,30 @@ fun PaymentSummaryScreenUI(
         if (showUmbrellaDialog) {
             UmbrellaDialog(
                 modifier = Modifier.fillMaxWidth(),
-                addressViewModel, cartViewModel = viewModel, cartResponse
-            ) {
-                showUmbrellaDialog = false
-            }
+                addressViewModel, cartViewModel = viewModel, cartResponse,onDismiss = {
+                    showUmbrellaDialog = false
+                }, onResult = { deliveryFees ->
+                    showUmbrellaDialog = false
+                    cartResponse = cartResponse.copy(
+                        result = cartResponse.result?.copy(
+                            deliveryFees = deliveryFees
+                        )
+                    )
+                }
+            )
         }
         if (showAddressList) {
 
             AddressListDialog(
                 addressViewModel = addressViewModel,
-                userId = updateCartResponse.result?.order?.userId.toString(),
-                selectedAddress = {
+                cart = updateCartResponse,
+                selectedAddress = { deliveryFees ->
                     showAddressList = false
+                    cartResponse = cartResponse.copy(
+                        result = cartResponse.result?.copy(
+                            deliveryFees = deliveryFees
+                        )
+                    )
                 }, addNewAddress = {
                     showAddressList = false
                     lat = 0.0
@@ -622,6 +653,40 @@ fun PaymentSummaryScreenUI(
                 onDismiss = {
                     showEditProfile = false
                 })
+        }
+        if(showPayment){
+            PaymentDialog(
+                modifier = Modifier.fillMaxWidth(),
+                paymentUrl = paymentUrl,
+                onResult = { result ->
+                    Log.d(TAG, "PaymentSummaryScreenUI: $result")
+                    if (result == com.easyEats.ezeats.ui.compose.cart.payment.PAYMENT_RESULT.SUCCESS) {
+                        // Handle success case
+                        showPayment = false
+                        paymentUrl = ""
+                        Log.d(TAG, "PaymentSummaryScreenUI: Payment successful")
+                        scope.launch {
+                            viewModel.createNewOrder(
+                                CreateNewOrderRequest(
+                                    tableOrderID = updateCartResponse.result?.order?.tableOrder?.objectId,
+                                )
+                            ).collect {
+                                viewModel.clearShop()
+                                scope.launch(Dispatchers.Main) {
+                                    navigate.popBackStack()
+                                }
+                            }
+                        }
+                    } else {
+                        // Handle failure case
+                        Log.d(TAG, "PaymentSummaryScreenUI: Payment failed")
+                    }
+                },
+                onDismiss = {
+                    showPayment = false
+                    paymentUrl = ""
+                }
+            )
         }
         LoadingView(viewModel.showLoading.collectAsState(false).value)
 

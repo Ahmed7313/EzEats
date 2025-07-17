@@ -1,5 +1,6 @@
 package com.easyEats.ezeats.ui.compose.address
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -36,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import com.daman.edman.screens.components.AppTextHeader
 import com.daman.edman.screens.components.AppTextNormal
 import com.easyEats.ezeats.R
+import com.easyEats.ezeats.domain.main.model.request.cart.response.UpdateCartResponse
 import com.easyEats.ezeats.domain.main.model.response.address.add.AddressModel
 import com.easyEats.ezeats.domain.main.model.response.address.add.SaveAddressRequest
 import com.easyEats.ezeats.ui.compose.components.AppButtonPrimary
@@ -49,15 +51,15 @@ import kotlinx.coroutines.launch
 fun AddressListDialog(
     modifier: Modifier = Modifier,
     addressViewModel: AddressViewModel,
-    userId: String,
+    cart: UpdateCartResponse,
     addNewAddress: () -> Unit,
-    selectedAddress: () -> Unit,
+    selectedAddress: (Double) -> Unit,
     onDismiss: () -> Unit,
 ) {
     val TAG = "AddressListDialog"
     val sheetState = rememberModalBottomSheetState()
     var selectedaddressId by remember {
-        mutableStateOf(-1)
+        mutableStateOf("")
     }
     val scope = rememberCoroutineScope()
     var addressList by remember {
@@ -69,7 +71,7 @@ fun AddressListDialog(
     }
 
     LaunchedEffect(Unit) {
-        addressViewModel.getAddressList(userId).collect {
+        addressViewModel.getAddressList(cart.result?.order?.userId.toString()).collect {
             if (it != null) {
                 isListEmpty = it.isEmpty()
                 addressList = it.filterNotNull()
@@ -80,7 +82,7 @@ fun AddressListDialog(
     ModalBottomSheet(
         modifier = modifier
             .fillMaxWidth()
-            .height(480.dp),
+            .height(600.dp),
         dragHandle = {},
         sheetState = sheetState,
         shape = RoundedCornerShape(
@@ -97,7 +99,9 @@ fun AddressListDialog(
                 LazyColumn {
                     item {
                         Row(
-                            modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = 10.dp),
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
                             AppTextHeader(
@@ -116,11 +120,13 @@ fun AddressListDialog(
                     }
 
                     items(addressList) { address ->
+                        Log.d(TAG, "AddressListDialog: ${address.objectId}")
                         ItemAddress(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(bottom = 15.dp),
-                            address = address
+                            address = address,
+                            isSelected = selectedaddressId == address.objectId
                         ) {
                             selectedaddressId = it
                         }
@@ -132,7 +138,8 @@ fun AddressListDialog(
                                 verticalArrangement = Arrangement.Center,
                                 horizontalAlignment = Alignment.CenterHorizontally,
                                 modifier = Modifier
-                                    .fillMaxWidth().padding(top = 16.dp)
+                                    .fillMaxWidth()
+                                    .padding(top = 16.dp)
                                     .align(
                                         Alignment.Center
                                     )
@@ -190,22 +197,24 @@ fun AddressListDialog(
                     }
                     item {
                         AppButtonPrimary(
-                            enabled = selectedaddressId != -1,
+                            enabled = selectedaddressId.isNotEmpty(),
                             modifier = Modifier
-                                .fillMaxWidth().padding(top = 16.dp),
+                                .fillMaxWidth()
+                                .padding(top = 16.dp, bottom = 10.dp),
                             text = stringResource(R.string.confirm)
                         ) {
-                            if (selectedaddressId != -1) {
+                            if (selectedaddressId.isNotEmpty()) {
 //                                click(selectedaddressId)
                                 scope.launch {
                                     addressViewModel.saveAddressCart(
                                         SaveAddressRequest(
-                                            orderId = userId,
+                                            compoundName = cart.result?.compoundName,
+                                            orderId = cart.result?.order?.objectId,
                                             userAddressId = selectedaddressId.toString()
                                         )
                                     ).collect {
                                         if (it != null)
-                                            selectedAddress()
+                                            selectedAddress(it.result?.deliveryFees!!)
                                     }
                                 }
                             }
