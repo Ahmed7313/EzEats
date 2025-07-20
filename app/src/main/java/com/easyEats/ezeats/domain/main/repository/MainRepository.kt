@@ -35,8 +35,11 @@ import com.easyEats.ezeats.domain.main.model.response.loyality_center.LoyaltyCen
 import com.easyEats.ezeats.domain.main.model.response.order_history.OrderHistoryResponse
 import com.easyEats.ezeats.domain.main.model.response.partners.PartnersResponse
 import com.easyEats.ezeats.domain.main.model.response.payment.CreateNewOrderRequest
+import com.easyEats.ezeats.domain.main.model.response.payment.PaymentPaymobRequest
 import com.easyEats.ezeats.domain.main.model.response.payment.PaymentRequest
 import com.easyEats.ezeats.domain.main.model.response.payment.PaymentResponse
+import com.easyEats.ezeats.domain.main.model.response.payment.savedCard.FetchSavedCardRequest
+import com.easyEats.ezeats.domain.main.model.response.payment.savedCard.response.FetchSavedCardResponse
 import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.RestaurantMenuResponse
 import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.check_table_availability.TableAvailabilityResponse
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.Restaurant
@@ -127,7 +130,11 @@ interface MainRepository {
     suspend fun addAddress(request: AddAddressRequest): AddAddressResponse
     suspend fun saveAddress(request: SaveAddressRequest): SaveUmbrellaResponse?
     suspend fun payment(request: PaymentRequest): PaymentResponse?
+    suspend fun paymobPayment(request: PaymentPaymobRequest): PaymentResponse?
+
+
     suspend fun createNewOrder(request: CreateNewOrderRequest): PaymentResponse?
+    suspend fun fetchSavedCards(request: FetchSavedCardRequest): FetchSavedCardResponse?
     suspend fun savePickupStation(request: SavePickupRequest): SaveUmbrellaResponse?
 
 

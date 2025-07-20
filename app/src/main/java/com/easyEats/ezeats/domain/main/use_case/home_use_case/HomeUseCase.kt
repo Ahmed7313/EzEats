@@ -10,7 +10,9 @@ import com.easyEats.ezeats.domain.main.model.request.order.SavePickupRequest
 import com.easyEats.ezeats.domain.main.model.response.address.add.AddAddressRequest
 import com.easyEats.ezeats.domain.main.model.response.address.add.SaveAddressRequest
 import com.easyEats.ezeats.domain.main.model.response.payment.CreateNewOrderRequest
+import com.easyEats.ezeats.domain.main.model.response.payment.PaymentPaymobRequest
 import com.easyEats.ezeats.domain.main.model.response.payment.PaymentRequest
+import com.easyEats.ezeats.domain.main.model.response.payment.savedCard.FetchSavedCardRequest
 import com.easyEats.ezeats.domain.main.repository.MainRepository
 import javax.inject.Inject
 
@@ -52,9 +54,12 @@ class HomeUseCase @Inject constructor(private val mainRepository: MainRepository
     suspend fun addressList(request: AddressListRequest) = mainRepository.addressList(request)
     suspend fun addAddress(request: AddAddressRequest) = mainRepository.addAddress(request)
     suspend fun payment(request: PaymentRequest) = mainRepository.payment(request)
+    suspend fun paymobPayment(request: PaymentPaymobRequest) = mainRepository.paymobPayment(request)
+
     suspend fun createNewOrder(request: CreateNewOrderRequest) = mainRepository.createNewOrder(request)
     suspend fun saveAddress(request: SaveAddressRequest) = mainRepository.saveAddress(request)
     suspend fun savePickupStation(request: SavePickupRequest) = mainRepository.savePickupStation(request)
+    suspend fun fetchSavedCards(request: FetchSavedCardRequest) = mainRepository.fetchSavedCards(request)
 
 
 

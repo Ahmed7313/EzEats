@@ -15,8 +15,11 @@ import com.easyEats.ezeats.domain.main.model.request.order.SavePickupRequest
 import com.easyEats.ezeats.domain.main.model.request.order.umbrella.SaveUmbrellaResponse
 import com.easyEats.ezeats.domain.main.model.request.restaurant.CheckTableAvailabilityRequest
 import com.easyEats.ezeats.domain.main.model.response.payment.CreateNewOrderRequest
+import com.easyEats.ezeats.domain.main.model.response.payment.PaymentPaymobRequest
 import com.easyEats.ezeats.domain.main.model.response.payment.PaymentRequest
 import com.easyEats.ezeats.domain.main.model.response.payment.PaymentResponse
+import com.easyEats.ezeats.domain.main.model.response.payment.savedCard.FetchSavedCardRequest
+import com.easyEats.ezeats.domain.main.model.response.payment.savedCard.response.FetchSavedCardResponse
 import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.SubMenu
 import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.check_table_availability.TableAvailabilityResponse
 import com.easyEats.ezeats.domain.main.use_case.MainUseCase
@@ -381,29 +384,19 @@ class CartViewModel @Inject constructor(
 
     }
 
-    /*
-
-    @OptIn(ExperimentalCoroutinesApi::class)
-    fun checkTableAvailability(): Flow<TableAvailabilityResponse?> {
-        return productDao.getShop().flatMapLatest { shop ->
-            flow {
-                if (shop != null) {
-                    try {
-                        val result = mainUseCase.restaurantUseCase.checkTableAvailability(
-                            CheckTableAvailabilityRequest(shop.shopId, shop.tableId)
-                        )
-                        emit(result)
-                    } catch (e: Exception) {
-                        Log.d(MyApplication.TAG, "checkTableAvailability: ${e.message}")
-                        emit(null)
-                    }
-                } else {
-                    emit(null)
-                }
+    fun fetchSavedCards(request: FetchSavedCardRequest) : Flow<FetchSavedCardResponse?>  {
+        _showLoading.value = true
+        return flow {
+            try{
+                val result = mainUseCase.homeUseCase.fetchSavedCards(request)
+                _showLoading.value = false
+                emit(result)
+            }catch (Ex: Exception){
+                _showLoading.value = false
+                emit(null)
             }
         }
     }
-     */
 
     fun savePickUpStation(request: SavePickupRequest) : Flow<SaveUmbrellaResponse?> {
         _showLoading.value = true
@@ -453,6 +446,22 @@ class CartViewModel @Inject constructor(
         return flow {
             try{
                 val result = mainUseCase.homeUseCase.payment(request)
+                _showLoading.value = false
+                if(result != null){
+                    emit(result)
+                }
+            }catch (Ex: Exception){
+                _showLoading.value = false
+                emit(PaymentResponse())
+            }
+        }
+    }
+
+    fun paymentPaymobRequest(request: PaymentPaymobRequest) : Flow<PaymentResponse>  {
+        _showLoading.value = true
+        return flow {
+            try{
+                val result = mainUseCase.homeUseCase.paymobPayment(request)
                 _showLoading.value = false
                 if(result != null){
                     emit(result)

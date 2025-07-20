@@ -2,6 +2,7 @@ package com.easyEats.ezeats.ui.compose.cart.payment
 
 import android.util.Log
 import android.view.ViewGroup
+import android.webkit.CookieManager
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -104,6 +105,11 @@ fun PaymentDialog(
 
                     webSettings.javaScriptEnabled = true
                     webSettings.javaScriptCanOpenWindowsAutomatically = true
+                    webSettings.domStorageEnabled = true
+                    webSettings.userAgentString = "Mozilla/5.0 (Android) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Mobile Safari/537.36"
+
+                    CookieManager.getInstance().setAcceptCookie(true)
+                    CookieManager.getInstance().setAcceptThirdPartyCookies(this, true)
 
 
                     loadUrl(paymentUrl)

@@ -45,7 +45,11 @@ import com.easyEats.ezeats.R
 import com.easyEats.ezeats.domain.main.model.request.cart.response.UpdateCartResponse
 import com.easyEats.ezeats.domain.main.model.request.cart.tip.TipResponse
 import com.easyEats.ezeats.domain.main.model.response.payment.CreateNewOrderRequest
+import com.easyEats.ezeats.domain.main.model.response.payment.PaymentPaymobRequest
 import com.easyEats.ezeats.domain.main.model.response.payment.PaymentRequest
+import com.easyEats.ezeats.domain.main.model.response.payment.savedCard.FetchSavedCardRequest
+import com.easyEats.ezeats.domain.main.model.response.payment.savedCard.response.Card
+import com.easyEats.ezeats.domain.main.model.response.payment.savedCard.response.FetchSavedCardResponse
 import com.easyEats.ezeats.domain.main.model.response.user_info.UserInfoResponse
 import com.easyEats.ezeats.domain.room.ShopEntity
 import com.easyEats.ezeats.ui.compose.address.AddAddressDialog
@@ -54,6 +58,7 @@ import com.easyEats.ezeats.ui.compose.address.AddressViewModel
 import com.easyEats.ezeats.ui.compose.address.UmbrellaDialog
 import com.easyEats.ezeats.ui.compose.address.UpdateProfileDialog
 import com.easyEats.ezeats.ui.compose.cart.payment.PaymentDialog
+import com.easyEats.ezeats.ui.compose.cart.paymentMethod.PaymentMethodCardUI
 import com.easyEats.ezeats.ui.compose.cart.paymentMethod.PaymentMethodModel
 import com.easyEats.ezeats.ui.compose.cart.paymentMethod.PaymentMethodUI
 import com.easyEats.ezeats.ui.compose.cart.paymentSummaryScreen.dialog.PLACE_ORDER_TYPE
@@ -75,6 +80,7 @@ import com.easyEats.ezeats.ui.main.profile.ProfileViewModel
 import com.easyEats.ezeats.utils.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlin.collections.plusAssign
 
 @Composable
 fun PaymentSummaryScreenUI(
@@ -175,6 +181,7 @@ fun PaymentSummaryScreenUI(
     }
 
 
+
     val tipOptions = remember {
         listOf(
             TipOption("1", "10", "5%"),
@@ -190,6 +197,7 @@ fun PaymentSummaryScreenUI(
 
     var selectedTipOption by remember { mutableStateOf<TipOption?>(null) }
     var showTipOptionCustom by remember { mutableStateOf(false) }
+    var fetchSavedCardList by remember { mutableStateOf<List<Card>>(arrayListOf()) }
 
     var tipResponse by remember {
         mutableStateOf<TipResponse>(TipResponse())
@@ -211,17 +219,38 @@ fun PaymentSummaryScreenUI(
                 if (userInfo.email.isNullOrEmpty() || userInfo.name.isNullOrEmpty())
                     showEditProfile = true
                 else {
-                    viewModel.payment(
-                        PaymentRequest(
-                            TableOrderID = updateCartResponse.result?.order?.tableOrder?.objectId,
-                            UserID = updateCartResponse.result?.order?.userId,
-                            paymentMethod = selectedPaymentMethod.paymentMethod?.name.toString()
-                                .toLowerCase()
-                        )
-                    ).collect {
-                        if (it.result != null && !it.result.isNullOrEmpty()) {
-                            paymentUrl = it.result.toString()
-                            showPayment = true
+                    if(updateCartResponse.result?.order?.restaurant?.kashierMID.isNullOrEmpty()){
+                        //paymob payment
+                        viewModel.paymentPaymobRequest(
+                            PaymentPaymobRequest(
+                                cardId = selectedPaymentMethod.key,
+                                email = userInfo.email,
+                                firstname = userInfo.name,
+                                lastname = "",
+                                phone = userInfo.mobileNumber,
+                                tableOrderID = updateCartResponse.result?.order?.tableOrder?.objectId,
+                                userID = updateCartResponse.result?.order?.userId
+                            )
+                        ).collect {
+                            if (it.result != null && !it.result.isNullOrEmpty()) {
+                                paymentUrl = it.result.toString()
+                                showPayment = true
+                            }
+                        }
+                    }else {
+                        //kashier payment
+                        viewModel.payment(
+                            PaymentRequest(
+                                TableOrderID = updateCartResponse.result?.order?.tableOrder?.objectId,
+                                UserID = updateCartResponse.result?.order?.userId,
+                                paymentMethod = selectedPaymentMethod.paymentMethod?.name.toString()
+                                    .toLowerCase()
+                            )
+                        ).collect {
+                            if (it.result != null && !it.result.isNullOrEmpty()) {
+                                paymentUrl = it.result.toString()
+                                showPayment = true
+                            }
                         }
                     }
                 }
@@ -229,6 +258,21 @@ fun PaymentSummaryScreenUI(
                 viewModel._showLoading.value = true
             } else {
                 viewModel._showLoading.value = false
+            }
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        if(updateCartResponse.result?.order?.restaurant?.kashierMID.isNullOrEmpty()) {
+            viewModel.fetchSavedCards(
+                FetchSavedCardRequest(
+                    updateCartResponse.result?.order?.restaurant?.objectId,
+                    updateCartResponse.result?.order?.userId
+                )
+            ).collect {
+                it?.result?.cards?.filterNotNull()?.let { cards ->
+                    fetchSavedCardList += cards
+                }
             }
         }
     }
@@ -462,13 +506,25 @@ fun PaymentSummaryScreenUI(
                     fontWeight = FontWeight.Bold
                 )
 
-                PaymentMethodUI(
-                    modifier = Modifier
-                        .padding(top = 8.dp)
-                        .fillMaxWidth(),
-                    selectedPaymentMethod
-                ) {
-                    selectedPaymentMethod = it
+                if(!updateCartResponse.result?.order?.restaurant?.kashierMID.isNullOrEmpty())
+                    PaymentMethodUI(
+                        modifier = Modifier
+                            .padding(top = 8.dp)
+                            .fillMaxWidth(),
+                        selectedPaymentMethod
+                    ) {
+                        selectedPaymentMethod = it
+                    }
+                else{
+                    PaymentMethodCardUI(
+                            modifier = Modifier
+                                .padding(top = 8.dp)
+                                .fillMaxWidth(),
+                        selectedPaymentMethod = selectedPaymentMethod,
+                        paymentMethods = fetchSavedCardList,
+                    ){
+                        selectedPaymentMethod = it
+                    }
                 }
 
 

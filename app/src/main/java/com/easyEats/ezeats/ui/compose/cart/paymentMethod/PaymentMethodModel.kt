@@ -6,5 +6,6 @@ data class PaymentMethodModel(
     val text: String = "",
     val paymentMethod: PAYMENT_METHOD? = null,
     val painter: Painter? = null,
-    val isVector: Boolean = true
+    val isVector: Boolean = true,
+    val key: String = "",
 )

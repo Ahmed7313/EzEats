@@ -9,6 +9,8 @@ import com.easyEats.ezeats.domain.main.model.response.address.add.AddAddressResp
 import com.easyEats.ezeats.domain.main.model.response.address.add.AddressModel
 import com.easyEats.ezeats.domain.main.model.response.address.add.SaveAddressRequest
 import com.easyEats.ezeats.domain.main.model.response.address.list.AddressListResponse
+import com.easyEats.ezeats.domain.main.model.response.payment.savedCard.FetchSavedCardRequest
+import com.easyEats.ezeats.domain.main.model.response.payment.savedCard.response.FetchSavedCardResponse
 import com.easyEats.ezeats.domain.main.use_case.MainUseCase
 import com.easyEats.ezeats.ui.main.main.MainViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -97,5 +99,7 @@ class AddressViewModel @Inject constructor(
             }
         }
     }
+
+
 
 }

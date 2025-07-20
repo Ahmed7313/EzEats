@@ -296,6 +296,13 @@ class RestaurantFragment : BaseFragment<FragmentRestaurantBinding>(),
                                     cartViewModel.clearShop()
                                 }
                             }
+                            scope.launch(Dispatchers.Main) {
+                                Toast.makeText(
+                                    requireContext(),
+                                    context.getString(R.string.add_your_item_again),
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
                             showDifferentShop = false
                         }, dismiss = {
                             showDifferentShop = false

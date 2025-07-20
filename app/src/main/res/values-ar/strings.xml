@@ -269,4 +269,6 @@
     <string name="wallet">المحفظة</string>
     <string name="insert_your_amount_you_like_to_tip">"Insert the amount you would like to tip "</string>
     <string name="floor_no">Floor No</string>
+    <string name="add_your_item_again">Add Your Item Again</string>
+    <string name="add_card">Add Card</string>
 </resources>
