@@ -8,6 +8,9 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -15,6 +18,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.databinding.ActivityHomeBinding
+import com.easyEats.ezeats.ui.main.offers.OffersViewModel
 import com.easyEats.ezeats.utils.app_updates.InAppUpdateManager
 import com.easyEats.ezeats.utils.language.LanguagesHelper
 import com.easyEats.ezeats.utils.language.MyContextWrapper
@@ -34,6 +38,7 @@ class HomeActivity : AppCompatActivity() {
 
     // ViewModel for the activity, provided by Hilt
     private val mainViewModel: MainViewModel by viewModels()
+    private val offersViewModel: OffersViewModel by viewModels()
 
     private lateinit var inAppUpdateManager: InAppUpdateManager
     private val REQUEST_CODE_UPDATE = 100
@@ -42,8 +47,20 @@ class HomeActivity : AppCompatActivity() {
         LanguagesHelper.changeLanguage(this,LanguagesHelper.getCurrentLanguage(this))
         LanguagesHelper.changeLanguage(this,LanguagesHelper.getCurrentLanguage(this))
         super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+
         // Initialize the view binding
         binding = ActivityHomeBinding.inflate(layoutInflater)
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val systemBarsInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.setPadding(
+                systemBarsInsets.left,
+                systemBarsInsets.top,
+                systemBarsInsets.right,
+                systemBarsInsets.bottom
+            )
+            insets
+        }
         // Set the root view from the binding as the content view
         setContentView(binding.root)
         // Set the ViewModel for data binding and provide the lifecycle owner
@@ -136,6 +153,7 @@ class HomeActivity : AppCompatActivity() {
                 R.id.homeScreenFragment, R.id.qrScreenFragment, R.id.profileScreenFragment, R.id.pointScreenFragment -> {
                     binding.navView.visibility = VISIBLE
                     mainViewModel.compoundId = ""
+                    offersViewModel.resetSelectedCategoryName()
                 }
                 R.id.percentScreenFragment -> {
                     binding.navView.visibility = VISIBLE

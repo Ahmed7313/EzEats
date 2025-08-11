@@ -121,6 +121,7 @@ class PointScreenFragment : BaseFragment<FragmentPointScreenBinding>() {
                     binding.response = resource.data?.result?.data // Bind the response data to the UI
 
                     // Set up the points RecyclerView
+                    Log.d(TAG, "listenToObserver: ${resource.data?.result?.data?.points?.loyaltyPoints?.size}")
                     binding.rvPoints.adapter = pointsAdapter
                     pointsAdapter.submitList(
                         resource.data?.result?.data?.points?.loyaltyPoints?.take(3) // Display up to 3 items

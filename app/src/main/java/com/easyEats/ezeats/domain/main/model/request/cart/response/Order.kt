@@ -15,6 +15,8 @@ data class Order(
     var restaurant: Restaurant? = Restaurant(),
     @SerializedName("tableOrder")
     var tableOrder: TableOrder? = TableOrder(),
+    @SerializedName("promoCode")
+    var promoCode: PromoCode? = PromoCode(),
     @SerializedName("restaurantId")
     var restaurantId: String? = "",
     @SerializedName("userId")

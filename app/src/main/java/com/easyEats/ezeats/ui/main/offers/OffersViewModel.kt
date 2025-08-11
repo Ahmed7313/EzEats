@@ -4,25 +4,25 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.base.BaseResponse
 import com.easyEats.ezeats.databinding.FragmentPercentScreenBinding
 import com.easyEats.ezeats.domain.main.model.request.RestaurantRequest
-import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.new_restaurants_reponse.RestaurantsResponseItem
-import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.result.RestaurantListResult
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.result.RestaurantListResultResponse
 import com.easyEats.ezeats.domain.main.model.response.search_response.Category
 import com.easyEats.ezeats.domain.main.use_case.MainUseCase
 import com.easyEats.ezeats.ui.main.main.MainViewModel
 import com.easyEats.ezeats.ui.main.offers.adapter.OffersCategoryAdapter
+import com.easyEats.ezeats.utils.Constants
 import com.easyEats.ezeats.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 /**
  * ViewModel for handling the fetching and displaying of restaurant and category data.
  * Uses `MainUseCase` for interacting with business logic and making network requests.
@@ -31,7 +31,20 @@ import javax.inject.Inject
 class OffersViewModel @Inject constructor(val mainUseCase: MainUseCase) :
     MainViewModel(mainUseCase) {
 
-        val TAG = "OffersViewModel"
+    private val _categorySelectState = MutableStateFlow<String>(Constants.CATEGORY_ID_ALL)
+    val categorySelectState = _categorySelectState.asStateFlow()
+
+
+    fun resetSelectedCategoryName() {
+        _categorySelectState.value = Constants.CATEGORY_ID_ALL
+    }
+
+    fun setSelectedCategoryName(name: String) {
+        _categorySelectState.value = name
+    }
+
+    val TAG = "OffersViewModel"
+
     /**
      * Mutable state flow for holding restaurant results.
      * This is exposed as a StateFlow to the UI layer.
@@ -60,14 +73,18 @@ class OffersViewModel @Inject constructor(val mainUseCase: MainUseCase) :
     ) {
         Log.d(TAG, "getRestaurantsResult: start")
         _restaurantResultStateFlow.value = Resource.Loading()
-        try{
+        try {
             viewModelScope.launch {
-                try{
+                try {
 //                     val request = createRestaurantsResultRequest()
-                    val response = mainUseCase.homeUseCase.getRestaurants(RestaurantRequest(categoryId = categoryId,
-                        userLat = if(compound.isEmpty()) userLat ?: "0.0" else "",
-                        userLon = if(compound.isEmpty()) userLong ?: "0.0" else "",
-                        compoundId = if(compound.isEmpty()) null else compound))
+                    val response = mainUseCase.homeUseCase.getRestaurants(
+                        RestaurantRequest(
+                            categoryId = categoryId,
+                            userLat = if (compound.isEmpty()) userLat ?: "" else "",
+                            userLon = if (compound.isEmpty()) userLong ?: "" else "",
+                            compoundId = if (compound.isEmpty()) null else compound
+                        )
+                    )
                     _restaurantResultStateFlow.value = Resource.Success(response)
 //                    Log.d(TAG, "createRestaurantsResultRequest: ${restaurants.restaurantListResult?.restaurants?.pickupRestaurants?.size}")
 //                    Log.d(TAG, "createRestaurantsResultRequest: ${restaurants.restaurantListResult?.restaurants?.deliveryRestaurants?.size}")
@@ -82,23 +99,23 @@ class OffersViewModel @Inject constructor(val mainUseCase: MainUseCase) :
 //                            _restaurantResultStateFlow.value = resource
 //                        }
 //                    )
-                }catch (e: Exception){
-                    _restaurantResultStateFlow.value = Resource.Error(e.message.toString(),null)
+                } catch (e: Exception) {
+                    _restaurantResultStateFlow.value = Resource.Error(e.message.toString(), null)
                     Log.d(TAG, "getRestaurantsResult: ${e.message}")
                 }
-            }    
-        }catch (e: Exception){
-            _restaurantResultStateFlow.value = Resource.Error(e.message.toString(),null)
+            }
+        } catch (e: Exception) {
+            _restaurantResultStateFlow.value = Resource.Error(e.message.toString(), null)
             Log.d(TAG, "getRestaurantsResult: ${e.message}")
         }
-        
+
     }
 
     /**
      * Creates a flow that makes a request to get restaurant data.
      * It uses the `homeUseCase.getRestaurants()` method and handles different response states.
      */
-    private fun createRestaurantsResultRequest(request: RestaurantRequest){
+    private fun createRestaurantsResultRequest(request: RestaurantRequest) {
 
 //        viewModelScope.launch {
 //            val restaurants = mainUseCase.homeUseCase.getRestaurants(request)
@@ -199,8 +216,10 @@ class OffersViewModel @Inject constructor(val mainUseCase: MainUseCase) :
         binding.rvCategories.adapter = categoryAdapter
         val categories = resource.data?.result?.data as MutableList<Category>
         categories.removeIf { it.categoryId == "eqvWcHcHaD" }
+        categories.sortBy { it.categoryName?.lowercase() }
+
         val itemAll = Category(
-            "eqvWcHcHaD",
+            "",
             "https://jtxlimrcv63uszqdkzh2a9d1r7pd0u.files-sashido.cloud/feedbf971af02fcc87b5c2f80f76e5fa_Artboard%201%20copy%2019.png",
             "All",
             null

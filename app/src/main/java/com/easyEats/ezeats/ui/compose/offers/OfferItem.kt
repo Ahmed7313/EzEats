@@ -28,7 +28,6 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.daman.edman.screens.components.AppSpacer
 import com.daman.edman.screens.components.AppTextHeader
-import com.daman.edman.screens.components.IconTextView
 import com.daman.edman.screens.components.AppTextNormal
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.new_restaurants_reponse.RestaurantsResponseItem
@@ -80,7 +79,9 @@ fun OfferItem(
                         .alpha(if (!restaurant.available!!) 0.5f else 1f)
                 )
 //isBusy , isClose ,
-                if (restaurant.isClose == "Closed" || restaurant.isBusy == true || restaurant.isCommingsoon == true) {
+                if (restaurant.isClose == "Closed" ||
+                    restaurant.isBusy == true ||
+                    restaurant.isCommingSoon == true) {
                     // optional: a dark overlay
                     Box(
                         Modifier
@@ -88,9 +89,9 @@ fun OfferItem(
                             .background(Color.Black.copy(alpha = 0.8f))
                     )
                     AppTextHeader(
-                        text = if (restaurant.isClose == "closed") stringResource(R.string.closed) else if (restaurant.isCommingsoon == true) stringResource(
-                            R.string.soon
-                        ) else stringResource(R.string.busy),
+                        text = if (restaurant.isClose == "Closed") stringResource(R.string.closed)
+                        else if (restaurant.isCommingSoon == true) stringResource(R.string.soon)
+                        else stringResource(R.string.busy),
                         color = Color.White,
                         modifier = Modifier.align(Alignment.Center)
                     )
@@ -110,14 +111,14 @@ fun OfferItem(
 
                 AppSpacer(height = 4.dp)
 
-                AppTextNormal(text = restaurant.locationName.toString())
+                AppTextNormal(text = restaurant.categories?.joinToString(", ") ?: "")
 
-                AppSpacer(height = 4.dp)
+//                AppSpacer(height = 4.dp)
 
-                IconTextView(
-                    icon = R.drawable.marker_pin_icon,
-                    text = (restaurant.distance ?: 0).toString() + " km"
-                )
+//                IconTextView(
+//                    icon = R.drawable.marker_pin_icon,
+//                    text = (restaurant.distance ?: 0).toString() + " km"
+//                )
 
                 AppSpacer(height = 16.dp)
 

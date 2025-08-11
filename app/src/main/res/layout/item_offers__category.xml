@@ -21,9 +21,9 @@
         tools:ignore="UseCompoundDrawables">
 
         <ImageView
-            android:layout_width="@dimen/_75sdp"
-            android:layout_height="@dimen/_60sdp"
-            android:src="@drawable/test_burger_image"
+            android:layout_width="@dimen/_60sdp"
+            android:layout_height="@dimen/_50sdp"
+            tools:src="@drawable/test_burger_image"
             loadImage="@{category.categoryLogo}"
             android:scaleType="fitXY"
             android:contentDescription="@string/category_image" />

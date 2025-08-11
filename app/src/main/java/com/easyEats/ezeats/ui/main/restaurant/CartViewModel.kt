@@ -5,6 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.easyEats.ezeats.MyApplication
 import com.easyEats.ezeats.base.BaseResponse
+import com.easyEats.ezeats.base.BaseResponseNew
 import com.easyEats.ezeats.domain.main.model.request.cart.ItemCheckoutModel
 import com.easyEats.ezeats.domain.main.model.request.cart.SuboptionsId
 import com.easyEats.ezeats.domain.main.model.request.cart.TipRequest
@@ -18,6 +19,9 @@ import com.easyEats.ezeats.domain.main.model.response.payment.CreateNewOrderRequ
 import com.easyEats.ezeats.domain.main.model.response.payment.PaymentPaymobRequest
 import com.easyEats.ezeats.domain.main.model.response.payment.PaymentRequest
 import com.easyEats.ezeats.domain.main.model.response.payment.PaymentResponse
+import com.easyEats.ezeats.domain.main.model.response.payment.promo.PromoCodeRedeemResponse
+import com.easyEats.ezeats.domain.main.model.response.payment.promo.ezeats.PromoCodeEzeatsResponse
+import com.easyEats.ezeats.domain.main.model.response.payment.promo.redeem.PromoCodeRedeemRequest
 import com.easyEats.ezeats.domain.main.model.response.payment.savedCard.FetchSavedCardRequest
 import com.easyEats.ezeats.domain.main.model.response.payment.savedCard.response.FetchSavedCardResponse
 import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.SubMenu
@@ -69,6 +73,7 @@ class CartViewModel @Inject constructor(
 
     var _showLoading = MutableStateFlow<Boolean>(false)
     val showLoading = _showLoading.asStateFlow()
+    var shop: ShopEntity? = null
 
 //    var _showLoadingBlur = MutableStateFlow<Boolean>(false)
 //    val showLoadingBlur = _showLoadingBlur.asStateFlow()
@@ -117,6 +122,7 @@ class CartViewModel @Inject constructor(
         this.distance = distance
         this.rating = rating
         observeCartChanges()
+        getShop()
     }
 
     init {
@@ -127,22 +133,28 @@ class CartViewModel @Inject constructor(
     fun checkTableAvailability(): Flow<TableAvailabilityResponse?> {
         return productDao.getShop().flatMapLatest { shop ->
             flow {
-                if (shop != null) {
-                    try {
-                        val result = mainUseCase.restaurantUseCase.checkTableAvailability(
-                            CheckTableAvailabilityRequest(shop.shopId, shop.tableId)
-                        )
-                        emit(result)
-                        _enableTakeAction.emit(true)
-                    } catch (e: Exception) {
-                        Log.d(MyApplication.TAG, "checkTableAvailability: ${e.message}")
-                        _enableTakeAction.emit(false)
+                try{
+                    if (shop != null) {
+                        try {
+                            val result = mainUseCase.restaurantUseCase.checkTableAvailability(
+                                CheckTableAvailabilityRequest(shop.shopId, shop.tableId)
+                            )
+                            emit(result)
+                            _enableTakeAction.emit(true)
+                        } catch (e: Exception) {
+                            Log.d(MyApplication.TAG, "checkTableAvailability: ${e.message}")
+                            _enableTakeAction.emit(false)
+                            emit(null)
+                        }
+                    } else {
                         emit(null)
+                        _enableTakeAction.emit(false)
                     }
-                } else {
-                    emit(null)
+                }catch (e: Exception) {
+                    Log.d(MyApplication.TAG, "checkTableAvailability: ${e.message}")
                     _enableTakeAction.emit(false)
                 }
+
             }
         }
     }
@@ -255,6 +267,7 @@ class CartViewModel @Inject constructor(
         viewModelScope.launch {
             productDao.getShop().collect { products ->
                 _shopDataState.value = products
+                shop = products
             }
         }
     }
@@ -294,7 +307,7 @@ class CartViewModel @Inject constructor(
         val request = UpdateCartRequest()
         val items = mutableListOf<ItemCheckoutModel>()
 
-        val shop = productDao.getShop().firstOrNull()
+        shop = productDao.getShop().firstOrNull()
         request.orderId = shop?.currentOrderId
 
         val products = productDao.getProductsList().first()
@@ -345,7 +358,7 @@ class CartViewModel @Inject constructor(
         val request = UpdateCartRequest()
         val items = mutableListOf<ItemCheckoutModel>()
 
-        val shop = productDao.getShop().firstOrNull()
+        shop = productDao.getShop().firstOrNull()
         request.orderId = shop?.currentOrderId
         val products = productDao.getProductsList().first()
 
@@ -416,7 +429,7 @@ class CartViewModel @Inject constructor(
         amount: String?,
     ): Flow<TipResponse?> {
         _showLoading.value = true
-        val shop = productDao.getShop().firstOrNull()
+        shop = productDao.getShop().firstOrNull()
         val orderId = shop?.currentOrderId
         Log.d(TAG, "saveTip: $orderId")
         Log.d(TAG, "saveTip: $amount")
@@ -489,5 +502,110 @@ class CartViewModel @Inject constructor(
         }
     }
 
+//    fun clearPromoCode(request: CreateNewOrderRequest) : Flow<PaymentResponse>  {
+//        _showLoading.value = true
+//        return flow {
+//            try{
+//                val result = mainUseCase.homeUseCase.createNewOrder(request)
+//                _showLoading.value = false
+//                if(result != null){
+//                    emit(result)
+//                }
+//            }catch (Ex: Exception){
+//                _showLoading.value = false
+//                emit(PaymentResponse())
+//            }
+//        }
+//    }
+
+    fun addPromo(promoCode: String) : Flow<PromoCodeRedeemResponse?> {
+        Log.d(TAG, "addPromo: start")
+        _showLoading.value = true
+        return flow {
+            Log.d(TAG, "addPromo: here")
+            try{
+                if (shop?.userId == null || shop?.currentOrderId == null) {
+                    Log.e(TAG, "addPromo: Shop data is null")
+                    throw Exception("Invalid shop data")
+                }
+
+                val request = PromoCodeRedeemRequest(
+                    userId = shop?.userId!!,
+                    promocode = promoCode,
+                    orderId = shop?.currentOrderId!!
+                )
+
+                Log.d(TAG, "addPromo: Sending request $request")
+                val result = mainUseCase.homeUseCase.promoCodeReedm(request)
+                _showLoading.value = false
+                emit(result)
+            }catch (e: Exception){
+                Log.e(TAG, "addPromo error: ${e.message}")
+                _showLoading.value = false
+                emit(null)
+            }
+        }
+    }
+
+    suspend fun getPromoCodeEzeats(): Flow<PromoCodeEzeatsResponse?> {
+        Log.d(TAG, "getPromoCodeEzeats: start")
+        _showLoading.value = true
+        shop = productDao.getShop().firstOrNull()
+        return flow {
+            Log.d(TAG, "getPromoCodeEzeats: here")
+            try{
+                if (shop?.userId == null || shop?.currentOrderId == null) {
+                    Log.e(TAG, "getPromoCodeEzeats: Shop data is null")
+                    throw Exception("getPromoCodeEzeats shop data")
+                }
+
+                val request = PromoCodeRedeemRequest(
+                    userId = shop?.userId!!,
+                    orderId = shop?.currentOrderId!!
+                )
+
+                Log.d(TAG, "getPromoCodeEzeats: Sending request $request")
+                val result = mainUseCase.homeUseCase.getPromoCodeEzeats(request)
+                _showLoading.value = false
+
+                emit(result)
+            }catch (e: Exception){
+                Log.e(TAG, "getPromoCodeEzeats error: ${e.message}")
+                _showLoading.value = false
+
+                emit(null)
+            }
+        }
+    }
+
+    fun cancelPromoCodeReedm(): Flow<BaseResponseNew?> {
+        Log.d(TAG, "cancelPromoCodeReedm: start")
+        _showLoading.value = true
+        return flow {
+            Log.d(TAG, "cancelPromoCodeReedm: here")
+            try{
+                if (shop?.userId == null || shop?.currentOrderId == null) {
+                    Log.e(TAG, "cancelPromoCodeReedm: Shop data is null")
+                    throw Exception("cancelPromoCodeReedm shop data")
+                }
+
+                val request = PromoCodeRedeemRequest(
+                    userId = shop?.userId!!,
+                    orderId = shop?.currentOrderId!!
+                )
+
+                Log.d(TAG, "cancelPromoCodeReedm: Sending request $request")
+                val result = mainUseCase.homeUseCase.cancelPromoCodeReedm(request)
+                _showLoading.value = false
+
+                emit(result)
+            }catch (e: Exception){
+                Log.e(TAG, "cancelPromoCodeReedm error: ${e.message}")
+                _showLoading.value = false
+
+                emit(null)
+            }
+        }
+    }
 
 }

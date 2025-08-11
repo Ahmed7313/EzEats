@@ -1,5 +1,7 @@
 package com.easyEats.ezeats.ui.compose.cart.paymentSummaryScreen.dialog
 
+import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -14,11 +16,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,6 +40,8 @@ import com.easyEats.ezeats.R
 import com.easyEats.ezeats.domain.main.model.request.cart.response.UpdateCartResponse
 import com.easyEats.ezeats.ui.compose.components.AppButtonPrimary
 import com.easyEats.ezeats.ui.compose.theme.AppColor
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
 @Composable
 fun PlaceOrderDialog(
@@ -45,7 +51,19 @@ fun PlaceOrderDialog(
     dismiss: () -> Unit,
 ) {
     var selectedPlaceOrder by remember { mutableStateOf(PLACE_ORDER_TYPE.DEFAULT) }
-    val sheetState = rememberModalBottomSheetState()
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true,
+        confirmValueChange = { true }
+    )
+    val coroutineScope = rememberCoroutineScope()
+
+
+    BackHandler(enabled = sheetState.isVisible) {
+        Log.d("PlaceOrderDialog", "PlaceOrderDialog: BACK")
+        coroutineScope.launch {
+            sheetState.show()
+        }
+    }
 
     ModalBottomSheet(
         modifier = modifier
@@ -79,9 +97,12 @@ fun PlaceOrderDialog(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     PlaceOrderImage(
-                        modifier = Modifier.weight(1f)
-                            .alpha(if (updateCartResponse.result?.order?.restaurant?.isUmbrellaDelivery == true)
-                                1f else 0.5f),
+                        modifier = Modifier
+                            .weight(1f)
+                            .alpha(
+                                if (updateCartResponse.result?.order?.restaurant?.isUmbrellaDelivery == true)
+                                    1f else 0.5f
+                            ),
                         image = painterResource(R.drawable.ic_umberlla),
                         contentDescription = "ic_umberlla",
                         label = stringResource(R.string.umbrella),
@@ -100,7 +121,9 @@ fun PlaceOrderDialog(
 
                     }
                     PlaceOrderImage(
-                        modifier = Modifier.weight(1f).alpha(0.5f),
+                        modifier = Modifier
+                            .weight(1f)
+                            .alpha(0.5f),
                         label = stringResource(R.string.office),
                         image = painterResource(R.drawable.ic_office),
                         contentDescription = "ic_office",
@@ -112,7 +135,8 @@ fun PlaceOrderDialog(
 
                 AppButtonPrimary(
                     enabled = selectedPlaceOrder != PLACE_ORDER_TYPE.DEFAULT,
-                    text = stringResource(R.string.confirm), modifier = Modifier.fillMaxWidth()
+                    text = stringResource(R.string.confirm), modifier = Modifier
+                        .fillMaxWidth()
                         .padding(top = 20.dp)) {
                     if(selectedPlaceOrder != PLACE_ORDER_TYPE.DEFAULT) confirm(selectedPlaceOrder)
                 }
@@ -120,7 +144,7 @@ fun PlaceOrderDialog(
 
             }
         },
-        onDismissRequest = dismiss
+        onDismissRequest = { dismiss() }
     )
 }
 
@@ -143,10 +167,11 @@ fun PlaceOrderImage(
                 .padding(horizontal = 8.dp)
                 .size(100.dp)
                 .background(
-                    if (selected)  AppColor.ColorPrimaryOpacity else AppColor.ColorPrimaryOpacity2,
+                    if (selected) AppColor.ColorPrimaryOpacity else AppColor.ColorPrimaryOpacity2,
                     shape = CircleShape
                 )
-                .clip(CircleShape).clickable {
+                .clip(CircleShape)
+                .clickable {
                     onSelect()
                 }
         ) {

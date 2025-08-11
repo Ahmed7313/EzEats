@@ -1,6 +1,7 @@
 package com.easyEats.ezeats.data.repository.main.repository
 
 import com.easyEats.ezeats.base.BaseResponse
+import com.easyEats.ezeats.base.BaseResponseNew
 import com.easyEats.ezeats.data.local.data_store.DataStorePreference
 import com.easyEats.ezeats.data.remote.main.MainApiService
 import com.easyEats.ezeats.domain.main.model.UserLocationAddress
@@ -37,6 +38,9 @@ import com.easyEats.ezeats.domain.main.model.response.payment.CreateNewOrderRequ
 import com.easyEats.ezeats.domain.main.model.response.payment.PaymentPaymobRequest
 import com.easyEats.ezeats.domain.main.model.response.payment.PaymentRequest
 import com.easyEats.ezeats.domain.main.model.response.payment.PaymentResponse
+import com.easyEats.ezeats.domain.main.model.response.payment.promo.PromoCodeRedeemResponse
+import com.easyEats.ezeats.domain.main.model.response.payment.promo.ezeats.PromoCodeEzeatsResponse
+import com.easyEats.ezeats.domain.main.model.response.payment.promo.redeem.PromoCodeRedeemRequest
 import com.easyEats.ezeats.domain.main.model.response.payment.savedCard.FetchSavedCardRequest
 import com.easyEats.ezeats.domain.main.model.response.payment.savedCard.response.FetchSavedCardResponse
 import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.RestaurantMenuResponse
@@ -214,6 +218,22 @@ class MainResponseImpl @Inject constructor(
 
     override suspend fun createNewOrder(request: CreateNewOrderRequest): PaymentResponse =
         mainApiService.createNewOrder(request)
+
+
+    override suspend fun promoCodeReedm(request: PromoCodeRedeemRequest): PromoCodeRedeemResponse? =
+        mainApiService.promoCodeReedm(request)
+
+
+    override suspend fun getPromoCodeEzeats(request: PromoCodeRedeemRequest): PromoCodeEzeatsResponse? =
+        mainApiService.getPromoCodeEzeats(request)
+
+
+
+    override suspend fun cancelPromoCodeReedm(request: PromoCodeRedeemRequest): BaseResponseNew? =
+        mainApiService.cancelPromoCodeReedm(request)
+
+
+
 
 
     override suspend fun fetchSavedCards(request: FetchSavedCardRequest): FetchSavedCardResponse =

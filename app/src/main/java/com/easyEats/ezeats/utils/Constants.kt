@@ -38,6 +38,7 @@ object Constants {
 
 
     const val CATEGORY_ID_ALL: String="eqvWcHcHaD"
+    const val ALL: String="All"
 
 
 

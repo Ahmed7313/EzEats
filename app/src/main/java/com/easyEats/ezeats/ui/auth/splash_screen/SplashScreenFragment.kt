@@ -25,7 +25,6 @@ import kotlinx.coroutines.launch
  *
  * This fragment uses the `@AndroidEntryPoint` annotation to enable dependency injection with Hilt.
  */
-@SuppressLint("CustomSplashScreen")
 @AndroidEntryPoint
 class SplashScreenFragment : BaseFragment<FragmentSplashScreenBinding>() {
 
@@ -70,12 +69,13 @@ class SplashScreenFragment : BaseFragment<FragmentSplashScreenBinding>() {
                 splashViewModel.isUserWatchOnBoardingScreen.collect { hasWatchedOnboarding ->
                     splashViewModel.isUserVerified.collect { isUserVerified ->
                         Log.d(TAG, "onResume: $isUserVerified")
+                        Log.d(TAG, "onResume: $hasWatchedOnboarding")
                         val navigationHandler = DefaultNavigationHandler(this@SplashScreenFragment)
                         val currentDestination = findNavController().currentDestination?.id
                         val state = when {
                             isUserVerified -> NavigationState.IS_USER_VERIFIED
-                            hasWatchedOnboarding && currentDestination == R.id.splashScreenFragment -> NavigationState.ONBOARDING_WATCHED
-                            !hasWatchedOnboarding && currentDestination == R.id.splashScreenFragment -> NavigationState.ONBOARDING_NOT_WATCHED
+                            hasWatchedOnboarding -> NavigationState.ONBOARDING_WATCHED
+                            !hasWatchedOnboarding -> NavigationState.ONBOARDING_NOT_WATCHED
                             else -> NavigationState.NO_ACTION
                         }
                         navigationHandler.handleNavigation(state)

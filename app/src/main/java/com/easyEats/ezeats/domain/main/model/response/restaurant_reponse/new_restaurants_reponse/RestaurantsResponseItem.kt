@@ -25,8 +25,8 @@ data class RestaurantsResponseItem(
     var hasOffers: Boolean? = false,
     @SerializedName("isBusy")
     var isBusy: Boolean? = false,
-    @SerializedName("isCommingsoon")
-    var isCommingsoon: Boolean? = false,
+    @SerializedName("isCommingSoon")
+    var isCommingSoon: Boolean? = false,
     @SerializedName("isClose")
     var isClose: String? = "",
     @SerializedName("isDelivery")

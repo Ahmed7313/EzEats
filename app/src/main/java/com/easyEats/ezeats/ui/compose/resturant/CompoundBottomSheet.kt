@@ -15,6 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.RadioButton
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -40,14 +41,29 @@ fun CompoundBottomSheet(
     modifier: Modifier = Modifier,
     list: List<CompoundResult>,
     selected: String,
-    click: (String) -> Unit,
+    click: (String, String) -> Unit,
+    expand: Boolean = true,
     onDismiss: () -> Unit,
 ) {
     val TAG = "CompoundBottomSheet"
-    val sheetState = rememberModalBottomSheetState()
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true,
+        confirmValueChange = {
+            // Prevent user from closing sheet manually
+            it != if(expand) SheetValue.Expanded else SheetValue.Hidden
+        }
+    )
+
+
     var selectedObjectId by remember {
         mutableStateOf(selected)
     }
+
+
+    var selectedName by remember {
+        mutableStateOf("")
+    }
+
 
     ModalBottomSheet(
         modifier = modifier.fillMaxWidth().height(412.dp),
@@ -62,7 +78,7 @@ fun CompoundBottomSheet(
            Box{
                Column(
                    modifier = Modifier
-                       .fillMaxWidth().padding(bottom = 40.dp)
+                       .fillMaxWidth().padding(bottom = 80.dp)
                ) {
                    LazyColumn(
                        modifier = Modifier
@@ -75,20 +91,20 @@ fun CompoundBottomSheet(
                                    .padding(top = 20.dp, start = 16.dp, end = 16.dp),
                                textAlign = TextAlign.Center,
                                text = stringResource(R.string.welcome_to_sahel),
-                               fontSize = 24,
+                               fontSize = 18,
                                fontWeight = FontWeight.Bold,
                            )
 
-                           AppTextNormal(
-                               textAlign = TextAlign.Center,
-                               modifier = Modifier
-                                   .fillMaxWidth()
-                                   .padding(start = 16.dp, end = 16.dp, top = 3.dp),
-                               text = stringResource(R.string.pick_compound_from_list),
-                               fontSize = 16,
-                               fontWeight = FontWeight.Normal,
-                               color = AppColor.BlackColor2
-                           )
+//                           AppTextNormal(
+//                               textAlign = TextAlign.Center,
+//                               modifier = Modifier
+//                                   .fillMaxWidth()
+//                                   .padding(start = 16.dp, end = 16.dp, top = 3.dp),
+//                               text = stringResource(R.string.pick_compound_from_list),
+//                               fontSize = 16,
+//                               fontWeight = FontWeight.Normal,
+//                               color = AppColor.BlackColor2
+//                           )
                        }
 
                        list.let { it ->
@@ -110,6 +126,7 @@ fun CompoundBottomSheet(
                                        selected = item.objectId == selectedObjectId,
                                        onClick = {
                                            selectedObjectId = item.objectId.toString()
+                                           selectedName = item.name.toString()
                                        },
                                        colors = androidx.compose.material3.RadioButtonDefaults.colors(
                                            selectedColor = AppColor.ColorPrimary,
@@ -145,7 +162,7 @@ fun CompoundBottomSheet(
                        .height(45.dp),
                    enabled = selectedObjectId.isNotEmpty(),
                    onClick = {
-                       click(selectedObjectId)
+                       click(selectedObjectId,selectedName)
                    }) {
                    AppTextHeader(
                        text = stringResource(R.string.select_compound),

@@ -1,8 +1,10 @@
 package com.easyEats.ezeats.ui.main.cart.paymentSummary
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
 import androidx.fragment.app.activityViewModels
@@ -17,6 +19,7 @@ import com.easyEats.ezeats.ui.main.edit_profile.EditProfileViewModel
 import com.easyEats.ezeats.ui.main.profile.ProfileViewModel
 import com.easyEats.ezeats.ui.main.restaurant.CartViewModel
 import dagger.hilt.android.AndroidEntryPoint
+
 
 /**
  * A fragment that displays restaurant information and special offers. It allows the user to share the restaurant
@@ -49,10 +52,13 @@ class PaymentSummaryFragment : BaseFragment<FragmentPaymentSummaryBinding>() {
 
     private val args by navArgs<PaymentSummaryFragmentArgs>()
 
+    val TAG = "PaymentSummaryFragment"
+
     /**
      * Sets up the views and their corresponding actions for the fragment.
      */
     override fun setUpViews() {
+
         binding.composeView.setContent {
             PaymentSummaryScreenUI(
                 modifier = Modifier.fillMaxSize(),
@@ -66,6 +72,8 @@ class PaymentSummaryFragment : BaseFragment<FragmentPaymentSummaryBinding>() {
             )
         }
     }
+
+
 
     override fun onDestroy() {
 

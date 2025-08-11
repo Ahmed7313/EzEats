@@ -54,7 +54,7 @@
 
     <!--    Home Screen-->
     <string name="notification_icon">Notification Icon</string>
-    <string name="where_every_meal_comes_with_a_discount">Where Every Meal Comes with a discount</string>
+    <string name="where_every_meal_comes_with_a_discount">Dine-In. Pick-Up. Gated Delivery. See Abu Shanab?  Use EZeats to Order.</string>
     <string name="search_for_restaurants_dishes_and_more">Search for restaurants, dishes, and more…</string>
     <string name="featured">Featured</string>
     <string name="view_all">View All</string>
@@ -210,7 +210,7 @@
     <string name="busy">Busy</string>
     <string name="closed">Closed</string>
     <string name="free_delivery">Free Delivery</string>
-    <string name="default_web_client_id">937200415823-hloueibohv4jo7635kmj8odovt3s7krd.apps.googleusercontent.com</string>
+    <string name="default_web_client_id">509302173444-nvkkbemd9cbkrdami3e4poacl6imsk83.apps.googleusercontent.com</string>
     <string name="login_with_google">loggin with google</string>
     <string name="login_with_facebook">login with facebook</string>
     <string name="facebook_app_id">577943048465854</string>
@@ -240,7 +240,7 @@
     <string name="currency">EGP</string>
     <string name="any_special_request">Any Special Requests?</string>
     <string name="add_note">Add Note</string>
-    <string name="welcome_to_sahel">Welcome to Sahel</string>
+    <string name="welcome_to_sahel">Pick a compound from the list below, so we can serve you there</string>
     <string name="pick_compound_from_list">Pick a compound from the list below, so can serve you there</string>
     <string name="select_compound">Select Compound</string>
     <string name="view_cart">View Cart</string>
@@ -285,5 +285,14 @@
     <string name="floor_no">Floor No</string>
     <string name="add_your_item_again">Add Your Item Again</string>
     <string name="add_card">Add Card</string>
+    <string name="this_category_has_no_restaurants_yet">This category has no restaurants currently, \ncheck again later!</string>
+    <string name="terms_and_conditions">Terms And Conditions</string>
+    <string name="or_sign_in_with">Or, Sign in with</string>
+    <string name="enter_your_voucher_code">Enter voucher code</string>
+    <string name="you_gained_a_promo_code_value">You gained promo code value</string>
+    <string name="promo_code_not_found">Promo code not found</string>
+    <string name="cart_is_empty">There nothing in your cart yet</string>
+    <string name="ready_to_order">Ready to order?</string>
+    <string name="goto_home">Go To Home</string>
 
 </resources>

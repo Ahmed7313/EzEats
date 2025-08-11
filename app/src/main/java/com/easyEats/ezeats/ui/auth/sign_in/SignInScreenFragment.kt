@@ -1,13 +1,17 @@
 package com.easyEats.ezeats.ui.auth.sign_in
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.easyEats.ezeats.MyApplication.Companion.TAG
 import com.easyEats.ezeats.R
@@ -19,9 +23,17 @@ import com.easyEats.ezeats.ui.auth.sign_in.google_facebook_login.GoogleLoginHelp
 import com.easyEats.ezeats.ui.auth.sign_in.google_facebook_login.SocialLoginCallback
 import com.easyEats.ezeats.utils.Resource
 import com.easyEats.ezeats.utils.validation.ValidateFields
+import com.google.android.gms.auth.api.identity.BeginSignInRequest
+import com.google.android.gms.auth.api.identity.Identity
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
 import com.parse.ParseUser
 import dagger.hilt.android.AndroidEntryPoint
 import es.dmoral.toasty.Toasty
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class SignInScreenFragment : BaseFragment<FragmentSignInScreenBinding>() {
@@ -149,11 +161,106 @@ class SignInScreenFragment : BaseFragment<FragmentSignInScreenBinding>() {
         }
 
         binding.btnGmail.setOnClickListener {
-            onGoogleLoginClick()
+//            onGoogleLoginClick()
+            gmail()
         }
         binding.btnFacebook.setOnClickListener {
             onFacebookLoginClick()
         }
+    }
+
+
+    private val activityResultGoogleSignIn = registerForActivityResult(
+        ActivityResultContracts.StartIntentSenderForResult()
+    ) { result ->
+        when (result.resultCode) {
+            Activity.RESULT_OK -> {
+                try {
+                    val credential = Identity.getSignInClient(requireActivity())
+                        .getSignInCredentialFromIntent(result.data)
+
+                    val idToken = credential.googleIdToken
+                    val email = credential.id
+
+                    if (idToken != null) {
+                        Log.d(TAG, "Email: $email")
+                        Log.d(TAG, "googleIdToken: ${credential.googleIdToken}")
+                        Log.d(TAG, "id: ${credential.id}")
+                        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+                            signInViewModel.socialLogin(credential.googleIdToken.toString(), email).collect { result ->
+                                withContext(Dispatchers.Main) {
+                                    when (result) {
+                                        is Resource.Success -> {
+                                            Log.d(TAG, "Social login successful")
+                                            // Handle success - maybe navigate to next screen
+                                        }
+
+                                        is Resource.Error -> {
+                                            Log.e(TAG, "Social login failed: ${result.message}")
+                                            Toasty.error(
+                                                requireContext(),
+                                                result.message,
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
+
+                                        is Resource.Loading -> {
+                                            // Show loading indicator
+                                        }
+
+                                        is Resource.UnAuthenticated -> {
+                                            // Handle unauthenticated state
+                                        }
+
+                                        else -> {}
+                                    }
+                                }
+                            }
+                        }
+
+                    } else {
+                        Log.e(TAG, "Google ID token is null")
+                        Toasty.error(requireContext(), "Sign in failed", Toast.LENGTH_SHORT).show()
+                    }
+                } catch (e: ApiException) {
+                    Log.e(TAG, "Google sign in failed: ${e.message}", e)
+                    Toasty.error(requireContext(), "Sign in failed: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
+            Activity.RESULT_CANCELED -> {
+                Log.d(TAG, "Sign in cancelled")
+                Toasty.info(requireContext(), "Sign in cancelled", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+
+    fun gmail(){
+        val signInRequest = BeginSignInRequest.builder()
+            .setGoogleIdTokenRequestOptions(
+                BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
+                    .setSupported(true)
+                    .setServerClientId(getString(R.string.default_web_client_id))
+                    .setFilterByAuthorizedAccounts(false)
+                    .build()
+            )
+            .build()
+
+        Identity.getSignInClient(requireActivity())
+            .beginSignIn(signInRequest)
+            .addOnSuccessListener { result ->
+                try {
+                    val intentSenderRequest = IntentSenderRequest.Builder(result.pendingIntent).build()
+                    activityResultGoogleSignIn.launch(intentSenderRequest)
+                } catch (e: Exception) {
+                    Log.e(TAG, "Failed to start sign in: ${e.message}", e)
+                    Toasty.error(requireContext(), "Sign in failed", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.e(TAG, "Sign in failed: ${e.message}", e)
+                Toasty.error(requireContext(), "Sign in failed", Toast.LENGTH_SHORT).show()
+            }
     }
 
     override fun onDestroyView() {

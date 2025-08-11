@@ -23,6 +23,8 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.encodeToJsonElement
 import javax.inject.Inject
+import kotlin.collections.remove
+import kotlin.text.clear
 
 class DataStorePreference @Inject constructor(private val preferences: DataStore<Preferences>) {
 
@@ -36,6 +38,19 @@ class DataStorePreference @Inject constructor(private val preferences: DataStore
         it[booleanPreferencesKey(ONBOARD_KEY)] ?: false
 
     }
+
+    suspend fun clearUserData() {
+        preferences.edit { preferences ->
+            preferences.clear() // This clears all data
+            // Or if you want to clear specific keys:
+            preferences.remove(stringPreferencesKey(TOKEN_KEY))
+            preferences.remove(stringPreferencesKey(MOBILE_NUMBER_KEY))
+            preferences.remove(stringPreferencesKey(NAME_KEY))
+            preferences.remove(booleanPreferencesKey(IS_VERIFIED))
+            preferences.remove(stringPreferencesKey(ADDRESS_KEY))
+        }
+    }
+
 
     suspend fun saveAddress(userLocationAddress: UserLocationAddress) {
         val gson = Gson()

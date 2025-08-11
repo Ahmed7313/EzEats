@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import com.easyEats.ezeats.base.BaseResponse
 import com.easyEats.ezeats.domain.auth.model.request.FindUserRequest
 import com.easyEats.ezeats.domain.auth.model.request.SendOtpRequest
+import com.easyEats.ezeats.domain.auth.model.request.SocialRequest
 import com.easyEats.ezeats.domain.auth.model.request.VerifyOtpRequest
 import com.easyEats.ezeats.domain.auth.model.response.FindUserResponse
 import com.easyEats.ezeats.domain.main.model.UserLocationAddress
@@ -27,6 +28,8 @@ interface AuthRepository {
     suspend fun saveName(name: String)
     suspend fun sendOTP(request: SendOtpRequest): BaseResponse<Boolean>
     suspend fun verifyOtp(request: VerifyOtpRequest): BaseResponse<Boolean>
+    suspend fun loginWithGoogle(request: SocialRequest): BaseResponse<Boolean>
+
     suspend fun findUser( findUserRequest: FindUserRequest): Response<FindUserResponse>
 
 }

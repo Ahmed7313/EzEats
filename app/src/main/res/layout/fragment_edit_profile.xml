@@ -192,7 +192,6 @@
                     android:layout_height="@dimen/_42sdp"
                     android:drawableStart="@drawable/email_icon"
                     android:drawablePadding="10dp"
-                    android:enabled="false"
                     android:inputType="textEmailAddress"
                     android:text="@={viewModel.email}"
                     android:textSize="@dimen/_11ssp" />
@@ -218,7 +217,6 @@
                     android:layout_height="@dimen/_42sdp"
                     android:drawableStart="@drawable/phone_icon"
                     android:drawablePadding="10dp"
-                    android:enabled="false"
                     android:inputType="phone"
                     android:text="@={viewModel.mobileNumber}"
                     android:textSize="@dimen/_11ssp" />

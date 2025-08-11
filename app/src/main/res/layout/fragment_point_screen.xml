@@ -14,8 +14,9 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="#F7F7F7"
+        android:overScrollMode="never"
         android:fillViewport="true">
 
         <LinearLayout
@@ -24,7 +25,7 @@
             android:orientation="vertical">
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:visibility="visible">
 
                 <TextView
@@ -53,7 +54,7 @@
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="wrap_content">
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -136,7 +137,7 @@
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                            android:layout_height="wrap_content">
 
                             <ImageView
                                 android:layout_width="wrap_content"
@@ -190,7 +191,7 @@
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                            android:layout_height="wrap_content">
 
                             <ImageView
                                 android:id="@+id/imageView7"
@@ -277,6 +278,8 @@
                     android:id="@+id/rvSpinWheelPromoCodes"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:maxHeight="@dimen/_200sdp"
+
                     android:layout_marginTop="@dimen/_6sdp"
                     android:orientation="vertical"
                     android:visibility="@{response.rewards.spinWheelVouchers.size() > 0 ? View.VISIBLE : View.GONE,default=gone}"
@@ -302,6 +305,8 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_Vouchers"
                     android:layout_width="0dp"
+                    android:maxHeight="@dimen/_150sdp"
+
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_6sdp"
                     android:orientation="horizontal"
@@ -345,6 +350,8 @@
                     android:id="@+id/rvPoints"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:maxHeight="100dp"
+                    tools:visibility="visible"
                     android:orientation="vertical"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="@+id/tv_all_points"

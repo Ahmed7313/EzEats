@@ -5,8 +5,11 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
@@ -50,13 +53,15 @@ fun SelectionButton(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
-        AppTextNormal(text = text, color = if (isSelected) Color.White else Color.Black, fontSize = 15)
-        AppSpacer(width = medium)
+        Spacer(modifier = Modifier.width(10.dp))
         Icon(
             painter = painterResource(id = icon),
             contentDescription = null,
             modifier = Modifier.size(18.dp),
             tint = if (isSelected) Color.White else Color.Black
         )
+        AppSpacer(width = medium)
+        AppTextNormal(text = text, color = if (isSelected) Color.White else Color.Black, fontSize = 15)
+        Spacer(modifier = Modifier.width(10.dp))
     }
 }

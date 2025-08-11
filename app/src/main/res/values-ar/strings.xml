@@ -271,4 +271,13 @@
     <string name="floor_no">Floor No</string>
     <string name="add_your_item_again">Add Your Item Again</string>
     <string name="add_card">Add Card</string>
+    <string name="this_category_has_no_restaurants_yet">This category has no restaurants currently, \ncheck again later!</string>
+    <string name="terms_and_conditions">Terms And Conditions</string>
+    <string name="or_sign_in_with">Or, Sign in with</string>
+    <string name="enter_your_voucher_code">Enter voucher code</string>
+    <string name="you_gained_a_promo_code_value">You gained promo code value</string>
+    <string name="promo_code_not_found">Promo code not found</string>
+    <string name="cart_is_empty">There nothing in your cart yet</string>
+    <string name="ready_to_order">Ready to order?</string>
+    <string name="goto_home">Go To Home</string>
 </resources>

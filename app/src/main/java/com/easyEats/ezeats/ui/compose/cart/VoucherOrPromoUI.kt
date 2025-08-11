@@ -1,17 +1,22 @@
 package com.easyEats.ezeats.ui.compose.cart
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,22 +29,30 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.easyEats.ezeats.R
+import com.easyEats.ezeats.ui.compose.components.AppInputField
+import com.easyEats.ezeats.ui.compose.theme.AppColor
 import com.easyEats.ezeats.ui.compose.theme.AppColor.BlackColor2
 import com.easyEats.ezeats.ui.compose.theme.AppColor.ColorPrimary
 import com.easyEats.ezeats.ui.compose.theme.AppColor.GreyColor
 import com.easyEats.ezeats.ui.compose.theme.AppColor.skyColor
 
 @Composable
-fun VoucherOrPromoUI(modifier: Modifier = Modifier) {
+fun VoucherOrPromoUI(
+    modifier: Modifier = Modifier, promoCode: String = "",
+    isSuccessPromo: Boolean? = null,
+    onChange: (String) -> Unit, add: () -> Unit, clear: () -> Unit
+) {
     Column(
-        modifier = modifier.padding(bottom = 20.dp),
+        modifier = modifier.padding(bottom = 20.dp, top = 10.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
             text = stringResource(R.string.vouchers_or_promo),
             fontSize = 16.sp,
-            modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 10.dp),
             textAlign = TextAlign.Start,
             fontWeight = FontWeight.Bold,
             color = BlackColor2
@@ -51,27 +64,69 @@ fun VoucherOrPromoUI(modifier: Modifier = Modifier) {
             modifier = Modifier
                 .fillMaxWidth()
                 .border(BorderStroke(2.dp, skyColor), shape = RoundedCornerShape(100.dp))
-                .padding(10.dp)
+                .background(AppColor.WhiteColor, shape = RoundedCornerShape(100.dp))
         ) {
 
             Icon(
-                modifier = Modifier.size(21.dp),
+                modifier = Modifier
+                    .size(28.dp)
+                    .padding(start = 10.dp),
                 painter = painterResource(R.drawable.ic_gift),
                 tint = Color.Black,
                 contentDescription = "gift"
             )
-            Column(modifier = Modifier.padding(start = 2.dp)) {
-                Text(text = "EGP 50 OFF", color = Color.Black, fontSize = 16.sp)
-                Text(text = "Add EGP 222 more to apply", color = GreyColor, fontSize = 12.sp)
+            AppInputField(
+                modifier = Modifier
+                    .weight(1f),
+                text = promoCode,
+                hint = stringResource(R.string.enter_your_voucher_code),
+            ) {
+                onChange(it)
             }
+
             Spacer(modifier = Modifier.weight(1f))
-            Text(text = stringResource(R.string.apply), color = ColorPrimary, fontSize = 12.sp)
+            Box(
+                modifier = Modifier
+                    .background(
+                        color = if(promoCode.isNotEmpty()) AppColor.BlackColor else GreyColor.copy(alpha = 0.1f),
+                        shape = RoundedCornerShape(100)
+                    )
+            ) {
+                IconButton(onClick = { if (isSuccessPromo == true) clear() else if (promoCode.isNotEmpty()) add() }) {
+                    Icon(
+                        modifier = Modifier.size(24.dp),
+                        painter = if (isSuccessPromo == true)
+                            painterResource(R.drawable.close_ic)
+                        else painterResource(
+                            R.drawable.ic_plus
+                        ),
+                        tint = if (promoCode.isNotEmpty()) AppColor.WhiteColor
+                        else AppColor.BlackColor,
+                        contentDescription = "arrow_right"
+                    )
+                }
+            }
+
+        }
+
+        if (isSuccessPromo != null) {
+
+            Text(
+                text = stringResource(
+                    if (isSuccessPromo)
+                        R.string.you_gained_a_promo_code_value
+                    else
+                        R.string.promo_code_not_found
+                ),
+                color = if (isSuccessPromo) AppColor.greenColor else Color.Red,
+                fontSize = 14.sp,
+                modifier = Modifier.padding(top = 10.dp)
+            )
+
         }
 
 
     }
-
-
 
 
 }

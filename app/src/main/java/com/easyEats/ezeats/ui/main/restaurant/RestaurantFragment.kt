@@ -90,7 +90,7 @@ class RestaurantFragment : BaseFragment<FragmentRestaurantBinding>(),
     private lateinit var specialOfferAdapter: SpecialOfferAdapter
 
 
-    private lateinit var tableOrderResponse : TableAvailabilityResponse
+    private lateinit var tableOrderResponse: TableAvailabilityResponse
 
     var restaurantId = ""
     var tableId = ""
@@ -247,22 +247,33 @@ class RestaurantFragment : BaseFragment<FragmentRestaurantBinding>(),
                             viewModel.dismissBottomSheet()
                             Log.d("Checkout", "currentSubMenu: $currentSubMenu")
                             Log.d("Checkout", "cartViewModel.shopId: ${cartViewModel.shopId}")
-                            Log.d("Checkout", "cartViewModel.tableOrderId: ${cartViewModel.tableOrderId}")
-                            Log.d("Checkout", "cartViewModel.currentOrderId: ${cartViewModel.currentOrderId}")
+                            Log.d(
+                                "Checkout",
+                                "cartViewModel.tableOrderId: ${cartViewModel.tableOrderId}"
+                            )
+                            Log.d(
+                                "Checkout",
+                                "cartViewModel.currentOrderId: ${cartViewModel.currentOrderId}"
+                            )
                             var subMenu = currentSubMenu
                             Log.d("Checkout", "currentSubMenu subMenu: $subMenu")
 
                             scope.launch {
                                 cartViewModel.checkValidToAdd().collect { isValid ->
                                     Log.d(TAG, "setUpViews: valid")
-                                    if(isValid){
+                                    if (isValid) {
                                         if (subMenu != null) {
-                                            cartViewModel.addToCart(subMenu!!, selected, count, note)
+                                            cartViewModel.addToCart(
+                                                subMenu!!,
+                                                selected,
+                                                count,
+                                                note
+                                            )
                                             subMenu = null
                                         } else {
                                             Log.e("Checkout", "currentSubMenu is null")
                                         }
-                                    }else{
+                                    } else {
                                         subMenu = null
                                         showDifferentShop = true
                                     }
@@ -285,16 +296,22 @@ class RestaurantFragment : BaseFragment<FragmentRestaurantBinding>(),
                         }
                     )
                 } else {
-                    if(showDifferentShop){
+                    if (showDifferentShop) {
                         ShopDifferentDialog(modifier = Modifier.fillMaxWidth(), start = {
                             scope.launch(Dispatchers.IO) {
-                                cartViewModel.createNewOrder(
-                                    CreateNewOrderRequest(
-                                        tableOrderID = tableOrderResponse.result?.tableOrder?.tableOrderId,
-                                    )
-                                ).collect {
-                                    cartViewModel.clearShop()
+                                cartViewModel.cancelPromoCodeReedm().collect { response ->
+                                    if (response != null) {
+                                        cartViewModel.createNewOrder(
+                                            CreateNewOrderRequest(
+                                                tableOrderID = tableOrderResponse.result?.tableOrder?.tableOrderId,
+                                            )
+                                        ).collect {
+                                            cartViewModel.clearShop()
+                                        }
+                                    }
                                 }
+
+
                             }
                             scope.launch(Dispatchers.Main) {
                                 Toast.makeText(
@@ -307,7 +324,7 @@ class RestaurantFragment : BaseFragment<FragmentRestaurantBinding>(),
                         }, dismiss = {
                             showDifferentShop = false
                         })
-                    }else {
+                    } else {
                         binding.composeView.visibility = View.GONE
                     }
                 }

@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -17,8 +19,8 @@ android {
 
     defaultConfig {
         applicationId = "com.easyEats.ezeats"
-        minSdk = 24
-        targetSdk = 34
+        minSdk = 26
+        targetSdk = 36
         versionCode = 7
         versionName = "1.6"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -50,8 +52,18 @@ android {
             )
 
         }
+        signingConfigs {
+            create("releaseConfig") {
+                storeFile = file(rootProject.file("/ezeats_key/ezeats.jks"))
+                storePassword = "ezeats"
+                keyAlias = "ezeats"
+                keyPassword = "ezeats"
+            }
+        }
         getByName("release") {
             isMinifyEnabled = false
+            isShrinkResources = false
+            signingConfig = signingConfigs.getByName("releaseConfig")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
@@ -103,7 +115,8 @@ android {
         jvmTarget = "19"
         freeCompilerArgs += listOf(
             "-Xopt-in=androidx.compose.material3.ExperimentalMaterial3Api",
-            "-Xopt-in=kotlin.RequiresOptIn"
+            "-Xopt-in=kotlin.RequiresOptIn",
+            "-Xjvm-default=all"
         )
     }
 }
@@ -143,6 +156,11 @@ dependencies {
     // Hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
+
+//    implementation( libs.androidx.credentials.v150)
+//    implementation (libs.androidx.credentials.play.services.auth)
+//    implementation (libs.googleid)
+
     // sdp ,ssp
     implementation(libs.ssp.android)
     implementation(libs.sdp.android)
@@ -216,6 +234,11 @@ dependencies {
     releaseImplementation(libs.library.no.op)
     //firebase
     implementation(platform(libs.firebase.bom))
+    implementation("com.google.firebase:firebase-auth-ktx:21.1.0")
+    implementation("com.google.android.gms:play-services-auth:21.4.0")
+
+
+
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.messaging.ktx)
@@ -228,7 +251,6 @@ dependencies {
     implementation(libs.lottie)
     // Google Sign-In
     implementation(libs.androidx.credentials)
-    implementation(libs.play.services.auth)
     // Facebook Login
     implementation(libs.facebook.login)
 

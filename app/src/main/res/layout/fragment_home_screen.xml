@@ -123,6 +123,7 @@
                         app:drawableEndCompat="@drawable/arrow_down_icon"
                         app:drawableStartCompat="@drawable/marker_pin_icon" />
 
+                    
                     <TextView
                         android:id="@+id/tvTitle"
                         android:layout_width="@dimen/_180sdp"
@@ -136,7 +137,18 @@
                         android:textColor="@color/white"
                         android:textSize="@dimen/_15ssp" />
 
+
+                    <ImageView
+                        android:layout_width="161dp"
+                        android:layout_height="241dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignBottom="@+id/materialCardView3"
+                        android:layout_marginEnd="0dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/img_man_home" />
+
                     <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/materialCardView3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tvTitle"
@@ -641,6 +653,7 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/gilroy_700"
                                 android:gravity="center_vertical"
+                                android:visibility="gone"
                                 android:text="@string/hot_deals_near_you"
                                 android:textColor="#403A3D42"
                                 android:textSize="@dimen/_15ssp" />
@@ -648,10 +661,13 @@
                             <View
                                 android:layout_width="0dp"
                                 android:layout_height="1dp"
+                                android:visibility="gone"
+
                                 android:layout_weight="1" />
 
                             <androidx.cardview.widget.CardView
                                 android:layout_width="match_parent"
+                                android:visibility="gone"
                                 android:layout_height="wrap_content"
                                 android:backgroundTint="@color/main_color"
                                 android:padding="@dimen/_3sdp"

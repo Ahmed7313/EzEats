@@ -38,7 +38,7 @@ fun MenuItemUIRadio(
         AppTextHeader(
             text = item.name ?: "Unknown",
             color = AppColor.BlackColor,
-            fontSize = 13,
+            fontSize = 20,
             fontWeight = FontWeight.Bold,
         )
         MenuItemTag(
@@ -60,7 +60,7 @@ fun MenuItemUIRadio(
                     color = AppColor.BlackColor,
                     textAlign = TextAlign.Center,
                     fontWeight = FontWeight.Medium,
-                    fontSize = 13
+                    fontSize = 16
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 if (it?.price?.toInt() != 0) {
@@ -70,7 +70,7 @@ fun MenuItemUIRadio(
                         color = AppColor.BlackColor,
                         fontWeight = FontWeight.Light,
                         textAlign = TextAlign.Center,
-                        fontSize = 13
+                        fontSize = 16
                     )
                 }
                 RadioButton(
@@ -87,7 +87,7 @@ fun MenuItemUIRadio(
                 HorizontalDivider(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                        .padding(horizontal = 16.dp, vertical = 4.dp),
                     color = AppColor.GrayColor,
                     thickness = 1.dp
                 )

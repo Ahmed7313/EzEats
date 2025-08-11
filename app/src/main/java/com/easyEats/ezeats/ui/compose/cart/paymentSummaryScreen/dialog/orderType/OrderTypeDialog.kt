@@ -1,5 +1,7 @@
 package com.easyEats.ezeats.ui.compose.cart.paymentSummaryScreen.dialog.orderType
 
+import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -54,13 +56,11 @@ fun OrderTypeDialog(
     confirm: (ORDER_TYPE) -> Unit,
     cancel: () -> Unit
 ) {
+    val TAG = "OrderTypeDialog"
     var selectedPlaceOrder by remember { mutableStateOf(ORDER_TYPE.DEFAULT) }
     val sheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true,
-        confirmValueChange = {
-            // Prevent user from closing sheet manually
-            it != SheetValue.Hidden
-        }
+        confirmValueChange = { true }
     )
     val scope = rememberCoroutineScope()
 
@@ -96,9 +96,13 @@ fun OrderTypeDialog(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     OrderTypeItem(
-                        modifier = Modifier.weight(1f).then(
-                            if (cartResponse.result?.order?.restaurant?.isDelivery == false) Modifier.alpha(0.5f) else Modifier
-                        ),
+                        modifier = Modifier
+                            .weight(1f)
+                            .then(
+                                if (cartResponse.result?.order?.restaurant?.isDelivery == false) Modifier.alpha(
+                                    0.5f
+                                ) else Modifier
+                            ),
                         image = painterResource(R.drawable.img_delivery),
                         contentDescription = "img_delivery",
                         label = stringResource(R.string.delivery),
@@ -107,9 +111,13 @@ fun OrderTypeDialog(
                         if(cartResponse.result?.order?.restaurant?.isDelivery == true) selectedPlaceOrder = ORDER_TYPE.DELIVERY
                     }
                     OrderTypeItem(
-                        modifier = Modifier.weight(1f).then(
-                            if (cartResponse.result?.order?.restaurant?.isPickUp == false) Modifier.alpha(0.5f) else Modifier
-                        ),
+                        modifier = Modifier
+                            .weight(1f)
+                            .then(
+                                if (cartResponse.result?.order?.restaurant?.isPickUp == false) Modifier.alpha(
+                                    0.5f
+                                ) else Modifier
+                            ),
                         label = stringResource(R.string.pickup),
                         image = painterResource(R.drawable.img_pickup),
                         contentDescription = "img_pickup",
@@ -131,11 +139,16 @@ fun OrderTypeDialog(
                     }
                 }
 
-                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth().padding(top = 20.dp)) {
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center, modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 20.dp)) {
                     AppButtonPrimary(text = stringResource(R.string.confirm),
                         enabled = selectedPlaceOrder != ORDER_TYPE.DEFAULT,
                         showLoader = cartViewModel.showLoading.collectAsState(false).value,
-                        modifier = Modifier.weight(1f).fillMaxWidth().padding(end = 6.dp)) {
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxWidth()
+                            .padding(end = 6.dp)) {
                         if(selectedPlaceOrder != ORDER_TYPE.DEFAULT) {
                             scope.launch {
                                 cartViewModel.savePickUpStation(SavePickupRequest(
@@ -153,7 +166,10 @@ fun OrderTypeDialog(
                     }
 
                     AppButtonStroke(text = stringResource(R.string.back),
-                        modifier = Modifier.weight(1f).fillMaxWidth().padding(start = 6.dp)) {
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxWidth()
+                            .padding(start = 6.dp)) {
                         cancel()
                     }
                 }
@@ -161,7 +177,10 @@ fun OrderTypeDialog(
 
             }
         },
-        onDismissRequest = {}
+        onDismissRequest = {
+            Log.d(TAG, "OrderTypeDialog: onDismissRequest")
+            cancel()
+        }
     )
 
 }
@@ -188,10 +207,11 @@ fun OrderTypeItem(
                 .padding(horizontal = 8.dp)
                 .size(100.dp)
                 .background(
-                    if (selected)  AppColor.ColorPrimaryOpacity else AppColor.ColorPrimaryOpacity2,
+                    if (selected) AppColor.ColorPrimaryOpacity else AppColor.ColorPrimaryOpacity2,
                     shape = CircleShape
                 )
-                .clip(CircleShape).clickable {
+                .clip(CircleShape)
+                .clickable {
                     onSelect()
                 }
         ) {

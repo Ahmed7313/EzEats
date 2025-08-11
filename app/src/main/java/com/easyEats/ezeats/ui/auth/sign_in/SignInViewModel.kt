@@ -9,16 +9,22 @@ import com.easyEats.ezeats.MyApplication.Companion.baseApplication
 import com.easyEats.ezeats.base.BaseResponse
 import com.easyEats.ezeats.domain.auth.model.request.FindUserRequest
 import com.easyEats.ezeats.domain.auth.model.request.SendOtpRequest
+import com.easyEats.ezeats.domain.auth.model.request.SocialRequest
 import com.easyEats.ezeats.domain.auth.model.response.FindUserResponse
 import com.easyEats.ezeats.domain.auth.use_case.AuthUseCase
 import com.easyEats.ezeats.ui.auth.main.AuthViewModel
 import com.easyEats.ezeats.utils.Resource
+import com.easyEats.ezeats.utils.Resource.Error
+import com.easyEats.ezeats.utils.Resource.Loading
+import com.easyEats.ezeats.utils.Resource.Success
+import com.easyEats.ezeats.utils.Resource.UnAuthenticated
 import com.parse.ParseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import es.dmoral.toasty.Toasty
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -62,6 +68,26 @@ class SignInViewModel @Inject constructor(private val authUseCase: AuthUseCase) 
         viewModelScope.launch {
             authUseCase.signInUseCase.saveMobileNumber(phoneNumber.value ?: "")
         }
+    }
+
+
+    fun socialLogin(token: String, email: String): Flow<Resource<Boolean>> = flow {
+        emit(Loading())
+        val verifyOtp = authUseCase.verifyUseCase.loginWithGoogle(
+            SocialRequest(token,email
+            )
+        )
+        verifyOtp.handleResponse(
+            onSuccess = {
+//                saveUserVerification(true)
+                emit(Success(it))
+            },
+            onError = { message, error ->
+                emit(Error(message, error))
+            }, onUnauthenticated = {
+                emit(UnAuthenticated())
+            }
+        )
     }
 
     private fun sendOtp() {

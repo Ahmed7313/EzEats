@@ -28,7 +28,7 @@
 
             <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/iv_order_logo"
-                loadImage="@{order.restaurantName}"
+                loadImage="@{order.logo}"
                 android:layout_width="@dimen/_35sdp"
                 android:layout_height="@dimen/_40sdp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -45,7 +45,7 @@
                 android:maxLength="25"
                 android:text="@{order.restaurantName}"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_10ssp"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="@+id/tv_order_price"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -60,7 +60,7 @@
                 android:layout_marginTop="@dimen/_6sdp"
                 android:layout_marginEnd="@dimen/_6sdp"
                 android:fontFamily="@font/gilroy_400"
-                android:textSize="@dimen/_9ssp"
+                android:textSize="16sp"
                 android:text='@{String.format("Order Number #%s", order.orderNumber.toString())}'
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/tv_order_title"
@@ -74,12 +74,14 @@
                 android:fontFamily="@font/gilroy_600"
                 android:text='@{String.format("%s EGP", order.totalPrice.toString())}'
                 android:textColor="@color/black"
-                android:textSize="@dimen/_10ssp"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tv_order_title"
                 tools:text="215 EGP" />
 
+
+<!--            android:visibility="@{order.isPickup?View.VISIBLE:View.GONE}"-->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_reOrder"
                 android:layout_width="wrap_content"
@@ -88,8 +90,8 @@
                 android:backgroundTint="@color/main_color"
                 android:drawableLeft="@drawable/reorder_icon"
                 android:fontFamily="@font/gilroy_400"
+                android:visibility="gone"
                 android:text="@string/reorder"
-                android:visibility="@{order.isPickup?View.VISIBLE:View.GONE}"
                 android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_order_price" />
@@ -98,7 +100,7 @@
                 android:id="@+id/view4"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_1sdp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:background="#1A000000"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

@@ -14,7 +14,7 @@ import javax.inject.Inject
  * @property authUseCase The use case class that handles authentication and onboarding logic.
  */
 @HiltViewModel
-class SplashViewModel @Inject constructor(authUseCase: AuthUseCase) : ViewModel() {
+class SplashViewModel @Inject constructor(val authUseCase: AuthUseCase) : ViewModel() {
 
     // LiveData to indicate if the user has watched the onboarding screen
     val isUserWatchOnBoardingScreen = authUseCase.splashUseCase.isUserWatchOnBoardingScreen()

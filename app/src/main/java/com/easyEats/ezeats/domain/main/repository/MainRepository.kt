@@ -1,6 +1,7 @@
 package com.easyEats.ezeats.domain.main.repository
 
 import com.easyEats.ezeats.base.BaseResponse
+import com.easyEats.ezeats.base.BaseResponseNew
 import com.easyEats.ezeats.domain.main.model.UserLocationAddress
 import com.easyEats.ezeats.domain.main.model.request.address.AddressListRequest
 import com.easyEats.ezeats.domain.main.model.request.cart.TipRequest
@@ -38,6 +39,9 @@ import com.easyEats.ezeats.domain.main.model.response.payment.CreateNewOrderRequ
 import com.easyEats.ezeats.domain.main.model.response.payment.PaymentPaymobRequest
 import com.easyEats.ezeats.domain.main.model.response.payment.PaymentRequest
 import com.easyEats.ezeats.domain.main.model.response.payment.PaymentResponse
+import com.easyEats.ezeats.domain.main.model.response.payment.promo.PromoCodeRedeemResponse
+import com.easyEats.ezeats.domain.main.model.response.payment.promo.ezeats.PromoCodeEzeatsResponse
+import com.easyEats.ezeats.domain.main.model.response.payment.promo.redeem.PromoCodeRedeemRequest
 import com.easyEats.ezeats.domain.main.model.response.payment.savedCard.FetchSavedCardRequest
 import com.easyEats.ezeats.domain.main.model.response.payment.savedCard.response.FetchSavedCardResponse
 import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.RestaurantMenuResponse
@@ -134,6 +138,13 @@ interface MainRepository {
 
 
     suspend fun createNewOrder(request: CreateNewOrderRequest): PaymentResponse?
+    suspend fun promoCodeReedm(request: PromoCodeRedeemRequest): PromoCodeRedeemResponse?
+    suspend fun getPromoCodeEzeats(request: PromoCodeRedeemRequest): PromoCodeEzeatsResponse?
+
+    suspend fun cancelPromoCodeReedm(request: PromoCodeRedeemRequest): BaseResponseNew?
+
+
+
     suspend fun fetchSavedCards(request: FetchSavedCardRequest): FetchSavedCardResponse?
     suspend fun savePickupStation(request: SavePickupRequest): SaveUmbrellaResponse?
 

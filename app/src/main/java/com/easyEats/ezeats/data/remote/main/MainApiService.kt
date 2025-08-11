@@ -1,6 +1,7 @@
 package com.easyEats.ezeats.data.remote.main
 
 import com.easyEats.ezeats.base.BaseResponse
+import com.easyEats.ezeats.base.BaseResponseNew
 import com.easyEats.ezeats.domain.main.model.request.address.AddressListRequest
 import com.easyEats.ezeats.domain.main.model.request.cart.TipRequest
 import com.easyEats.ezeats.domain.main.model.request.cart.UpdateCartRequest
@@ -37,6 +38,9 @@ import com.easyEats.ezeats.domain.main.model.response.payment.PaymentPaymobReque
 import com.easyEats.ezeats.domain.main.model.response.payment.savedCard.FetchSavedCardRequest
 import com.easyEats.ezeats.domain.main.model.response.payment.PaymentRequest
 import com.easyEats.ezeats.domain.main.model.response.payment.PaymentResponse
+import com.easyEats.ezeats.domain.main.model.response.payment.promo.PromoCodeRedeemResponse
+import com.easyEats.ezeats.domain.main.model.response.payment.promo.ezeats.PromoCodeEzeatsResponse
+import com.easyEats.ezeats.domain.main.model.response.payment.promo.redeem.PromoCodeRedeemRequest
 import com.easyEats.ezeats.domain.main.model.response.payment.savedCard.response.FetchSavedCardResponse
 import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.RestaurantMenuResponse
 import com.easyEats.ezeats.domain.main.model.response.restaurant_menu.check_table_availability.TableAvailabilityResponse
@@ -163,6 +167,22 @@ interface MainApiService {
 
     @POST("createNewOrder")
     suspend fun createNewOrder(@Body restaurantRequest: CreateNewOrderRequest): PaymentResponse
+
+
+
+
+    @POST("getUserEzEatsPromocodes")
+    suspend fun getPromoCodeEzeats(@Body restaurantRequest: PromoCodeRedeemRequest): PromoCodeEzeatsResponse?
+
+
+    @POST("redeemCampaignPromoCode")
+    suspend fun promoCodeReedm(@Body restaurantRequest: PromoCodeRedeemRequest): PromoCodeRedeemResponse?
+
+
+    @POST("cancelCampaignPromoCode")
+    suspend fun cancelPromoCodeReedm(@Body restaurantRequest: PromoCodeRedeemRequest): BaseResponseNew?
+
+
 
 
     @POST("PaymobPayment")

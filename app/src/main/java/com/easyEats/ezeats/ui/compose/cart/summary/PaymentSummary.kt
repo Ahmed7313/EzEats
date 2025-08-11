@@ -1,5 +1,6 @@
 package com.easyEats.ezeats.ui.compose.cart.summary
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -18,8 +19,8 @@ import com.easyEats.ezeats.ui.compose.helper.AppHelper.formatTextNumber
 import com.easyEats.ezeats.ui.compose.theme.AppColor
 import com.easyEats.ezeats.ui.compose.theme.AppColor.BlackColor2
 
-fun getTotal(subTotal: Double , delivery: Double) : String{
-    return (subTotal + delivery).formatTextNumber()
+fun getTotal(subTotal: Double , delivery: Double , discount : Double) : String{
+    return (subTotal + delivery - discount).formatTextNumber()
 }
 
 @Composable
@@ -50,6 +51,7 @@ fun PaymentSummary(modifier: Modifier = Modifier, updateCartResponse: UpdateCart
 //            }
 //        )
 
+        Log.d("PaymentSummary", "PaymentSummaryDelivery: ${updateCartResponse.result?.deliveryFees}")
         PaymentSummaryItem(
             modifier = Modifier,
             title = stringResource(R.string.delivery_fee),
@@ -89,7 +91,7 @@ fun PaymentSummary(modifier: Modifier = Modifier, updateCartResponse: UpdateCart
         PaymentSummaryItem(
             modifier = Modifier,
             title = stringResource(R.string.total_amount),
-            value = "${getTotal(updateCartResponse.result?.total!!,updateCartResponse.result?.deliveryFees!!)} EGP",
+            value = "${getTotal(updateCartResponse.result?.total!!,updateCartResponse.result?.deliveryFees!!,updateCartResponse.result?.promoCodeDiscountValue ?: 0.0)} EGP",
             fontWeight = FontWeight.Bold
         )
     }

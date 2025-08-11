@@ -12,10 +12,10 @@
         android:title="@string/percent" />
 
 
-    <item
-        android:id="@+id/qrScreenFragment"
-        android:icon="@drawable/qr_code"
-        android:title="" />
+<!--    <item-->
+<!--        android:id="@+id/qrScreenFragment"-->
+<!--        android:icon="@drawable/qr_code"-->
+<!--        android:title="" />-->
 
     <item
         android:id="@+id/pointScreenFragment"

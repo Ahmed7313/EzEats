@@ -9,9 +9,15 @@ import com.easyEats.ezeats.MyApplication
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.base.BaseResponse
 import com.easyEats.ezeats.domain.auth.model.request.SendOtpRequest
+import com.easyEats.ezeats.domain.auth.model.request.SocialRequest
+import com.easyEats.ezeats.domain.auth.model.request.VerifyOtpRequest
 import com.easyEats.ezeats.domain.auth.use_case.AuthUseCase
 import com.easyEats.ezeats.ui.auth.main.AuthViewModel
 import com.easyEats.ezeats.utils.Resource
+import com.easyEats.ezeats.utils.Resource.Error
+import com.easyEats.ezeats.utils.Resource.Loading
+import com.easyEats.ezeats.utils.Resource.Success
+import com.easyEats.ezeats.utils.Resource.UnAuthenticated
 import com.easyEats.ezeats.utils.events.SingleLiveEvent
 import com.parse.ParseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -48,6 +54,32 @@ class SignUpViewModel @Inject constructor(private val authUseCase: AuthUseCase) 
     private val sendOtpExceptionHandler = CoroutineExceptionHandler { _, exception ->
         _sendOtpMutableLiveData.value =
             Resource.Error(MyApplication.baseApplication.getString(R.string.no_internet_connection))
+    }
+
+
+    fun socialLogin(token: String, email: String): Flow<Resource<Boolean>> = flow {
+        emit(Loading())
+        val verifyOtp = authUseCase.verifyUseCase.loginWithGoogle(
+            SocialRequest(token,email
+            )
+        )
+        verifyOtp.handleResponse(
+            onSuccess = {
+                saveUserVerification(true)
+                emit(Success(it))
+            },
+            onError = { message, error ->
+                emit(Error(message, error))
+            }, onUnauthenticated = {
+                emit(UnAuthenticated())
+            }
+        )
+    }
+
+    private fun saveUserVerification(isUserVerified: Boolean) {
+        viewModelScope.launch {
+            authUseCase.verifyUseCase.setUserVerification(isUserVerified)
+        }
     }
 
 

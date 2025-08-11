@@ -8,6 +8,9 @@ import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph
 import androidx.navigation.findNavController
@@ -59,8 +62,20 @@ class AuthActivity : AppCompatActivity() {
         LanguagesHelper.changeLanguage(this,LanguagesHelper.getCurrentLanguage(this))
         LanguagesHelper.changeLanguage(this,LanguagesHelper.getCurrentLanguage(this))
         super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         enableEdgeToEdge()
         binding = ActivityAuthBinding.inflate(layoutInflater)
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val systemBarsInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.setPadding(
+                systemBarsInsets.left,
+                systemBarsInsets.top,
+                systemBarsInsets.right,
+                systemBarsInsets.bottom
+            )
+            insets
+        }
+
         setContentView(binding.root)
         navController = findNavController(R.id.fragmentContainerView)
         navGraph = navController.navInflater.inflate(R.navigation.auth_nav)

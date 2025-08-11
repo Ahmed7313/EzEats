@@ -1,6 +1,7 @@
 package com.easyEats.ezeats.ui.compose.cart.paymentSummaryScreen
 
 import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -181,7 +182,6 @@ fun PaymentSummaryScreenUI(
     }
 
 
-
     val tipOptions = remember {
         listOf(
             TipOption("1", "10", "5%"),
@@ -191,9 +191,14 @@ fun PaymentSummaryScreenUI(
         )
     }
 
-    var showLoading by remember {
-        mutableStateOf(false)
+    // Add BackHandler to handle back press
+    BackHandler(enabled = orderTypeDialog) {
+        Log.d(TAG, "PaymentSummaryScreenUI: HERE BACK")
+        // When back is pressed while OrderTypeDialog is showing
+        // Navigate back to previous screen
+        navigate.navigateUp()
     }
+
 
     var selectedTipOption by remember { mutableStateOf<TipOption?>(null) }
     var showTipOptionCustom by remember { mutableStateOf(false) }
@@ -208,7 +213,7 @@ fun PaymentSummaryScreenUI(
     }
 
     LaunchedEffect(userInfoResult) {
-        if(checkUserInfo) {
+        if (checkUserInfo) {
             if (userInfoResult is Resource.Success) {
                 viewModel._showLoading.value = false
 
@@ -219,7 +224,7 @@ fun PaymentSummaryScreenUI(
                 if (userInfo.email.isNullOrEmpty() || userInfo.name.isNullOrEmpty())
                     showEditProfile = true
                 else {
-                    if(updateCartResponse.result?.order?.restaurant?.kashierMID.isNullOrEmpty()){
+                    if (updateCartResponse.result?.order?.restaurant?.kashierMID.isNullOrEmpty()) {
                         //paymob payment
                         viewModel.paymentPaymobRequest(
                             PaymentPaymobRequest(
@@ -237,7 +242,7 @@ fun PaymentSummaryScreenUI(
                                 showPayment = true
                             }
                         }
-                    }else {
+                    } else {
                         //kashier payment
                         viewModel.payment(
                             PaymentRequest(
@@ -263,7 +268,7 @@ fun PaymentSummaryScreenUI(
     }
 
     LaunchedEffect(Unit) {
-        if(updateCartResponse.result?.order?.restaurant?.kashierMID.isNullOrEmpty()) {
+        if (updateCartResponse.result?.order?.restaurant?.kashierMID.isNullOrEmpty()) {
             viewModel.fetchSavedCards(
                 FetchSavedCardRequest(
                     updateCartResponse.result?.order?.restaurant?.objectId,
@@ -435,10 +440,10 @@ fun PaymentSummaryScreenUI(
                                                 total = it.result?.data?.finalTotal
                                             )
                                         )
-                                        if(result == "0"){
+                                        if (result == "0") {
                                             tipOptions[3].amount = null
                                             tipOptions[3].percentage = null
-                                        }else{
+                                        } else {
                                             tipOptions[3].amount = result
                                         }
                                         showTipOptionCustom = false
@@ -506,7 +511,7 @@ fun PaymentSummaryScreenUI(
                     fontWeight = FontWeight.Bold
                 )
 
-                if(!updateCartResponse.result?.order?.restaurant?.kashierMID.isNullOrEmpty())
+                if (!updateCartResponse.result?.order?.restaurant?.kashierMID.isNullOrEmpty())
                     PaymentMethodUI(
                         modifier = Modifier
                             .padding(top = 8.dp)
@@ -515,14 +520,14 @@ fun PaymentSummaryScreenUI(
                     ) {
                         selectedPaymentMethod = it
                     }
-                else{
+                else {
                     PaymentMethodCardUI(
-                            modifier = Modifier
-                                .padding(top = 8.dp)
-                                .fillMaxWidth(),
+                        modifier = Modifier
+                            .padding(top = 8.dp)
+                            .fillMaxWidth(),
                         selectedPaymentMethod = selectedPaymentMethod,
                         paymentMethods = fetchSavedCardList,
-                    ){
+                    ) {
                         selectedPaymentMethod = it
                     }
                 }
@@ -559,7 +564,7 @@ fun PaymentSummaryScreenUI(
 
                 PaymentSummary(
                     modifier = Modifier.fillMaxWidth(),
-                    updateCartResponse = cartResponse
+                    updateCartResponse = cartResponse,
                 )
 
                 AppButtonPrimary(
@@ -601,8 +606,21 @@ fun PaymentSummaryScreenUI(
                     orderTypeDialog = false
                     if (orderTypeSelected != ORDER_TYPE.PICKUP) {
                         showPlaceOrder = true
+                    } else {
+                        //osama order type
+                        cartResponse = cartResponse.copy(
+                            result = cartResponse.result?.copy(
+
+                                total = if (cartResponse.result?.deliveryFees!! > 0)
+                                    cartResponse.result?.total!! - cartResponse.result?.deliveryFees!!
+                                else cartResponse.result?.total!!,
+
+                                deliveryFees = 0.0,
+                            )
+                        )
                     }
                 }, cancel = {
+                    Log.d(TAG, "PaymentSummaryScreenUI: BACK cancel")
                     orderTypeDialog = false
                     navigate.navigateUp()
                 })
@@ -626,7 +644,7 @@ fun PaymentSummaryScreenUI(
         if (showUmbrellaDialog) {
             UmbrellaDialog(
                 modifier = Modifier.fillMaxWidth(),
-                addressViewModel, cartViewModel = viewModel, cartResponse,onDismiss = {
+                addressViewModel, cartViewModel = viewModel, cartResponse, onDismiss = {
                     showUmbrellaDialog = false
                 }, onResult = { deliveryFees ->
                     showUmbrellaDialog = false
@@ -710,7 +728,7 @@ fun PaymentSummaryScreenUI(
                     showEditProfile = false
                 })
         }
-        if(showPayment){
+        if (showPayment) {
             PaymentDialog(
                 modifier = Modifier.fillMaxWidth(),
                 paymentUrl = paymentUrl,

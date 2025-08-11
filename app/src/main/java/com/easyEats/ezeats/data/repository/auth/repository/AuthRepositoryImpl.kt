@@ -7,6 +7,7 @@ import com.easyEats.ezeats.data.remote.auth.AuthApiService
 import com.easyEats.ezeats.data.remote.auth.AuthWithParsing
 import com.easyEats.ezeats.domain.auth.model.request.FindUserRequest
 import com.easyEats.ezeats.domain.auth.model.request.SendOtpRequest
+import com.easyEats.ezeats.domain.auth.model.request.SocialRequest
 import com.easyEats.ezeats.domain.auth.model.request.VerifyOtpRequest
 import com.easyEats.ezeats.domain.auth.model.response.FindUserResponse
 import com.easyEats.ezeats.domain.auth.repository.AuthRepository
@@ -66,6 +67,12 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun verifyOtp(request: VerifyOtpRequest): BaseResponse<Boolean> =
         authApiService.verifyOtp(request)
+
+
+    override suspend fun loginWithGoogle(request: SocialRequest): BaseResponse<Boolean> =
+        authApiService.loginWithGoogle(request)
+
+
 
     override suspend fun findUser(findUserRequest: FindUserRequest): Response<FindUserResponse> {
         return authApiService.findUser(findUserRequest)

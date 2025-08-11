@@ -64,6 +64,16 @@ object NetworkModule {
     }
 
 
+    @Provides
+    @Singleton
+    fun provideAuthInterceptor(
+        dataStorePreference: DataStorePreference,
+        @ApplicationContext context: Context
+    ): AuthInterceptor {
+        return AuthInterceptor(dataStorePreference, context)
+    }
+
+
     /**
      * Provides a custom com.easyEats.ezeats.utils.headers.HeaderInterceptor for adding headers to requests.
      */
@@ -108,12 +118,14 @@ object NetworkModule {
     fun provideOkHttpClient(
         loggingInterceptor: HttpLoggingInterceptor,
         headerInterceptor: HeaderInterceptor,
+        authInterceptor: AuthInterceptor,
         unsafeOkHttpClient: OkHttpClient.Builder,
         @ApplicationContext context: Context
     ): OkHttpClient {
         return unsafeOkHttpClient
             .addInterceptor(loggingInterceptor)
             .addInterceptor(headerInterceptor)
+            .addInterceptor(authInterceptor) // Add the auth interceptor
 //            .addInterceptor(RetryInterceptor(maxRetry = 2))
             .addNetworkInterceptor(CacheInterceptor())
             .connectTimeout(30, TimeUnit.SECONDS)

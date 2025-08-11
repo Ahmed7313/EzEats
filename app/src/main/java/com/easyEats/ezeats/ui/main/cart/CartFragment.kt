@@ -1,5 +1,6 @@
 package com.easyEats.ezeats.ui.main.cart
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -89,13 +90,15 @@ class CartFragment : BaseFragment<FragmentCartBinding>() {
         Log.d(TAG, "setUpViews: Set")
     }
 
+    /*
     fun callCheckTableAvailability() {
-        lifecycleScope.launch {
+    lifecycleScope.launch {
+        viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
             showLoading()
             viewModel.checkTableAvailability().collect { tableResponse ->
                 hideLoading()
-                if (tableResponse != null) {
-                    binding.composeView.setContent {
+                if (tableResponse != null && isAdded && view != null) {
+                    binding?.composeView?.setContent {
                         Log.d(TAG, "onViewCreated: setContent")
                         CartScreenUI(
                             modifier = Modifier.fillMaxSize(),
@@ -103,11 +106,38 @@ class CartFragment : BaseFragment<FragmentCartBinding>() {
                             findNavController()
                         )
                     }
-                }else{
+                } else {
                     viewModel.clearShop()
                     findNavController().navigateUp()
                 }
             }
+        }
+    }
+}
+     */
+    @SuppressLint("RepeatOnLifecycleWrongUsage")
+    fun callCheckTableAvailability() {
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                showLoading()
+                viewModel.checkTableAvailability().collect { tableResponse ->
+                    hideLoading()
+                    if (tableResponse != null && binding != null) {
+                        binding.composeView.setContent {
+                            Log.d(TAG, "onViewCreated: setContent")
+                            CartScreenUI(
+                                modifier = Modifier.fillMaxSize(),
+                                viewModel,
+                                findNavController()
+                            )
+                        }
+                    }else{
+                        viewModel.clearShop()
+//                        findNavController().navigateUp()
+                    }
+                }
+            }
+
         }
     }
 

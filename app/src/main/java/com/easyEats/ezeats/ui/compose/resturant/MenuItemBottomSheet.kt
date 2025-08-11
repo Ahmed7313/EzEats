@@ -150,10 +150,8 @@ fun MenuItemBottomSheet(
         content = {
             Column( modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(
-                    min = 100.dp,
-                    max = (LocalConfiguration.current.screenHeightDp.dp * 0.85f)
-                )) {
+                .weight(1f, fill = false)  // Allow content to scroll, but don't expand
+            ) {
                 LazyColumn(modifier = Modifier
                     .fillMaxWidth()
                     .then(

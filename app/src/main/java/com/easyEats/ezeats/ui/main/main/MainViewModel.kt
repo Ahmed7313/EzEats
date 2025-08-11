@@ -155,6 +155,9 @@ open class MainViewModel @Inject constructor(
     fun saveToke(token: String) {
         viewModelScope.launch(Dispatchers.IO) {
             mainUseCase.mainUseCase.saveToken(token)
+            mainUseCase.mainUseCase.setUserVerification(false)
+
+            //logout osama
         }
     }
 
