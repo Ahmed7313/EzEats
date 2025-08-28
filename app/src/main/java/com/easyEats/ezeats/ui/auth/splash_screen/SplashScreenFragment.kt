@@ -65,11 +65,13 @@ class SplashScreenFragment : BaseFragment<FragmentSplashScreenBinding>() {
     override fun onResume() {
         super.onResume()
         Handler(Looper.getMainLooper()).postDelayed({
+            Log.d(TAG, "onResume: start here")
             lifecycleScope.launch {
                 splashViewModel.isUserWatchOnBoardingScreen.collect { hasWatchedOnboarding ->
+                    Log.d(TAG, "onResume: hasWatchedOnboarding $hasWatchedOnboarding")
                     splashViewModel.isUserVerified.collect { isUserVerified ->
-                        Log.d(TAG, "onResume: $isUserVerified")
-                        Log.d(TAG, "onResume: $hasWatchedOnboarding")
+                        Log.d(TAG, "isUserVerified: $isUserVerified")
+                        Log.d(TAG, "hasWatchedOnboarding: $hasWatchedOnboarding")
                         val navigationHandler = DefaultNavigationHandler(this@SplashScreenFragment)
                         val currentDestination = findNavController().currentDestination?.id
                         val state = when {

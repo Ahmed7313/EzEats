@@ -1,5 +1,6 @@
 package com.easyEats.ezeats.domain.main.use_case
 
+import com.easyEats.ezeats.domain.auth.use_case.AuthUseCase
 import com.easyEats.ezeats.domain.main.use_case.active_order.ActiveOrderUseCase
 import com.easyEats.ezeats.domain.main.use_case.home_use_case.HomeUseCase
 import com.easyEats.ezeats.domain.main.use_case.location_use_case.LocationUseCase
@@ -29,5 +30,5 @@ data class MainUseCase(
     val orderHistoryUseCase: OrderHistoryUseCase,
     val pointsUseCase: PointsUseCase,
     val voucherUseCase: VoucherUseCase,
-    val trackActiveOrderUseCase: ActiveOrderUseCase,
+    val trackActiveOrderUseCase: ActiveOrderUseCase
 )

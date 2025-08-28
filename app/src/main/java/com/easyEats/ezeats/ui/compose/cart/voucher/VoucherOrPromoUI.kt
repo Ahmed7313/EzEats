@@ -1,4 +1,4 @@
-package com.easyEats.ezeats.ui.compose.cart
+package com.easyEats.ezeats.ui.compose.cart.voucher
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -8,17 +8,17 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,21 +29,27 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.easyEats.ezeats.R
+import com.easyEats.ezeats.domain.main.model.response.payment.promo.ezeats.Reward
 import com.easyEats.ezeats.ui.compose.components.AppInputField
 import com.easyEats.ezeats.ui.compose.theme.AppColor
 import com.easyEats.ezeats.ui.compose.theme.AppColor.BlackColor2
-import com.easyEats.ezeats.ui.compose.theme.AppColor.ColorPrimary
 import com.easyEats.ezeats.ui.compose.theme.AppColor.GreyColor
 import com.easyEats.ezeats.ui.compose.theme.AppColor.skyColor
 
 @Composable
 fun VoucherOrPromoUI(
-    modifier: Modifier = Modifier, promoCode: String = "",
+    modifier: Modifier = Modifier,
+    rewards: SnapshotStateList<Reward?>,
+    promoCode: String = "",
     isSuccessPromo: Boolean? = null,
-    onChange: (String) -> Unit, add: () -> Unit, clear: () -> Unit
+    onChange: (String) -> Unit,
+    onSelectReward: (Reward) -> Unit,
+    add: () -> Unit,
+    clear: () -> Unit
 ) {
     Column(
-        modifier = modifier.padding(bottom = 20.dp, top = 10.dp),
+        modifier = modifier
+            .padding(bottom = 20.dp, top = 10.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -57,6 +63,22 @@ fun VoucherOrPromoUI(
             fontWeight = FontWeight.Bold,
             color = BlackColor2
         )
+
+        if(rewards.isNotEmpty()) {
+            LazyRow(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 10.dp),
+                verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Start) {
+                items(rewards.size) { index ->
+                    val reward = rewards[index]
+                    if (reward != null) {
+                        RewardItemUI(modifier = Modifier.width(120.dp), reward, onClick = onSelectReward)
+                    }
+                }
+
+            }
+        }
 
         Row(
             verticalAlignment = Alignment.CenterVertically,

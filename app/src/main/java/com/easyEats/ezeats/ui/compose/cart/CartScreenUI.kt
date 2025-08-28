@@ -34,13 +34,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.room.util.TableInfo
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.domain.main.model.request.cart.response.UpdateCartResponse
 import com.easyEats.ezeats.domain.main.model.response.payment.promo.ezeats.Reward
 import com.easyEats.ezeats.domain.main.model.response.restaurant_reponse.RestaurantInfo
 import com.easyEats.ezeats.domain.room.ShopEntity
 import com.easyEats.ezeats.ui.compose.cart.summary.PaymentSummary
+import com.easyEats.ezeats.ui.compose.cart.voucher.VoucherOrPromoUI
 import com.easyEats.ezeats.ui.compose.components.AppButtonPrimary
 import com.easyEats.ezeats.ui.compose.components.AppButtonStroke
 import com.easyEats.ezeats.ui.compose.resturant.PAYMENT_INTEGRATION_TYPE
@@ -48,9 +48,7 @@ import com.easyEats.ezeats.ui.compose.theme.AppColor.BlackColor2
 import com.easyEats.ezeats.ui.compose.theme.AppColor.GreyColor
 import com.easyEats.ezeats.ui.main.cart.CartFragmentDirections
 import com.easyEats.ezeats.ui.main.restaurant.CartViewModel
-import com.easyEats.ezeats.utils.Resource
 import kotlinx.coroutines.launch
-import kotlin.text.orEmpty
 
 @Composable
 fun CartScreenUI(
@@ -261,35 +259,40 @@ fun CartScreenUI(
 //            )
 
 
-                VoucherOrPromoUI(modifier = Modifier.fillMaxWidth(), promo, isSuccessPromo, { it ->
-                    promo = it
-                }, add = {
-                    scope.launch {
-                        viewModel.addPromo(promo).collect {
-                            Log.d(TAG, "CartScreenUI: starting")
-                            if (it != null) {
-                                isSuccessPromo = it.result?.success
-                                Log.d(TAG, "CartScreenUI: promo added successfully")
-                                if (it.result?.success == true) {
-                                    scope.launch {
-                                        updateCartData()
+                VoucherOrPromoUI(
+                    modifier = Modifier.fillMaxWidth(),
+                    rewards = rewards,
+                    promo, isSuccessPromo, { it ->
+                        promo = it
+                    }, add = {
+                        scope.launch {
+                            viewModel.addPromo(promo).collect {
+                                Log.d(TAG, "CartScreenUI: starting")
+                                if (it != null) {
+                                    isSuccessPromo = it.result?.success
+                                    Log.d(TAG, "CartScreenUI: promo added successfully")
+                                    if (it.result?.success == true) {
+                                        scope.launch {
+                                            updateCartData()
+                                        }
                                     }
                                 }
-                            }
-                            Log.d(TAG, "CartScreenUI: result")
-                        }
-                    }
-                }, clear = {
-                    scope.launch {
-                        viewModel.cancelPromoCodeReedm().collect { response ->
-                            if (response != null) {
-                                promo = ""
-                                isSuccessPromo = null
-                                updateCartData()
+                                Log.d(TAG, "CartScreenUI: result")
                             }
                         }
-                    }
-                })
+                    }, clear = {
+                        scope.launch {
+                            viewModel.cancelPromoCodeReedm().collect { response ->
+                                if (response != null) {
+                                    promo = ""
+                                    isSuccessPromo = null
+                                    updateCartData()
+                                }
+                            }
+                        }
+                    }, onSelectReward = {
+
+                    })
 
                 HorizontalDivider(
                     modifier = Modifier.padding(vertical = 16.dp),

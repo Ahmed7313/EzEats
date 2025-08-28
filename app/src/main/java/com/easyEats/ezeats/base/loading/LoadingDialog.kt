@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import com.airbnb.lottie.LottieDrawable
 import com.easyEats.ezeats.R
@@ -21,9 +22,9 @@ class LoadingDialog : DialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = LoadingDialogBinding.inflate(inflater, container, false)
-        binding.lottieAnimationView.setAnimation(R.raw.loading)
-
-        binding.lottieAnimationView.playAnimation()
+//        binding.lottieAnimationView.setAnimation(R.raw.loading)
+//
+//        binding.lottieAnimationView.playAnimation()
 //        binding.lottieAnimationView.apply {
 //            setAnimation(R.raw.loading)
 //            repeatCount = LottieDrawable.INFINITE
@@ -44,8 +45,16 @@ class LoadingDialog : DialogFragment() {
 
     override fun onStart() {
         super.onStart()
+        binding.progressBar.show() // <-- required for ProgressIndicator
         // Set the dialog to have a transparent background
-        dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        dialog?.window?.apply {
+            setBackgroundDrawableResource(android.R.color.transparent)
+            setLayout(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+            setGravity(android.view.Gravity.CENTER)
+        }
     }
 
     override fun onDestroyView() {

@@ -28,7 +28,7 @@ interface AuthRepository {
     suspend fun saveName(name: String)
     suspend fun sendOTP(request: SendOtpRequest): BaseResponse<Boolean>
     suspend fun verifyOtp(request: VerifyOtpRequest): BaseResponse<Boolean>
-    suspend fun loginWithGoogle(request: SocialRequest): BaseResponse<Boolean>
+    suspend fun loginWithGoogle(request: SocialRequest): Response<FindUserResponse>
 
     suspend fun findUser( findUserRequest: FindUserRequest): Response<FindUserResponse>
 

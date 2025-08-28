@@ -248,6 +248,7 @@ class OffersScreenFragment : BaseFragment<FragmentPercentScreenBinding>(),
                                     }
 
 
+                                    //filter get stores by  (compound - type(pickup-delivery) - category type)
                                     fun getData(): List<RestaurantsResponseItem> {
                                         Log.d(
                                             TAG,

@@ -17,7 +17,7 @@ interface AuthApiService {
 
 
     @POST("loginWithGoogle")
-    suspend fun loginWithGoogle(@Body request: SocialRequest): BaseResponse<Boolean>
+    suspend fun loginWithGoogle(@Body request: SocialRequest): Response<FindUserResponse>
 
 
     @POST("VerifyMobileOTP")

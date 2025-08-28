@@ -1,6 +1,7 @@
 package com.easyEats.ezeats.data.local.data_store
 
 
+import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
@@ -62,6 +63,7 @@ class DataStorePreference @Inject constructor(private val preferences: DataStore
 
 
     suspend fun setUserVerification(isVerified: Boolean) {
+        Log.d("setUserVerification", "setUserVerification: $isVerified")
         preferences.edit {
             it[booleanPreferencesKey(IS_VERIFIED)] = isVerified
         }

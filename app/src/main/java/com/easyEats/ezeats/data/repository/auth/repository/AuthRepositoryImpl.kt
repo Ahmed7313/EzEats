@@ -69,8 +69,9 @@ class AuthRepositoryImpl @Inject constructor(
         authApiService.verifyOtp(request)
 
 
-    override suspend fun loginWithGoogle(request: SocialRequest): BaseResponse<Boolean> =
-        authApiService.loginWithGoogle(request)
+    override suspend fun loginWithGoogle(request: SocialRequest): Response<FindUserResponse> {
+        return authApiService.loginWithGoogle(request)
+    }
 
 
 

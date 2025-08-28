@@ -57,24 +57,24 @@ class SignUpViewModel @Inject constructor(private val authUseCase: AuthUseCase) 
     }
 
 
-    fun socialLogin(token: String, email: String): Flow<Resource<Boolean>> = flow {
-        emit(Loading())
-        val verifyOtp = authUseCase.verifyUseCase.loginWithGoogle(
-            SocialRequest(token,email
-            )
-        )
-        verifyOtp.handleResponse(
-            onSuccess = {
-                saveUserVerification(true)
-                emit(Success(it))
-            },
-            onError = { message, error ->
-                emit(Error(message, error))
-            }, onUnauthenticated = {
-                emit(UnAuthenticated())
-            }
-        )
-    }
+//    fun socialLogin(token: String,google : String, email: String): Flow<Resource<Boolean>> = flow {
+//        emit(Loading())
+//        val verifyOtp = authUseCase.verifyUseCase.loginWithGoogle(
+//            SocialRequest(token,google,email
+//            )
+//        )
+//        verifyOtp.handleResponse(
+//            onSuccess = {
+//                saveUserVerification(true)
+//                emit(Success(it))
+//            },
+//            onError = { message, error ->
+//                emit(Error(message, error))
+//            }, onUnauthenticated = {
+//                emit(UnAuthenticated())
+//            }
+//        )
+//    }
 
     private fun saveUserVerification(isUserVerified: Boolean) {
         viewModelScope.launch {

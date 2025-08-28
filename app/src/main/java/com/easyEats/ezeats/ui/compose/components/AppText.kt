@@ -33,6 +33,7 @@ fun AppTextHeader(
     fontSize: Int = 16,
     fontWeight: FontWeight = FontWeight.Medium,
     color: Color = Color.Black,
+    maxLines: Int = Int.MAX_VALUE,
     textAlign: TextAlign = TextAlign.Start
 
 ) {
@@ -64,6 +65,7 @@ fun AppTextHeader(
             else
                 Font(R.font.gilroy_400)
         ),
+        maxLines = maxLines,
         modifier = modifier
     )
 }

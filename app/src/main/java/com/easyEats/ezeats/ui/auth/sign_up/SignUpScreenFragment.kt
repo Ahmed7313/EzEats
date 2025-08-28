@@ -1,6 +1,7 @@
 package com.easyEats.ezeats.ui.auth.sign_up
 
 import android.app.Activity
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -15,6 +16,8 @@ import com.easyEats.ezeats.MyApplication
 import com.easyEats.ezeats.R
 import com.easyEats.ezeats.base.BaseFragment
 import com.easyEats.ezeats.databinding.FragmentSignUpScreenBinding
+import com.easyEats.ezeats.ui.auth.sign_in.SignInViewModel
+import com.easyEats.ezeats.ui.main.main.HomeActivity
 import com.easyEats.ezeats.utils.Resource
 import com.easyEats.ezeats.utils.validation.ValidateFields
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
@@ -29,6 +32,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import dagger.hilt.android.AndroidEntryPoint
 import es.dmoral.toasty.Toasty
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
@@ -43,18 +47,11 @@ class SignUpScreenFragment : BaseFragment<FragmentSignUpScreenBinding>() {
 
     // ViewModel instance for managing UI-related data in a lifecycle-conscious way
     private val signUpViewModel: SignUpViewModel by viewModels()
+    private val signInViewModel: SignInViewModel by viewModels()
+    private  val TAG = "SignUpScreenFragment"
+    private val firebaseAuth = FirebaseAuth.getInstance()
+    private lateinit var googleSignInClient: GoogleSignInClient
 
-
-//    private lateinit var googleSignInClient: GoogleSignInClient
-//    private val RC_SIGN_IN = 1001
-//    private val signInLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-//        if (result.resultCode == Activity.RESULT_OK) {
-//            val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
-//            handleSignInResult(task)
-//        } else {
-//            Toast.makeText(requireContext(), "Cancelled", Toast.LENGTH_SHORT).show()
-//        }
-//    }
 
     /**
      * Inflates the binding layout for this fragment.
@@ -178,167 +175,112 @@ class SignUpScreenFragment : BaseFragment<FragmentSignUpScreenBinding>() {
             signUpViewModel.register()
         }
         binding.imgGoogle.setOnClickListener {
-//            val signInIntent = googleSignInClient.signInIntent
-//            signInLauncher.launch(signInIntent)
-//            gmail()
-            gmail()
+
+            gmail2()
 
 
         }
     }
 
-    fun gmail(){
-        val signInRequest = BeginSignInRequest.builder()
-            .setGoogleIdTokenRequestOptions(
-                BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
-                    .setSupported(true)
-                    .setServerClientId(getString(R.string.default_web_client_id))
-                    .setFilterByAuthorizedAccounts(false)
-                    .build()
-            )
+    fun gmail2() {
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestEmail()
+            .requestIdToken(getString(R.string.default_web_client_id)) // For backend verification
+            .requestServerAuthCode(getString(R.string.default_web_client_id)) // For exchange to access token
             .build()
 
-        Identity.getSignInClient(requireActivity())
-            .beginSignIn(signInRequest)
-            .addOnSuccessListener { result ->
-                try {
-                    val intentSenderRequest = IntentSenderRequest.Builder(result.pendingIntent).build()
-                    activityResultGoogleSignIn.launch(intentSenderRequest)
-                } catch (e: Exception) {
-                    Log.e(MyApplication.Companion.TAG, "Failed to start sign in: ${e.message}", e)
-                    Toasty.error(requireContext(), "Sign in failed", Toast.LENGTH_SHORT).show()
-                }
-            }
-            .addOnFailureListener { e ->
-                Log.e(MyApplication.Companion.TAG, "Sign in failed: ${e.message}", e)
-                Toasty.error(requireContext(), "Sign in failed", Toast.LENGTH_SHORT).show()
-            }
+        googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
+        val signInIntent = googleSignInClient.signInIntent
+        signInLauncher.launch(signInIntent);
     }
 
 
-    private val activityResultGoogleSignIn = registerForActivityResult(
-        ActivityResultContracts.StartIntentSenderForResult()
-    ) { result ->
-        when (result.resultCode) {
-            Activity.RESULT_OK -> {
-                try {
-                    val credential = Identity.getSignInClient(requireActivity())
-                        .getSignInCredentialFromIntent(result.data)
-
-                    val idToken = credential.googleIdToken
-                    val email = credential.id
-
-                    if (idToken != null) {
-                        Log.d(MyApplication.Companion.TAG, "Email: $email")
-                        Log.d(MyApplication.Companion.TAG, "googleIdToken: ${credential.googleIdToken}")
-                        Log.d(MyApplication.Companion.TAG, "id: ${credential.id}")
-                        signUpViewModel.socialLogin(credential.id, email)
-                    } else {
-                        Log.e(MyApplication.Companion.TAG, "Google ID token is null")
-                        Toasty.error(requireContext(), "Sign in failed", Toast.LENGTH_SHORT).show()
-                    }
-                } catch (e: ApiException) {
-                    Log.e(MyApplication.Companion.TAG, "Google sign in failed: ${e.message}", e)
-                    Toasty.error(requireContext(), "Sign in failed: ${e.message}", Toast.LENGTH_SHORT).show()
-                }
-            }
-            Activity.RESULT_CANCELED -> {
-                Log.d(MyApplication.Companion.TAG, "Sign in cancelled")
-                Toasty.info(requireContext(), "Sign in cancelled", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
-
-
-    private lateinit var googleSignInClient: GoogleSignInClient
-    private lateinit var firebaseAuth: FirebaseAuth
-
-
-    private  val TAG = "SignUpScreenFragment"
-    private val googleSignInLauncher = registerForActivityResult(
+    private val signInLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
-        val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
-        try {
-            val account = task.getResult(ApiException::class.java)
-            val idToken = account.idToken
-            val accessToken = account.serverAuthCode // Only available if requested
-            Log.d("GoogleSignIn", "🟢 ID Token: $idToken")
-            Log.d("GoogleSignIn", "🟢 Email: ${account.email}")
-
-            if (idToken != null) {
-                firebaseAuthWithGoogle(idToken, account.email)
-            } else {
-                Log.e("GoogleSignIn", "❌ ID Token is null")
-            }
-
-        } catch (e: ApiException) {
-            Log.e("GoogleSignIn", "❌ Google sign in failed: ${e.localizedMessage}")
+        if (result.resultCode == Activity.RESULT_OK) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+            handleSignInResult(task)
         }
     }
 
-    private fun firebaseAuthWithGoogle(idToken: String, email: String?) {
-        val credential = GoogleAuthProvider.getCredential(idToken, null)
 
-        firebaseAuth.signInWithCredential(credential)
-            .addOnCompleteListener(requireActivity()) { task ->
-                if (task.isSuccessful) {
-                    val user = firebaseAuth.currentUser
-                    val name = user?.displayName ?: ""
-                    val email = user?.email ?: ""
-                    val phone = user?.phoneNumber ?: ""
 
-                    Log.d("FirebaseAuth", "✅ Sign-in success")
-                    Log.d("FirebaseAuth", "Name: $name")
-                    Log.d("FirebaseAuth", "Email: $email")
-                    Log.d("FirebaseAuth", "Phone: $phone")
+    private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
+        try {
+            val account = completedTask.getResult(ApiException::class.java)
 
-                    // TODO: Call your backend logic here
-                    googleSignInBackendCall(idToken, email)
+            // You can get these
+            val idToken = account.idToken
+            val authCode = account.serverAuthCode
+            val email = account.email
 
-                } else {
-                    Log.e("FirebaseAuth", "❌ Sign-in failed: ${task.exception?.localizedMessage}")
+
+            Log.d("GoogleSignIn", "Email: $email")
+            Log.d("GoogleSignIn", "ID Token: $idToken")
+            Log.d("GoogleSignIn", "Auth Code: $authCode")
+
+            val credential = GoogleAuthProvider.getCredential(idToken, null)
+            firebaseAuth.signInWithCredential(credential)
+                .addOnCompleteListener(requireActivity()) { authResult ->
+                    if (authResult.isSuccessful) {
+                        val user = firebaseAuth.currentUser
+                        Log.d("GoogleSignIn", "✅ Firebase sign in successful")
+                        Log.d("GoogleSignIn", "Name: ${user?.displayName}")
+                        Log.d("GoogleSignIn", "Email: ${user?.email}")
+                        Log.d("GoogleSignIn", "Phone: ${user?.phoneNumber}")
+                        Log.d("GoogleSignIn", "uid: ${user?.uid}")
+                        //const {token, googleId, email} = request.params;
+                        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+                            email?.let { nonNullEmail ->
+                                signInViewModel.socialLogin(idToken!!, authCode!!, nonNullEmail)
+                                    .collect {
+                                        if (it is Resource.Success<String>) {
+                                            val intent = Intent(
+                                                requireContext(),
+                                                HomeActivity::class.java
+                                            )
+                                            requireActivity().finishAffinity()
+                                            startActivity(
+                                                intent
+                                            )
+                                        } else if (it is Resource.Loading) {
+                                            showLoading()
+                                        } else if (it is Resource.Error) {
+                                            hideLoading()
+                                            Toast.makeText(context, it.message, Toast.LENGTH_SHORT)
+                                                .show()
+                                        } else {
+                                            hideLoading()
+                                        }
+                                    }
+                            } ?: run {
+                                Log.e(
+                                    "GoogleSignIn",
+                                    "Email is null, cannot proceed with social login"
+                                )
+                                Toasty.error(
+                                    requireContext(),
+                                    "Email not available from Google account",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+
+
+                    } else {
+                        Log.e("GoogleSignIn", "❌ Firebase sign in failed", authResult.exception)
+                    }
                 }
-            }
-    }
 
-    private fun googleSignInBackendCall(token: String, email: String?) {
-        // Replace this with your actual API call
-        Log.d("Backend", "📞 Sending token and email to backend: $token, $email")
 
-        // Example pseudo-logic
-        // if (success) {
-        //     sendBroadcast or notify observers
-        // } else {
-        //     showError()
-        // }
+            // Send authCode to backend to get access token
+        } catch (e: ApiException) {
+            Log.e("GoogleSignIn", "Sign-in failed: ${e.statusCode}", e)
+        }
     }
 
 
-    fun signInWithGoogle() {
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id)) // from google-services.json
-            .requestEmail()
-            .build()
-
-        googleSignInClient = GoogleSignIn.getClient(requireContext(), gso)
-        firebaseAuth = FirebaseAuth.getInstance()
-
-        val signInIntent = googleSignInClient.signInIntent
-        googleSignInLauncher.launch(signInIntent)
-    }
-
-//    fun gmail(){
-//        Log.d(TAG, "gmail: here")
-//        val options = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//            .requestId()
-//            .requestEmail()
-//            .requestProfile()
-//            .build()
-//        val googleClient = GoogleSignIn.getClient(requireActivity(), options)
-//        activityResultGoogleSignIn.launch(googleClient.signInIntent)
-//    }
 
     override fun onDestroyView() {
         signUpViewModel.registrationResult.value = null

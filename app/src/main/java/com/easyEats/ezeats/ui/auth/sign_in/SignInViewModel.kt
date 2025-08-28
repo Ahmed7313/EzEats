@@ -12,6 +12,7 @@ import com.easyEats.ezeats.domain.auth.model.request.SendOtpRequest
 import com.easyEats.ezeats.domain.auth.model.request.SocialRequest
 import com.easyEats.ezeats.domain.auth.model.response.FindUserResponse
 import com.easyEats.ezeats.domain.auth.use_case.AuthUseCase
+import com.easyEats.ezeats.domain.main.use_case.MainUseCase
 import com.easyEats.ezeats.ui.auth.main.AuthViewModel
 import com.easyEats.ezeats.utils.Resource
 import com.easyEats.ezeats.utils.Resource.Error
@@ -29,7 +30,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SignInViewModel @Inject constructor(private val authUseCase: AuthUseCase) : AuthViewModel() {
+class SignInViewModel @Inject constructor(private val authUseCase: AuthUseCase,
+                                          private val mainUseCase: MainUseCase) : AuthViewModel() {
 
     private val _sendOtpMutableLiveData = MutableLiveData<Resource<BaseResponse<Boolean>>?>()
     val sendOtpLiveData: MutableLiveData<Resource<BaseResponse<Boolean>>?> get() = _sendOtpMutableLiveData
@@ -70,25 +72,34 @@ class SignInViewModel @Inject constructor(private val authUseCase: AuthUseCase) 
         }
     }
 
-
-    fun socialLogin(token: String, email: String): Flow<Resource<Boolean>> = flow {
+    //Response<FindUserResponse>
+    fun socialLogin(token: String, googleId: String, email: String): Flow<Resource<String>> = flow {
         emit(Loading())
-        val verifyOtp = authUseCase.verifyUseCase.loginWithGoogle(
-            SocialRequest(token,email
+        try {
+            val user = authUseCase.verifyUseCase.loginWithGoogle(
+                SocialRequest(token, googleId, email)
             )
-        )
-        verifyOtp.handleResponse(
-            onSuccess = {
-//                saveUserVerification(true)
-                emit(Success(it))
-            },
-            onError = { message, error ->
-                emit(Error(message, error))
-            }, onUnauthenticated = {
-                emit(UnAuthenticated())
+            if (user.isSuccessful) {
+                val responseToken = user.body()?.result
+                if (responseToken != null) {
+                    authUseCase.verifyUseCase.setUserVerification(true)
+                    authUseCase.signInUseCase.saveToken(responseToken)
+                    mainUseCase.userInfoUseCase.getToken().collect {
+                        Log.d(TAG, "socialLogin: $it")
+                        emit(Success(responseToken))
+                    }
+                    Log.d(TAG, "socialLogin: token $responseToken")
+                } else {
+                    emit(Error("Login response is null"))
+                }
+            } else {
+                emit(Error("Login failed: ${user.message()}"))
             }
-        )
+        } catch (e: Exception) {
+            emit(Error("Network error: ${e.message}"))
+        }
     }
+
 
     private fun sendOtp() {
         val flow = createSendOtpFlow()

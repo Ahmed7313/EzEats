@@ -12,10 +12,33 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
+//
+//@InstallIn(SingletonComponent::class)
+//@Module
+//object UseCaseModule {
+//
+//    @Provides
+//    @Singleton
+//    fun provideAuthUseCase(
+//        splashUseCase: SplashUseCase,
+//        onBoardingUseCase: OnBoardingUseCase,
+//        signUpUseCase: SignUpUseCase,
+//        signInUseCase: SignInUseCase,
+//        verifyOtpScreen: VerifyOtpScreen
+//    ): AuthUseCase {
+//        return AuthUseCase(
+//            splashUseCase,
+//            onBoardingUseCase,
+//            signUpUseCase,
+//            signInUseCase,
+//            verifyOtpScreen
+//        )
+//    }
+//}
 
-@InstallIn(SingletonComponent::class)
 @Module
-object UseCaseModule {
+@InstallIn(SingletonComponent::class)
+object AuthUseCaseModule {
 
     @Provides
     @Singleton
@@ -24,14 +47,14 @@ object UseCaseModule {
         onBoardingUseCase: OnBoardingUseCase,
         signUpUseCase: SignUpUseCase,
         signInUseCase: SignInUseCase,
-        verifyOtpScreen: VerifyOtpScreen
+        verifyUseCase: VerifyOtpScreen
     ): AuthUseCase {
         return AuthUseCase(
-            splashUseCase,
-            onBoardingUseCase,
-            signUpUseCase,
-            signInUseCase,
-            verifyOtpScreen
+            splashUseCase = splashUseCase,
+            onBoardingUseCase = onBoardingUseCase,
+            signUpUseCase = signUpUseCase,
+            signInUseCase = signInUseCase,
+            verifyUseCase = verifyUseCase
         )
     }
 }

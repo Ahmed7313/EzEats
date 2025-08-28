@@ -15,12 +15,12 @@ plugins {
 
 android {
     namespace = "com.easyEats.ezeats"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.easyEats.ezeats"
         minSdk = 26
-        targetSdk = 36
+        targetSdk = 35
         versionCode = 7
         versionName = "1.6"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

@@ -3,6 +3,7 @@ package com.easyEats.ezeats.base
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -87,10 +88,13 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
     /**
      * Shows a loading indicator if the activity is of type MainActivity.
      */
+    val TAGBASE = "BASE FRAGMENT"
     protected fun showLoading() {
-        if (loadingDialog == null) {
-            loadingDialog = LoadingDialog()
-            loadingDialog?.isCancelable = false
+        Log.d(TAGBASE, "showLoading: loading")
+        if (loadingDialog == null && isAdded) {
+            loadingDialog = LoadingDialog().apply {
+                isCancelable = false
+            }
             loadingDialog?.show(parentFragmentManager, "LoadingDialog")
         }
     }
@@ -113,7 +117,13 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
      * Hides the loading indicator if the activity is of type MainActivity.
      */
     protected fun hideLoading() {
-        loadingDialog?.dismiss()
+        Log.d(TAGBASE, "showLoading: hide")
+
+        loadingDialog?.let { dialog ->
+            if (dialog.isAdded && !dialog.isRemoving) {
+                dialog.dismiss()
+            }
+        }
         loadingDialog = null
     }
 
